@@ -1,0 +1,157 @@
+<?php
+
+//------------------------------------------------------------------------------
+//|                                                                            |
+//|         Система керування вмістом сайту SiMan CMS                          |
+//|            Content Management System SiMan CMS                             |
+//|                                                                            |
+//|               (c) Aged Programmer's Group                                  |
+//|                http://www.apserver.org.ua                                  |
+//|                                                                            |
+//------------------------------------------------------------------------------
+
+//==============================================================================
+//#ver 1.6.9.17                                                                |
+//==============================================================================
+
+if (!defined("SIMAN_DEFINED"))
+	{
+		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		exit();
+	}
+
+function siman_add_modifier_menu(&$menu)
+	{
+		for ($i=0; $i<count($menu); $i++)
+			sm_add_content_modifier($menu[$i]['caption']);
+	}
+
+
+function siman_load_menu($menu_id, $maxlevel=-1)
+	{
+		global $nameDB, $lnkDB, $_servervars, $tableprefix, $_settings, $special;
+		$i=0;
+		$addsql='';
+		if ($maxlevel>=0)
+			$addsql.=' AND submenu_from=0 ';
+		$sql="SELECT * FROM ".$tableprefix."menu_lines WHERE id_menu_ml='$menu_id' $addsql ORDER BY submenu_from, position";
+		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$tmp_index=strpos($_settings['resource_url'], '/');
+		$main_suburl=substr($_settings['resource_url'], $tmp_index);
+		while ($row=database_fetch_object($result))
+			{
+				$menu[$i]['id']=$row->id_ml;
+				$menu[$i]['mid']=$menu_id;
+				$menu[$i]['pos']=$row->position;
+				$menu[$i]['add_param']=$menu_id.'|'.$row->id_ml;
+				$menu[$i]['level']=1;
+				$menu[$i]['submenu_from']=$row->submenu_from;
+				$menu[$i]['sublines_count']=0;
+				$menu[$i]['url']=$row->url;
+				$menu[$i]['caption']=$row->caption_ml;
+				$menu[$i]['partial']=$row->partial_select;
+				$menu[$i]['alt']=$row->alt_ml;
+				$menu[$i]['attr']=$row->attr_ml;
+				$menu[$i]['newpage']=$row->newpage_ml;
+				$line_id=$row->id_ml;
+				if ($_settings['menuitems_use_image']==1)
+					{
+						if (file_exists('./files/img/menuitem'.$line_id.'.jpg'))
+							$menu[$i]['image']='files/img/menuitem'.$line_id.'.jpg';
+					}
+				if (
+						(strcmp($main_suburl.$menu[$i]['url'], $_servervars['REQUEST_URI'])==0
+							||
+						strcmp($main_suburl.$menu[$i]['url'], $_servervars['REQUEST_URI'].'index.php')==0)
+						|| ($special['is_index_page'] == 1 && strcmp($menu[$i]['url'], 'http://'.$_settings['resource_url'])==0)
+					)
+					$menu[$i]['active']='1';
+				if ($menu[$i]['active']!='1' && $menu[$i]['partial']==1)
+					{
+						if (strpos($_servervars['REQUEST_URI'], $main_suburl.$menu[$i]['url'])===0)
+							$menu[$i]['active']='1';
+					}
+				if (empty($menu[$i]['url']))
+					$menu[$i]['active']='0';
+				$i++;
+			}
+		$maxlev=0;
+		for ($i=0; $i<count($menu); $i++)
+			{
+				$pos[$i]=0;
+			}
+		$fistlevelposition=0;
+		$fistlevellastposition=0;
+		for ($i=0; $i<count($menu); $i++)
+			{
+				if ($menu[$i]['submenu_from']==0)
+					{
+						$maxpos=0;
+						for ($j=0; $j<count($menu); $j++)
+							if ($maxpos<$pos[$j])
+								$maxpos=$pos[$j];
+						$pos[$i]=$maxpos+1;
+						$fistlevelposition++;
+						$menu[$i]['submenu_position']=$fistlevelposition;
+						$fistlevellastposition=$i;
+					}
+				else
+					{
+						$rootpos=0;
+						$childpos=-1;
+						for ($j=0; $j<count($menu); $j++)
+							{
+								if ($menu[$j]['id']==$menu[$i]['submenu_from'])
+									{
+										$rootpos=$pos[$j];
+										$menu[$i]['level']=$menu[$j]['level']+1;
+										$menu[$j]['sublines_count']++;
+										$menu[$j]['is_submenu']=1;
+										$menu[$i]['submenu_position']=$menu[$j]['sublines_count'];
+									}
+								if ($menu[$j]['submenu_from']==$menu[$i]['submenu_from'] && $j!=$i && $childpos<$pos[$j])
+									$childpos=$pos[$j];
+							}
+						$pos[$i]=($rootpos>$childpos) ? ($rootpos+1) : ($childpos+1) ;
+						for ($j=0; $j<count($menu); $j++)
+							{
+								if ($pos[$j]>=$pos[$i] && $j!=$i)
+									$pos[$j]++;
+							}
+					}
+			}
+		if (count($menu)>0)
+			{
+				$menu[0]['first']=1;
+				$menu[$fistlevellastposition]['last']=1;
+			}
+		for ($i=0; $i<count($menu); $i++)
+			{
+				$rmenu[$pos[$i]-1]=$menu[$i];
+			}
+		return $rmenu;
+	}
+
+function sm_add_menuitem(&$menu, $title, $url, $level=1, $partial_select='', $alt_text='', $newpage=0)
+	{
+		$i=count($menu);
+		$menu[$i]['url']=$url;
+		$menu[$i]['caption']=$title;
+		$menu[$i]['partial']=$partial_select;
+		$menu[$i]['alt']=$alt_text;
+		$menu[$i]['newpage']=$newpage;
+	}
+
+if (!empty($_settings['upper_menu_id']))
+	{
+		$special["uppermenu"]=siman_load_menu($_settings['upper_menu_id']);
+		siman_add_modifier_menu($special["uppermenu"]);
+	}
+
+if (!empty($_settings['bottom_menu_id']))
+	{
+		$special["bottommenu"]=siman_load_menu($_settings['bottom_menu_id']);
+		siman_add_modifier_menu($special["bottommenu"]);
+	}
+
+?>
