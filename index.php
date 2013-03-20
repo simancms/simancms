@@ -6,8 +6,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-14                                                         |
+//#ver 1.6.4	                                                               |
+//#revision 2013-03-20                                                         |
 //==============================================================================
 
 if (php_sapi_name()!='cli' && @get_magic_quotes_gpc()==1)
@@ -489,7 +489,14 @@ if ($special['dberror']!=true)
 				$special['time']['generation_end']=$special['time']['generation_end'][0]+$special['time']['generation_end'][1];
 				$special['time']['generation_time']=round($special['time']['generation_end']-$special['time']['generation_begin'], 4);
 				$smarty->assign_by_ref('special', $special);
-				
+
+				if (!empty($_sessionvars))
+					while ( list( $key, $val ) = each($_sessionvars) )
+						{
+							$_SESSION[$session_prefix.$key]=$val;
+						}
+				session_write_close();
+
 				//Send headers before output
 				if (!headers_sent())
 					{
@@ -519,12 +526,6 @@ else
 		$smarty->assign('errorname', 'dberror');
 		$smarty->display('error.tpl');
 	}
-
-if (!empty($_sessionvars))
-	while ( list( $key, $val ) = each($_sessionvars) )
-		{
-			$_SESSION[$session_prefix.$key]=$val;
-		}
 
 //print(memory_get_peak_usage(true));
 
