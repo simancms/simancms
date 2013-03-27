@@ -80,7 +80,7 @@
 {include file="$mod_name.tpl"}
 {$special.document.block[0].afterblock}
 {/if}
-{$special.document.panel[1].afterpanel}
+{$special.document.panel[0].afterpanel}
 	
 	</td>
     <td valign="top" width="20%">
@@ -103,7 +103,7 @@
 <tr class="bottombar">
     <td class="copyrightbar">{$_settings.copyright_text}</td>
     <td>{if $_settings.bottom_menu_id neq ""}{include file="bottommenu.tpl"}{/if}</td>
-    <td><div class="poweredby">Powered by <a href="http://www.simancms.org" target="_blank">SiMan CMS</a></div></td>
+    <td><div class="poweredby">Powered by <a href="http://simancms.org/" target="_blank">SiMan CMS</a></div></td>
 </tr>
 </table>
 {include file="page_footer.tpl"}
