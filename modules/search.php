@@ -117,7 +117,7 @@ if (strcmp($modules[$modules_index]["mode"], 'shortview')==0)
 		$modules[$modules_index]['title']=$lang['module_search']['search'];
 	}
 
-if (strcmp($userinfo['status'],'admin')==0)
+if ($userinfo['level']==3)
 	{
 		if (strcmp($modules[$modules_index]["mode"], 'admin')==0)
 			{

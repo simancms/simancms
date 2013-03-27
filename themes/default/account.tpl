@@ -72,7 +72,7 @@
 {if $_settings.allow_private_messages eq "1"}
 <a href="index.php?m=account&d=viewprivmsg&folder=inbox">{$lang.module_account.inbox}</a><br />
 {/if}
-{if $userinfo.status eq "admin"}
+{if $userinfo.level eq 3}
 <a href="index.php?m=admin">{$lang.control_panel}</a><br />
 {/if}
 <a href="index.php?m=account&d=cabinet">{$lang.my_cabinet}</a><br />
@@ -106,7 +106,7 @@
 </div>
 </form>
 <br />
-{if $userinfo.status eq "admin"}
+{if $userinfo.level eq 3}
 <a href="index.php?m=admin">{$lang.control_panel}</a><br />
 {/if}
 <a href="index.php?m=account&d=change">{$lang.module_account.change_personal_info}</a><br />

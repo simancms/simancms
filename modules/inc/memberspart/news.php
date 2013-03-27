@@ -17,7 +17,7 @@ if (!defined("SIMAN_DEFINED"))
 		exit();
 	}
 
-		if (strcmp($m["mode"], 'postadd')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postadd')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				$m['post']=$_postvars;
 				if ($userinfo['level']<3)
@@ -122,7 +122,7 @@ if (!defined("SIMAN_DEFINED"))
 			}
 		
 		
-		if (strcmp($m["mode"], 'add')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'add')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -162,7 +162,7 @@ if (!defined("SIMAN_DEFINED"))
 			}
 		
 		
-		if (strcmp($m["mode"], 'delete')==0 && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'delete')==0 && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				$candelete=0;
 				if ($userinfo['level']==3)
@@ -194,7 +194,7 @@ if (!defined("SIMAN_DEFINED"))
 					}
 			}
 		
-		if (strcmp($m["mode"], 'postdelete')==0 && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postdelete')==0 && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				$candelete=0;
 				if ($userinfo['level']==3)
@@ -247,7 +247,7 @@ if (!defined("SIMAN_DEFINED"))
 			}
 		
 		
-		if (strcmp($m["mode"], 'postedit')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postedit')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				$canedit=0;
 				if ($userinfo['level']==3)
@@ -371,7 +371,7 @@ if (!defined("SIMAN_DEFINED"))
 			}
 		
 		
-		if (strcmp($m["mode"], 'edit')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'edit')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				$canedit=0;
 				if ($userinfo['level']==3)
@@ -443,7 +443,7 @@ if (!defined("SIMAN_DEFINED"))
 				add_path($lang['control_panel'], "index.php?m=admin");
 				add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 				add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
-				add_path($lang['module_news']['list_news'], "index.php?m=news&d=list&ctg=".$modules[$modules_index]['ctgidselected']."");
+				add_path($lang['module_news']['list_news'], "index.php?m=news&d=list&ctg=".$m['ctgidselected']."");
 			}
 		
 		if ($userinfo['level']==3)

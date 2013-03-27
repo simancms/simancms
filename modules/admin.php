@@ -19,7 +19,7 @@ if (!defined("SIMAN_DEFINED"))
 if (empty($m['mode']))
 	$m['mode']='view';
 
-if ($userinfo['status']=='admin')
+if ($userinfo['level']==3)
 {
 	$m["module"]='admin';
 	if (strcmp($m['mode'], 'postsettings')==0)

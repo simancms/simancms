@@ -20,7 +20,7 @@ if (!defined("SIMAN_DEFINED"))
 if ($userinfo['level']>0)
 	{
 
-		if (strcmp($m["mode"], 'add')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'add')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -45,7 +45,7 @@ if ($userinfo['level']>0)
 					}
 			}
 		
-		if (strcmp($m["mode"], 'postadd')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postadd')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql='('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
@@ -113,7 +113,7 @@ if ($userinfo['level']>0)
 					}
 			}
 		
-		if (strcmp($m["mode"], 'postedit')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postedit')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql='('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
@@ -215,7 +215,7 @@ if ($userinfo['level']>0)
 					}
 			}
 		
-		if (strcmp($m["mode"], 'edit')==0  && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'edit')==0  && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -282,7 +282,7 @@ if ($userinfo['level']>0)
 					}
 			}
 		
-		if (strcmp($m["mode"], 'delete')==0 && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'delete')==0 && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -315,7 +315,7 @@ if ($userinfo['level']>0)
 							$_msgbox['no']='index.php?m=content&d=list&ctg='.$_getvars['ctg'];
 					}
 			}
-		if (strcmp($m["mode"], 'postdelete')==0 && (strcmp($userinfo['status'],'admin')==0 || !empty($userinfo['groups'])))
+		if (strcmp($m["mode"], 'postdelete')==0 && ($userinfo['level']==3 || !empty($userinfo['groups'])))
 			{
 				if ($userinfo['level']<3)
 					$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');

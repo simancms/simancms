@@ -246,12 +246,9 @@ if ($userinfo['level']==3)
 						$i++;
 					}
 				$m['title']=$lang['list_news'];
-				//$sql2='';
-				//if (!empty($ctg_id)) $sql2=" WHERE id_category_n = '$ctg_id' ";
 				$sql="SELECT ".$tableprefix."news.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."news LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."news.filename_news=".$tableprefix."filesystem.id_fs";
 				if (!empty($ctg_id)) $sql.=" WHERE id_category_n = '$ctg_id'";
 				$sql.=" ORDER BY date_news DESC";
-				//$sql="SELECT * FROM ".$tableprefix."news $sql2 ORDER BY date_news DESC";
 				$sql.=" LIMIT ".$_settings['admin_items_by_page']." OFFSET $from_record";
 				require_once('includes/admintable.php');
 				$m['table']['columns']['date']['caption']=$lang['date_news'];
@@ -292,9 +289,9 @@ if ($userinfo['level']==3)
 						$m['table']['rows'][$i]['date']['data']=strftime($lang["datemask"], $row->date_news);
 						$m['table']['rows'][$i]['title']['data']=$row->title_news;
 						if (empty($row->preview_news))
-							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br($row->text_news), 100, '...'));
+							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br(strip_tags($row->text_news)), 100, '...'));
 						else
-							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br($row->preview_news), 100, '...'));
+							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br(strip_tags($row->preview_news)), 100, '...'));
 						if ($_settings['humanURL']==1 && $row->filename_news!=0)
 							{
 								$m['table']['rows'][$i]['title']['url']=$row->filename_fs;

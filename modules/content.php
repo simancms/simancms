@@ -303,7 +303,7 @@ if (strcmp($m["mode"], 'view')==0)
 							{
 								$m['content'][$i]["text"]=str_replace("\n",'<br>',$m['content'][$i]["text"]);
 							}
-						if (strcmp($userinfo['status'], 'admin')==0)
+						if ($userinfo['level']==3)
 							{
 								$m['content'][$i]["can_edit"]=1;
 								$m['content'][$i]["can_delete"]=1;

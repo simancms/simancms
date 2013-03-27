@@ -36,7 +36,7 @@ if (strcmp($modules[$modules_index]["mode"], 'attachment')==0 || strcmp($modules
 			}
 	}
 
-if (strcmp($userinfo['status'],'admin')==0)
+if ($userinfo['level']==3)
 	{
 		$modules[$modules_index]["module"]='download';
 		if (strcmp($modules[$modules_index]["mode"], 'deleteattachment')==0)
