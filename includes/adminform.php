@@ -225,6 +225,8 @@ if (!defined("adminform_DEFINED"))
 				//-------------------------------------------------------------
 				function LoadValuesArray($array)
 					{
+						if (!is_array($array))
+							return;
 						while ( list($name, $value) = each($array) )
 							{
 								$this->form['data'][$name]=$value;
