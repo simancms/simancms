@@ -59,7 +59,7 @@ function  set_boardmessages_style{$postfix}()
 			<div class="boardmessages-row-buttonbar">
 				{section name=btnbrdmsgbtnsindex loop=$board.rows[brdmsgindex].buttons}
 					{if $board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].messagebox eq 1}
-					<a href="javascript:;" onclick="button_msgbox{$postfix}('{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}', '{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].message}')">
+					<a href="javascript:;" onclick="boardmessages_msgbox{$postfix}('{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}', '{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].message}')">
 					{else}
 					<a href="{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}">
 					{/if}
@@ -89,7 +89,7 @@ function  set_boardmessages_style{$postfix}()
 			<div class="boardmessages-row-buttonbar">
 				{section name=btnbrdmsgbtnsindex loop=$board.rows[brdmsgindex].buttons}
 					{if $board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].messagebox eq 1}
-					<a href="javascript:;" onclick="button_msgbox{$postfix}('{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}', '{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].message}')">
+					<a href="javascript:;" onclick="boardmessages_msgbox{$postfix}('{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}', '{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].message}')">
 					{else}
 					<a href="{$board.rows[brdmsgindex].buttons[btnbrdmsgbtnsindex].url}">
 					{/if}
