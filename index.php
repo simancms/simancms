@@ -243,6 +243,7 @@ if ($special['dberror']!=true)
 			}
 		
 		require("includes/userinfo.php");
+		$sm['u']=&$userinfo;
 		//print_r($_cookievars);
 		//Autologin feature
 		if ($userinfo['level']<1 && !empty($_cookievars[$_settings['cookprefix'].'simanautologin']))
