@@ -7,22 +7,22 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-12                                                         |
+//#ver 1.6.4	                                                               |
+//#revision 2013-03-29                                                         |
 //==============================================================================
 
 
 function sm_delete_settings($settings_name, $mode_not_used='default')
 	{
 		global $nameDB, $lnkDB, $tableprefix;
-		$sql="DELETE FROM ".$tableprefix."settings WHERE name_settings = '".addslashesJ($settings_name)."' AND mode='".addslashesJ($mode_not_used)."'";
+		$sql="DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."'";
 		$result=execsql($sql);
 	}
 
 function sm_get_settings($settings_name, $mode_not_used='default')
 	{
 		global $nameDB, $lnkDB, $tableprefix;
-		$sql="SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".addslashesJ($settings_name)."' AND mode='".addslashesJ($mode_not_used)."' LIMIT 1";
+		$sql="SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."' LIMIT 1";
 		$result=execsql($sql);
 		$r=database_fetch_row($result);
 		return $r[0];
@@ -37,21 +37,21 @@ function sm_add_settings($settings_name, $settings_value, $mode_not_used='defaul
 function sm_new_settings($settings_name, $settings_value, $mode_not_used='default')
 	{
 		global $nameDB, $lnkDB, $tableprefix;
-		$sql="INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".addslashesJ($settings_name)."', '".addslashesJ($settings_value)."', '".addslashesJ($mode_not_used)."')";
+		$sql="INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode_not_used)."')";
 		$result=execsql($sql);
 	}
 
 function sm_update_settings($settings_name, $new_value, $mode_not_used='default')
 	{
 		global $nameDB, $lnkDB, $tableprefix;
-		$sql="UPDATE ".$tableprefix."settings SET value_settings = '".addslashesJ($new_value)."' WHERE name_settings = '".addslashesJ($settings_name)."' AND mode='".addslashesJ($mode_not_used)."'";
+		$sql="UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."'";
 		$result=execsql($sql);
 	}
 
 function sm_register_module($module_name, $module_title, $search_fields='', $search_doing='', $search_var='', $search_table='', $search_title='', $search_idfield='', $search_text='')
 	{
 		global $nameDB, $lnkDB, $tableprefix, $_settings;
-		$sql="INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('$module_name', '$module_title', '$search_fields', '$search_doing', '$search_var', '$search_table', '$search_title', '$search_idfield', '$search_text');";
+		$sql="INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('".dbescape($module_name)."', '".dbescape($module_title)."', '".dbescape($search_fields)."', '".dbescape($search_doing)."', '".dbescape($search_var)."', '".dbescape($search_table)."', '".dbescape($search_title)."', '".dbescape($search_idfield)."', '".dbescape($search_text)."');";
 		$result=execsql($sql);
 		$_settings['installed_packages']=addto_nllist($_settings['installed_packages'], $module_name);
 		sm_update_settings('installed_packages', $_settings['installed_packages']);
@@ -356,7 +356,7 @@ function sm_event($eventname, $paramsarray)
 function sm_get_attachments($fromModule, $fromId)
 	{
 		global $tableprefix, $userinfo, $_settings;
-		$sql="SELECT * FROM ".$tableprefix."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND attachment_from='".addslashesJ($fromModule)."' AND attachment_id=".intval($fromId);
+		$sql="SELECT * FROM ".$tableprefix."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND attachment_from='".dbescape($fromModule)."' AND attachment_id=".intval($fromId);
 		$result=execsql($sql);
 		$i=0;
 		$r=Array();
@@ -404,9 +404,9 @@ function sm_upload_attachment($fromModule, $fromId, &$filesPointer, $userlevel=0
 		$fs=$filesPointer['tmp_name'];
 		if (!empty($fs))
 			{
-				$file_download="'".addslashesJ(sm_getnicename($filesPointer['name']))."'";
+				$file_download="'".dbescape(sm_getnicename($filesPointer['name']))."'";
 				$userlevel_download=$userlevel;
-				$attachment_from="'".addslashesJ($fromModule)."'";
+				$attachment_from="'".dbescape($fromModule)."'";
 				$attachment_id=intval($fromId);
 				$attachment_type="'".$filesPointer['type']."'";
 				$sql="INSERT INTO ".$tableprefix."downloads (file_download, userlevel_download, attachment_from, attachment_id, attachment_type) VALUES ($file_download, $userlevel_download, $attachment_from, $attachment_id, $attachment_type)";
@@ -602,7 +602,7 @@ function sm_set_userfield($userid, $fieldname, $value)
 	{
 		global $tableusersprefix;
 		$q=new TQuery($tableusersprefix."users");
-		$q->Add($fieldname, addslashesJ($value));
+		$q->Add($fieldname, dbescape($value));
 		$q->Update('id_user', intval($userid));
 	}
 
@@ -617,7 +617,7 @@ function sm_login($userid, $usrinfo=Array())
 					{
 						$usrinfo['random_code']=md5(time().rand());
 						$q=new TQuery($tableusersprefix.'users');
-						$q->Add('random_code', addslashes($usrinfo['random_code']));
+						$q->Add('random_code', dbescape($usrinfo['random_code']));
 						$q->Update('id_user', intval($usrinfo['id_user']));
 						unset($q);
 					}
