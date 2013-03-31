@@ -100,7 +100,7 @@ if (!defined("SIMAN_DEFINED"))
 												siman_upload_image($id_news, 'news');
 											}
 									}
-								if (!empty($filename) && $_settings['humanURL']==1)
+								if (!empty($filename))
 									{
 										$nid=$id_news;
 										$title_news2=(empty($title_news))?$_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year']:$title_news;
@@ -217,18 +217,15 @@ if (!defined("SIMAN_DEFINED"))
 						$m['title']=$lang['delete_news'];
 						$m["module"]='news';
 						$id_news=intval($_getvars["nid"]);
-						if ($_settings['humanURL']==1)
+						$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+						$result=database_db_query($nameDB, $sql, $lnkDB);
+						while ($row=database_fetch_object($result))
 							{
-								$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
-								$result=database_db_query($nameDB, $sql, $lnkDB);
-								while ($row=database_fetch_object($result))
-									{
-										$fname=$row->filename_news;
-									}
-								if ($fname!=0)
-									{
-										delete_filesystem($fname);
-									}
+								$fname=$row->filename_news;
+							}
+						if ($fname!=0)
+							{
+								delete_filesystem($fname);
 							}
 						$sql="DELETE FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
 						$result=database_db_query($nameDB, $sql, $lnkDB);
@@ -299,7 +296,7 @@ if (!defined("SIMAN_DEFINED"))
 								$preview_news=addslashesJ($_postvars['p_preview_news']);
 								$text_news=addslashesJ($_postvars["p_text_news"]);
 								$type_news=$_postvars["p_type_news"];
-								$id_news=addslashesJ($_getvars["nid"]);
+								$id_news=intval($_getvars["nid"]);
 								$filename=addslashesJ($_postvars["p_filename"]);
 								$keywords_news=addslashesJ($_postvars["keywords_news"]);
 								$description_news=addslashesJ($_postvars["description_news"]);
@@ -330,32 +327,29 @@ if (!defined("SIMAN_DEFINED"))
 												siman_upload_image($id_news, 'news');
 											}
 									}
-								if ($_settings['humanURL']==1)
+								$title_news2=(empty($title_news))?$_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year']:$title_news;
+								$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+								$result=database_db_query($nameDB, $sql, $lnkDB);
+								while ($row=database_fetch_object($result))
 									{
-										$title_news2=(empty($title_news))?$_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year']:$title_news;
-										$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+										$fname=$row->filename_news;
+									}
+								if ($fname==0 && !empty($filename))
+									{
+										$urlid=register_filesystem('index.php?m=news&d=view&nid='.$id_news, $filename, $title_news2);
+										$sql="UPDATE ".$tableprefix."news SET filename_news='$urlid' WHERE id_news=".$id_news;
 										$result=database_db_query($nameDB, $sql, $lnkDB);
-										while ($row=database_fetch_object($result))
+									}
+								else
+									{
+										if (empty($filename))
 											{
-												$fname=$row->filename_news;
-											}
-										if ($fname==0 && !empty($filename))
-											{
-												$urlid=register_filesystem('index.php?m=news&d=view&nid='.$id_news, $filename, $title_news2);
-												$sql="UPDATE ".$tableprefix."news SET filename_news='$urlid' WHERE id_news=".$id_news;
+												$sql="UPDATE ".$tableprefix."news SET filename_news='0' WHERE id_news=".$id_news;
 												$result=database_db_query($nameDB, $sql, $lnkDB);
+												delete_filesystem($fname);
 											}
 										else
-											{
-												if (empty($filename))
-													{
-														$sql="UPDATE ".$tableprefix."news SET filename_news='0' WHERE id_news=".$id_news;
-														$result=database_db_query($nameDB, $sql, $lnkDB);
-														delete_filesystem($fname);
-													}
-												else
-													update_filesystem($fname, 'index.php?m=news&d=view&nid='.$id_news, $filename, $title_news2);
-											}
+											update_filesystem($fname, 'index.php?m=news&d=view&nid='.$id_news, $filename, $title_news2);
 									}
 								for ($i=0; $i<$_settings['news_attachments_count']; $i++)
 									{

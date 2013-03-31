@@ -389,16 +389,8 @@
 						$r[$i]['filesize'] = round($r[$i]['filesize'] / 1024, 2).' KB';
 					else
 						$r[$i]['filesize'] = $r[$i]['filesize'].' B';
-					if ($_settings['humanURL'] == 1)
-						{
-							$r[$i]['downloadurl'] = 'downloads/attachments/'.$r[$i]['id'].'-'.$r[$i]['filename'];
-							$r[$i]['viewurl'] = 'downloads/viewattachment/'.$r[$i]['id'].'-'.$r[$i]['filename'];
-						}
-					else
-						{
-							$r[$i]['downloadurl'] = 'index.php?m=download&d=attachment&id='.$r[$i]['id'];
-							$r[$i]['viewurl'] = 'index.php?m=download&d=showattachedfile&id='.$r[$i]['id'];
-						}
+					$r[$i]['downloadurl'] = 'downloads/attachments/'.$r[$i]['id'].'-'.$r[$i]['filename'];
+					$r[$i]['viewurl'] = 'downloads/viewattachment/'.$r[$i]['id'].'-'.$r[$i]['filename'];
 					$i++;
 				}
 			return $r;
@@ -782,6 +774,12 @@
 		{
 			global $special, $_settings;
 			return $special['page']['parsed_url']['scheme'].'://'.$_settings['resource_url']; 
+		}
+	
+	function sm_use($libname)
+		{
+			if (file_exists('includes/'.$libname.'.php'))
+				include_once('includes/'.$libname.'.php');
 		}
 
 ?>

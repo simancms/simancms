@@ -164,9 +164,6 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('cen
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 //version 1.5 beta 1
-$sql="
-INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES  ('humanURL_off', '');
-";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="
 INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('main_block_position', '0');

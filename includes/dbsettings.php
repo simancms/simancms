@@ -13,7 +13,7 @@ $serverDB=0;
 $hostNameDB='localhost';
 
 //Database name
-$nameDB='siman_163';
+$nameDB='siman_164';
 
 //Database user name
 $userNameDB='root';
@@ -33,14 +33,10 @@ $tableprefix='sm_';
 $tableusersprefix='';
 
 //Session prefix. You need to change it for your site to prevent hacks
-$session_prefix='needchange163_';
+$session_prefix='needchange164_';
 
 //Use protect code (captcha). 1 - on, 0 - off
 $_settings['use_protect_code']=1;
-
-
-//Turn on (1) or off (0) using human-readable URL
-$useHumanReadablLinks=1;
 
 //Don't change code below
 if (empty($tableusersprefix)) $tableusersprefix=$tableprefix;

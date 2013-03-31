@@ -1,6 +1,4 @@
 {include file="page_header.tpl"}
-<div style="padding:0; font-size:10px;" align="right"><a title="{$lang.set_as_homepage}" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://{$_settings.resource_url}');" href="http://{$_settings.resource_url}">{$lang.set_as_homepage}</A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title="{$lang.add_to_favorites}" href="javascript:window.external.AddFavorite('http://{$_settings.resource_url}', '{$_settings.resource_title_bckslsh}')">{$lang.add_to_favorites}</A></div>
-
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="area">
 <tr>
     <td colspan="3" class="logobar">

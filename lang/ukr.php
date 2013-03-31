@@ -379,7 +379,6 @@
 	$lang['settings_menuitems_use_image']='Використовувати малюнки для пунктів меню';
 	$lang['settings_blocks_use_image']='Використовувати малюнки для блоків';
 	$lang['settings_user_activating_by_admin']='Використовувати активування користувачів адміністратором';
-	$lang['settings_humanURL_off']='Вимкнути генерування людинозрозумілих посилань';
 	$lang['settings_return_after_login']='Після входу повертатися на сторінку, з якої він був виконаний';
 	$lang['settings_allow_private_messages']='Дозволити пересилання особистих повідомлень';
 	$lang['settings_allow_alike_content']='Дозволити показ схожих текстів при детальному перегляді';

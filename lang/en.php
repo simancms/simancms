@@ -362,7 +362,6 @@ $lang['settings_menus_use_image'] = 'Use image for menu titles';
 $lang['settings_menuitems_use_image'] = 'Use image for menu items';
 $lang['settings_blocks_use_image'] = 'Use image for blocks';
 $lang['settings_user_activating_by_admin'] = 'Use activation of a users by administrator';
-$lang['settings_humanURL_off'] = 'Set "Human friendly URL" off';
 $lang['settings_return_after_login'] = 'After logging in redirect visitor to the page from which it was made';
 $lang['settings_allow_private_messages'] = 'Allow users to send private messages';
 $lang['settings_allow_alike_content'] = 'Allow to show a similar text from the detailed view';

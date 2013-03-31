@@ -54,7 +54,7 @@ if ($userinfo['level']>2)
 								$m['preview_ctg']=siman_prepare_to_exteditor($row->preview_category);
 						else
 								$m['preview_ctg']=$row->preview_category;
-						if (!empty($row->filename_category) && $_settings['humanURL']==1)
+						if (!empty($row->filename_category))
 							{
 								$m['filesystem']=get_filesystem($row->filename_category);
 								$m["filename_category"]=$m['filesystem']['filename'];
@@ -81,7 +81,7 @@ if ($userinfo['level']>2)
 				$sql="INSERT INTO ".$tableprefix."categories (title_category, id_maincategory, can_view, preview_category, groups_view, groups_modify, no_alike_content, sorting_category, no_use_path) VALUES ('$title_category', '$id_maincategory', $can_view, '$preview_category', '$groups_view', '$groups_modify', '$no_alike_content', '$sorting_category', '$no_use_path')";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
 				$ctgid=database_insert_id('categories', $nameDB, $lnkDB);
-				if (!empty($filename) && $_settings['humanURL']==1)
+				if (!empty($filename))
 					{
 						$urlid=register_filesystem('index.php?m=content&d=viewctg&ctgid='.$ctgid, $filename, $title_category);
 						$sql="UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$ctgid;
@@ -121,31 +121,28 @@ if ($userinfo['level']>2)
 				$no_use_path=intval($_postvars['p_no_use_path']);
 				$sql="UPDATE ".$tableprefix."categories SET title_category = '$title_category', can_view = $can_view, preview_category='$preview_category', id_maincategory='$id_maincategory', groups_view='$groups_view', groups_modify='$groups_modify', no_alike_content='$no_alike_content', sorting_category = '$sorting_category', no_use_path = '$no_use_path' WHERE id_category='$id_ctg'";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
-				if ($_settings['humanURL']==1)
+				$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
+				$result=database_db_query($nameDB, $sql, $lnkDB);
+				while ($row=database_fetch_object($result))
 					{
-						$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
+						$fname=$row->filename_category;
+					}
+				if ($fname==0 && !empty($filename))
+					{
+						$urlid=register_filesystem('index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
+						$sql="UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$id_ctg;
 						$result=database_db_query($nameDB, $sql, $lnkDB);
-						while ($row=database_fetch_object($result))
+					}
+				else
+					{
+						if (empty($filename) && $fname!=0)
 							{
-								$fname=$row->filename_category;
-							}
-						if ($fname==0 && !empty($filename))
-							{
-								$urlid=register_filesystem('index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
-								$sql="UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$id_ctg;
+								$sql="UPDATE ".$tableprefix."categories SET filename_category='0' WHERE id_category=".$_getvars["cid"];
 								$result=database_db_query($nameDB, $sql, $lnkDB);
+								delete_filesystem($fname);
 							}
 						else
-							{
-								if (empty($filename) && $fname!=0)
-									{
-										$sql="UPDATE ".$tableprefix."categories SET filename_category='0' WHERE id_category=".$_getvars["cid"];
-										$result=database_db_query($nameDB, $sql, $lnkDB);
-										delete_filesystem($fname);
-									}
-								else
-									update_filesystem($fname, 'index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
-							}
+							update_filesystem($fname, 'index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
 					}
 				$refresh_url='index.php?m=content&d=listctg';
 				sm_event('posteditctgcontent', array($id_ctg));
@@ -163,19 +160,16 @@ if ($userinfo['level']>2)
 			{
 				$m['title']=$lang['delete_category'];
 				$m["module"]='content';
-				$id_ctg=$_getvars['ctgid'];
-				if ($_settings['humanURL']==1)
+				$id_ctg=intval($_getvars['ctgid']);
+				$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='".$id_ctg."'";
+				$result=database_db_query($nameDB, $sql, $lnkDB);
+				while ($row=database_fetch_object($result))
 					{
-						$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='".$id_ctg."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
-						while ($row=database_fetch_object($result))
-							{
-								$fname=$row->filename_category;
-							}
-						if ($fname!=0)
-							{
-								delete_filesystem($fname);
-							}
+						$fname=$row->filename_category;
+					}
+				if ($fname!=0)
+					{
+						delete_filesystem($fname);
 					}
 				$sql="DELETE FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
@@ -257,31 +251,28 @@ if ($userinfo['level']>2)
 					$tmp_preview_sql="preview_content='$preview_content',";
 				$sql="UPDATE ".$tableprefix."content SET id_category_c='$id_category_c', title_content='$title_content', $tmp_preview_sql text_content='$text_content', type_content='$type_content', keywords_content = '$keywords_content' WHERE id_content='".$_getvars["cid"]."'";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
-				if ($_settings['humanURL']==1)
+				$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
+				$result=database_db_query($nameDB, $sql, $lnkDB);
+				while ($row=database_fetch_object($result))
 					{
-						$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".$_getvars["cid"]."'";
+						$fname=$row->filename_content;
+					}
+				if ($fname==0 && !empty($filename))
+					{
+						$urlid=register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
+						$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".$_getvars["cid"];
 						$result=database_db_query($nameDB, $sql, $lnkDB);
-						while ($row=database_fetch_object($result))
+					}
+				else
+					{
+						if (empty($filename))
 							{
-								$fname=$row->filename_content;
-							}
-						if ($fname==0 && !empty($filename))
-							{
-								$urlid=register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
-								$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".$_getvars["cid"];
+								$sql="UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".$_getvars["cid"];
 								$result=database_db_query($nameDB, $sql, $lnkDB);
+								delete_filesystem($fname);
 							}
 						else
-							{
-								if (empty($filename))
-									{
-										$sql="UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".$_getvars["cid"];
-										$result=database_db_query($nameDB, $sql, $lnkDB);
-										delete_filesystem($fname);
-									}
-								else
-									update_filesystem($fname, 'index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
-							}
+							update_filesystem($fname, 'index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
 					}
 				$result=database_db_query($nameDB, $sql, $lnkDB);
 				$refresh_url='index.php?m=content&d=list&ctg='.$id_category_c;
@@ -375,7 +366,7 @@ if ($userinfo['level']>2)
 					{
 						$m['table']['rows'][$i]['title']['data']=$row->title_content;
 						$m['table']['rows'][$i]['title']['hint']=$row->title_content;
-						if ($_settings['humanURL']==1 && $row->filename_content!=0)
+						if ($row->filename_content!=0)
 							{
 								$m['table']['rows'][$i]['title']['url']=$row->filename_fs;
 							}

@@ -6,8 +6,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-14                                                         |
+//#ver 1.6.4
+//#revision 2013-03-31
 //==============================================================================
 
 session_start();
@@ -119,7 +119,7 @@ else
 					$i=5;
 					while($entry=$dir->read()) 
 						{
-							if (strcmp($entry, '.')!=0 && strcmp($entry, '..')!=0 && strcmp($entry, 'index.html')!=0)
+							if (strcmp($entry, '.')!=0 && strcmp($entry, '..')!=0 && strcmp($entry, 'index.html')!=0 && strcmp(strtolower($entry), '.ds_store')!=0)
 								{
 									$inst['created'][$i]='../files/themes/'.$entry;
 									$i++;

@@ -113,7 +113,6 @@
 		</td>
 	</tr>
 	{/if}
-	{if $_settings.humanURL eq 1}
 	<tr>
 		<td>
 			{$lang.common.url}:
@@ -122,7 +121,6 @@
 			<input type="text" name="p_filename" value="{$modules[$index].filename_news}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=news_add_edit_url&lang={$_settings.default_language}" target="_blank">[?]</a>
 		</td>
 	</tr>
-	{/if}
 	<tr>
 		<td>
 			{$lang.common.seo_keywords}: 
@@ -194,9 +192,7 @@
 {include file="block_begin.tpl"}
 <form action="index.php?m=news&d=postaddctg" method="post" name="post">															
 {$lang.caption_category}: <input type="text" name="p_title_category" size="40" value="">
-{if $_settings.humanURL eq 1}
 <br />{$lang.common.url}: <input type="text" name="p_filename" value="" size="50" maxlength="255">
-{/if}
 <div align="right"><a href="javascript:;" onClick="set_visibility('extended_params')">{$lang.common.extended_parameters}</a></div>
 <div style="display:none; width:100%;" id="extended_params">
 {$lang.common.groups_can_modify}<br />
@@ -216,9 +212,7 @@
 {include file="block_begin.tpl"}
 <form action="index.php?m=news&d=posteditctg&ctgid={$modules[$index].id_ctg}" method="post" name="post">															
 {$lang.caption_category}: <input type="text" name="p_title_category" size="40" value="{$modules[$index].title_category}">
-{if $_settings.humanURL eq 1}
 <br />{$lang.common.url}: <input type="text" name="p_filename" value="{$modules[$index].filename_category}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=content_edit_category_url&lang={$_settings.default_language}" target="_blank">[?]</a>
-{/if}
 <div align="right"><a href="javascript:;" onClick="set_visibility('extended_params')">{$lang.common.extended_parameters}</a></div>
 <div style="display:none; width:100%;" id="extended_params">
 {$lang.common.groups_can_modify}<br />

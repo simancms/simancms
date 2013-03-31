@@ -192,15 +192,6 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_cookprefix&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.humanURL_off eq 1}
-		{if $modules[$index].edit_settings.humanURL eq "0" and $modules[$index].edit_settings.humanURL_off eq "1" or $modules[$index].edit_settings.humanURL eq "1"}
-		<tr>
-			<td colspan="2"><input type="checkbox" name="p_humanurl_off" value="1" {if $modules[$index].edit_settings.humanURL_off eq "1"}checked{/if}>{$lang.settings_humanURL_off}</td>
-			<td>{include file='admin_settings_extctrls.tpl' name_settings='humanURL_off'}</td>
-			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_humanURL_off&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
-		</tr>
-		{/if}
-	{/if}
 	{if $modules[$index].show_settings.max_upload_filesize eq 1}
 		<tr>
 			<td>{$lang.settings_max_upload_filesize}:</td>

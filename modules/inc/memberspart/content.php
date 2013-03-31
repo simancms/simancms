@@ -68,7 +68,7 @@ if ($userinfo['level']>0)
 						$sql="INSERT INTO ".$tableprefix."content (id_category_c, title_content, preview_content, text_content, type_content, keywords_content, refuse_direct_show, description_content) VALUES ('$id_category_c', '$title_content', '$preview_content', '$text_content', '$type_content', '$keywords_content', '$refuse_direct_show', '$description_content')";
 						$result=database_db_query($nameDB, $sql, $lnkDB);
 						$cid=database_insert_id('content', $nameDB, $lnkDB);
-						if (!empty($filename) && $_settings['humanURL']==1)
+						if (!empty($filename))
 							{
 								$urlid=register_filesystem('index.php?m=content&d=view&cid='.$cid, $filename, $title_content);
 								$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".$cid;
@@ -176,31 +176,28 @@ if ($userinfo['level']>0)
 										siman_upload_image($id_content, 'content');
 									}
 							}
-						if ($_settings['humanURL']==1)
+						$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
+						$result=database_db_query($nameDB, $sql, $lnkDB);
+						while ($row=database_fetch_object($result))
 							{
-								$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".$_getvars["cid"]."'";
+								$fname=$row->filename_content;
+							}
+						if ($fname==0 && !empty($filename))
+							{
+								$urlid=register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
+								$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".intval($_getvars["cid"]);
 								$result=database_db_query($nameDB, $sql, $lnkDB);
-								while ($row=database_fetch_object($result))
+							}
+						else
+							{
+								if (empty($filename))
 									{
-										$fname=$row->filename_content;
-									}
-								if ($fname==0 && !empty($filename))
-									{
-										$urlid=register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
-										$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".intval($_getvars["cid"]);
+										$sql="UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".intval($_getvars["cid"]);
 										$result=database_db_query($nameDB, $sql, $lnkDB);
+										delete_filesystem($fname);
 									}
 								else
-									{
-										if (empty($filename))
-											{
-												$sql="UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".intval($_getvars["cid"]);
-												$result=database_db_query($nameDB, $sql, $lnkDB);
-												delete_filesystem($fname);
-											}
-										else
-											update_filesystem($fname, 'index.php?m=content&d=view&cid='.intval($_getvars["cid"]), $filename, $title_content);
-									}
+									update_filesystem($fname, 'index.php?m=content&d=view&cid='.intval($_getvars["cid"]), $filename, $title_content);
 							}
 						$result=database_db_query($nameDB, $sql, $lnkDB);
 						for ($i=0; $i<$_settings['content_attachments_count']; $i++)
@@ -259,7 +256,7 @@ if ($userinfo['level']>0)
 										$m["preview_content"]=siman_prepare_to_exteditor($m["preview_content"]);
 									}
 								$m["id_content"]=$row->id_content;
-								if (!empty($row->filename_content) && $_settings['humanURL']==1)
+								if (!empty($row->filename_content))
 									{
 										$m['filesystem']=get_filesystem($row->filename_content);
 										$m["filename_content"]=$m['filesystem']['filename'];
@@ -339,18 +336,15 @@ if ($userinfo['level']>0)
 					{
 						$m['title']=$lang['delete_content'];
 						$m["module"]='content';
-						if ($_settings['humanURL']==1)
+						$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
+						$result=database_db_query($nameDB, $sql, $lnkDB);
+						while ($row=database_fetch_object($result))
 							{
-								$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".$_getvars["cid"]."'";
-								$result=database_db_query($nameDB, $sql, $lnkDB);
-								while ($row=database_fetch_object($result))
-									{
-										$fname=$row->filename_content;
-									}
-								if ($fname!=0)
-									{
-										delete_filesystem($fname);
-									}
+								$fname=$row->filename_content;
+							}
+						if ($fname!=0)
+							{
+								delete_filesystem($fname);
 							}
 						$sql="DELETE FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."' AND id_content<>1";
 						$result=database_db_query($nameDB, $sql, $lnkDB);

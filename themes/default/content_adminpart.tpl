@@ -56,7 +56,6 @@
 		</td>
 	<tr>
 	{/if}
-	{if $_settings.humanURL eq 1}
 	<tr>
 		<td>
 			{$lang.common.url}:
@@ -65,7 +64,6 @@
 			<input type="text" name="p_filename" value="{$modules[$index].filename_content}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=content_add_text_url&lang={$_settings.default_language}" target="_blank">[?]</a>
 		</td>
 	</tr>
-	{/if}
 	<tr>
 		<td colspan="2">
 			<input type="checkbox" name="p_refuse_direct_show" value="1"{if $modules[$index].refuse_direct_show eq "1"} checked{/if}> {$lang.module_content.refuse_direct_show}
@@ -170,9 +168,7 @@
 <br />{$lang.module_content.preview_category}:<br /> <textarea cols="50" rows="10" name="p_preview_ctg" wrap="off"></textarea>
 <br />
 {/if}
-{if $_settings.humanURL eq 1}
 <br />{$lang.common.url}: <input type="text" name="p_filename" value="" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=content_add_category_text_url&lang={$_settings.default_language}" target="_blank">[?]</a>
-{/if}
 <br />
 {$lang.common.sorting}: 
 	<select name="p_sorting_category" size="1">
@@ -236,9 +232,7 @@
 <br />{$lang.module_content.preview_category}:<br /> <textarea cols="50" rows="10" name="p_preview_ctg" wrap="off">{$modules[$index].preview_ctg}</textarea>
 <br />
 {/if}
-{if $_settings.humanURL eq 1}
 <br />{$lang.common.url}: <input type="text" name="p_filename" value="{$modules[$index].filename_category}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=content_edit_category_url&lang={$_settings.default_language}" target="_blank">[?]</a>
-{/if}
 <br />
 {$lang.common.sorting}:
 	<select name="p_sorting_category" size="1">

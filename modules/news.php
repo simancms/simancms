@@ -174,7 +174,7 @@ if ($userinfo['level']>=(isset($_settings['news_view_level'])?$_settings['news_v
 						$m["newsid"][$i][2]=$row->text_news;
 						$m["newsid"][$i][3]=$row->text_news;
 						$m["newsid"][$i][5]=$row->title_news;
-						if ($_settings['humanURL']==1 && $row->filename_news!=0)
+						if ($row->filename_news!=0)
 							{
 								$m["newsid"][$i][7]=$row->filename_fs;
 							}
@@ -341,7 +341,7 @@ if ($userinfo['level']>=(isset($_settings['news_view_level'])?$_settings['news_v
 												$m['alike_news'][$j]['id']=$tmprow->id_news;
 												$m['alike_news'][$j]['title']=$tmprow->title_news;
 												$m['alike_news'][$j]["date"]=strftime($lang["datemask"], $tmprow->date_news);
-												if ($_settings['humanURL']==1 && !empty($tmprow->filename_news))
+												if (!empty($tmprow->filename_news))
 													$m['alike_news'][$j]["fullink"]=get_filename($tmprow->filename_news);
 												else
 													$m['alike_news'][$j]["fullink"]='index.php?m=news&d=view&nid='.$tmprow->id_news;

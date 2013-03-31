@@ -41,7 +41,7 @@ if ($userinfo['level']==3)
 						$m["title_category"]=$row->title_category;
 						$m['modify_groups_category']=get_array_groups($row->groups_modify);
 						$m['category_no_alike_news']=$row->no_alike_news;
-						if (!empty($row->filename_category) && $_settings['humanURL']==1)
+						if (!empty($row->filename_category))
 							{
 								$m['filesystem']=get_filesystem($row->filename_category);
 								$m["filename_category"]=$m['filesystem']['filename'];
@@ -60,7 +60,7 @@ if ($userinfo['level']==3)
 				$sql="INSERT INTO ".$tableprefix."categories_news (title_category, groups_modify, no_alike_news) VALUES ('$title_category', '$groups_modify', '$no_alike_news')";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
 				$ctgid=database_insert_id('categories_news', $nameDB, $lnkDB);
-				if (!empty($filename) && $_settings['humanURL']==1)
+				if (!empty($filename))
 					{
 						$urlid=register_filesystem('index.php?m=news&d=listnews&ctg='.$ctgid, $filename, $title_category);
 						$sql="UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$ctgid;
@@ -85,35 +85,32 @@ if ($userinfo['level']==3)
 				$title_category=addslashesJ($_postvars["p_title_category"]);
 				$filename=addslashesJ($_postvars["p_filename"]);
 				$groups_modify=create_groups_str($_postvars['p_groups_modify']);
-				$id_ctg=$_getvars['ctgid'];
+				$id_ctg=intval($_getvars['ctgid']);
 				$no_alike_news=intval($_postvars['p_no_alike_news']);
 				$sql="UPDATE ".$tableprefix."categories_news SET title_category = '$title_category', groups_modify='$groups_modify', no_alike_news='$no_alike_news' WHERE id_category='$id_ctg'";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
-				if ($_settings['humanURL']==1)
+				$sql="SELECT * FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg'";
+				$result=database_db_query($nameDB, $sql, $lnkDB);
+				while ($row=database_fetch_object($result))
 					{
-						$sql="SELECT * FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg'";
+						$fname=$row->filename_category;
+					}
+				if ($fname==0 && !empty($filename))
+					{
+						$urlid=register_filesystem('index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
+						$sql="UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$id_ctg;
 						$result=database_db_query($nameDB, $sql, $lnkDB);
-						while ($row=database_fetch_object($result))
+					}
+				else
+					{
+						if (empty($filename))
 							{
-								$fname=$row->filename_category;
-							}
-						if ($fname==0 && !empty($filename))
-							{
-								$urlid=register_filesystem('index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
-								$sql="UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$id_ctg;
+								$sql="UPDATE ".$tableprefix."categories_news SET filename_category='0' WHERE id_category=".$id_ctg;
 								$result=database_db_query($nameDB, $sql, $lnkDB);
+								delete_filesystem($fname);
 							}
 						else
-							{
-								if (empty($filename))
-									{
-										$sql="UPDATE ".$tableprefix."categories_news SET filename_category='0' WHERE id_category=".$id_ctg;
-										$result=database_db_query($nameDB, $sql, $lnkDB);
-										delete_filesystem($fname);
-									}
-								else
-									update_filesystem($fname, 'index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
-							}
+							update_filesystem($fname, 'index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
 					}
 				$refresh_url='index.php?m=news&d=listctg';
 				sm_event('posteditctgnews', array($id_ctg));
@@ -131,19 +128,16 @@ if ($userinfo['level']==3)
 			{
 				$m['title']=$lang['delete_category'];
 				$m["module"]='news';
-				$id_ctg=$_getvars['ctgid'];
-				if ($_settings['humanURL']==1)
+				$id_ctg=intval($_getvars['ctgid']);
+				$sql="SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$id_ctg."'";
+				$result=database_db_query($nameDB, $sql, $lnkDB);
+				while ($row=database_fetch_object($result))
 					{
-						$sql="SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$id_ctg."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
-						while ($row=database_fetch_object($result))
-							{
-								$fname=$row->filename_category;
-							}
-						if ($fname!=0)
-							{
-								delete_filesystem($fname);
-							}
+						$fname=$row->filename_category;
+					}
+				if ($fname!=0)
+					{
+						delete_filesystem($fname);
 					}
 				$sql="DELETE FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg'";
 				$result=database_db_query($nameDB, $sql, $lnkDB);
@@ -194,7 +188,7 @@ if ($userinfo['level']==3)
 					{
 						$m['table']['rows'][$i]['title']['data']=$row->title_category;
 						$m['table']['rows'][$i]['title']['hint']=$row->title_category;
-						if ($_settings['humanURL']==1 && $row->filename_category!=0)
+						if ($row->filename_category!=0)
 							$m['table']['rows'][$i]['title']['url']=get_filename($row->filename_category);
 						else
 							$m['table']['rows'][$i]['title']['url']='index.php?m=news&d=listnews&ctg='.$row->id_category;
@@ -215,7 +209,7 @@ if ($userinfo['level']==3)
 					{
 						$m["ctg"][$i]['id']=$row->id_category;
 						$m["ctg"][$i]['title']=$row->title_category;
-						if ($_settings['humanURL']==1 && $row->filename_category!=0)
+						if ($row->filename_category!=0)
 							$m["ctg"][$i]['filename']=get_filename($row->filename_category);
 						else
 							$m["ctg"][$i]['filename']='index.php?m=news&d=listnews&ctg='.$row->id_category;
@@ -292,7 +286,7 @@ if ($userinfo['level']==3)
 							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br(strip_tags($row->text_news)), 100, '...'));
 						else
 							$m['table']['rows'][$i]['title']['hint']=htmlspecialchars(cut_str_by_word(nl2br(strip_tags($row->preview_news)), 100, '...'));
-						if ($_settings['humanURL']==1 && $row->filename_news!=0)
+						if ($row->filename_news!=0)
 							{
 								$m['table']['rows'][$i]['title']['url']=$row->filename_fs;
 							}
@@ -331,7 +325,7 @@ if ($userinfo['level']==3)
 						$m["newsid"][$i][2]=$row->text_news;
 						$m["newsid"][$i][3]=$row->preview_news;
 						$m["newsid"][$i][4]=$row->title_news;
-						if ($_settings['humanURL']==1 && $row->filename_news!=0)
+						if ($row->filename_news!=0)
 							{
 								$m["newsid"][$i][5]=$row->filename_fs;
 							}

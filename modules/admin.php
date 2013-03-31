@@ -6,18 +6,36 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-14                                                         |
+//#ver 1.6.4
+//#revision 2013-03-31
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
 	{
-		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		print('Hacking attempt!');
 		exit();
 	}
 
-if (empty($m['mode']))
-	$m['mode']='view';
+if (!defined("ADMIN_FUNCTIONS_DEFINED"))
+	{
+		function sm_get_module_info($filename)
+			{
+				$fh=fopen($filename, 'r');
+				$info=fread($fh, 2048);
+				fclose($fh);
+				$start=strpos($info, 'Module Name:');
+				if ($start!==false && strpos($info, '*/', $start)!==false)
+					{
+						$info=substr($info, $start, strpos($info, '*/', $start)-$start);
+						return trim($info);
+					}
+				else
+					return false;
+			}
+		define("ADMIN_FUNCTIONS_DEFINED", 1);
+	}
+
+sm_default_action('view');
 
 if ($userinfo['level']==3)
 {
@@ -201,12 +219,6 @@ if ($userinfo['level']==3)
 			$i++;
 			$set[$i]['name']='email_signature';
 			$set[$i]['value']=addslashesJ($_postvars['p_esignature']);
-			if ($_settings['humanURL']==0 && $_settings['humanURL_off']==1 || $_settings['humanURL']==1)
-				{
-					$i++;
-					$set[$i]['name']='humanURL_off';
-					$set[$i]['value']=addslashesJ($_postvars['p_humanurl_off']);
-				}
 			for ($i=0; $i<count($set); $i++)
 				{
 					$sql="UPDATE ".$tableprefix."settings SET value_settings = '".$set[$i]['value']."' WHERE name_settings = '".$set[$i]['name']."' AND mode='".addslashesJ($m['mode_settings'])."'";
@@ -630,15 +642,20 @@ if ($userinfo['level']==3)
 			$i=0;
 			while($entry=$dir->read()) 
 			  {
-			    if (strpos($entry, '.php')>0)
+				  if (strpos($entry, '.php')>0)
 					{
+						if ($entry!='admin.php')
+							$info=sm_get_module_info('./modules/'.$entry);
 						if (
 								!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
 									&&
 								!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
+									&&
+								$info==false
 							)
 							continue;
 						$m['modules'][substr($entry, 0, -4)]['present']=1;
+						$m['modules'][substr($entry, 0, -4)]['info']=$info;
 						$i++;
 					}
 			  }
