@@ -97,12 +97,10 @@
 	<footer>
 	  {if $_settings.bottom_menu_id neq ""}{include file="bottommenu.tpl"}{/if}
 	  <p>{$_settings.copyright_text}</p>
-	  <p>Powered by <a href="http://www.simancms.org" target="_blank">SiMan CMS</a></p>
+	  <p>Powered by <a href="http://www.simancms.org/" target="_blank">SiMan CMS</a></p>
 	</footer>
 </div> <!-- /container -->
 
-<script src="themes/bootstrap/js/jquery.js"></script>
-<script src="themes/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript">
 {literal}
 $('.carousel').carousel({

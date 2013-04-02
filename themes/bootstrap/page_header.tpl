@@ -14,6 +14,8 @@ setTimeout(function() { document.location.href = "{/literal}{$refresh_url}{liter
 {/literal}
 </script>
 {/if}
+	<script src="themes/bootstrap/js/jquery.js"></script>
+	<script src="themes/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript" src="themes/{$special.theme}/script.js"></script>
 {section name=i loop=$special.customjs}
 	<script type="text/javascript" src="{$special.customjs[i]}"></script>
@@ -29,7 +31,7 @@ setTimeout(function() { document.location.href = "{/literal}{$refresh_url}{liter
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link href="themes/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="themes/{$special.theme}/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
 	{literal}
       body {
@@ -38,17 +40,11 @@ setTimeout(function() { document.location.href = "{/literal}{$refresh_url}{liter
       }
 	{/literal}
     </style>
-    <link href="themes/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="themes/{$special.theme}/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <link rel="shortcut icon" href="themes/bootstrap/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="themes/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="themes/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="themes/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="themes/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
 
 {$_settings.meta_header_text}
 {$special.document.headend}</head>
