@@ -272,7 +272,7 @@ if ($userinfo['level']>0)
 						add_path($lang['list_content'], "index.php?m=content&d=list&ctg=".$modules[$modules_index]['ctgidselected']."");				
 						if ($i>0)
 							$m["module"]='content';
-						$m['images']=load_file_list('./files/img/', 'jpg|gif|JPG|GIF|jpeg|JPEG|bmp|BMP');
+						$m['images']=load_file_list('./files/img/', 'jpg|gif|jpeg|png');
 						//$m["ctgid"]=siman_load_ctgs_content();
 						if (!empty($m["id_content"]))
 							sm_event('oneditcontent', array($m["id_content"]));

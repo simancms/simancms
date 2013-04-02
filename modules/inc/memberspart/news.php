@@ -433,7 +433,7 @@ if (!defined("SIMAN_DEFINED"))
 						if (!empty($m["id_news"]))
 							sm_event('oneditnews', array($m["id_news"]));
 					}
-				$m['images']=load_file_list('./files/img/', 'jpg|gif|JPG|GIF|jpeg|JPEG|bmp|BMP|png|PNG');
+				$m['images']=load_file_list('./files/img/', 'jpg|gif|jpeg|png');
 				add_path($lang['control_panel'], "index.php?m=admin");
 				add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 				add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
