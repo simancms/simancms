@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-14                                                         |
+//#ver 1.6.4
+//#revision 2013-04-08
 //==============================================================================
 
 if (!defined("admininterface_DEFINED"))
@@ -64,7 +64,7 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->AddOutputObject('bar', $buttons);
 					}
-				function AddPagebar($html)
+				function AddPagebar($html_not_used='')
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']='pagebar';
@@ -84,7 +84,7 @@ if (!defined("admininterface_DEFINED"))
 					}
 				function p($html, $id='', $class='', $style='')
 					{
-						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').'>'.$html.'<p>';
+						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').'>'.$html.'</p>';
 						$this->html($code);
 					}
 				function Output($replace_template=false)
