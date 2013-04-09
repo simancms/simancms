@@ -2,21 +2,18 @@
 
 //------------------------------------------------------------------------------
 //|                                                                            |
-//|         Система керування вмістом сайту SiMan CMS                          |
 //|            Content Management System SiMan CMS                             |
-//|                                                                            |
-//|               (c) Aged Programmer's Group                                  |
-//|                http://www.apserver.org.ua                                  |
 //|                                                                            |
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.9.17                                                                |
+//#ver 1.6.4
+//#revision 2013-04-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
 	{
-		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		print('Hacking attempt!');
 		exit();
 	}
 
@@ -25,7 +22,6 @@ function siman_add_modifier_menu(&$menu)
 		for ($i=0; $i<count($menu); $i++)
 			sm_add_content_modifier($menu[$i]['caption']);
 	}
-
 
 function siman_load_menu($menu_id, $maxlevel=-1)
 	{

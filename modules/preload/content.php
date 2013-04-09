@@ -2,21 +2,18 @@
 
 //------------------------------------------------------------------------------
 //|                                                                            |
-//|         Система керування вмістом сайту SiMan CMS                          |
 //|            Content Management System SiMan CMS                             |
-//|                                                                            |
-//|               (c) Aged Programmer's Group                                  |
-//|                http://www.apserver.org.ua                                  |
 //|                                                                            |
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//                                                          |
+//#ver 1.6.4
+//#revision 2013-04-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
 	{
-		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		print('Hacking attempt!');
 		exit();
 	}
 
@@ -24,7 +21,7 @@ function siman_block_items_content($blockinfo)
 	{
 		global $nameDB, $tableprefix, $lnkDB, $lang;
 		$sql="SELECT * FROM ".$tableprefix."categories";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$result=execsql($sql);
 		$i=0;
 		while ($row=database_fetch_object($result))
 			{

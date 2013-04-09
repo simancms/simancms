@@ -13,7 +13,7 @@
 
 if (!defined("SIMAN_DEFINED"))
 	{
-		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		print('Hacking attempt!');
 		exit();
 	}
 
