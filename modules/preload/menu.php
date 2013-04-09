@@ -34,26 +34,27 @@ function siman_load_menu($menu_id, $maxlevel=-1)
 		$addsql='';
 		if ($maxlevel>=0)
 			$addsql.=' AND submenu_from=0 ';
-		$sql="SELECT * FROM ".$tableprefix."menu_lines WHERE id_menu_ml='$menu_id' $addsql ORDER BY submenu_from, position";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$sql="SELECT * FROM ".$tableprefix."menu_lines WHERE id_menu_ml=".intval($menu_id)." $addsql ORDER BY submenu_from, position";
+		$result=execsql($sql);
 		$tmp_index=strpos($_settings['resource_url'], '/');
 		$main_suburl=substr($_settings['resource_url'], $tmp_index);
-		while ($row=database_fetch_object($result))
+		while ($row=database_fetch_assoc($result))
 			{
-				$menu[$i]['id']=$row->id_ml;
+				$menu[$i]['id']=$row['id_ml'];
 				$menu[$i]['mid']=$menu_id;
-				$menu[$i]['pos']=$row->position;
-				$menu[$i]['add_param']=$menu_id.'|'.$row->id_ml;
+				$menu[$i]['pos']=$row['position'];
+				$menu[$i]['add_param']=$menu_id.'|'.$row['id_ml'];
 				$menu[$i]['level']=1;
-				$menu[$i]['submenu_from']=$row->submenu_from;
+				$menu[$i]['submenu_from']=$row['submenu_from'];
 				$menu[$i]['sublines_count']=0;
-				$menu[$i]['url']=$row->url;
-				$menu[$i]['caption']=$row->caption_ml;
-				$menu[$i]['partial']=$row->partial_select;
-				$menu[$i]['alt']=$row->alt_ml;
-				$menu[$i]['attr']=$row->attr_ml;
-				$menu[$i]['newpage']=$row->newpage_ml;
-				$line_id=$row->id_ml;
+				$menu[$i]['url']=$row['url'];
+				$menu[$i]['caption']=$row['caption_ml'];
+				$menu[$i]['partial']=$row['partial_select'];
+				$menu[$i]['alt']=$row['alt_ml'];
+				$menu[$i]['attr']=$row['attr_ml'];
+				$menu[$i]['newpage']=$row['newpage_ml'];
+				$menu[$i]['databasefields']=$row;
+				$line_id=$row['id_ml'];
 				if ($_settings['menuitems_use_image']==1)
 					{
 						if (file_exists('./files/img/menuitem'.$line_id.'.jpg'))
