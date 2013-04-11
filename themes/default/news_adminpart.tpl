@@ -82,11 +82,11 @@
 			{include file="editors_`$_settings.ext_editor`.tpl" editor_doing="news"}
 			{else}
 			{if $_settings.ext_editor neq ""}<br>{if $modules[$index].mode eq "edit"}<br><a href="index.php?m=news&d=edit&nid={$modules[$index].id_news}&exteditor=on">{$lang.ext.editors.switch_to_ext_editor}</a>{else}<br><a href="index.php?m=news&d=add&exteditor=on">{$lang.ext.editors.switch_to_ext_editor}</a>{/if}{/if}
-			{if $_settings.news_use_preview eq "1"}
-			<br />{$lang.module_news.preview_news}:<br /> <textarea cols="50" rows="10" name="p_preview_news" wrap="off" style="width:98%;">{$modules[$index].preview_news}</textarea>
-			<br />
-			{/if}
-			<br />{$lang.text_news}:<br /> <textarea cols="50" rows="20" name="p_text_news" wrap="off" style="width:98%;">{$modules[$index].text_news}</textarea>
+				<br />{$lang.text_news}:<br /> <textarea cols="50" rows="20" name="p_text_news" wrap="off" style="width:98%;">{$modules[$index].text_news}</textarea>
+				{if $_settings.news_use_preview eq "1"}
+					<br />
+					<br />{$lang.module_news.preview_news}:<br /> <textarea cols="50" rows="10" name="p_preview_news" wrap="off" style="width:98%;">{$modules[$index].preview_news}</textarea>
+				{/if}
 			{/if}
 		</td>
 	</tr>
@@ -176,6 +176,7 @@
 <a href="index.php?m=news&d=add&">{$lang.add_news}</a>
 (<a href="index.php?m=news&d=add&exteditor=off">{$lang.common.html}</a>)<br>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_news_lisnews&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
+{include file="pagebar.tpl"}
 {include file="block_end.tpl"}
 {/if}
 

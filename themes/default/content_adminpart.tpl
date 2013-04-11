@@ -23,11 +23,11 @@
 			{include file="editors_`$_settings.ext_editor`.tpl" editor_doing="content"}
 			{else}
 			{if $_settings.ext_editor neq ""}<br /><a href="{if $modules[$index].mode eq "add"}index.php?m=content&d=add&exteditor=on{else}index.php?m=content&d=edit&cid={$modules[$index].id_content}&exteditor=on{/if}">{$lang.ext.editors.switch_to_ext_editor}</a>{/if}
-			{if $_settings.content_use_preview eq "1"}
-			<br />{$lang.module_content.preview_content}:<br /> <textarea cols="50" rows="10" name="p_preview_content" wrap="off" style="width:98%;">{$modules[$index].preview_content}</textarea>
-			<br />
-			{/if}
-			<br />{$lang.text_content}:<br /> <textarea cols="50" rows="20" name="p_text_content" wrap="off" style="width:98%;">{$modules[$index].text_content}</textarea>
+				<br />{$lang.text_content}:<br /> <textarea cols="50" rows="20" name="p_text_content" wrap="off" style="width:98%;">{$modules[$index].text_content}</textarea>
+				{if $_settings.content_use_preview eq "1"}
+					<br />
+					<br />{$lang.module_content.preview_content}:<br /> <textarea cols="50" rows="10" name="p_preview_content" wrap="off" style="width:98%;">{$modules[$index].preview_content}</textarea>
+				{/if}
 			{/if}
 		</td>
 	</tr>

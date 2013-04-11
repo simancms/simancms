@@ -47,19 +47,19 @@ function siman_editor_insert(img)
 <a href="javascript:;" onmousedown="siman_editor_insert('{$modules[$index].images[i]}')">{$modules[$index].images[i]}</a><br />
 {/section}
 </div>
+<br />{$lang.text_content}:<br />
+{literal}
+<textarea name="p_text_content" id="p_text_content" style="width: 98%; height:400px;">{/literal}{$modules[$index].text_content}{literal}</textarea>
+{/literal}
 {if $_settings.content_use_preview eq "1"}
 <br />{$lang.module_content.preview_content}:<br />
-<textarea name="p_preview_content" id="p_preview_content" style="width: 98%; height:400px;">{$modules[$index].preview_content}</textarea>
+<textarea name="p_preview_content" id="p_preview_content" style="width: 98%; height:200px;">{$modules[$index].preview_content}</textarea>
 {literal}
 <script type="text/javascript">
 tinyMCE.execCommand("mceAddControl", true, "p_preview_content");
 </script>
 {/literal}
 {/if}
-<br />{$lang.text_content}:<br />
-{literal}
-<textarea name="p_text_content" id="p_text_content" style="width: 98%; height:400px;">{/literal}{$modules[$index].text_content}{literal}</textarea>
-{/literal}
 <script type="text/javascript">
 tinyMCE.execCommand("mceAddControl", true, "p_text_content");
 </script>
@@ -84,19 +84,19 @@ function siman_editor_insert(img)
 <a href="javascript:;" onmousedown="siman_editor_insert('{$modules[$index].images[i]}')">{$modules[$index].images[i]}</a><br />
 {/section}
 </div>
+<br />{$lang.text_news}:<br />
+{literal}
+<textarea name="p_text_news" id="p_text_news" style="width: 98%; height:400px;">{/literal}{$modules[$index].text_news}{literal}</textarea>
+{/literal}
 {if $_settings.news_use_preview eq "1"}
 <br />{$lang.module_news.preview_news}:<br />
-<textarea name="p_preview_news" id="p_preview_news" style="width: 98%; height:400px;">{$modules[$index].preview_news}</textarea>
+<textarea name="p_preview_news" id="p_preview_news" style="width: 98%; height:200px;">{$modules[$index].preview_news}</textarea>
 {literal}
 <script type="text/javascript">
 tinyMCE.execCommand("mceAddControl", true, "p_preview_news");
 </script>
 {/literal}
 {/if}
-<br />{$lang.text_news}:<br />
-{literal}
-<textarea name="p_text_news" id="p_text_news" style="width: 98%; height:400px;">{/literal}{$modules[$index].text_news}{literal}</textarea>
-{/literal}
 <script type="text/javascript">
 tinyMCE.execCommand("mceAddControl", true, "p_text_news");
 </script>

@@ -31,62 +31,6 @@ function addslashesJ($string)
 		return $s;
 	}
 
-function compress_siman_vars($arr)
-	{
-		$res='';
-		while ( list( $key, $val ) = each($arr))
-			{
-				if (is_array($val))
-					{
-						for ($i=0; $i<count($val); $i++)
-							{
-								$val[$i]=str_replace('\\', '\\\\', $val[$i]);
-								$val[$i]=str_replace("\r", "\\r", $val[$i]);
-								$val[$i]=str_replace("\n", "\\n", $val[$i]);
-								$res.=$key.'#var#'.$i.'#var#'.$val[$i]."\r\n";
-							}
-					}
-				else
-					{
-						$val=str_replace('\\', '\\\\', $val);
-						$val=str_replace("\r", "\\r", $val);
-						$val=str_replace("\n", "\\n", $val);
-						$res.=$key.'#var##var#'.$val."\r\n";
-					}
-			}
-		return $res;
-	}
-
-function extract_siman_vars($str)
-	{
-		$arr=explode("\r\n", $str);
-		for ($i=0; $i<count($arr); $i++)
-			{
-				$str=explode('#var#', $arr[$i]);
-				if (($str[1]!='0') && empty($str[1]))
-					{
-						if (count($str)>3)
-							for ($j=3; $j<count($str); $j++)
-								$str[2].='#var#'.$str[$j];
-						$str[2]=str_replace("\\n", "\n", $str[2]);
-						$str[2]=str_replace("\\r", "\r", $str[2]);
-						$str[2]=str_replace("\\\\", "\\", $str[2]);
-						$res[$str[0]]=$str[2];
-					}
-				else
-					{
-						if (count($str)>3)
-							for ($j=3; $j<count($str); $j++)
-								$str[2].='#var#'.$str[$j];
-						$str[2]=str_replace("\\n", "\n", $str[2]);
-						$str[2]=str_replace("\\r", "\r", $str[2]);
-						$str[2]=str_replace("\\\\", "\\", $str[2]);
-						$res[$str[0]][intval($str[1])]=$str[2];
-					}
-			}
-		return $res;
-	}
-
 function siman_upload_image($id, $prefix, $postfix='', $extention='.jpg')
 	{
 		global $_uplfilevars;
@@ -192,7 +136,7 @@ function load_file_list($path, $ext='')
 function register_filesystem($url, $filename, $comment)
 {
 	global $lnkDB, $nameDB, $tableprefix;
-	$sql="INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".addslashesJ($filename)."', '".addslashesJ($url)."', '".addslashesJ($comment)."')";
+	$sql="INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".dbescape($filename)."', '".dbescape($url)."', '".dbescape($comment)."')";
 	$result=database_db_query($nameDB, $sql, $lnkDB);
 	return database_insert_id('filesystem', $nameDB, $lnkDB);
 }
@@ -200,7 +144,7 @@ function register_filesystem($url, $filename, $comment)
 function update_filesystem($id, $url, $filename, $comment)
 {
 	global $lnkDB, $nameDB, $tableprefix;
-	$sql="UPDATE ".$tableprefix."filesystem SET filename_fs='".addslashesJ($filename)."', url_fs='".addslashesJ($url)."', comment_fs='".addslashesJ($comment)."' WHERE id_fs=".intval($id)." ";
+	$sql="UPDATE ".$tableprefix."filesystem SET filename_fs='".dbescape($filename)."', url_fs='".dbescape($url)."', comment_fs='".dbescape($comment)."' WHERE id_fs=".intval($id)." ";
 	$result=database_db_query($nameDB, $sql, $lnkDB);
 	return database_insert_id('filesystem', $nameDB, $lnkDB);
 }
@@ -208,14 +152,14 @@ function update_filesystem($id, $url, $filename, $comment)
 function delete_filesystem($id)
 {
 	global $lnkDB, $nameDB, $tableprefix;
-	$sql="DELETE FROM ".$tableprefix."filesystem WHERE id_fs='$id'";
+	$sql="DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
 	$result=database_db_query($nameDB, $sql, $lnkDB);
 }
 
 function get_filesystem($id)
 {
 	global $lnkDB, $nameDB, $tableprefix;
-	$sql="SELECT * FROM ".$tableprefix."filesystem WHERE id_fs='$id'";
+	$sql="SELECT * FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
 	$result=database_db_query($nameDB, $sql, $lnkDB);
 	while ($row=database_fetch_object($result))
 		{
@@ -257,7 +201,7 @@ function post_genetare_insert($table, $prefix, $add_fields='', $add_values='')
 				if (strpos($key, $prefix)==0)
 					{
 						$fields[$i]=substr($key, strlen($prefix));
-						$values[$i]=addslashesJ($val);
+						$values[$i]=dbescape($val);
 						$i++;
 					}
 			}					 
@@ -288,7 +232,7 @@ function post_genetare_update($table, $prefix, $add_update='')
 				if (strpos($key, $prefix)==0)
 					{
 						$fields[$i]=substr($key, strlen($prefix));
-						$values[$i]=addslashesJ($val);
+						$values[$i]=dbescape($val);
 						$i++;
 					}
 			}					 
@@ -315,25 +259,25 @@ function post_generate_filters($prefixEq='filter_', $prefixLike='like_', $prefix
 				if (strpos($key, $prefixEq)===0 && !empty($val))
 					{
 						$fields[$i]=substr($key, strlen());
-						$values[$i]=addslashesJ($val);
+						$values[$i]=dbescape($val);
 						$i++;
 					}
 				if (strpos($key, $prefixLike)===0 && !empty($val))
 					{
 						$fieldsL[$j]=substr($key, strlen($prefixLike));
-						$valuesL[$j]=addslashesJ($val);
+						$valuesL[$j]=dbescape($val);
 						$j++;
 					}
 				if (strpos($key, $prefixGt)===0 && !empty($val))
 					{
 						$fieldsG[$k]=substr($key, strlen($prefixGt));
-						$valuesG[$k]=addslashesJ($val);
+						$valuesG[$k]=dbescape($val);
 						$k++;
 					}
 				if (strpos($key, $prefixLt)===0 && !empty($val))
 					{
 						$fieldsM[$l]=substr($key, strlen($prefixLt));
-						$valuesM[$l]=addslashesJ($val);
+						$valuesM[$l]=dbescape($val);
 						$l++;
 					}
 				if (strpos($key, $prefixMl)===0 && !empty($val))
@@ -341,7 +285,7 @@ function post_generate_filters($prefixEq='filter_', $prefixLike='like_', $prefix
 						for ($qqq=0; $qqq<count($val); $qqq++)
 							{
 								$fieldsB[$m]=substr($key, strlen($prefixMl));
-								$valuesB[$m]=addslashesJ($val[$qqq]);
+								$valuesB[$m]=dbescape($val[$qqq]);
 								$m++;
 							}
 					}
