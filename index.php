@@ -6,8 +6,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.4	                                                               |
-//#revision 2013-03-20                                                         |
+//#ver 1.6.4
+//#revision 2013-04-11
 //==============================================================================
 
 if (php_sapi_name()!='cli' && @get_magic_quotes_gpc()==1)
@@ -120,6 +120,12 @@ if ($lnkDB!=false)
 			}
 		require("includes/config.php");
 		$sm['_s']=&$_settings;
+		if ($_SERVER['REQUEST_URI']=='/index.php' || $_SERVER['REQUEST_URI']==substr($_settings['resource_url'], strpos($_settings['resource_url'], '/')).'index.php')
+			{
+				header('HTTP/1.1 301 Moved Permanently');
+				header('Location: http://'.$_settings['resource_url']);
+				exit();
+			}
 		if (!empty($_settings['default_timezone']))
 			date_default_timezone_set($_settings['default_timezone']);
 		if (empty($_settings['database_date']))
