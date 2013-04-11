@@ -31,14 +31,14 @@ $lang['step6_title']='Create administrator';
 $lang['step7_title']='Create administrator';
 $lang['finish_title']='System installed!';
 
-$lang['p_blocks']['main_menu']='Main menu';
-$lang['p_blocks']['admin_menu']='Admin. menu';
+$lang['p_blocks']['main_menu']='Navigation';
+$lang['p_blocks']['admin_menu']='Admin. navigation';
 $lang['p_blocks']['login']='Login';
 
 $lang['p_welcome_page']['title']='Welcome';
 $lang['p_welcome_page']['text']='This is default SiMan CMS start page.<br /><br />To change the content of this page, please <a href="index.php?m=account">login</a> as administrator and click <b>Edit</b> link.<br /><br />You can change start page in the control panel of your site.<br /><br /><strong>Thank you,<br />SiMan CMS Team</strong>';
 
-$lang['p_menu']['main_menu']='Menu';
+$lang['p_menu']['main_menu']='Navigation';
 $lang['p_menu']['admin_menu']='Administration';
 
 $lang['p_mlines']['main']='Home';
@@ -52,7 +52,7 @@ $lang['p_mlines']['control_panel']='Control panel';
 
 $lang['p_modules']['content']='Texts';
 $lang['p_modules']['news']='News';
-$lang['p_modules']['menu']='Menu';
+$lang['p_modules']['menu']='Navigation';
 $lang['p_modules']['download']='Downloads';
 $lang['p_modules']['search']='Search';
 

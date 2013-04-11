@@ -69,6 +69,8 @@ $lang['settings_default_theme']='Тема сайту';
 $lang['siman_powered_site']='Цей сайт використовує SiMan CMS';
 $lang['use_siman']='Використовуйте SiMan CMS';
 $lang['your_company']='Ваша компанія';
+$lang['content_news']='В основному новини';
+$lang['content_texts']='В основному тексти';
 
 $lang['addadm']['login_str']='Логін';
 $lang['addadm']['password']='Пароль';
