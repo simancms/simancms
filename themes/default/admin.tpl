@@ -61,6 +61,7 @@
 	{/section}
 <br /><br />
 <form action="index.php?m=admin&d=postsettings&viewmode={$modules[$index].mode_settings}" method="post">
+<input type="hidden" name="marker" value="1" />
 <table width="100%" border="0">
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.common_settings}</td>

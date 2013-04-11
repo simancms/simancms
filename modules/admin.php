@@ -40,7 +40,7 @@ sm_default_action('view');
 if ($userinfo['level']==3)
 {
 	$m["module"]='admin';
-	if (strcmp($m['mode'], 'postsettings')==0)
+	if (strcmp($m['mode'], 'postsettings')==0 && $_postvars['marker']==1)
 		{
 			if (!empty($_getvars['viewmode']))
 				$m['mode_settings']=$_getvars['viewmode'];
@@ -49,70 +49,73 @@ if ($userinfo['level']==3)
 			$m["title"]=$lang['settings'];
 			$i=0;
 			$set[$i]['name']='cookprefix';
-			$set[$i]['value']=addslashesJ($_postvars['p_cook']);
+			$set[$i]['value']=dbescape($_postvars['p_cook']);
 			$i++;
 			$set[$i]['name']='resource_title';
-			$set[$i]['value']=addslashesJ($_postvars['p_title']);
+			$set[$i]['value']=dbescape($_postvars['p_title']);
 			$i++;
+			$_postvars['p_url']=trim($_postvars['p_url']);
+			if (substr($_postvars['p_url'], -1)!='/')
+				$_postvars['p_url'].='/';
 			$set[$i]['name']='resource_url';
-			$set[$i]['value']=addslashesJ($_postvars['p_url']);
+			$set[$i]['value']=dbescape($_postvars['p_url']);
 			$i++;
 			$set[$i]['name']='logo_text';
-			$set[$i]['value']=addslashesJ($_postvars['p_logo']);
+			$set[$i]['value']=dbescape($_postvars['p_logo']);
 			$i++;
 			$set[$i]['name']='meta_description';
-			$set[$i]['value']=addslashesJ($_postvars['p_description']);
+			$set[$i]['value']=dbescape($_postvars['p_description']);
 			$i++;
 			$set[$i]['name']='meta_keywords';
-			$set[$i]['value']=addslashesJ($_postvars['p_keywords']);
+			$set[$i]['value']=dbescape($_postvars['p_keywords']);
 			$i++;
 			$set[$i]['name']='default_language';
-			$set[$i]['value']=addslashesJ($_postvars['p_lang']);
+			$set[$i]['value']=dbescape($_postvars['p_lang']);
 			$i++;
 			$set[$i]['name']='default_theme';
-			$set[$i]['value']=addslashesJ($_postvars['p_theme']);
+			$set[$i]['value']=dbescape($_postvars['p_theme']);
 			$i++;
 			$set[$i]['name']='default_module';
-			$set[$i]['value']=addslashesJ($_postvars['p_module']);
+			$set[$i]['value']=dbescape($_postvars['p_module']);
 			$i++;
 			$set[$i]['name']='copyright_text';
-			$set[$i]['value']=addslashesJ($_postvars['p_copyright']);
+			$set[$i]['value']=dbescape($_postvars['p_copyright']);
 			$i++;
 			$set[$i]['name']='max_upload_filesize';
-			$set[$i]['value']=addslashesJ($_postvars['p_maxfsize']);
+			$set[$i]['value']=dbescape($_postvars['p_maxfsize']);
 			$i++;
 			$set[$i]['name']='banned_ip';
-			$set[$i]['value']=addslashesJ($_postvars['p_banned_ip']);
+			$set[$i]['value']=dbescape($_postvars['p_banned_ip']);
 			$i++;
 			$set[$i]['name']='meta_header_text';
-			$set[$i]['value']=addslashesJ($_postvars['p_meta_header_text']);
+			$set[$i]['value']=dbescape($_postvars['p_meta_header_text']);
 			$i++;
 			$set[$i]['name']='header_static_text';
-			$set[$i]['value']=addslashesJ($_postvars['p_htext']);
+			$set[$i]['value']=dbescape($_postvars['p_htext']);
 			$i++;
 			$set[$i]['name']='footer_static_text';
-			$set[$i]['value']=addslashesJ($_postvars['p_ftext']);
+			$set[$i]['value']=dbescape($_postvars['p_ftext']);
 			$i++;
 			$set[$i]['name']='admin_items_by_page';
 			if (empty($_postvars['p_adminitems_per_page']))
-				$set[$i]['value']=addslashesJ('10');
+				$set[$i]['value']=dbescape('10');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_adminitems_per_page']);
+				$set[$i]['value']=dbescape($_postvars['p_adminitems_per_page']);
 			$i++;
 			$set[$i]['name']='search_items_by_page';
 			if (empty($_postvars['p_searchitems_per_page']))
-				$set[$i]['value']=addslashesJ('10');
+				$set[$i]['value']=dbescape('10');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_searchitems_per_page']);
+				$set[$i]['value']=dbescape($_postvars['p_searchitems_per_page']);
 			$i++;
 			$set[$i]['name']='ext_editor';
-			$set[$i]['value']=addslashesJ($_postvars['p_exteditor']);
+			$set[$i]['value']=dbescape($_postvars['p_exteditor']);
 			$i++;
 			$set[$i]['name']='noflood_time';
-			$set[$i]['value']=addslashesJ($_postvars['p_floodtime']);
+			$set[$i]['value']=dbescape($_postvars['p_floodtime']);
 			$i++;
 			$set[$i]['name']='blocks_use_image';
-			$set[$i]['value']=addslashesJ($_postvars['p_blocks_use_image']);
+			$set[$i]['value']=dbescape($_postvars['p_blocks_use_image']);
 			$i++;
 			$set[$i]['name']='log_type';
 			$set[$i]['value']=intval($_postvars['p_log_type']);
@@ -121,78 +124,78 @@ if ($userinfo['level']==3)
 			$set[$i]['value']=intval($_postvars['p_log_store_days']);
 			$i++;
 			$set[$i]['name']='upper_menu_id';
-			$set[$i]['value']=addslashesJ($_postvars['p_uppermenu']);
+			$set[$i]['value']=dbescape($_postvars['p_uppermenu']);
 			$i++;
 			$set[$i]['name']='bottom_menu_id';
-			$set[$i]['value']=addslashesJ($_postvars['p_bottommenu']);
+			$set[$i]['value']=dbescape($_postvars['p_bottommenu']);
 			$i++;
 			$set[$i]['name']='menus_use_image';
-			$set[$i]['value']=addslashesJ($_postvars['p_menus_use_image']);
+			$set[$i]['value']=dbescape($_postvars['p_menus_use_image']);
 			$i++;
 			$set[$i]['name']='menuitems_use_image';
-			$set[$i]['value']=addslashesJ($_postvars['p_menuitems_use_image']);
+			$set[$i]['value']=dbescape($_postvars['p_menuitems_use_image']);
 			$i++;
 			$set[$i]['name']='users_menu_id';
-			$set[$i]['value']=addslashesJ($_postvars['p_usersmenu']);
+			$set[$i]['value']=dbescape($_postvars['p_usersmenu']);
 			$i++;
 			$set[$i]['name']='content_use_preview';
-			$set[$i]['value']=addslashesJ($_postvars['p_content_use_preview']);
+			$set[$i]['value']=dbescape($_postvars['p_content_use_preview']);
 			$i++;
 			$set[$i]['name']='allow_alike_content';
 			if ($_postvars['p_allow_alike_content']!=1) $_postvars['p_allow_alike_content']=0;
 			$set[$i]['value']=$_postvars['p_allow_alike_content'];
 			$i++;
 			$set[$i]['name']='alike_content_count';
-			$set[$i]['value']=addslashesJ(intval($_postvars['p_alike_content_count']));
+			$set[$i]['value']=dbescape(intval($_postvars['p_alike_content_count']));
 			$i++;
 			$set[$i]['name']='news_use_title';
-			$set[$i]['value']=addslashesJ($_postvars['p_news_use_title']);
+			$set[$i]['value']=dbescape($_postvars['p_news_use_title']);
 			$i++;
 			$set[$i]['name']='news_use_image';
-			$set[$i]['value']=addslashesJ($_postvars['p_news_use_image']);
+			$set[$i]['value']=dbescape($_postvars['p_news_use_image']);
 			$i++;
 			$set[$i]['name']='news_use_preview';
-			$set[$i]['value']=addslashesJ($_postvars['p_news_use_preview']);
+			$set[$i]['value']=dbescape($_postvars['p_news_use_preview']);
 			$i++;
 			$set[$i]['name']='content_per_page_multiview';
 			if (empty($_postvars['p_multiviewperpage']))
-				$set[$i]['value']=addslashesJ('10');
+				$set[$i]['value']=dbescape('10');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_multiviewperpage']);
+				$set[$i]['value']=dbescape($_postvars['p_multiviewperpage']);
 			$i++;
 			$set[$i]['name']='news_by_page';
 			if (empty($_postvars['p_news_per_page']))
-				$set[$i]['value']=addslashesJ('10');
+				$set[$i]['value']=dbescape('10');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_news_per_page']);
+				$set[$i]['value']=dbescape($_postvars['p_news_per_page']);
 			$i++;
 			$set[$i]['name']='news_anounce_cut';
 			if (empty($_postvars['p_news_cut']))
-				$set[$i]['value']=addslashesJ('300');
+				$set[$i]['value']=dbescape('300');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_news_cut']);
+				$set[$i]['value']=dbescape($_postvars['p_news_cut']);
 			$i++;
 			$set[$i]['name']='short_news_count';
 			if (empty($_postvars['p_news_short']))
-				$set[$i]['value']=addslashesJ('3');
+				$set[$i]['value']=dbescape('3');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_news_short']);
+				$set[$i]['value']=dbescape($_postvars['p_news_short']);
 			$i++;
 			$set[$i]['name']='short_news_cut';
 			if (empty($_postvars['p_short_news_cut']))
-				$set[$i]['value']=addslashesJ('100');
+				$set[$i]['value']=dbescape('100');
 			else
-				$set[$i]['value']=addslashesJ($_postvars['p_short_news_cut']);
+				$set[$i]['value']=dbescape($_postvars['p_short_news_cut']);
 			$i++;
 			$set[$i]['name']='news_use_time';
-			$set[$i]['value']=addslashesJ($_postvars['p_news_use_time']);
+			$set[$i]['value']=dbescape($_postvars['p_news_use_time']);
 			$i++;
 			$set[$i]['name']='allow_alike_news';
 			if ($_postvars['p_allow_alike_news']!=1) $_postvars['p_allow_alike_news']=0;
 			$set[$i]['value']=$_postvars['p_allow_alike_news'];
 			$i++;
 			$set[$i]['name']='alike_news_count';
-			$set[$i]['value']=addslashesJ(intval($_postvars['p_alike_news_count']));
+			$set[$i]['value']=dbescape(intval($_postvars['p_alike_news_count']));
 			$i++;
 			$set[$i]['name']='allow_register';
 			if ($_postvars['p_allowregister']!=1) $_postvars['p_allowregister']=0;
@@ -215,13 +218,13 @@ if ($userinfo['level']==3)
 			$set[$i]['value']=$_postvars['p_allow_private_messages'];
 			$i++;
 			$set[$i]['name']='administrators_email';
-			$set[$i]['value']=addslashesJ($_postvars['p_admemail']);
+			$set[$i]['value']=dbescape($_postvars['p_admemail']);
 			$i++;
 			$set[$i]['name']='email_signature';
-			$set[$i]['value']=addslashesJ($_postvars['p_esignature']);
+			$set[$i]['value']=dbescape($_postvars['p_esignature']);
 			for ($i=0; $i<count($set); $i++)
 				{
-					$sql="UPDATE ".$tableprefix."settings SET value_settings = '".$set[$i]['value']."' WHERE name_settings = '".$set[$i]['name']."' AND mode='".addslashesJ($m['mode_settings'])."'";
+					$sql="UPDATE ".$tableprefix."settings SET value_settings = '".$set[$i]['value']."' WHERE name_settings = '".$set[$i]['name']."' AND mode='".dbescape($m['mode_settings'])."'";
 					$result=execsql($sql);
 				}
 			sm_update_settings('rewrite_index_title', $_postvars['p_rewrite_index_title'], $m['mode_settings']);
@@ -256,7 +259,7 @@ if ($userinfo['level']==3)
 		}
 	if (strcmp($m['mode'], 'postchgttl')==0)
 		{
-			$module_title=addslashesJ($_postvars['p_title']);
+			$module_title=dbescape($_postvars['p_title']);
 			$sql="UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module='".$_getvars['mid']."'";;
 			$result=execsql($sql);
 			$m['mode']='view';
@@ -354,9 +357,9 @@ if ($userinfo['level']==3)
 			if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
 				{
 					$q=new TQuery($tableprefix."settings");
-					$q->Add('name_settings', addslashesJ($_getvars['name']));
+					$q->Add('name_settings', dbescape($_getvars['name']));
 					$q->Add('value_settings', addslashes($_settings[$_getvars['name']]));
-					$q->Add('mode', addslashesJ($_getvars['destmode']));
+					$q->Add('mode', dbescape($_getvars['destmode']));
 					$q->Insert();
 				}
 			sm_redirect('index.php?m=admin&d=settings');
@@ -367,8 +370,8 @@ if ($userinfo['level']==3)
 			if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
 				{
 					$q=new TQuery($tableprefix."settings");
-					$q->Add('name_settings', addslashesJ($_getvars['name']));
-					$q->Add('mode', addslashesJ($_getvars['destmode']));
+					$q->Add('name_settings', dbescape($_getvars['name']));
+					$q->Add('mode', dbescape($_getvars['destmode']));
 					$q->Remove();
 				}
 			sm_redirect('index.php?m=admin&d=settings');
