@@ -674,6 +674,13 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_use_email_as_login&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.signinwithloginandemail eq 1}
+		<tr>
+			<td colspan="2"><input type="checkbox" name="signinwithloginandemail" value="1" {if $modules[$index].edit_settings.signinwithloginandemail eq "1"}checked{/if}>{$lang.settings_signinwithloginandemail}</td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=signinwithloginandemail&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 	{if $modules[$index].show_settings.redirect_after_login_1 eq 1}
 		<tr>
 			<td>{$lang.settings_redirect_after_login} ({$lang.logged_users}):</td>

@@ -369,6 +369,10 @@ $sql="
 INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('redirect_on_success_change_usrdata', '', 'default');
 ";
 execsql($sql);
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('signinwithloginandemail', '0', 'default');
+";
+execsql($sql);
 
 
 //---------[DATABASE DATE]------------------------------------

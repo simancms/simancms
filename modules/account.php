@@ -203,9 +203,11 @@ if (strcmp($m['mode'], 'login')==0)
 		if (!empty($_postvars["login_d"]))
 			{
 				$usr_name=dbescape(strtolower($_postvars["login_d"]));
-				$usr_passwd=$_postvars["passwd_d"];
-				$usr_passwd=md5($usr_passwd);
-				$usrlogin=getsql("SELECT * FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+				$usr_passwd=md5($_postvars["passwd_d"]);
+				if ($_settings['signinwithloginandemail']==1)
+					$usrlogin=getsql("SELECT * FROM ".$tableusersprefix."users WHERE (lower(login)='$usr_name' OR lower(email)='$usr_name') AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+				else
+					$usrlogin=getsql("SELECT * FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND password='$usr_passwd' AND user_status>0 LIMIT 1");
 			}
 		else
 			$m['mode']='show';
@@ -233,7 +235,6 @@ if (strcmp($m['mode'], 'login')==0)
 				include('includes/userinfo.php');
 				//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
 				//$result=execsql($sql);
-				$m['mode']='cabinet';
 				sm_event('successlogin', array($userinfo['id']));
 				if ($_postvars['autologin_d']==1 || $_settings['alwaysautologin']==1)
 					{
@@ -242,23 +243,23 @@ if (strcmp($m['mode'], 'login')==0)
 				log_write(LOG_LOGIN, $lang['module_account']['log']['user_logged']);
 				if ($_settings['return_after_login']==1 && !empty($_postvars['p_goto_url']))
 					{
-						$refresh_url=$_postvars['p_goto_url'];
-						$m['mode']='postlogin';
+						sm_redirect($_postvars['p_goto_url']);
 					}
 				elseif (!empty($_settings['redirect_after_login_3']) && $userinfo['level']==3)
 					{
-						$refresh_url=$_settings['redirect_after_login_3'];
-						$m['mode']='postlogin';
+						sm_redirect($_settings['redirect_after_login_3']);
 					}
 				elseif (!empty($_settings['redirect_after_login_2']) && $userinfo['level']>=2)
 					{
-						$refresh_url=$_settings['redirect_after_login_2'];
-						$m['mode']='postlogin';
+						sm_redirect($_settings['redirect_after_login_2']);
 					}
 				elseif (!empty($_settings['redirect_after_login_1']) && $userinfo['level']>=1)
 					{
-						$refresh_url=$_settings['redirect_after_login_1'];
-						$m['mode']='postlogin';
+						sm_redirect($_settings['redirect_after_login_1']);
+					}
+				else
+					{
+						sm_redirect('index.php?m=account&d=cabinet');
 					}
 			}
 	}

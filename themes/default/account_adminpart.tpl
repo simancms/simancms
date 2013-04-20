@@ -113,12 +113,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "postaddgroup" or $modules[$index].mode eq "posteditgroup" or $modules[$index].mode eq "postdeletegroup" or $modules[$index].mode eq "postchangegrp" or $modules[$index].mode eq "postlogin"}
-{include file="block_begin.tpl"}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "viewprivmsg"}
 {include file="block_begin.tpl"}
 <a href="index.php?m=account&d=sendprivmsg">{$lang.module_account.send_message}</a> :: {if $modules[$index].privmsg_folder eq "inbox"}<b>{/if}<a href="index.php?m=account&d=viewprivmsg&folder=inbox">{$lang.module_account.inbox}</a>{if $modules[$index].privmsg_folder eq "inbox"}</b>{/if} :: {if $modules[$index].privmsg_folder eq "outbox"}<b>{/if}<a href="index.php?m=account&d=viewprivmsg&folder=outbox">{$lang.module_account.outbox}</a>{if $modules[$index].privmsg_folder eq "outbox"}</b>{/if}<br>
