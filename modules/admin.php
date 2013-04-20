@@ -253,6 +253,7 @@ if ($userinfo['level']==3)
 			sm_update_settings('resource_url_rewrite', ($_postvars['resource_url_rewrite']=='1')?'1':'0', $m['mode_settings']);
 			sm_update_settings('resource_url_mobile', $_postvars['resource_url_mobile'], $m['mode_settings']);
 			sm_update_settings('resource_url_tablet', $_postvars['resource_url_tablet'], $m['mode_settings']);
+			sm_update_settings('redirect_on_success_change_usrdata', $_postvars['redirect_on_success_change_usrdata'], $m['mode_settings']);
 
 			include('includes/config.php');
 			$refresh_url='index.php?m=admin&d=settings&viewmode='.$m['mode_settings'];

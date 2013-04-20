@@ -388,6 +388,7 @@ $lang['settings_redirect_after_register'] = 'Redirect after register (URL)';
 $lang['settings_resource_url_rewrite'] = 'Allow an access from other domains';
 $lang['settings_resource_url_mobile'] = 'Site URL (for mobile devices)';
 $lang['settings_resource_url_tablet'] = 'Site URL (for tablet devices)';
+$lang['settings_redirect_on_success_change_usrdata']='Redirect after account data successfull changes made';
 $lang['module_admin']['optimize_database'] = 'Optimize database';
 $lang['module_admin']['message_no_tables_in_DB'] = 'Tables of the database are missing or yours DBMS is not supported this operation ';
 $lang['module_admin']['optimize_tables'] = 'Optimize the tables';

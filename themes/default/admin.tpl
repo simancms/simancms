@@ -714,6 +714,14 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=redirect_after_logout&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.redirect_on_success_change_usrdata eq 1}
+		<tr>
+			<td>{$lang.settings_redirect_on_success_change_usrdata}:</td>
+			<td><input type="text" name="redirect_on_success_change_usrdata" value="{$modules[$index].edit_settings.redirect_on_success_change_usrdata}"></td>
+			<td>{include file='admin_settings_extctrls.tpl' name_settings='redirect_on_success_change_usrdata'}</td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=redirect_on_success_change_usrdata&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.security_settings}</td>
 </tr>

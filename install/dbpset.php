@@ -364,6 +364,12 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
+//version 1.6.4
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('redirect_on_success_change_usrdata', '', 'default');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
