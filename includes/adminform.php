@@ -211,11 +211,12 @@ if (!defined("adminform_DEFINED"))
 					}
 				function LoadValues($sql)
 					{
-						$this->form['data']=getsql($sql);
+						$data=getsql($sql);
+						$this->LoadValuesArray($data);
 					}
 				function SetValue($name, $value)
 					{
-						$this->form['data'][$name]=$value;
+						$this->form['data'][$name]=htmlspecialchars($value);
 					}
 				function Output()
 					{
@@ -229,7 +230,7 @@ if (!defined("adminform_DEFINED"))
 							return;
 						while ( list($name, $value) = each($array) )
 							{
-								$this->form['data'][$name]=$value;
+								$this->SetValue($name, $value);
 							}
 					}
 				function SetColumnsWidth($first, $second)
