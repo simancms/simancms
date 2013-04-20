@@ -700,6 +700,7 @@ if ($userinfo['level']==3)
 		}
 	if (strcmp($m['mode'], 'filesystem')==0)
 		{
+			add_path_control();
 			$m["title"]=$lang['module_admin']['virtual_filesystem'];
 			require_once('includes/admintable.php');
 			$m['table']['columns']['ico']['caption']='';
@@ -728,7 +729,7 @@ if ($userinfo['level']==3)
 			$i=0;
 			while ($row=database_fetch_object($result))
 				{
-					if ($row->filename_fs[strlen($row->filename_fs)-1]=='/')
+					if (substr($row->filename_fs, -1)=='/')
 						$m['table']['rows'][$i]['ico']['image']='folder.gif';
 					else
 						$m['table']['rows'][$i]['ico']['image']='file.gif';
@@ -746,8 +747,8 @@ if ($userinfo['level']==3)
 	if (strcmp($m["mode"], 'postdeletefilesystem')==0)
 		{
 			$m['title']=$lang['common']['delete'];
-			$sql="DELETE FROM ".$tableprefix."filesystem WHERE id_fs='".intval($_getvars["id"])."'";
-			$result=execsql($sql);
+			$sql="DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($_getvars["id"]);
+			execsql($sql);
 			$refresh_url='index.php?m=admin&d=filesystem';
 		}
 	if (strcmp($m["mode"], 'addfilesystem')==0)

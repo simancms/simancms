@@ -966,7 +966,6 @@
 
 {if $modules[$index].mode eq 'filesystem'}
 {include file="block_begin.tpl"}
-<a href="index.php?m=admin">{$lang.control_panel}</a><br />
 {include file="common_admintable.tpl" table=$modules[$index].table}
 <br />
 <a href="index.php?m=admin&d=addfilesystem">{$lang.common.add}</a>
