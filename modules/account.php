@@ -151,14 +151,14 @@ if ($_settings['allow_forgot_password']==1)
 			{
 				$m["module"]='account';
 				$m["title"]=$lang["get_password"];
-				$usr_name=dbescape($_getvars["login"]);
+				$usr_name=dbescape(strtolower($_getvars["login"]));
 				$usr_answer=dbescape($_postvars["p_answ"]);
-				$usr_newpwd=md5(dbescape($_postvars["p_newpwd"]));
-				$sql="SELECT id_user FROM ".$tableusersprefix."users WHERE login='$usr_name' AND answer='$usr_answer' AND answer<>''";
+				$usr_newpwd=dbescape(md5($_postvars["p_newpwd"]));
+				$sql="SELECT id_user FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
 				$info=getsql($sql);
 				if (!empty($info['id_user']))
 					{
-						$sql="UPDATE ".$tableusersprefix."users SET password='$usr_newpwd' WHERE login='$usr_name' AND answer='$usr_answer' AND answer<>''";
+						$sql="UPDATE ".$tableusersprefix."users SET password='$usr_newpwd' WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
 						$result=execsql($sql);
 						log_write(LOG_LOGIN, $lang['get_password'].' - '.$lang['common']['ok']);
 						sm_event('onchangepassword', Array('login' => $_getvars["login"], 'newpassword' => $_postvars["p_newpwd"]));

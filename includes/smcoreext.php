@@ -243,7 +243,7 @@ function sm_tempdata_aggregate($type, $identifier, $resulttype=SM_AGGREGATE_COUN
 function sm_error_page($title, $message, $header_error_code='')
 	{
 		global $special, $modules, $lang;
-		$modules[0]['error_message']=$lang['message_access_denied'];
+		$modules[0]['error_message']=$message;
 		$modules[0]['module']='';
 		if (empty($title))
 			$modules[0]['title']=$lang["error"];
