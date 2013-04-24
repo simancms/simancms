@@ -7,13 +7,13 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-07-20                                                         |
+//#ver 1.6.4
+//#revision 2013-04-24
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
 	{
-		print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+		print('Hacking attempt!');
 		exit();
 	}
 
@@ -21,20 +21,20 @@ if (!defined("MENU_ADMINPART_FUNCTIONS_DEFINED"))
 	{
 		function siman_delete_menu_line($line_id)
 			{
-				global $nameDB, $lnkDB, $tableprefix, $_settings;
-				$sql="SELECT id_ml FROM ".$tableprefix."menu_lines WHERE submenu_from='$line_id'";
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				global $tableprefix, $_settings;
+				$sql="SELECT id_ml FROM ".$tableprefix."menu_lines WHERE submenu_from=".intval($line_id);
+				$result=execsql($sql);
 				while ($row=database_fetch_object($result))
 					{
 						siman_delete_menu_line($row->id_ml);
 					}
-				$sql="DELETE FROM ".$tableprefix."menu_lines WHERE id_ml='$line_id'";
+				$sql="DELETE FROM ".$tableprefix."menu_lines WHERE id_ml=".intval($line_id);
 				if ($_settings['menuitems_use_image']==1)
 					{
-						if (file_exists('./files/img/menuitem'.$line_id.'.jpg'))
-							unlink('./files/img/menuitem'.$line_id.'.jpg');
+						if (file_exists('./files/img/menuitem'.intval($line_id).'.jpg'))
+							unlink('./files/img/menuitem'.intval($line_id).'.jpg');
 					}
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				execsql($sql);
 			}
 		define("MENU_ADMINPART_FUNCTIONS_DEFINED", 1);
 	}
@@ -268,41 +268,45 @@ if ($userinfo['level']==3)
 		if (strcmp($modules[$modules_index]["mode"], 'listlines')==0)
 			{
 				$modules[$modules_index]["module"]='menu';
-				$modules[$modules_index]["title"]=$lang["menu"];
+				$menu_id=intval($_getvars["mid"]);
+				$q=new TQuery($sm['t'].'menus');
+				$q->Add('id_menu_m', $menu_id);
+				$menuinfo=$q->Get();
+				$modules[$modules_index]["title"]=$lang["menu"].': '.$menuinfo['caption_m'];
 				add_path($lang['control_panel'], "index.php?m=admin");
 				add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 				add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
 				add_path($lang['list_menus'], "index.php?m=menu&d=listmenu");
-				$menu_id=$_getvars["mid"];
+				add_path($menuinfo['caption_m'], "index.php?m=menu&d=listlines&mid=".$menu_id);
 				$modules[$modules_index]['idmenu']=$menu_id;
 				$modules[$modules_index]['menu']=siman_load_menu($menu_id);
-					require_once('includes/admintable.php');
-					$modules[$modules_index]['table']['columns']['title']['caption']=$lang['common']['title'];
-					$modules[$modules_index]['table']['columns']['title']['width']='100%';
-					$modules[$modules_index]['table']['columns']['edit']['caption']='';
-					$modules[$modules_index]['table']['columns']['edit']['hint']=$lang['common']['edit'];
-					$modules[$modules_index]['table']['columns']['edit']['replace_text']=$lang['common']['edit'];
-					$modules[$modules_index]['table']['columns']['edit']['replace_image']='edit.gif';
-					$modules[$modules_index]['table']['columns']['edit']['width']='16';
-					$modules[$modules_index]['table']['columns']['delete']['caption']='';
-					$modules[$modules_index]['table']['columns']['delete']['hint']=$lang['common']['delete'];
-					$modules[$modules_index]['table']['columns']['delete']['replace_text']=$lang['common']['delete'];
-					$modules[$modules_index]['table']['columns']['delete']['replace_image']='delete.gif';
-					$modules[$modules_index]['table']['columns']['delete']['width']='16';
-					$modules[$modules_index]['table']['columns']['delete']['messagebox']=1;
-					$modules[$modules_index]['table']['columns']['delete']['messagebox_text']=addslashes($lang['really_want_delete_line']);
-					$modules[$modules_index]['table']['default_column']='edit';
-					for ($i=0; $i<count($modules[$modules_index]['menu']); $i++)
-						{
-							$lev='';
-							for ($j=1; $j<$modules[$modules_index]['menu'][$i]['level']; $j++)
-								$lev.='-';
-							$modules[$modules_index]['table']['rows'][$i]['title']['data']=$lev.$modules[$modules_index]['menu'][$i]['caption'];
-							$modules[$modules_index]['table']['rows'][$i]['title']['hint']=$modules[$modules_index]['menu'][$i]['caption'];
-							$modules[$modules_index]['table']['rows'][$i]['title']['url']=$modules[$modules_index]['menu'][$i]['url'];
-							$modules[$modules_index]['table']['rows'][$i]['edit']['url']='index.php?m=menu&d=editline&mid='.$modules[$modules_index]['menu'][$i]['mid'].'&lid='.$modules[$modules_index]['menu'][$i]['id'].'&sid='.$modules[$modules_index]['menu'][$i]['submenu_from'];
-							$modules[$modules_index]['table']['rows'][$i]['delete']['url']='index.php?m=menu&d=postdeleteline&mid='.$modules[$modules_index]['menu'][$i]['mid'].'&lid='.$modules[$modules_index]['menu'][$i]['id'];
-						}
+				require_once('includes/admintable.php');
+				$modules[$modules_index]['table']['columns']['title']['caption']=$lang['common']['title'];
+				$modules[$modules_index]['table']['columns']['title']['width']='100%';
+				$modules[$modules_index]['table']['columns']['edit']['caption']='';
+				$modules[$modules_index]['table']['columns']['edit']['hint']=$lang['common']['edit'];
+				$modules[$modules_index]['table']['columns']['edit']['replace_text']=$lang['common']['edit'];
+				$modules[$modules_index]['table']['columns']['edit']['replace_image']='edit.gif';
+				$modules[$modules_index]['table']['columns']['edit']['width']='16';
+				$modules[$modules_index]['table']['columns']['delete']['caption']='';
+				$modules[$modules_index]['table']['columns']['delete']['hint']=$lang['common']['delete'];
+				$modules[$modules_index]['table']['columns']['delete']['replace_text']=$lang['common']['delete'];
+				$modules[$modules_index]['table']['columns']['delete']['replace_image']='delete.gif';
+				$modules[$modules_index]['table']['columns']['delete']['width']='16';
+				$modules[$modules_index]['table']['columns']['delete']['messagebox']=1;
+				$modules[$modules_index]['table']['columns']['delete']['messagebox_text']=addslashes($lang['really_want_delete_line']);
+				$modules[$modules_index]['table']['default_column']='edit';
+				for ($i=0; $i<count($modules[$modules_index]['menu']); $i++)
+					{
+						$lev='';
+						for ($j=1; $j<$modules[$modules_index]['menu'][$i]['level']; $j++)
+							$lev.='-';
+						$modules[$modules_index]['table']['rows'][$i]['title']['data']=$lev.$modules[$modules_index]['menu'][$i]['caption'];
+						$modules[$modules_index]['table']['rows'][$i]['title']['hint']=$modules[$modules_index]['menu'][$i]['caption'];
+						$modules[$modules_index]['table']['rows'][$i]['title']['url']=$modules[$modules_index]['menu'][$i]['url'];
+						$modules[$modules_index]['table']['rows'][$i]['edit']['url']='index.php?m=menu&d=editline&mid='.$modules[$modules_index]['menu'][$i]['mid'].'&lid='.$modules[$modules_index]['menu'][$i]['id'].'&sid='.$modules[$modules_index]['menu'][$i]['submenu_from'];
+						$modules[$modules_index]['table']['rows'][$i]['delete']['url']='index.php?m=menu&d=postdeleteline&mid='.$modules[$modules_index]['menu'][$i]['mid'].'&lid='.$modules[$modules_index]['menu'][$i]['id'];
+					}
 			}
 		if (strcmp($modules[$modules_index]["mode"], 'editmenu')==0)
 			{
