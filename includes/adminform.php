@@ -221,6 +221,7 @@ if (!defined("adminform_DEFINED"))
 				function Output()
 					{
 						$this->form['tabscount']=count($this->form['tabs']);
+						$this->form['method']=strtolower($this->form['method']);
 						return $this->form;
 					}
 				//-------------------------------------------------------------
