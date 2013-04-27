@@ -58,9 +58,9 @@
 	$new_width = check_range(get_integer('width'), 0, 2048);
 	$new_height = check_range(get_integer('height'), 0, 2048);
 	if (empty($_GET['background']))
-		$_GET['background']='FFFFFF';
+		$_GET['background'] = 'FFFFFF';
 	$background = get_string('background');
-		
+
 	$format = get_string('format');
 	if (!in_array($format, array('gif', 'jpeg', 'png'))) $format = 'jpeg';
 	$quality = check_range(get_integer('quality', -1), -1, 100);
