@@ -819,5 +819,26 @@
 			global $sm;
 			$sm['s']['autofocus']=$dom_id;
 		}
+	
+	function sm_thumburl($filename, $maxwidth=0, $maxheight=0, $format='', $quality='', $path='files/img/')
+		{
+			$info=pathinfo($filename);
+			$url='ext/showimg.php?img='.$info['filename'];
+			if ($info['extension']=='png')
+				$url.='&png=1';
+			if ($info['extension']=='gif')
+				$url.='&gif=1';
+			if (strpos($path, 'files/img/')==0 && strlen($path)>10)
+				$url.='&ext='.substr($path, 10);
+			if (!empty($quality))
+				$url.='&quality='.$quality;
+			if (!empty($format))
+				$url.='&format='.$format;
+			if (!empty($maxwidth))
+				$url.='&width='.$maxwidth;
+			if (!empty($maxheight))
+				$url.='&height='.$maxheight;
+			return $url;
+		}
 
 ?>

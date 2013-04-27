@@ -3,7 +3,13 @@
 	/*
 	$cache_time - time to live for cache files in seconds
 	$_GET['background'] - hexadecimal background for filling transparent areas (FFFFFF by default)
-	$_GET['img'] - file name without path and extension 
+	$_GET['img'] - file name without path and extension
+	$_GET['format'] - output format 
+	$_GET['quality'] - output quality 
+	$_GET['path'] - ID of the root directory for image (0 - files/, 1 - files/img/)
+	$_GET['ext'] - directory(ies) inside path
+	$_GET['png'] - open file with png extension
+	$_GET['gif'] - open file with gif extension
 	 */
 
 	header('Expires: '.gmdate('D, d M Y H:i:s', time() + 86400).' GMT');
