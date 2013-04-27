@@ -56,7 +56,12 @@ if (empty($_GET['img']) || strpos($_GET['img'], ':') || strpos($_GET['img'], '.'
 		$filepath=$path[0];
 		$extpath='';
 	}
-$image='../'.$filepath.$extpath.$_GET['img'].'.jpg';
+if ($_GET['png']!=1)
+	$image='../'.$filepath.$extpath.$_GET['img'].'.jpg';
+elseif ($_GET['gif']!=1)
+	$image='../'.$filepath.$extpath.$_GET['img'].'.gif';
+else
+	$image='../'.$filepath.$extpath.$_GET['img'].'.png';
 
 $new_width=check_range(get_integer('width'),0,2048);
 $new_height=check_range(get_integer('height'),0,2048);
