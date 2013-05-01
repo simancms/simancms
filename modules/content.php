@@ -7,7 +7,7 @@
 
 //==============================================================================
 //#ver 1.6.4
-//#revision 2013-03-31
+//#revision 2013-05-01
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
@@ -21,9 +21,9 @@ if (!defined("CONTENT_FUNCTIONS_DEFINED"))
 		function siman_getfilename_ctg_content($idctg, $filenameid)
 			{
 				global $_settings;
-						$tmpurl=get_filename($filenameid);
-						if (empty($tmpurl))
-							$tmpurl='index.php?m=content&d=viewctg&ctgid='.$idctg;
+				$tmpurl=get_filename($filenameid);
+				if (empty($tmpurl))
+					$tmpurl='index.php?m=content&d=viewctg&ctgid='.$idctg;
 				return $tmpurl;
 			}
 
@@ -31,7 +31,7 @@ if (!defined("CONTENT_FUNCTIONS_DEFINED"))
 			{
 				global $nameDB, $lnkDB, $tableprefix, $_settings;
 				if (!empty($extsql))
-					$addsql.=' WHERE '.$extsql;
+					$addsql=' WHERE '.$extsql;
 				if ($id_mainctg>=0)
 					{
 						if (empty($addsql))
@@ -227,7 +227,7 @@ if (strcmp($m["mode"], 'view')==0)
 	{
 		if ($content_error!=1)
 			{
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				$result=execsql($sql);
 				$i=0;
 				while ($row=database_fetch_object($result))
 					{
@@ -389,7 +389,7 @@ if (strcmp($m["mode"], 'viewctg')==0)
 		$ctg_id=intval($_getvars["ctgid"]);
 		sm_page_viewid('content-viewctg-'.$ctg_id);
 		$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='$ctg_id'";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$result=execsql($sql);
 		while ($row=database_fetch_object($result))
 			{
 				if ($modules_index==0 && $_settings['content_use_path']==1 && $row->no_use_path!=1)
@@ -437,7 +437,7 @@ if (strcmp($m["mode"], 'viewctg')==0)
 		else
 			$sql.=" ORDER BY title_content ASC";
 		//$sql="SELECT * FROM ".$tableprefix."content WHERE id_category_c='$ctg_id'";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$result=execsql($sql);
 		$i=0;
 		while ($row=database_fetch_object($result))
 			{
@@ -485,7 +485,7 @@ if (strcmp($m["mode"], 'blockctgview')==0)
 		else
 			{
 				$sql="SELECT * FROM ".$tableprefix."categories WHERE id_category='$ctg_id'";
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				$result=execsql($sql);
 				while ($row=database_fetch_object($result))
 					{
 						$m['title']=$row->title_category;

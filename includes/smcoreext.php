@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-08-12                                                         |
+//#ver 1.6.4
+//#revision 2012-05-01
 //==============================================================================
 
 function sm_add_user($login, $password, $email, $question='', $answer='', $user_status='1')
@@ -245,6 +245,7 @@ function sm_error_page($title, $message, $header_error_code='')
 		global $special, $modules, $lang;
 		$modules[0]['error_message']=$message;
 		$modules[0]['module']='';
+		$modules[0]['mode']=md5('error');
 		if (empty($title))
 			$modules[0]['title']=$lang["error"];
 		else
@@ -256,15 +257,10 @@ function sm_error_page($title, $message, $header_error_code='')
 
 function sm_access_denied($message=NULL)
 	{
-		global $special, $modules, $lang;
+		global $lang;
 		if ($message===NULL)
-			$modules[0]['error_message']=$lang['access_denied'];
-		else
-			$modules[0]['error_message']=$message;
-		$modules[0]['module']='';
-		$modules[0]['title']=$lang["error"];
-		$modules[0]['error_type']='custom';
-		$special['header_error_code']='423 Locked';
+			$message=$lang['access_denied'];
+		sm_error_page($lang["error"], $message, '423 Locked');
 	}
 
 function sm_autobannedip_cleanup()
