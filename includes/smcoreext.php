@@ -302,5 +302,78 @@
 			$_sessionvars['userinfo_groups'] = '';
 			$_sessionvars['userinfo_allinfo'] = '';
 		}
+	
+	function sm_process_login($user_id)
+		{
+			global $userinfo, $smarty;
+			if (sm_login($user_id))
+				{
+					include('includes/userinfo.php');
+					sm_event('successlogin', array($userinfo['id']));
+				}
+		}
+
+	function sm_url_content($url, $postvars=Array(), $timeout=5)
+		{
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_REFERER, $url);
+			curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			if (sm_settings('curl_default_useragent'))
+				curl_setopt($ch, CURLOPT_USERAGENT, sm_settings('curl_default_useragent'));
+			if (!empty($postvars))
+				{
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+				}
+			curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			if (!($out = curl_exec($ch)))
+				$out=false;
+			curl_close($ch);
+			return $out;
+		}
+
+	function sm_download_file($url, $filename, $postvars=Array(), $timeout=5)
+		{
+			$ch = curl_init($url);
+			if (file_exists($filename))
+				unlink($filename);
+			$fp = fopen($filename, "w");
+			curl_setopt($ch, CURLOPT_FILE, $fp);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+			if (sm_settings('curl_default_useragent'))
+				curl_setopt($ch, CURLOPT_USERAGENT, sm_settings('curl_default_useragent'));
+			if (!empty($postvars))
+				{
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+				}
+			curl_exec($ch);
+			$tmperr = curl_error($ch);
+			curl_close($ch);
+			fclose($fp);
+			if (!empty($tmperr))
+				unlink($filename);
+			return file_exists($filename);
+		}
+	
+	function sm_check_user($login, $password)
+		{
+			global $sm;
+			$usr_name = dbescape(strtolower($login));
+			$usr_passwd = md5($password);
+			if (sm_settings('signinwithloginandemail')==1)
+				$id = getsqlfield("SELECT id_user FROM ".$sm['tu']."users WHERE (lower(login)='$usr_name' OR lower(email)='$usr_name') AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+			else
+				$id = getsqlfield("SELECT id_user FROM ".$sm['tu']."users WHERE lower(login)='$usr_name' AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+			if (intval($id)!=0)
+				return intval($id);
+			else
+				return false;
+		}
 
 ?>

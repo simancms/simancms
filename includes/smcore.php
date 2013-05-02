@@ -664,7 +664,10 @@
 					$_sessionvars['userinfo_allinfo'] = serialize($usrinfo);
 					$sql = "UPDATE ".$tableusersprefix."users SET id_session='".session_id()."', last_login='".time()."' WHERE id_user='".intval($usrinfo['id_user'])."'";
 					$result = execsql($sql);
+					return true;
 				}
+			else
+				return false;
 		}
 
 	/*

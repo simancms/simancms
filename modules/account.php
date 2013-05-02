@@ -201,66 +201,59 @@
 			$m["title"] = $lang["login_caption"];
 			if (!empty($_postvars["login_d"]))
 				{
-					$usr_name = dbescape(strtolower($_postvars["login_d"]));
-					$usr_passwd = md5($_postvars["passwd_d"]);
-					if ($_settings['signinwithloginandemail'] == 1)
-						$usrlogin = getsql("SELECT * FROM ".$tableusersprefix."users WHERE (lower(login)='$usr_name' OR lower(email)='$usr_name') AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+					sm_extcore();
+					if ($uid=sm_check_user($_postvars["login_d"], $_postvars["passwd_d"]))
+						{
+							sm_process_login($uid);
+							$m['mode'] = "successlogin";
+							//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
+							//$result=execsql($sql);
+							if ($_postvars['autologin_d'] == 1 || $_settings['alwaysautologin'] == 1)
+								{
+									setcookie($_settings['cookprefix'].'simanautologin', md5($session_prefix.$userinfo['info']['random_code'].$userinfo['id']), time() + (intval($_settings['autologinlifetime']) > 0 ? intval($_settings['autologinlifetime']) : 30758400));
+								}
+							log_write(LOG_LOGIN, $lang['module_account']['log']['user_logged']);
+							if ($_settings['return_after_login'] == 1 && !empty($_postvars['p_goto_url']))
+								{
+									sm_redirect($_postvars['p_goto_url']);
+								}
+							elseif (!empty($_settings['redirect_after_login_3']) && $userinfo['level'] == 3)
+								{
+									sm_redirect($_settings['redirect_after_login_3']);
+								}
+							elseif (!empty($_settings['redirect_after_login_2']) && $userinfo['level'] >= 2)
+								{
+									sm_redirect($_settings['redirect_after_login_2']);
+								}
+							elseif (!empty($_settings['redirect_after_login_1']) && $userinfo['level'] >= 1)
+								{
+									sm_redirect($_settings['redirect_after_login_1']);
+								}
+							else
+								{
+									sm_redirect('index.php?m=account&d=cabinet');
+								}
+						}
 					else
-						$usrlogin = getsql("SELECT * FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND password='$usr_passwd' AND user_status>0 LIMIT 1");
+						{
+							$m['mode'] = "wronglogin";
+							log_write(LOG_DANGER, $lang['module_account']['log']['user_not_logged'].': '.$usr_name);
+							$special['autofocus'] = 'login_d';
+							sm_extcore();
+							$autoban_time = sm_get_settings('autoban_time', 'general');
+							sm_tempdata_addint('wronglogin', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
+							//Autoban checking
+							if (intval(sm_tempdata_aggregate('wronglogin', $_servervars['REMOTE_ADDR'], SM_AGGREGATE_COUNT)) > intval(sm_get_settings('autoban_attempts', 'general')))
+								{
+									sm_update_settings('autoban_ips', addto_nllist(sm_get_settings('autoban_ips'), $_servervars['REMOTE_ADDR']));
+									sm_tempdata_addint('bannedip', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
+									sm_tempdata_remove('wronglogin', $_servervars['REMOTE_ADDR']);
+									sm_access_denied();
+								}
+						}
 				}
 			else
 				$m['mode'] = 'show';
-			if (empty($usrlogin['id_user']) && $m['mode'] != 'show')
-				{
-					$m['mode'] = "wronglogin";
-					log_write(LOG_DANGER, $lang['module_account']['log']['user_not_logged'].': '.$usr_name);
-					$special['autofocus'] = 'login_d';
-					sm_extcore();
-					$autoban_time = sm_get_settings('autoban_time', 'general');
-					sm_tempdata_addint('wronglogin', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
-					//Autoban checking
-					if (intval(sm_tempdata_aggregate('wronglogin', $_servervars['REMOTE_ADDR'], SM_AGGREGATE_COUNT)) > intval(sm_get_settings('autoban_attempts', 'general')))
-						{
-							sm_update_settings('autoban_ips', addto_nllist(sm_get_settings('autoban_ips'), $_servervars['REMOTE_ADDR']));
-							sm_tempdata_addint('bannedip', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
-							sm_tempdata_remove('wronglogin', $_servervars['REMOTE_ADDR']);
-							sm_access_denied();
-						}
-				}
-			elseif ($m['mode'] != 'show')
-				{
-					sm_login($usrlogin['id_user'], $usrlogin);
-					$m['mode'] = "successlogin";
-					include('includes/userinfo.php');
-					//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
-					//$result=execsql($sql);
-					sm_event('successlogin', array($userinfo['id']));
-					if ($_postvars['autologin_d'] == 1 || $_settings['alwaysautologin'] == 1)
-						{
-							setcookie($_settings['cookprefix'].'simanautologin', md5($session_prefix.$userinfo['info']['random_code'].$userinfo['id']), time() + (intval($_settings['autologinlifetime']) > 0 ? intval($_settings['autologinlifetime']) : 30758400));
-						}
-					log_write(LOG_LOGIN, $lang['module_account']['log']['user_logged']);
-					if ($_settings['return_after_login'] == 1 && !empty($_postvars['p_goto_url']))
-						{
-							sm_redirect($_postvars['p_goto_url']);
-						}
-					elseif (!empty($_settings['redirect_after_login_3']) && $userinfo['level'] == 3)
-						{
-							sm_redirect($_settings['redirect_after_login_3']);
-						}
-					elseif (!empty($_settings['redirect_after_login_2']) && $userinfo['level'] >= 2)
-						{
-							sm_redirect($_settings['redirect_after_login_2']);
-						}
-					elseif (!empty($_settings['redirect_after_login_1']) && $userinfo['level'] >= 1)
-						{
-							sm_redirect($_settings['redirect_after_login_1']);
-						}
-					else
-						{
-							sm_redirect('index.php?m=account&d=cabinet');
-						}
-				}
 		}
 	if (strcmp($m['mode'], 'show') == 0)
 		{
