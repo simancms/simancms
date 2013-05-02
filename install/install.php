@@ -96,6 +96,8 @@
 			$lnkDB = database_connect($hostNameDB, $userNameDB, $userPasswordDB, $nameDB);
 			if ($lnkDB == false)
 				{
+					if (empty($_sessionvars['language']))
+						require("lang/en.php");
 					$inst['error'] = 1;
 					$inst['errors'][0]['text'] = $lang['cant_connect_to_database'];
 				}
