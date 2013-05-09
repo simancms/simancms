@@ -158,7 +158,10 @@ if (!defined("simplyquery_DEFINED"))
 				function Find($addsql='')
 					{
 						$sql=$this->GetPairs(' AND ');
-						$this->sql="SELECT count(*) FROM ".$this->tableprefix.$this->tablename." WHERE (".$sql.")";
+						if (!empty($sql))
+							$this->sql="SELECT count(*) FROM ".$this->tableprefix.$this->tablename." WHERE (".$sql.")";
+						else
+							$this->sql="SELECT count(*) FROM ".$this->tableprefix.$this->tablename;
 						if (!empty($addsql))
 							$this->sql.=' '.$addsql;
 						$r=getsql($this->sql, 'r');
