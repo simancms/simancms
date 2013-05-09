@@ -12,39 +12,39 @@
 	//==============================================================================
 
 
-	function sm_delete_settings($settings_name, $mode_not_used = 'default')
+	function sm_delete_settings($settings_name, $mode = 'default')
 		{
 			global $nameDB, $lnkDB, $tableprefix;
-			$sql = "DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."'";
+			$sql = "DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
 			$result = execsql($sql);
 		}
 
-	function sm_get_settings($settings_name, $mode_not_used = 'default')
+	function sm_get_settings($settings_name, $mode = 'default')
 		{
 			global $nameDB, $lnkDB, $tableprefix;
-			$sql = "SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."' LIMIT 1";
+			$sql = "SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."' LIMIT 1";
 			$result = execsql($sql);
 			$r = database_fetch_row($result);
 			return $r[0];
 		}
 
 	//Pseudo for sm_new_settings
-	function sm_add_settings($settings_name, $settings_value, $mode_not_used = 'default')
+	function sm_add_settings($settings_name, $settings_value, $mode = 'default')
 		{
-			sm_new_settings($settings_name, $settings_value, $mode_not_used);
+			sm_new_settings($settings_name, $settings_value, $mode);
 		}
 
-	function sm_new_settings($settings_name, $settings_value, $mode_not_used = 'default')
+	function sm_new_settings($settings_name, $settings_value, $mode = 'default')
 		{
 			global $nameDB, $lnkDB, $tableprefix;
-			$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode_not_used)."')";
+			$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')";
 			$result = execsql($sql);
 		}
 
-	function sm_update_settings($settings_name, $new_value, $mode_not_used = 'default')
+	function sm_update_settings($settings_name, $new_value, $mode = 'default')
 		{
 			global $nameDB, $lnkDB, $tableprefix;
-			$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode_not_used)."'";
+			$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
 			$result = execsql($sql);
 		}
 
