@@ -185,15 +185,6 @@ if ($userinfo['level']>=3)
 				}
 			sm_redirect('index.php?m=blocks&d=view');
 		}
-	if (strcmp($m["mode"], 'delete')==0)
-		{
-			$m["module"]='blocks';
-			$_msgbox['mode']='yesno';
-			$_msgbox['title']=$lang['delete'];
-			$_msgbox['msg']=$lang['really_want_delete_block'];
-			$_msgbox['yes']='index.php?m=blocks&d=postdelete&id='.$_getvars['id'].'&pos='.$_getvars['pos'].'&pnl='.$_getvars['pnl'];
-			$_msgbox['no']='index.php?m=blocks';
-		}
 	if (strcmp($m["mode"], 'postdelete')==0)
 		{
 			$m["title"]=$lang['static_blocks'];
@@ -238,6 +229,7 @@ if ($userinfo['level']>=3)
 			$m["module"]='blocks';
 			$m["title"]=$lang['static_blocks'];
 			add_path_control();
+			add_path($lang['static_blocks'], "index.php?m=blocks");
 			require_once('includes/admintable.php');
 			for ($panel=1; $panel<intval($_settings['sidepanel_count'])+1; $panel++)
 				{

@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-07-21                                                         |
+//#ver 1.6.4
+//#revision 2013-05-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
@@ -39,7 +39,7 @@ if ($userinfo['level']>0)
 							{
 								$special['ext_editor_on']=1;
 							}
-						$m['selected_ctg']=$_getvars['ctg'];
+						$m['ctgidselected']=intval($_getvars['ctg']);
 						$m['images']=load_file_list('./files/img/', 'jpg|gif|jpeg|png');
 						sm_event('onaddcontent', array($m['selected_ctg']));
 					}
@@ -66,16 +66,15 @@ if ($userinfo['level']>0)
 						$filename=addslashesJ($_postvars["p_filename"]);
 						$refuse_direct_show=intval($_postvars["p_refuse_direct_show"]);
 						$sql="INSERT INTO ".$tableprefix."content (id_category_c, title_content, preview_content, text_content, type_content, keywords_content, refuse_direct_show, description_content) VALUES ('$id_category_c', '$title_content', '$preview_content', '$text_content', '$type_content', '$keywords_content', '$refuse_direct_show', '$description_content')";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
-						$cid=database_insert_id('content', $nameDB, $lnkDB);
+						$cid=insertsql($sql);
 						if (!empty($filename))
 							{
 								$urlid=register_filesystem('index.php?m=content&d=view&cid='.$cid, $filename, $title_content);
 								$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".$cid;
-								$result=database_db_query($nameDB, $sql, $lnkDB);
+								$result=execsql($sql);
 							}
 						$sql="UPDATE ".$tableprefix."content SET priority_content='$cid' WHERE id_content=".$cid;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						for ($i=0; $i<$_settings['content_attachments_count']; $i++)
 							{
 								sm_upload_attachment('content', $cid, $_uplfilevars['attachment'.$i]);
@@ -127,7 +126,7 @@ if ($userinfo['level']>0)
 					{
 						$sql="SELECT * FROM ".$tableprefix."content  LEFT JOIN ".$tableprefix."categories ON ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category  WHERE id_content='".intval($_getvars["cid"])."'";
 							$sql.=" AND (".$extsql.')';
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$canedit=1;
@@ -149,7 +148,7 @@ if ($userinfo['level']>0)
 						if ($_settings['content_use_preview']==1)
 							$tmp_preview_sql="preview_content='$preview_content',";
 						$sql="UPDATE ".$tableprefix."content SET id_category_c='$id_category_c', title_content='$title_content', $tmp_preview_sql text_content='$text_content', type_content='$type_content', keywords_content = '$keywords_content', refuse_direct_show = '$refuse_direct_show', description_content='$description_content' WHERE id_content='".intval($_getvars["cid"])."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						if ($_settings['content_use_image']==1)
 							{
 								$id_content=intval($_getvars["cid"]);
@@ -177,7 +176,7 @@ if ($userinfo['level']>0)
 									}
 							}
 						$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$fname=$row->filename_content;
@@ -186,20 +185,20 @@ if ($userinfo['level']>0)
 							{
 								$urlid=register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
 								$sql="UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".intval($_getvars["cid"]);
-								$result=database_db_query($nameDB, $sql, $lnkDB);
+								$result=execsql($sql);
 							}
 						else
 							{
 								if (empty($filename))
 									{
 										$sql="UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".intval($_getvars["cid"]);
-										$result=database_db_query($nameDB, $sql, $lnkDB);
+										$result=execsql($sql);
 										delete_filesystem($fname);
 									}
 								else
 									update_filesystem($fname, 'index.php?m=content&d=view&cid='.intval($_getvars["cid"]), $filename, $title_content);
 							}
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						for ($i=0; $i<$_settings['content_attachments_count']; $i++)
 							{
 								sm_upload_attachment('content', intval($_getvars["cid"]), $_uplfilevars['attachment'.$i]);
@@ -229,7 +228,7 @@ if ($userinfo['level']>0)
 						$sql="SELECT * FROM ".$tableprefix."content  LEFT JOIN ".$tableprefix."categories ON ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category  WHERE id_content='".intval($_getvars["cid"])."'";
 						if (!empty($extsql))
 							$sql.=" AND (".$extsql.')';
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						$i=0;
 						while ($row=database_fetch_object($result))
 							{
@@ -293,7 +292,7 @@ if ($userinfo['level']>0)
 					{
 						$sql="SELECT * FROM ".$tableprefix."content  LEFT JOIN ".$tableprefix."categories ON ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category  WHERE id_content='".intval($_getvars["cid"])."'";
 							$sql.=" AND (".$extsql.')';
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$candelete=1;
@@ -326,7 +325,7 @@ if ($userinfo['level']>0)
 					{
 						$sql="SELECT * FROM ".$tableprefix."content  LEFT JOIN ".$tableprefix."categories ON ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category  WHERE id_content='".intval($_getvars["cid"])."'";
 							$sql.=" AND (".$extsql.')';
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$candelete=1;
@@ -337,7 +336,7 @@ if ($userinfo['level']>0)
 						$m['title']=$lang['delete_content'];
 						$m["module"]='content';
 						$sql="SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$fname=$row->filename_content;
@@ -347,7 +346,7 @@ if ($userinfo['level']>0)
 								delete_filesystem($fname);
 							}
 						$sql="DELETE FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."' AND id_content<>1";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						sm_delete_attachments('content', intval($_getvars["cid"]));
 						if ($userinfo['level']<3)
 							$refresh_url='index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg'];

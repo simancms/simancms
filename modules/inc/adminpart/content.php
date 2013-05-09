@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-04-27                                                         |
+//#ver 1.6.4
+//#revision 2013-05-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
@@ -25,6 +25,7 @@ if ($userinfo['level']>2)
 				$m["module"]='content';
 				add_path($lang['control_panel'], "index.php?m=admin");
 				add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+				add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 			}
 		if (strcmp($m["mode"], 'editctg')==0)
 			{
@@ -298,7 +299,8 @@ if ($userinfo['level']>2)
 				$m["module"]='content';
 				add_path($lang['control_panel'], "index.php?m=admin");
 				add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
-				add_path($lang['module_content_name'], "index.php?m=content&d=admin");				
+				add_path($lang['module_content_name'], "index.php?m=content&d=admin");
+				add_path($lang['list_content'], "index.php?m=content&d=list");
 				$sql="SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs";
 				$sort=0;
 				if (!empty($ctg_id)) 
@@ -306,7 +308,11 @@ if ($userinfo['level']>2)
 						$sql.=" WHERE id_category_c = '$ctg_id'";
 						for ($i=0; $i<10; $i++)
 							if ($m['ctg'][$i]['id'] == $ctg_id)
-								$sort = $m['ctg'][$i]['sorting_category'];
+								{
+									$sort = $m['ctg'][$i]['sorting_category'];
+									add_path($m['ctg'][$i]['title'], 'index.php?m=content&d=list&ctg='.$m['ctg'][$i]['id']);
+									$m['title'].=' - '.$m['ctg'][$i]['title'];
+								}
 					}
 				if ($sort==1)
 					$sql.=" ORDER BY title_content DESC";

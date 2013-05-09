@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-07-27                                                         |
+//#ver 1.6.4
+//#revision 2013-05-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
@@ -45,6 +45,8 @@ if ($userinfo['level']==3)
 			}
 		if (strcmp($m['mode'], 'usrlist')==0)
 			{
+				add_path_control();
+				add_path($lang["user_list"], 'index.php?m=account&d=usrlist');
 				$m["module"]='account';
 				$m["title"]=$lang["user_list"];
 				if (empty($_getvars['sellogin']))
@@ -139,6 +141,7 @@ if ($userinfo['level']==3)
 		if (strcmp($m['mode'], 'listgroups')==0)
 			{
 				add_path_control();
+				add_path($lang['module_account']['groups'], 'index.php?m=account&d=listgroups');
 				$m['module']='account';
 				$m['title']=$lang['module_account']['groups'];
 				require_once('includes/admintable.php');

@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-07-20                                                         |
+//#ver 1.6.4
+//#revision 2013-05-09
 //==============================================================================
 
 if (!defined("SIMAN_DEFINED"))
@@ -27,7 +27,7 @@ if (!defined("SIMAN_DEFINED"))
 				$sql="SELECT * FROM ".$tableprefix."categories_news";
 				if (!empty($extsql))
 					$sql.=' WHERE '.$extsql;
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				$result=execsql($sql);
 				$i=0;
 				while ($row=database_fetch_object($result))
 					{
@@ -73,8 +73,7 @@ if (!defined("SIMAN_DEFINED"))
 									}
 								$date_news=mktime($m['date']['hours'], $m['date']['minutes'], $m['date']['seconds'], $_postvars['p_date_month'], $_postvars['p_date_day'], $_postvars['p_date_year']);
 								$sql="INSERT INTO ".$tableprefix."news (id_category_n, date_news, title_news, preview_news, text_news, type_news, keywords_news, description_news, id_author_news, img_copyright_news) VALUES ('$id_category_n', '$date_news', '$title_news', '$preview_news', '$text_news', '$type_news', '$keywords_news', '$description_news', '".intval($userinfo['id'])."', '$img_copyright_news')";
-								$result=database_db_query($nameDB, $sql, $lnkDB);
-								$id_news=database_insert_id('news', $nameDB, $lnkDB);
+								$id_news=insertsql($sql);
 								if ($_settings['news_use_image']==1)
 									{
 										if ($_settings['image_generation_type']=='static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -106,7 +105,7 @@ if (!defined("SIMAN_DEFINED"))
 										$title_news2=(empty($title_news))?$_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year']:$title_news;
 										$urlid=register_filesystem('index.php?m=news&d=view&nid='.$nid, $filename, $title_news2);
 										$sql="UPDATE ".$tableprefix."news SET filename_news='$urlid' WHERE id_news=".$nid;
-										$result=database_db_query($nameDB, $sql, $lnkDB);
+										$result=execsql($sql);
 									}
 								for ($i=0; $i<$_settings['news_attachments_count']; $i++)
 									{
@@ -131,7 +130,8 @@ if (!defined("SIMAN_DEFINED"))
 				$sql="SELECT * FROM ".$tableprefix."categories_news";
 				if (!empty($extsql))
 					$sql.=' WHERE '.$extsql;
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				$m["ctgidselected"]=intval($_getvars['ctg']);
+				$result=execsql($sql);
 				$i=0;
 				while ($row=database_fetch_object($result))
 					{
@@ -174,7 +174,7 @@ if (!defined("SIMAN_DEFINED"))
 						$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 						$sql="SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='".intval($_getvars["nid"])."'";
 						$sql.=' AND '.$extsql;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$candelete=1;
@@ -206,7 +206,7 @@ if (!defined("SIMAN_DEFINED"))
 						$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 						$sql="SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='".intval($_getvars["nid"])."'";
 						$sql.=' AND '.$extsql;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$candelete=1;
@@ -218,7 +218,7 @@ if (!defined("SIMAN_DEFINED"))
 						$m["module"]='news';
 						$id_news=intval($_getvars["nid"]);
 						$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$fname=$row->filename_news;
@@ -228,7 +228,7 @@ if (!defined("SIMAN_DEFINED"))
 								delete_filesystem($fname);
 							}
 						$sql="DELETE FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						sm_delete_attachments('news', intval($id_news));
 						if ($userinfo['level']==3)
 							$refresh_url='index.php?m=news&d=list&ctg='.$_getvars['ctg'];
@@ -256,7 +256,7 @@ if (!defined("SIMAN_DEFINED"))
 						$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 						$sql="SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='".intval($_postvars["p_id_category_n"])."'";
 						$sql.=' AND '.$extsql;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$canedit=1;
@@ -301,7 +301,7 @@ if (!defined("SIMAN_DEFINED"))
 								$keywords_news=addslashesJ($_postvars["keywords_news"]);
 								$description_news=addslashesJ($_postvars["description_news"]);
 								$sql="UPDATE ".$tableprefix."news SET id_category_n='$id_category_n', title_news='$title_news', preview_news='$preview_news', text_news='$text_news', type_news='$type_news', date_news='$date_news', keywords_news='$keywords_news', description_news='$description_news' WHERE id_news='".$id_news."'";
-								$result=database_db_query($nameDB, $sql, $lnkDB);
+								$result=execsql($sql);
 								if ($_settings['news_use_image']==1)
 									{
 										if ($_settings['image_generation_type']=='static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -329,7 +329,7 @@ if (!defined("SIMAN_DEFINED"))
 									}
 								$title_news2=(empty($title_news))?$_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year']:$title_news;
 								$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
-								$result=database_db_query($nameDB, $sql, $lnkDB);
+								$result=execsql($sql);
 								while ($row=database_fetch_object($result))
 									{
 										$fname=$row->filename_news;
@@ -338,14 +338,14 @@ if (!defined("SIMAN_DEFINED"))
 									{
 										$urlid=register_filesystem('index.php?m=news&d=view&nid='.$id_news, $filename, $title_news2);
 										$sql="UPDATE ".$tableprefix."news SET filename_news='$urlid' WHERE id_news=".$id_news;
-										$result=database_db_query($nameDB, $sql, $lnkDB);
+										$result=execsql($sql);
 									}
 								else
 									{
 										if (empty($filename))
 											{
 												$sql="UPDATE ".$tableprefix."news SET filename_news='0' WHERE id_news=".$id_news;
-												$result=database_db_query($nameDB, $sql, $lnkDB);
+												$result=execsql($sql);
 												delete_filesystem($fname);
 											}
 										else
@@ -377,7 +377,7 @@ if (!defined("SIMAN_DEFINED"))
 						$extsql=convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 						$sql="SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='".intval($_getvars["nid"])."'";
 						$sql.=' AND '.$extsql;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						while ($row=database_fetch_object($result))
 							{
 								$canedit=1;
@@ -395,7 +395,7 @@ if (!defined("SIMAN_DEFINED"))
 						$sql="SELECT * FROM ".$tableprefix."categories_news";
 						if (!empty($extsql))
 							$sql.=' WHERE '.$extsql;
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						$i=0;
 						while ($row=database_fetch_object($result))
 							{
@@ -404,7 +404,7 @@ if (!defined("SIMAN_DEFINED"))
 								$i++;
 							}
 						$sql="SELECT * FROM ".$tableprefix."news WHERE id_news='".$_getvars["nid"]."'";
-						$result=database_db_query($nameDB, $sql, $lnkDB);
+						$result=execsql($sql);
 						$i=0;
 						while ($row=database_fetch_array($result))
 							{

@@ -14,14 +14,14 @@
 
 	function sm_delete_settings($settings_name, $mode = 'default')
 		{
-			global $nameDB, $lnkDB, $tableprefix;
+			global $tableprefix;
 			$sql = "DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
 			$result = execsql($sql);
 		}
 
 	function sm_get_settings($settings_name, $mode = 'default')
 		{
-			global $nameDB, $lnkDB, $tableprefix;
+			global $tableprefix;
 			$sql = "SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."' LIMIT 1";
 			$result = execsql($sql);
 			$r = database_fetch_row($result);
@@ -36,21 +36,21 @@
 
 	function sm_new_settings($settings_name, $settings_value, $mode = 'default')
 		{
-			global $nameDB, $lnkDB, $tableprefix;
+			global $tableprefix;
 			$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')";
 			$result = execsql($sql);
 		}
 
 	function sm_update_settings($settings_name, $new_value, $mode = 'default')
 		{
-			global $nameDB, $lnkDB, $tableprefix;
+			global $tableprefix;
 			$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
 			$result = execsql($sql);
 		}
 
 	function sm_register_module($module_name, $module_title, $search_fields = '', $search_doing = '', $search_var = '', $search_table = '', $search_title = '', $search_idfield = '', $search_text = '')
 		{
-			global $nameDB, $lnkDB, $tableprefix, $_settings;
+			global $tableprefix, $_settings;
 			$sql = "INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('".dbescape($module_name)."', '".dbescape($module_title)."', '".dbescape($search_fields)."', '".dbescape($search_doing)."', '".dbescape($search_var)."', '".dbescape($search_table)."', '".dbescape($search_title)."', '".dbescape($search_idfield)."', '".dbescape($search_text)."');";
 			$result = execsql($sql);
 			$_settings['installed_packages'] = addto_nllist($_settings['installed_packages'], $module_name);
@@ -59,7 +59,7 @@
 
 	function sm_unregister_module($module_name)
 		{
-			global $nameDB, $lnkDB, $tableprefix, $_settings;
+			global $tableprefix, $_settings;
 			$sql = "DELETE FROM ".$tableprefix."modules WHERE module_name = '$module_name'";
 			$result = execsql($sql);
 			$_settings['installed_packages'] = removefrom_nllist($_settings['installed_packages'], $module_name);
@@ -122,7 +122,7 @@
 
 	function sm_userinfo($id, $srchfield = 'id_user')
 		{
-			global $nameDB, $lnkDB, $tableusersprefix;
+			global $tableusersprefix;
 			if ($srchfield != 'email' && $srchfield != 'login')
 				$srchfield = 'id_user';
 			$sql = "SELECT * FROM ".$tableusersprefix."users WHERE $srchfield='".dbescape($id)."'";
@@ -167,7 +167,7 @@
 
 	function sm_load_tree($tablename, $field_id, $field_root, $load_only_branches_of_this = -1, $extsqlwhere = '', $sortfield = '')
 		{
-			global $nameDB, $lnkDB, $tableprefix, $_settings;
+			global $tableprefix, $_settings;
 			if (!empty($extsqlwhere))
 				$addsql .= ' WHERE '.$extsqlwhere;
 			if ($load_only_branches_of_this >= 0)
@@ -813,6 +813,7 @@
 	
 	function sm_use($libname)
 		{
+			global $sm;
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
 		}

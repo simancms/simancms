@@ -308,6 +308,7 @@
 					$m["title"] = $lang['upload_image'];
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
+					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
 				}
 			if (strcmp($m['mode'], 'modules') == 0)
 				{
@@ -388,20 +389,25 @@
 						$m['mode_settings'] = $_getvars['viewmode'];
 					else
 						$m['mode_settings'] = 'default';
-					//if ($m['mode_settings']=='default')
-					{
-						$m['list_modes'][0]['mode'] = 'mobile';
-						$m['list_modes'][0]['shortcut'] = 'M';
-						$m['list_modes'][0]['hint'] = $lang['common']['device'].': '.$lang['common']['mobile_device'];
-						$m['list_modes'][0]['profile'] = $lang['common']['mobile_device'];
-						$m['list_modes'][1]['mode'] = 'tablet';
-						$m['list_modes'][1]['shortcut'] = 'T';
-						$m['list_modes'][1]['hint'] = $lang['common']['device'].': '.$lang['common']['tablet_device'];
-						$m['list_modes'][1]['profile'] = $lang['common']['tablet_device'];
-					}
-					if ($m['mode_settings'] == 'default')
-						$m['available_modes'] = $m['list_modes'];
+					$m['list_modes'][0]['mode'] = 'mobile';
+					$m['list_modes'][0]['shortcut'] = 'M';
+					$m['list_modes'][0]['hint'] = $lang['common']['device'].': '.$lang['common']['mobile_device'];
+					$m['list_modes'][0]['profile'] = $lang['common']['mobile_device'];
+					$m['list_modes'][1]['mode'] = 'tablet';
+					$m['list_modes'][1]['shortcut'] = 'T';
+					$m['list_modes'][1]['hint'] = $lang['common']['device'].': '.$lang['common']['tablet_device'];
+					$m['list_modes'][1]['profile'] = $lang['common']['tablet_device'];
 					add_path_control();
+					add_path($lang['settings'], 'index.php?m=admin&d=settings');
+					if ($m['mode_settings'] == 'default')
+						{
+							$m['available_modes'] = $m['list_modes'];
+							add_path($lang['common']['general'], 'index.php?m=admin&d=settings');
+						}
+					elseif ($m['mode_settings'] == 'mobile')
+						add_path($lang['common']['mobile_device'], 'index.php?m=admin&d=settings&viewmode=mobile');
+					elseif ($m['mode_settings'] == 'tablet')
+						add_path($lang['common']['tablet_device'], 'index.php?m=admin&d=settings&viewmode=tablet');
 					$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='".$m['mode_settings']."'";
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
@@ -474,6 +480,8 @@
 				}
 			if (strcmp($m['mode'], 'tstatus') == 0)
 				{
+					add_path_control();
+					add_path($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus');
 					$m["title"] = $lang['module_admin']['optimize_database'];
 					$m["table_count"] = 0;
 					if ($serverDB == 0)
@@ -519,6 +527,7 @@
 					$m["title"] = $lang['module_admin']['images_list'];
 					require_once('includes/admintable.php');
 					add_path_control();
+					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					$m['table']['columns']['title']['caption'] = $lang['module_admin']['image_file_name'];
 					$m['table']['columns']['title']['width'] = '100%';
 					//$m['table']['columns']['title']['url_target']='_blank';
@@ -601,6 +610,8 @@
 				}
 			if (strcmp($m['mode'], 'massemail') == 0)
 				{
+					add_path_control();
+					add_path($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail');
 					$m['title'] = $lang['module_admin']['mass_email'];
 					if (!empty($_settings['ext_editor']))
 						{
@@ -704,6 +715,7 @@
 			if (strcmp($m['mode'], 'filesystem') == 0)
 				{
 					add_path_control();
+					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
 					$m["title"] = $lang['module_admin']['virtual_filesystem'];
 					require_once('includes/admintable.php');
 					$m['table']['columns']['ico']['caption'] = '';
@@ -864,6 +876,7 @@
 			if (strcmp($m['mode'], 'viewlog') == 0)
 				{
 					add_path_control();
+					add_path($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog');
 					$sql = "DELETE FROM ".$tableusersprefix."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
 					$result = execsql($sql);
 					$m["title"] = $lang['module_admin']['view_log'];
@@ -882,7 +895,6 @@
 					while ($row = database_fetch_object($result))
 						{
 							$m['table']['rows'][$i]['time']['data'] = strftime($lang["datetimemask"], $row->time);
-							;
 							$m['table']['rows'][$i]['description']['data'] = htmlspecialchars($row->description);
 							$m['table']['rows'][$i]['ip']['data'] = $row->stringip;
 							$m['table']['rows'][$i]['user']['data'] = $row->user;

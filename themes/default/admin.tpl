@@ -825,7 +825,6 @@
 {if $modules[$index].table_count gt "0"}
 <form action="index.php?m=admin&d=optimize" method="post">
 <input type="hidden" name="p_table_count" value="{$modules[$index].table_count}">
-<a href="index.php?m=admin">{$lang.control_panel}</a><br /><br />
 <table width="100%" cellspacing="2" cellpadding="2" border="0">
 <tr>
     <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_name}</td>
