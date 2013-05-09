@@ -843,5 +843,13 @@
 				$url.='&height='.$maxheight;
 			return $url;
 		}
+	
+	function sm_isuseringroup($userid_or_userinfo, $groupid)
+		{
+			if (!is_array($userid_or_userinfo))
+				$userid_or_userinfo=sm_userinfo(intval($userid_or_userinfo));
+			$groups=get_array_groups($userid_or_userinfo['groups']);
+			return in_array($groupid, $groups);
+		}
 
 ?>
