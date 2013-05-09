@@ -276,6 +276,14 @@ if (!defined("simplyquery_DEFINED"))
 						$this->Limit(1);
 						return $this->Select($addsql, $type);
 					}
+				function Count()
+					{
+						return count($this->items);
+					}
+				function isEmpty()
+					{
+						return $this->Count()==0;
+					}
 			}
 		
 		function CheckForNonEmpty($nllist)
