@@ -7,7 +7,7 @@
 
 //==============================================================================
 //#ver 1.6.4
-//#revision 2013-04-11
+//#revision 2013-05-10
 //==============================================================================
 
 if (php_sapi_name()!='cli' && @get_magic_quotes_gpc()==1)
@@ -100,7 +100,8 @@ $sm['s']=&$special;
 $sm['t']=&$tableprefix;
 $sm['tu']=&$tableusersprefix;
 
-$lnkDB = @database_connect($hostNameDB, $userNameDB, $userPasswordDB, $nameDB);
+if (!isset($lnkDB))
+	$lnkDB = @database_connect($hostNameDB, $userNameDB, $userPasswordDB, $nameDB);
 if ($lnkDB!=false)
 	{
 		$special['page']['url']=(!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
