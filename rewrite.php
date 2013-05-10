@@ -1,40 +1,50 @@
 <?php
 
-require_once("includes/dbsettings.php");
-require_once("includes/dbengine".$serverDB.".php");
+	//------------------------------------------------------------------------------
+	//|            Content Management System SiMan CMS                             |
+	//|                http://www.simancms.org                                     |
+	//------------------------------------------------------------------------------
 
-$url='';
+	//==============================================================================
+	//#ver 1.6.4
+	//#revision 2013-05-10
+	//==============================================================================
+	
+	require_once("includes/dbsettings.php");
+	require_once("includes/dbengine".$serverDB.".php");
 
-$lnkDB = database_connect($hostNameDB, $userNameDB, $userPasswordDB, $nameDB);
-if ($lnkDB!=false)
-	{
-		if (!empty($initialStatementDB))
-			$result=database_db_query($nameDB, $initialStatementDB, $lnkDB);
-		$replaced=0;
-		if (substr($_GET['rewrittenquery'], -1)=='/')
-			$_GET['rewrittenquery']=substr($_GET['rewrittenquery'], 0, -1);
-		$_GET['rewrittenquery']=dbescape($_GET['rewrittenquery']);
-		$sql="SELECT * FROM ".$tableprefix."filesystem WHERE filename_fs='".$_GET['rewrittenquery']."' OR  filename_fs='".$_GET['rewrittenquery']."/'";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
-		while ($row=database_fetch_object($result))
-			{
-				$url=$row->url_fs;
-			}
-	}
+	$url = '';
 
-if (empty($url))
-	$url='index.php?m=404';
+	$lnkDB = database_connect($hostNameDB, $userNameDB, $userPasswordDB, $nameDB);
+	if ($lnkDB != false)
+		{
+			if (!empty($initialStatementDB))
+				$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
+			$replaced = 0;
+			if (substr($_GET['rewrittenquery'], -1) == '/')
+				$_GET['rewrittenquery'] = substr($_GET['rewrittenquery'], 0, -1);
+			$_GET['rewrittenquery'] = dbescape($_GET['rewrittenquery']);
+			$sql = "SELECT * FROM ".$tableprefix."filesystem WHERE filename_fs='".$_GET['rewrittenquery']."' OR  filename_fs='".$_GET['rewrittenquery']."/'";
+			$result = database_db_query($nameDB, $sql, $lnkDB);
+			while ($row = database_fetch_object($result))
+				{
+					$url = $row->url_fs;
+				}
+		}
 
-$query=substr($url,10);
+	if (empty($url))
+		$url = 'index.php?m=404';
 
-$options=explode('&', $query);
+	$query = substr($url, 10);
 
-for ($i=0; $i<count($options); $i++)
-	{
-		$tmp=explode('=', $options[$i]);
-		$_GET[$tmp[0]]=$tmp[1];
-	}
+	$options = explode('&', $query);
 
-require(dirname(__FILE__).'/index.php');
+	for ($i = 0; $i < count($options); $i++)
+		{
+			$tmp = explode('=', $options[$i]);
+			$_GET[$tmp[0]] = $tmp[1];
+		}
+
+	require(dirname(__FILE__).'/index.php');
 
 ?>
