@@ -1,4 +1,4 @@
-<script type="text/javascript">
+ <script type="text/javascript">
 {literal}
 function set_adminform_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, r2h)
 {

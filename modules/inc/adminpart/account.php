@@ -145,32 +145,23 @@
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['groups'];
 					require_once('includes/admintable.php');
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['common']['really_want_delete']);
-					$m['table']['default_column'] = 'edit';
+					$t=new TGrid();
+					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddEdit();
+					$t->AddDelete();
 					$sql = 'SELECT * FROM '.$tableusersprefix.'groups ORDER BY title_group';
 					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
-							$m['table']['rows'][$i]['title']['data'] = $row->title_group;
-							$m['table']['rows'][$i]['title']['hint'] = $row->description_group;
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=account&d=editgroup&id='.$row->id_group;
-							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=account&d=postdeletegroup&id='.$row->id_group;
+							$t->Label('title', $row->title_group);
+							$t->Hint('title', htmlspecialchars($row->description_group));
+							$t->URL('edit', 'index.php?m=account&d=editgroup&id='.$row->id_group);
+							$t->URL('delete', 'index.php?m=account&d=postdeletegroup&id='.$row->id_group);
+							$t->NewRow();
 							$i++;
 						}
+					$m['table']=$t->Output();
 				}
 			if (strcmp($m['mode'], 'addgroup') == 0)
 				{
