@@ -938,24 +938,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'addmodule'}
-{include file="block_begin.tpl"}
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
-<tr>
-    <td width="50%">{$lang.module}</td>
-    <td width="50%">{$lang.doing}</td>
-</tr>
-{section name=i loop=$modules[$index].addmodules}
-<tr>
-    <td>{$modules[$index].addmodules[i]}</td>
-    <td><a href="index.php?m={$modules[$index].addmodules[i]}&d=install">{$lang.module_admin.add_module}</a></td>
-</tr>
-{/section}
-</table>
-{if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_add_module&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "editfilesystem" or $modules[$index].mode eq "addfilesystem"}
 {include file="block_begin.tpl"}
 <!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&d=filesystem">{$lang.module_admin.virtual_filesystem}</a><br /><br />-->

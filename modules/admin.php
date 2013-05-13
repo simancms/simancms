@@ -27,7 +27,17 @@
 					if ($start !== false && strpos($info, '*/', $start) !== false)
 						{
 							$info = substr($info, $start, strpos($info, '*/', $start) - $start);
-							return trim($info);
+							$items=nllistToArray($info, true);
+							for ($i=0; $i<count($items); $i++)
+								{
+									$item=explode(':', $items[$i]);
+									$key=sm_getnicename(trim($item[0]));
+									$value='';
+									for ($j=1; $j<count($item); $j++)
+										$value.=($j>1?':'.$item[$j]:''.ltrim($item[$j]));
+									$result[$key]=$value;
+								}
+							return $result;
 						}
 					else
 						return false;
@@ -652,19 +662,29 @@
 					$result = execsql($sql);
 					$refresh_url = 'index.php?m=admin&d=modules';
 				}
-			if (strcmp($m['mode'], 'addmodule') == 0)
+			if (sm_action('addmodule'))
 				{
 					add_path_modules();
-					$modename = $_getvars['mn'];
 					$m['title'] = $lang['module_admin']['add_module'];
+					include_once('includes/admininterface.php');
+					include_once('includes/admintable.php');
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('title', $lang['module'], '20%');
+					$t->AddCol('version', $lang['module_admin']['version'], '5%');
+					$t->AddCol('author', $lang['module_admin']['author'], '20%');
+					$t->AddCol('description', $lang['common']['description'], '50%');
+					$t->AddCol('action', $lang['action'], '5%');
+					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
 					$dir = dir('./modules/');
 					$i = 0;
 					while ($entry = $dir->read())
 						{
 							if (strpos($entry, '.php') > 0)
 								{
-									if ($entry != 'admin.php')
-										$info = sm_get_module_info('./modules/'.$entry);
+									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
+										continue;
+									$info = sm_get_module_info('./modules/'.$entry);
 									if (
 										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
 										&&
@@ -673,36 +693,29 @@
 										$info == false
 									)
 										continue;
-									$m['modules'][substr($entry, 0, -4)]['present'] = 1;
-									$m['modules'][substr($entry, 0, -4)]['info'] = $info;
+									if (!empty($info[sm_getnicename('Module Name')]))
+										$t->Label('title', $info[sm_getnicename('Module Name')]);
+									else
+										$t->Label('title', substr($entry, 0, -4));
+									if (!empty($info[sm_getnicename('Version')]))
+										$t->Label('version', $info[sm_getnicename('Version')]);
+									if (!empty($info[sm_getnicename('Author')]))
+										$t->Label('author', $info[sm_getnicename('Author')]);
+									if (!empty($info[sm_getnicename('Description')]))
+										$t->Label('description', $info[sm_getnicename('Description')]);
+									if (!empty($info[sm_getnicename('Author URI')]))
+										$t->URL('author', $info[sm_getnicename('Author URI')], true);
+									if (!empty($info[sm_getnicename('Module URI')]))
+										$t->URL('description', $info[sm_getnicename('Module URI')], true);
+									$t->Label('action', $lang['common']['install']);
+									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
+									$t->NewRow();
 									$i++;
 								}
 						}
 					$dir->close();
-					$m['modules']['account']['disabled'] = 1;
-					$m['modules']['admin']['disabled'] = 1;
-					$m['modules']['blocks']['disabled'] = 1;
-					$m['modules']['geturl']['disabled'] = 1;
-					$m['modules']['index']['disabled'] = 1;
-					$m['modules']['msgbox']['disabled'] = 1;
-					$m['modules']['refresh']['disabled'] = 1;
-					$sql = "SELECT * FROM ".$tableprefix."modules";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['modules'][$row->module_name]['disabled'] = 1;
-							$i++;
-						}
-					$i = 0;
-					while (list($key, $val) = each($m['modules']))
-						{
-							if ($m['modules'][$key]['disabled'] != 1)
-								{
-									$m['addmodules'][$i] = $key;
-									$i++;
-								}
-						}
+					$ui->AddGrid($t);
+					$ui->Output(true);
 				}
 			if (strcmp($m['mode'], 'filesystem') == 0)
 				{

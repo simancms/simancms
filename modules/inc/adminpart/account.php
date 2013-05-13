@@ -63,7 +63,7 @@
 					$offset = intval($_getvars['from']);
 					$t->AddCol('user', $lang['user'], '60%');
 					$t->AddCol('status', $lang['status'], '20%');
-					$t->AddCol('action', $lang['doing'], '20%');
+					$t->AddCol('action', $lang['action'], '20%');
 					$sql = "SELECT * FROM ".$tableusersprefix."users";
 					$sql2 = "SELECT count(*) FROM ".$tableusersprefix."users";
 					if (!empty($_getvars['sellogin']))

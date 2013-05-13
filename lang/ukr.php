@@ -8,7 +8,7 @@
 	$lang["title"]='Назва';
 	$lang["caption"]='Заголовок';
 	$lang["url"]='Адреса';
-	$lang["doing"]='Дія';
+	$lang["action"]='Дія';
 	$lang["add_url"]='Додати посилання';
 	$lang["add_image"]='Додати малюнок';
 	$lang["edit"]='Редагувати';
@@ -95,6 +95,7 @@
 	$lang['common']['time']='Час';
 	$lang['common']['see_also']='Перегляньте також';
 	$lang['common']['description']='Опис';
+	$lang['common']['description']='Опис';
 	$lang['common']['show_all']='Показати все';
 	$lang['common']['sorting']='Сортування';
 	$lang['common']['priority']='Пріоритет';
@@ -137,6 +138,7 @@
 	$lang['common']['month']='Місяць';
 	$lang['common']['day']='День';
 	$lang['common']['year']='Рік';
+	$lang['common']['are_you_sure']='Ви впевнені';
 	
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
@@ -486,6 +488,8 @@
 	$lang['module_admin']['meta_resource_title_position'][1]='На початку';
 	$lang['module_admin']['meta_resource_title_position'][2]='В кінці';
 	$lang['module_admin']['update']='Оновлення';
+	$lang['module_admin']['author']='Автор';
+	$lang['module_admin']['version']='Версія';
 	
 	//Search
 	$lang['module_search']['search']='Пошук';
