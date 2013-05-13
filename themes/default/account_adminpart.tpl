@@ -99,14 +99,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "listgroups"}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-<a href="index.php?m=account&d=addgroup">{$lang.module_account.add_group}</a>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "addgroup" or $modules[$index].mode eq "editgroup"}
 {include file="block_begin.tpl"}
 {include file="common_adminform.tpl" form=$modules[$index].form}

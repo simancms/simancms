@@ -704,60 +704,46 @@
 								}
 						}
 				}
-			if (strcmp($m['mode'], 'postaddmodule') == 0)
-				{
-					$m["title"] = $lang['module_admin']['remove_module'];
-					$mname = $_getvars['modname'];
-					$sql = "INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('$mname', '$mname')";
-					$result = execsql($sql);
-					$refresh_url = 'index.php?m=admin&d=modules';
-				}
 			if (strcmp($m['mode'], 'filesystem') == 0)
 				{
 					add_path_control();
 					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
 					$m["title"] = $lang['module_admin']['virtual_filesystem'];
 					require_once('includes/admintable.php');
-					$m['table']['columns']['ico']['caption'] = '';
-					$m['table']['columns']['ico']['width'] = '16';
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['module_admin']['really_want_delete_filesystem_item']);
-					$m['table']['columns']['tomenu']['caption'] = '';
-					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['to_menu'] = 1;
-					$m['table']['default_column'] = 'edit';
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('ico', '', '16');
+					$t->AddCol('title', $lang['common']['title'], '95%');
+					$t->AddEdit();
+					$t->AddDelete();
+					$t->AddMenuInsert();
 					$sql = "SELECT * FROM ".$tableprefix."filesystem ORDER BY filename_fs ASC";
 					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
 							if (substr($row->filename_fs, -1) == '/')
-								$m['table']['rows'][$i]['ico']['image'] = 'folder.gif';
+								$t->Image('ico', 'folder.gif');
 							else
-								$m['table']['rows'][$i]['ico']['image'] = 'file.gif';
-							$m['table']['rows'][$i]['ico']['hint'] = $row->id_fs;
-							$m['table']['rows'][$i]['title']['data'] = $row->filename_fs;
-							$m['table']['rows'][$i]['title']['hint'] = $row->comment_fs;
-							$m['table']['rows'][$i]['title']['url'] = $row->url_fs;
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=admin&d=editfilesystem&id='.$row->id_fs;
-							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=admin&d=postdeletefilesystem&id='.$row->id_fs;
-							$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($row->filename_fs);
-							$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->comment_fs);
+								$t->Image('ico', 'file.gif');
+							$t->Hint('ico', $row->id_fs);
+							$t->Label('title', $row->filename_fs);
+							$t->Hint('title', $row->comment_fs);
+							$t->URL('title', $row->url_fs, true);
+							$t->URL('edit', 'index.php?m=admin&d=editfilesystem&id='.$row->id_fs);
+							$t->URL('delete', 'index.php?m=admin&d=postdeletefilesystem&id='.$row->id_fs);
+							$t->Menu($row->comment_fs, $row->filename_fs);
+							$t->NewRow();
 							$i++;
 						}
+					$b=new TButtons();
+					$b->AddButton('add', $lang['common']['add'], 'index.php?m=admin&d=addfilesystem');
+					$ui->AddButtons($b);
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
 			if (strcmp($m["mode"], 'postdeletefilesystem') == 0)
 				{

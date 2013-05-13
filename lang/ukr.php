@@ -465,7 +465,6 @@
 	$lang['module_admin']['really_want_remove_module']='Ви дійсно хочете відключити модуль';
 	$lang['module_admin']['message_remove_module_successful']='Модуль відключено';
 	$lang['module_admin']['add_module']='Додати модуль';
-	$lang['module_admin']['message_add_module_successful']='Модуль додано';
 	$lang['module_admin']['menu_settings']='Налаштування меню';
 	$lang['module_admin']['censored_words']='Заборонені слова';
 	$lang['module_admin']['virtual_filesystem']='Віртуальна файлова система';		

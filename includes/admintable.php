@@ -130,14 +130,15 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['rows'][$this->rownumber][$name]['messagebox_text']=$message;
 					}
-				function URL($name, $value)
+				function URL($name, $value, $open_in_new_window=false)
 					{
 						$this->table['rows'][$this->rownumber][$name]['url']=$value;
+						$this->table['rows'][$this->rownumber][$name]['new_window']=$open_in_new_window;
 					}
 				function Menu($menu_caption, $menu_url, $name='tomenu')
 					{
-						$this->table['rows'][$this->rownumber][$name]['menu_caption']=$menu_caption;
-						$this->table['rows'][$this->rownumber][$name]['menu_url']=$menu_url;
+						$this->table['rows'][$this->rownumber][$name]['menu_caption']=addslashes($menu_caption);
+						$this->table['rows'][$this->rownumber][$name]['menu_url']=addslashes($menu_url);
 					}
 				function Hide($name)
 					{

@@ -447,7 +447,6 @@ $lang['module_admin']['remove_module'] = 'Disable';
 $lang['module_admin']['really_want_remove_module'] = 'Are you sure you want to disable module';
 $lang['module_admin']['message_remove_module_successful'] = 'Module disabled';
 $lang['module_admin']['add_module'] = 'Add module';
-$lang['module_admin']['message_add_module_successful'] = 'Module added';
 $lang['module_admin']['menu_settings'] = 'Menu settings';
 $lang['module_admin']['censored_words'] = 'Disallowed words';
 $lang['module_admin']['virtual_filesystem'] = 'Virtual filesystem';

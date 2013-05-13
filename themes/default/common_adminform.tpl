@@ -1,4 +1,4 @@
- <script type="text/javascript">
+<script type="text/javascript">
 {literal}
 function set_adminform_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, r2h)
 {
@@ -47,6 +47,7 @@ function show_admintable_tab(num)
 
 {if $form.dont_use_form_tag neq 1}
 <form action="{$form.action}" method="{if $form.method eq ""}post{else}{$form.method}{/if}" class="adminform_form" enctype="multipart/form-data">
+{/if}
 {if $form.method neq "get"}
 	<input type="hidden" name="adminform_updates_nllist" value="{$form.updates}">
 	<input type="hidden" name="adminform_files_nllist" value="{$form.files}">

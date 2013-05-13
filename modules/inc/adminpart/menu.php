@@ -72,7 +72,7 @@
 					$m["module"] = 'menu';
 					$m["title"] = $lang["add_menu"];
 					$mcaption = $_postvars["p_caption"];
-					$sql = "INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('$mcaption')";
+					$sql = "INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('".dbescape($mcaption)."')";
 					$result = execsql($sql);
 					if ($_settings['menus_use_image'] == 1)
 						{
@@ -136,7 +136,7 @@
 							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position >= '$lposition' AND id_menu_ml='$menu_id' AND submenu_from='$submenu_from'";
 							$result = execsql($sql);
 						}
-					$sql = "INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, submenu_from, url, caption_ml, position, alt_ml, newpage_ml) VALUES ('$menu_id', '$submenu_from', '$lurl', '$lcaption', '$lposition', '$alt_ml', '$newpage_ml')";
+					$sql = "INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, submenu_from, url, caption_ml, position, alt_ml, newpage_ml) VALUES ('".dbescape($menu_id)."', '".dbescape($submenu_from)."', '".dbescape($lurl)."', '".dbescape($lcaption)."', '".dbescape($lposition)."', '".dbescape($alt_ml)."', '".dbescape($newpage_ml)."')";
 					$result = execsql($sql);
 					if ($_settings['menuitems_use_image'] == 1)
 						{
@@ -177,7 +177,7 @@
 							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position>='$lposition'";
 							$result = execsql($sql);
 						}
-					$sql = "UPDATE ".$tableprefix."menu_lines SET url = '$lurl', caption_ml = '$lcaption', partial_select='$partial_select', alt_ml = '$alt_ml', attr_ml = '$attr_ml', newpage_ml = '$newpage_ml' ";
+					$sql = "UPDATE ".$tableprefix."menu_lines SET url = '".dbescape($lurl)."', caption_ml = '".dbescape($lcaption)."', partial_select='".dbescape($partial_select)."', alt_ml = '".dbescape($alt_ml)."', attr_ml = '".dbescape($attr_ml)."', newpage_ml = '".dbescape($newpage_ml)."' ";
 					if (!empty($lposition))
 						{
 							$sql .= ", position = '$lposition'";

@@ -956,21 +956,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "postaddmodule"}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_add_module_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq 'filesystem'}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-<a href="index.php?m=admin&d=addfilesystem">{$lang.common.add}</a>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "editfilesystem" or $modules[$index].mode eq "addfilesystem"}
 {include file="block_begin.tpl"}
 <!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&d=filesystem">{$lang.module_admin.virtual_filesystem}</a><br /><br />-->

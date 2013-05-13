@@ -145,6 +145,9 @@
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['groups'];
 					require_once('includes/admintable.php');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('title', $lang['common']['title'], '100%');
 					$t->AddEdit();
@@ -161,7 +164,12 @@
 							$t->NewRow();
 							$i++;
 						}
-					$m['table']=$t->Output();
+					$b=new TButtons();
+					$b->AddButton('add', $lang['module_account']['add_group'], 'index.php?m=account&d=addgroup');
+					$ui->AddButtons($b);
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
 			if (strcmp($m['mode'], 'addgroup') == 0)
 				{
