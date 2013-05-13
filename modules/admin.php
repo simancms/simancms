@@ -647,21 +647,6 @@
 						}
 					$refresh_url = 'index.php?m=admin';
 				}
-			if (strcmp($m['mode'], 'remmodule') == 0)
-				{
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['module_admin']['remove_module'];
-					$_msgbox['msg'] = $lang['module_admin']['really_want_remove_module'];
-					$_msgbox['yes'] = 'index.php?m=admin&d=postremmodule&mid='.$_getvars["mid"];
-					$_msgbox['no'] = 'index.php?m=admin&d=modules';
-				}
-			if (strcmp($m['mode'], 'postremmodule') == 0)
-				{
-					$m["title"] = $lang['module_admin']['remove_module'];
-					$sql = "DELETE FROM ".$tableprefix."modules WHERE id_module = '".$_getvars['mid']."'";
-					$result = execsql($sql);
-					$refresh_url = 'index.php?m=admin&d=modules';
-				}
 			if (sm_action('addmodule'))
 				{
 					add_path_modules();

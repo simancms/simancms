@@ -931,16 +931,8 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "postremmodule"}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_remove_module_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "editfilesystem" or $modules[$index].mode eq "addfilesystem"}
 {include file="block_begin.tpl"}
-<!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&d=filesystem">{$lang.module_admin.virtual_filesystem}</a><br /><br />-->
 <form action="{if $modules[$index].mode eq "editfilesystem"}index.php?m=admin&d=posteditfilesystem&id={$modules[$index].row.id}{else}index.php?m=admin&d=postaddfilesystem{/if}" method="post">
 <table width="100%" cellspacing="2" cellpadding="2" border="0">
 <tr>
@@ -1016,11 +1008,5 @@
 </form>
 {/if}
 {if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_upload_image&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postdeletefilesystem" or $modules[$index].mode eq "posteditfilesystem" or $modules[$index].mode eq "postaddfilesystem" or $modules[$index].mode eq "postdeletefilesystemexp" or $modules[$index].mode eq "posteditfilesystemexp" or $modules[$index].mode eq "postaddfilesystemexp" or $modules[$index].mode eq "postpackage"}
-{include file="block_begin.tpl"}
-{include file="refresh.tpl"}
 {include file="block_end.tpl"}
 {/if}
