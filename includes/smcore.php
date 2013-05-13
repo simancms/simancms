@@ -632,10 +632,17 @@
 
 	function sm_set_userfield($userid, $fieldname, $value)
 		{
-			global $tableusersprefix;
+			global $tableusersprefix, $userinfo, $_sessionvars;
 			$q = new TQuery($tableusersprefix."users");
 			$q->Add($fieldname, dbescape($value));
 			$q->Update('id_user', intval($userid));
+			if (!in_array($fieldname, Array('info', 'groups', 'id', 'login', 'level')) && $userid==$userinfo['id'])
+				{
+					if (strcmp($fieldname, 'email')==0)
+						$_sessionvars['userinfo_email']=$value;
+					$userinfo['info'][$fieldname]=$value;
+					$_sessionvars['userinfo_allinfo']=serialize($userinfo['info']);
+				}
 		}
 
 	function sm_login($userid, $usrinfo = Array())
