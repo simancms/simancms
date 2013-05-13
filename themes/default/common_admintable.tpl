@@ -138,7 +138,7 @@ function atdropdowncancelclosetime{$postfix}()
 					{if $column.messagebox eq "1"}
 						<a href="javascript:void(0);" onclick="admintable_msgbox{$postfix}('{if $table.rows[table_row_index].$column_name.messagebox_text neq ""}{$table.rows[table_row_index].$column_name.messagebox_text}{else}{$column.messagebox_text}{/if}', '{$table.rows[table_row_index].$column_name.url}')">
 					{else}
-						<a href="{$table.rows[table_row_index].$column_name.url}"{if $column.url_target neq ""} target="{$column.url_target}"{/if}{if $table.rows[table_row_index].$column_name.onclick neq ""} onclick="{$table.rows[table_row_index].$column_name.onclick}"{/if}>
+						<a href="{$table.rows[table_row_index].$column_name.url}"{if $column.url_target neq ""} target="{$column.url_target}"{/if}{if $table.rows[table_row_index].$column_name.onclick neq ""} onclick="{$table.rows[table_row_index].$column_name.onclick}"{/if}{if $table.rows[table_row_index].$column_name.new_window} target="_blank"{/if}>
 					{/if}
 				{/if}
 			{/if}

@@ -294,7 +294,13 @@
 	function sm_add_content_modifier(&$content)
 		{
 			global $special;
-			$special['contentmodifier'][count($special['contentmodifier'])] =& $content;
+			if (is_array($content))
+				{
+					foreach ($content as &$item)
+						sm_add_content_modifier($item);
+				}
+			else
+				$special['contentmodifier'][count($special['contentmodifier'])] =& $content;
 		}
 
 	function sm_getnicename($str)
