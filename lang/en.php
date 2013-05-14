@@ -94,6 +94,7 @@ $lang['common']['month'] = 'Month';
 $lang['common']['day'] = 'Day';
 $lang['common']['year'] = 'Year';
 $lang['common']['are_you_sure']='Are you sure';
+$lang['common']['information']='Information';
 $lang['register'] = 'Register';
 $lang['email'] = 'E-mail';
 $lang['upload'] = 'Upload';

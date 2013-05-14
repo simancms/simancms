@@ -656,8 +656,7 @@
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('title', $lang['module'], '20%');
-					$t->AddCol('version', $lang['module_admin']['version'], '5%');
-					$t->AddCol('author', $lang['module_admin']['author'], '20%');
+					$t->AddCol('information', $lang['common']['information'], '25%');
 					$t->AddCol('description', $lang['common']['description'], '50%');
 					$t->AddCol('action', $lang['action'], '5%');
 					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
@@ -682,14 +681,16 @@
 										$t->Label('title', $info[sm_getnicename('Module Name')]);
 									else
 										$t->Label('title', substr($entry, 0, -4));
+									$information='';
 									if (!empty($info[sm_getnicename('Version')]))
-										$t->Label('version', $info[sm_getnicename('Version')]);
+										$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
 									if (!empty($info[sm_getnicename('Author')]))
-										$t->Label('author', $info[sm_getnicename('Author')]);
+										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
+									$t->Label('information', $information);
 									if (!empty($info[sm_getnicename('Description')]))
 										$t->Label('description', $info[sm_getnicename('Description')]);
 									if (!empty($info[sm_getnicename('Author URI')]))
-										$t->URL('author', $info[sm_getnicename('Author URI')], true);
+										$t->URL('title', $info[sm_getnicename('Author URI')], true);
 									if (!empty($info[sm_getnicename('Module URI')]))
 										$t->URL('description', $info[sm_getnicename('Module URI')], true);
 									$t->Label('action', $lang['common']['install']);
