@@ -419,14 +419,12 @@ define("LOG_USEREVENT", 100);
 define("LOG_ALL", 120);
 function log_write($type, $description)
 	{
-		global $lnkDB, $nameDB, $tableusersprefix, $_servervars, $_settings, $userinfo;
+		global $tableusersprefix, $_servervars, $_settings, $userinfo;
 		if ($_settings['log_type']>=$type)
 			{
 				$ip=$_servervars['REMOTE_ADDR'];
-				$time=time();
-				$user=dbescape($userinfo['login']);
-				$sql="INSERT INTO ".$tableusersprefix."log (type, description, ip, time, user) VALUES ('$type', '".dbescape($description)."', INET_ATON('$ip'), '$time', '$user')";
-				$result=database_db_query($nameDB, $sql, $lnkDB);
+				$sql="INSERT INTO ".$tableusersprefix."log (type, description, ip, time, user) VALUES (".intval($type).", '".dbescape($description)."', INET_ATON('$ip'), ".time().", '".dbescape($userinfo['login'])."')";
+				execsql($sql);
 			}
 	}
 

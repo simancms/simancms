@@ -251,15 +251,15 @@
 
 			require("includes/userinfo.php");
 			$sm['u'] =& $userinfo;
-			//print_r($_cookievars);
 			//Autologin feature
 			if ($userinfo['level'] < 1 && !empty($_cookievars[$_settings['cookprefix'].'simanautologin']))
 				{
-					$tmpusrinfo = getsql("SELECT * FROM ".$tableusersprefix."users WHERE md5(concat('".$session_prefix."', random_code, id_user))='".addslashes($_cookievars[$_settings['cookprefix'].'simanautologin'])."' AND user_status>0 LIMIT 1");
+					$tmpusrinfo = getsql("SELECT * FROM ".$tableusersprefix."users WHERE md5(concat('".$session_prefix."', random_code, id_user))='".dbescape($_cookievars[$_settings['cookprefix'].'simanautologin'])."' AND user_status>0 LIMIT 1");
 					if (!empty($tmpusrinfo['id_user']))
 						{
 							sm_login($tmpusrinfo['id_user'], $tmpusrinfo);
 							require("includes/userinfo.php");
+							log_write(LOG_LOGIN, $lang['module_account']['log']['user_logged'].' - '.$lang['common']['auto_login']);
 							$sm['s']['autologin'] = 1;
 						}
 					else
