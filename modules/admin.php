@@ -862,29 +862,44 @@
 				{
 					add_path_control();
 					add_path($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog');
-					$sql = "DELETE FROM ".$tableusersprefix."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
-					$result = execsql($sql);
+					if (intval($_settings['log_store_days'])>0)
+						{
+							$sql = "DELETE FROM ".$tableusersprefix."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
+							$result = execsql($sql);
+						}
 					$m["title"] = $lang['module_admin']['view_log'];
 					require_once('includes/admintable.php');
-					$m['table']['columns']['time']['caption'] = $lang['common']['time'];
-					$m['table']['columns']['time']['width'] = '20%';
-					$m['table']['columns']['description']['caption'] = $lang['common']['description'];
-					$m['table']['columns']['description']['width'] = '60%';
-					$m['table']['columns']['ip']['caption'] = 'IP';
-					$m['table']['columns']['ip']['width'] = '10%';
-					$m['table']['columns']['user']['caption'] = $lang['user'];
-					$m['table']['columns']['user']['width'] = '10%';
-					$sql = "SELECT *, INET_NTOA(ip) AS stringip FROM ".$tableusersprefix."log ORDER BY id_log DESC";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
+					include_once('includes/admininterface.php');
+					$limit=100;
+					$offset=intval($_getvars['from']);
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('time', $lang['common']['time'], '20%');
+					$t->AddCol('description', $lang['description']['description'], '60%');
+					$t->AddCol('ip', 'IP', '10%');
+					$t->AddCol('user', $lang['user'], '10%');
+					$q=new TQuery($tableusersprefix."log");
+					$q->SelectFields("*, INET_NTOA(ip) AS stringip");
+					$q->OrderBy('id_log DESC');
+					$q->Limit($limit);
+					$q->Offset($offset);
+					$q->Select();
+					for ($i = 0; $i<count($q->items); $i++)
 						{
-							$m['table']['rows'][$i]['time']['data'] = strftime($lang["datetimemask"], $row->time);
-							$m['table']['rows'][$i]['description']['data'] = htmlspecialchars($row->description);
-							$m['table']['rows'][$i]['ip']['data'] = $row->stringip;
-							$m['table']['rows'][$i]['user']['data'] = $row->user;
-							$i++;
+							$t->Label('time', strftime($lang["datetimemask"], $q->items[$i]['time']));
+							$t->Label('description', htmlspecialchars($q->items[$i]['description']));
+							$t->Label('ip', $q->items[$i]['stringip']);
+							$t->Label('user', $q->items[$i]['user']);
+							$t->NewRow();
 						}
+					$ui->AddGrid($t);
+					$m['pages']['url'] = sm_this_url('from', '');
+					$m['pages']['interval'] = $limit;
+					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
+					$m['pages']['records']=$q->Find();
+					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
+					$ui->AddPagebar('');
+					$ui->Output(true);
 				}
 			if (strcmp($m['mode'], 'package') == 0)
 				{

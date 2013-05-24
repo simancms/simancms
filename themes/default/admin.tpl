@@ -984,13 +984,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'viewlog'}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'package'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=admin&d=postpackage" method="post" enctype="multipart/form-data" class="pkgfrm">
