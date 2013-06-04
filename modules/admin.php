@@ -320,7 +320,63 @@
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
 				}
-			if (strcmp($m['mode'], 'modules') == 0)
+			if (sm_action('addmodule'))
+				{
+					add_path_modules();
+					$m['title'] = $lang['module_admin']['add_module'];
+					include_once('includes/admininterface.php');
+					include_once('includes/admintable.php');
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('title', $lang['module'], '20%');
+					$t->AddCol('information', $lang['common']['information'], '25%');
+					$t->AddCol('description', $lang['common']['description'], '50%');
+					$t->AddCol('action', $lang['action'], '5%');
+					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
+					$dir = dir('./modules/');
+					$i = 0;
+					while ($entry = $dir->read())
+						{
+							if (strpos($entry, '.php') > 0)
+								{
+									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
+										continue;
+									$info = sm_get_module_info('./modules/'.$entry);
+									if (
+										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
+										&&
+										!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
+										&&
+										$info == false
+									)
+										continue;
+									if (!empty($info[sm_getnicename('Module Name')]))
+										$t->Label('title', $info[sm_getnicename('Module Name')]);
+									else
+										$t->Label('title', substr($entry, 0, -4));
+									$information='';
+									if (!empty($info[sm_getnicename('Version')]))
+										$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
+									if (!empty($info[sm_getnicename('Author')]))
+										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
+									$t->Label('information', $information);
+									if (!empty($info[sm_getnicename('Description')]))
+										$t->Label('description', $info[sm_getnicename('Description')]);
+									if (!empty($info[sm_getnicename('Author URI')]))
+										$t->URL('title', $info[sm_getnicename('Author URI')], true);
+									if (!empty($info[sm_getnicename('Module URI')]))
+										$t->URL('description', $info[sm_getnicename('Module URI')], true);
+									$t->Label('action', $lang['common']['install']);
+									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
+									$t->NewRow();
+									$i++;
+								}
+						}
+					$dir->close();
+					$ui->AddGrid($t);
+					$ui->Output(true);
+				}
+			if (sm_action('modules'))
 				{
 					add_path_modules();
 					$m["title"] = $lang['modules_mamagement'];
@@ -333,6 +389,8 @@
 					$ui->AddButtons($b);
 					$t = new TGrid();
 					$t->AddCol('title', $lang['module']);
+					$t->AddCol('information', $lang['common']['information'], '25%');
+					$t->AddCol('description', $lang['common']['description'], '50%');
 					$t->AddEdit();
 					$t->AddDelete();
 					$sql = "SELECT * FROM ".$tableprefix."modules";
@@ -646,62 +704,6 @@
 							send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row->email, $_postvars['p_theme'], $_postvars['p_body']);
 						}
 					$refresh_url = 'index.php?m=admin';
-				}
-			if (sm_action('addmodule'))
-				{
-					add_path_modules();
-					$m['title'] = $lang['module_admin']['add_module'];
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
-					$ui = new TInterface();
-					$t=new TGrid();
-					$t->AddCol('title', $lang['module'], '20%');
-					$t->AddCol('information', $lang['common']['information'], '25%');
-					$t->AddCol('description', $lang['common']['description'], '50%');
-					$t->AddCol('action', $lang['action'], '5%');
-					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
-					$dir = dir('./modules/');
-					$i = 0;
-					while ($entry = $dir->read())
-						{
-							if (strpos($entry, '.php') > 0)
-								{
-									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
-										continue;
-									$info = sm_get_module_info('./modules/'.$entry);
-									if (
-										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
-										&&
-										!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
-										&&
-										$info == false
-									)
-										continue;
-									if (!empty($info[sm_getnicename('Module Name')]))
-										$t->Label('title', $info[sm_getnicename('Module Name')]);
-									else
-										$t->Label('title', substr($entry, 0, -4));
-									$information='';
-									if (!empty($info[sm_getnicename('Version')]))
-										$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
-									if (!empty($info[sm_getnicename('Author')]))
-										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
-									$t->Label('information', $information);
-									if (!empty($info[sm_getnicename('Description')]))
-										$t->Label('description', $info[sm_getnicename('Description')]);
-									if (!empty($info[sm_getnicename('Author URI')]))
-										$t->URL('title', $info[sm_getnicename('Author URI')], true);
-									if (!empty($info[sm_getnicename('Module URI')]))
-										$t->URL('description', $info[sm_getnicename('Module URI')], true);
-									$t->Label('action', $lang['common']['install']);
-									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
-									$t->NewRow();
-									$i++;
-								}
-						}
-					$dir->close();
-					$ui->AddGrid($t);
-					$ui->Output(true);
 				}
 			if (strcmp($m['mode'], 'filesystem') == 0)
 				{
