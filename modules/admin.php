@@ -398,13 +398,31 @@
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
-							$m['modules'][$i]['title'] = $row->module_title;
-							$m['modules'][$i]['name'] = $row->module_name;
-							$m['modules'][$i]['id'] = $row->id_module;
+							$info = sm_get_module_info('./modules/'.$row->module_name.'.php');
+							if (!empty($info[sm_getnicename('Module Name')]))
+								$t->Label('title', $info[sm_getnicename('Module Name')]);
+							else
+								$t->Label('title', substr($entry, 0, -4));
+							$information='';
+							if (!empty($info[sm_getnicename('Version')]))
+								$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
+							if (!empty($info[sm_getnicename('Author')]))
+								{
+									if (!empty($info[sm_getnicename('Author URI')]))
+										$information.=$lang['module_admin']['author'].': <a href="'.$info[sm_getnicename('Author URI')].'" target="_blank">'.$info[sm_getnicename('Author')].'</a><br />';
+									else
+										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
+								}
+							$t->Label('information', $information);
+							if (!empty($info[sm_getnicename('Description')]))
+								$t->Label('description', $info[sm_getnicename('Description')]);
+							if (!empty($info[sm_getnicename('Module URI')]))
+								$t->URL('description', $info[sm_getnicename('Module URI')], true);
 							$t->Label('title', $row->module_title);
 							$t->Url('title', 'index.php?m='.$row->module_name.'&d=admin');
 							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row->id_module);
-							$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search')))
+								$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
 							$t->NewRow();
 							$i++;
 						}
