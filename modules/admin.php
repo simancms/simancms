@@ -621,24 +621,17 @@
 					require_once('includes/admintable.php');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
-					$m['table']['columns']['title']['caption'] = $lang['module_admin']['image_file_name'];
-					$m['table']['columns']['title']['width'] = '100%';
-					//$m['table']['columns']['title']['url_target']='_blank';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['module_admin']['really_want_delete_image']);
+					$t=new TGrid();
+					$t->AddCol('thumb', $lang['common']['thumbnail'], '10');
+					$t->AddCol('title', $lang['module_admin']['image_file_name'], '90%');
+					$t->AddEdit();
+					$t->AddDelete();
+					$t->SetAsMessageBox('delete', $lang['module_admin']['really_want_delete_image']);
 					$i = 0;
 					$j = -1;
 					$files = load_file_list('./files/img/');
+					$offset=intval($_getvars['from']);
+					$limit=intval($_settings['admin_items_by_page']);
 					while ($j + 1 < count($files))
 						{
 							$j++;
@@ -648,13 +641,24 @@
 									continue;
 							if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0)
 								{
-									$m['table']['rows'][$i]['title']['data'] = $entry;
-									$m['table']['rows'][$i]['title']['url'] = 'index.php?m=admin&d=viewimg&path='.$entry;
-									$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=admin&d=renimg&imgn='.$entry;
-									$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=admin&d=postdelimg&imgn='.$entry;
+									if ($i>=$offset && $i<$limit+$offset)
+										{
+											$t->Image('thumb', sm_thumburl($entry, 50, 50));
+											$t->Label('title', $entry);
+											$t->URL('title', 'index.php?m=admin&d=viewimg&path='.urlencode($entry));
+											$t->URL('edit', 'index.php?m=admin&d=renimg&imgn='.urlencode($entry));
+											$t->URL('delete', 'index.php?m=admin&d=postdelimg&imgn='.urlencode($entry));
+											$t->NewRow();
+										}
 									$i++;
 								}
 						}
+					$m['table']=$t->Output();
+					$m['pages']['url'] = sm_this_url('from', '');
+					$m['pages']['interval'] = $limit;
+					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
+					$m['pages']['records']=$i;
+					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
 				}
 			if (strcmp($m['mode'], 'delimg') == 0)
 				{

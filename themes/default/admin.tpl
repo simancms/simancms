@@ -856,6 +856,7 @@
 	<input type="submit" value="{$lang.common.ok}">
 </form>
 {include file="common_admintable.tpl" table=$modules[$index].table}
+{include file="pagebar.tpl"}
 <br /><br />
 <a href="index.php?m=admin&d=uplimg">{$lang.upload_image}</a><br />
 <br />
