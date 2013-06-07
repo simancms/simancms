@@ -840,7 +840,7 @@
 	function sm_thumburl($filename, $maxwidth=0, $maxheight=0, $format='', $quality='', $path='files/img/')
 		{
 			$info=pathinfo($filename);
-			$url='ext/showimg.php?img='.$info['filename'];
+			$url='ext/showimage.php?img='.$info['filename'];
 			if ($info['extension']=='png')
 				$url.='&png=1';
 			if ($info['extension']=='gif')

@@ -54,12 +54,12 @@
 			$filepath = $path[0];
 			$extpath = '';
 		}
-	if ($_GET['png'] != 1)
-		$image = '../'.$filepath.$extpath.$_GET['img'].'.jpg';
-	elseif ($_GET['gif'] != 1)
+	if ($_GET['png'] == 1)
+		$image = '../'.$filepath.$extpath.$_GET['img'].'.png';
+	elseif ($_GET['gif'] == 1)
 		$image = '../'.$filepath.$extpath.$_GET['img'].'.gif';
 	else
-		$image = '../'.$filepath.$extpath.$_GET['img'].'.png';
+		$image = '../'.$filepath.$extpath.$_GET['img'].'.jpg';
 
 	$new_width = check_range(get_integer('width'), 0, 2048);
 	$new_height = check_range(get_integer('height'), 0, 2048);
