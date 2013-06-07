@@ -283,6 +283,7 @@
 				}
 			if (strcmp($m["mode"], 'list') == 0)
 				{
+					sm_extcore();
 					if (intval($_getvars['showall']) == 1)
 						$showall = 1;
 					$m['showall'] = $showall;
@@ -355,8 +356,8 @@
 					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
 					$m['table']['columns']['tomenu']['caption'] = '';
 					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['to_menu'] = 1;
+					$m['table']['columns']['tomenu']['replace_text'] = '<nobr>'.$lang['module_menu']['add_to_menu'].'</nobr>';
+					//$m['table']['columns']['tomenu']['to_menu'] = 1;
 					if ($sort == 2 || $sort == 3)
 						{
 							$m['table']['columns']['up']['caption'] = '';
@@ -389,8 +390,9 @@
 							if ($row->id_content != 1)
 								$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=content&d=postdelete&cid='.$row->id_content.'&ctg='.$row->id_category_c;
 							$m['table']['rows'][$i]['html']['url'] = 'index.php?m=content&d=edit&cid='.$row->id_content.'&exteditor=off';
-							$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
-							$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->title_content);
+							//$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
+							//$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->title_content);
+							$m['table']['rows'][$i]['tomenu']['url'] = sm_tomenuurl($row->title_content, $m['table']['rows'][$i]['title']['url'], sm_this_url());
 							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=content&id='.$row->id_content.'&c='.$row->title_content;
 							if ($i > 0 && ($sort == 2 || $sort == 3))
 								{

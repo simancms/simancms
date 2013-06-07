@@ -54,18 +54,37 @@
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
-					$m['url_line'] = $_postvars["p_url"];
-					$m['caption_line'] = $_postvars["p_caption"];
-					$sql = "SELECT * FROM ".$tableprefix."menus";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=menu&d=prepareaddline&returnto='.urlencode($_getvars['returnto']));
+					$f->AddText('p_caption', $lang['caption']);
+					$f->AddText('p_url', $lang['url']);
+					unset($values);
+					unset($labels);
+					$q=new TQuery($tableprefix."menus");
+					$q->OrderBy('caption_m');
+					$q->Select();
+					for ($i = 0; $i < $q->Count(); $i++)
 						{
-							$m["menu"][$i]['lines'] = siman_load_menu($row->id_menu_m);
-							$m["menu"][$i]["id"] = $row->id_menu_m;
-							$m["menu"][$i]["caption"] = $row->caption_m;
-							$i++;
+							$values[]=$q->items[$i]['id_menu_m'].'|0';
+							$labels[]='['.$q->items[$i]['caption_m'].']';
+							$lines = siman_load_menu($q->items[$i]['id_menu_m']);
+							for ($j = 0; $j < count($lines); $j++)
+								{
+									$prefix=' - ';
+									for ($k = 1; $k < $lines[$j]['level']; $k++)
+										$prefix.=' - ';
+									$values[]=$q->items[$i]['id_menu_m'].'|'.$lines[$j]['add_param'];
+									$labels[]=$prefix.$lines[$j]['caption'];
+								}
 						}
+					$f->AddSelectVL('p_mainmenu', $lang['module_menu']['add_to_menu'], $values, $labels);
+					$f->LoadValuesArray($_postvars);
+					$f->LoadValuesArray($_getvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('p_caption');
 				}
 			if (strcmp($m["mode"], 'postadd') == 0)
 				{
@@ -143,7 +162,10 @@
 							$id_ml = database_insert_id('menu_lines', $nameDB, $lnkDB);
 							siman_upload_image($id_ml, 'menuitem');
 						}
-					$refresh_url = 'index.php?m=menu&d=listlines&mid='.$menu_id;
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
 			if (strcmp($m["mode"], 'posteditline') == 0)
 				{

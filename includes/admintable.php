@@ -45,7 +45,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['replace_image']=$replace_image;
 						$this->table['columns'][$name]['messagebox']=$messagebox;
 						$this->table['columns'][$name]['messagebox_text']=$messagebox_text;
-						$this->table['columns'][$name]['to_menu']=$to_menu;
+						$this->table['columns'][$name]['to_menu']=$to_menu;//Deprecated
 					}
 				function AddIcon($name, $image, $hint='')
 					{
@@ -76,7 +76,8 @@ if (!defined("admintable_DEFINED"))
 				function AddMenuInsert($name='tomenu')
 					{
 						global $lang;
-						$this->AddCol($name, '', '', $lang['module_menu']['add_to_menu'], $lang['module_menu']['add_to_menu'], '', 0, '', 1);
+						$this->AddCol($name, '', '', $lang['module_menu']['add_to_menu'], $lang['module_menu']['add_to_menu']);
+						$this->table['columns'][$name]['nobr']=1;
 					}
 				function OneLine($name)
 					{
@@ -137,8 +138,9 @@ if (!defined("admintable_DEFINED"))
 					}
 				function Menu($menu_caption, $menu_url, $name='tomenu')
 					{
-						$this->table['rows'][$this->rownumber][$name]['menu_caption']=addslashes($menu_caption);
-						$this->table['rows'][$this->rownumber][$name]['menu_url']=addslashes($menu_url);
+						global $lang;
+						sm_extcore();
+						$this->URL($name, sm_tomenuurl($menu_caption, $menu_url, sm_this_url()));
 					}
 				function Hide($name)
 					{

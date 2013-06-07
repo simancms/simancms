@@ -375,5 +375,10 @@
 			else
 				return false;
 		}
+	
+	function sm_tomenuurl($title, $url, $returnto='')
+		{
+			return 'index.php?m=menu&d=addouter&p_caption='.urlencode($title).'&p_url='.urlencode($url).'&returnto='.urlencode($returnto);
+		}
 
 ?>

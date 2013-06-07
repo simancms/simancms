@@ -91,7 +91,7 @@
 
 {if $modules[$index].mode eq 'prepareaddline'}
 {include file="block_begin.tpl"}
-<form name="post" action="index.php?m=menu&d=postaddline&mid={$modules[$index].menuline.menu_id}" method="post" enctype="multipart/form-data">
+<form name="post" action="index.php?m=menu&d=postaddline&mid={$modules[$index].menuline.menu_id}&returnto={$sm.g.returnto|urlencode}" method="post" enctype="multipart/form-data">
 <input type="hidden" name="p_caption" value="{$modules[$index].menuline.caption}">
 <input type="hidden" name="p_url" value="{$modules[$index].menuline.url}">
 <input type="hidden" name="p_sub" value="{$modules[$index].menuline.sub_id}">
@@ -205,41 +205,6 @@
 <br />
 <a href="index.php?m=menu&d=addline&mid={$modules[$index].idmenu}">{$lang.module_menu.add_menu_line}</a>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_listmenulines&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq 'addouter'}
-{include file="block_begin.tpl"}
-<form name="post" action="index.php?m=menu&d=prepareaddline" method="post">
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
-<tr>
-    <td width="50%">{$lang.caption}</td>
-    <td width="50%">{$lang.url}</td>
-    <td width="50%">{$lang.module_menu.add_to_menu}</td>
-</tr>
-<tr>
-    <td><input type="text" name="p_caption" size="20" value="{$modules[$index].caption_line}"></td>
-    <td>
-	  <input type="text" name="p_url" size="20" value="{$modules[$index].url_line}">
-	</td>
-    <td>
-	<select name="p_mainmenu">
-	 {section name=i loop=$modules[$index].menu}
-	 <option value="{$modules[$index].menu[i].id}|0"{if $smarty.section.i.index eq "0"} SELECTED{/if}>[{$modules[$index].menu[i].caption}]</option>
-	 {section name=j loop=$modules[$index].menu[i].lines}
-	 <option value="{$modules[$index].menu[i].lines[j].add_param}">{section name=k loop=$modules[$index].menu[i].lines[j].level} - {/section}{$modules[$index].menu[i].lines[j].caption}</option>
-	 {/section}
-	 {/section}
-	</select>
-	</td>
-</tr>
-{$modules[$index].formadditionalhtml}
-<tr>
-    <td colspan="2" align="center"><input type="submit" value="{$lang.submit}"></td>
-</tr>
-</table>
-</form>
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_addoutermenuline&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
 {include file="block_end.tpl"}
 {/if}
 
