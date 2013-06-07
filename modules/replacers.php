@@ -11,7 +11,7 @@
 	/*
 	Module Name: Replacers
 	Module URI: http://simancms.org/
-	Description: Template replacers for cutom themes	
+	Description: Template replacers for custom themes
 	Version: 2012-07-20
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
