@@ -273,8 +273,7 @@
 			if (strcmp($m['mode'], 'postchgttl') == 0)
 				{
 					$module_title = dbescape($_postvars['p_title']);
-					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module='".$_getvars['mid']."'";
-					;
+					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
 					$m['mode'] = 'view';
 				}
@@ -319,6 +318,15 @@
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=admin&d=postuplimg');
+					$f->AddFile('userfile', $lang['file_name']);
+					$f->AddText('p_optional', $lang['optional_file_name']);
+					$f->SaveButton($lang['upload']);
+					$ui->AddForm($f);
+					$ui->Output(true);
 				}
 			if (sm_action('addmodule'))
 				{
@@ -433,8 +441,7 @@
 			if (strcmp($m['mode'], 'chgttl') == 0)
 				{
 					$m["title"] = $lang['change_title'];
-					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module='".$_getvars['mid']."'";
-					;
+					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{

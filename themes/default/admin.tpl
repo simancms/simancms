@@ -30,19 +30,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'uplimg'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=admin&d=postuplimg" method="post" enctype="multipart/form-data">
-<input TYPE="hidden" name="MAX_FILE_SIZE" value="{$_settings.max_upload_filesize}">
-{$lang.file_name}: <input NAME="userfile" TYPE="file"><br />
-{$lang.optional_file_name}: <input type="text" name="p_optional"><br />
-{$modules[$index].formadditionalhtml}
-<input type="submit" value="{$lang.upload}">
-</form>
-{if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_upload_image&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'errorupload'}
 {include file="block_begin.tpl"}
 {$lang.error_file_upload_message}<br />
