@@ -5,10 +5,14 @@
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
-	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-01
-	//==============================================================================
+	/*
+	Module Name: Content
+	Module URI: http://simancms.org/modules/content/
+	Description: Pages managemt. Base CMS module
+	Version: 1.6.4
+	Revision: 2013-05-01
+	Author URI: http://simancms.org/
+	*/
 
 	if (!defined("SIMAN_DEFINED"))
 		{

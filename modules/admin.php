@@ -273,8 +273,7 @@
 			if (strcmp($m['mode'], 'postchgttl') == 0)
 				{
 					$module_title = dbescape($_postvars['p_title']);
-					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module='".$_getvars['mid']."'";
-					;
+					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
 					$m['mode'] = 'view';
 				}
@@ -319,8 +318,73 @@
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=admin&d=postuplimg');
+					$f->AddFile('userfile', $lang['file_name']);
+					$f->AddText('p_optional', $lang['optional_file_name']);
+					$f->SaveButton($lang['upload']);
+					$ui->AddForm($f);
+					$ui->Output(true);
 				}
-			if (strcmp($m['mode'], 'modules') == 0)
+			if (sm_action('addmodule'))
+				{
+					add_path_modules();
+					$m['title'] = $lang['module_admin']['add_module'];
+					include_once('includes/admininterface.php');
+					include_once('includes/admintable.php');
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('title', $lang['module'], '20%');
+					$t->AddCol('information', $lang['common']['information'], '25%');
+					$t->AddCol('description', $lang['common']['description'], '50%');
+					$t->AddCol('action', $lang['action'], '5%');
+					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
+					$dir = dir('./modules/');
+					$i = 0;
+					while ($entry = $dir->read())
+						{
+							if (strpos($entry, '.php') > 0)
+								{
+									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
+										continue;
+									$info = sm_get_module_info('./modules/'.$entry);
+									if (
+										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
+										&&
+										!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
+										&&
+										$info == false
+									)
+										continue;
+									if (!empty($info[sm_getnicename('Module Name')]))
+										$t->Label('title', $info[sm_getnicename('Module Name')]);
+									else
+										$t->Label('title', substr($entry, 0, -4));
+									$information='';
+									if (!empty($info[sm_getnicename('Version')]))
+										$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
+									if (!empty($info[sm_getnicename('Author')]))
+										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
+									$t->Label('information', $information);
+									if (!empty($info[sm_getnicename('Description')]))
+										$t->Label('description', $info[sm_getnicename('Description')]);
+									if (!empty($info[sm_getnicename('Author URI')]))
+										$t->URL('title', $info[sm_getnicename('Author URI')], true);
+									if (!empty($info[sm_getnicename('Module URI')]))
+										$t->URL('description', $info[sm_getnicename('Module URI')], true);
+									$t->Label('action', $lang['common']['install']);
+									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
+									$t->NewRow();
+									$i++;
+								}
+						}
+					$dir->close();
+					$ui->AddGrid($t);
+					$ui->Output(true);
+				}
+			if (sm_action('modules'))
 				{
 					add_path_modules();
 					$m["title"] = $lang['modules_mamagement'];
@@ -333,6 +397,8 @@
 					$ui->AddButtons($b);
 					$t = new TGrid();
 					$t->AddCol('title', $lang['module']);
+					$t->AddCol('information', $lang['common']['information'], '25%');
+					$t->AddCol('description', $lang['common']['description'], '50%');
 					$t->AddEdit();
 					$t->AddDelete();
 					$sql = "SELECT * FROM ".$tableprefix."modules";
@@ -340,13 +406,31 @@
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
-							$m['modules'][$i]['title'] = $row->module_title;
-							$m['modules'][$i]['name'] = $row->module_name;
-							$m['modules'][$i]['id'] = $row->id_module;
+							$info = sm_get_module_info('./modules/'.$row->module_name.'.php');
+							if (!empty($info[sm_getnicename('Module Name')]))
+								$t->Label('title', $info[sm_getnicename('Module Name')]);
+							else
+								$t->Label('title', substr($entry, 0, -4));
+							$information='';
+							if (!empty($info[sm_getnicename('Version')]))
+								$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
+							if (!empty($info[sm_getnicename('Author')]))
+								{
+									if (!empty($info[sm_getnicename('Author URI')]))
+										$information.=$lang['module_admin']['author'].': <a href="'.$info[sm_getnicename('Author URI')].'" target="_blank">'.$info[sm_getnicename('Author')].'</a><br />';
+									else
+										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
+								}
+							$t->Label('information', $information);
+							if (!empty($info[sm_getnicename('Description')]))
+								$t->Label('description', $info[sm_getnicename('Description')]);
+							if (!empty($info[sm_getnicename('Module URI')]))
+								$t->URL('description', $info[sm_getnicename('Module URI')], true);
 							$t->Label('title', $row->module_title);
 							$t->Url('title', 'index.php?m='.$row->module_name.'&d=admin');
 							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row->id_module);
-							$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search')))
+								$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
 							$t->NewRow();
 							$i++;
 						}
@@ -357,8 +441,7 @@
 			if (strcmp($m['mode'], 'chgttl') == 0)
 				{
 					$m["title"] = $lang['change_title'];
-					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module='".$_getvars['mid']."'";
-					;
+					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
@@ -538,24 +621,17 @@
 					require_once('includes/admintable.php');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
-					$m['table']['columns']['title']['caption'] = $lang['module_admin']['image_file_name'];
-					$m['table']['columns']['title']['width'] = '100%';
-					//$m['table']['columns']['title']['url_target']='_blank';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['module_admin']['really_want_delete_image']);
+					$t=new TGrid();
+					$t->AddCol('thumb', $lang['common']['thumbnail'], '10');
+					$t->AddCol('title', $lang['module_admin']['image_file_name'], '90%');
+					$t->AddEdit();
+					$t->AddDelete();
+					$t->SetAsMessageBox('delete', $lang['module_admin']['really_want_delete_image']);
 					$i = 0;
 					$j = -1;
 					$files = load_file_list('./files/img/');
+					$offset=intval($_getvars['from']);
+					$limit=intval($_settings['admin_items_by_page']);
 					while ($j + 1 < count($files))
 						{
 							$j++;
@@ -565,13 +641,24 @@
 									continue;
 							if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0)
 								{
-									$m['table']['rows'][$i]['title']['data'] = $entry;
-									$m['table']['rows'][$i]['title']['url'] = 'index.php?m=admin&d=viewimg&path='.$entry;
-									$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=admin&d=renimg&imgn='.$entry;
-									$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=admin&d=postdelimg&imgn='.$entry;
+									if ($i>=$offset && $i<$limit+$offset)
+										{
+											$t->Image('thumb', sm_thumburl($entry, 50, 50));
+											$t->Label('title', $entry);
+											$t->URL('title', 'index.php?m=admin&d=viewimg&path='.urlencode($entry));
+											$t->URL('edit', 'index.php?m=admin&d=renimg&imgn='.urlencode($entry));
+											$t->URL('delete', 'index.php?m=admin&d=postdelimg&imgn='.urlencode($entry));
+											$t->NewRow();
+										}
 									$i++;
 								}
 						}
+					$m['table']=$t->Output();
+					$m['pages']['url'] = sm_this_url('from', '');
+					$m['pages']['interval'] = $limit;
+					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
+					$m['pages']['records']=$i;
+					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
 				}
 			if (strcmp($m['mode'], 'delimg') == 0)
 				{
@@ -646,62 +733,6 @@
 							send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row->email, $_postvars['p_theme'], $_postvars['p_body']);
 						}
 					$refresh_url = 'index.php?m=admin';
-				}
-			if (sm_action('addmodule'))
-				{
-					add_path_modules();
-					$m['title'] = $lang['module_admin']['add_module'];
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
-					$ui = new TInterface();
-					$t=new TGrid();
-					$t->AddCol('title', $lang['module'], '20%');
-					$t->AddCol('information', $lang['common']['information'], '25%');
-					$t->AddCol('description', $lang['common']['description'], '50%');
-					$t->AddCol('action', $lang['action'], '5%');
-					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
-					$dir = dir('./modules/');
-					$i = 0;
-					while ($entry = $dir->read())
-						{
-							if (strpos($entry, '.php') > 0)
-								{
-									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
-										continue;
-									$info = sm_get_module_info('./modules/'.$entry);
-									if (
-										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
-										&&
-										!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
-										&&
-										$info == false
-									)
-										continue;
-									if (!empty($info[sm_getnicename('Module Name')]))
-										$t->Label('title', $info[sm_getnicename('Module Name')]);
-									else
-										$t->Label('title', substr($entry, 0, -4));
-									$information='';
-									if (!empty($info[sm_getnicename('Version')]))
-										$information=$lang['module_admin']['version'].': '.$info[sm_getnicename('Version')].'<br />';
-									if (!empty($info[sm_getnicename('Author')]))
-										$information.=$lang['module_admin']['author'].': '.$info[sm_getnicename('Author')].'<br />';
-									$t->Label('information', $information);
-									if (!empty($info[sm_getnicename('Description')]))
-										$t->Label('description', $info[sm_getnicename('Description')]);
-									if (!empty($info[sm_getnicename('Author URI')]))
-										$t->URL('title', $info[sm_getnicename('Author URI')], true);
-									if (!empty($info[sm_getnicename('Module URI')]))
-										$t->URL('description', $info[sm_getnicename('Module URI')], true);
-									$t->Label('action', $lang['common']['install']);
-									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
-									$t->NewRow();
-									$i++;
-								}
-						}
-					$dir->close();
-					$ui->AddGrid($t);
-					$ui->Output(true);
 				}
 			if (strcmp($m['mode'], 'filesystem') == 0)
 				{
