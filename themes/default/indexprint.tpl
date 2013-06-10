@@ -5,7 +5,7 @@
 	<META content="text/html; charset={$lang.charset}" http-equiv=Content-Type>
 	<META NAME="description" CONTENT="{$special.meta.description}"> 
 	<META NAME="keywords" CONTENT="{$special.meta.keywords}">
-	<LINK href="themes/{$_settings.default_theme}/stylesheets.css" type=text/css rel=stylesheet>
+	<LINK href="themes/{$special.theme}/stylesheetsprint.css" type=text/css rel=stylesheet>
 </head>
 {config_load file="main.cfg"}
 <body bgcolor="#ffffff" text="#000000" onLoad="window.print()">
