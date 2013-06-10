@@ -17,7 +17,7 @@
 			exit();
 		}
 
-	if (strcmp($m["mode"], 'postadd') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_actionpost('postadd') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			$m['post'] = $_postvars;
 			if ($userinfo['level'] < 3)
@@ -223,12 +223,14 @@
 						{
 							$fname = $row->filename_news;
 						}
+					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+					$result = execsql($sql);
+					sm_extcore();
+					sm_saferemove('index.php?m=news&d=view&nid='.$id_news);
 					if ($fname != 0)
 						{
 							delete_filesystem($fname);
 						}
-					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
-					$result = execsql($sql);
 					sm_delete_attachments('news', intval($id_news));
 					if ($userinfo['level'] == 3)
 						$refresh_url = 'index.php?m=news&d=list&ctg='.$_getvars['ctg'];
@@ -244,7 +246,7 @@
 		}
 
 
-	if (strcmp($m["mode"], 'postedit') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_actionpost('postedit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			$canedit = 0;
 			if ($userinfo['level'] == 3)

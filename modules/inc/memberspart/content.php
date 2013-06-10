@@ -112,7 +112,7 @@
 						}
 				}
 
-			if (strcmp($m["mode"], 'postedit') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_actionpost('postedit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
@@ -335,18 +335,21 @@
 						{
 							$m['title'] = $lang['delete_content'];
 							$m["module"] = 'content';
-							$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
+							$fname=0;
+							$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($_getvars["cid"]);
 							$result = execsql($sql);
 							while ($row = database_fetch_object($result))
 								{
 									$fname = $row->filename_content;
 								}
+							$sql = "DELETE FROM ".$tableprefix."content WHERE id_content=".intval($_getvars["cid"])." AND id_content<>1";
+							$result = execsql($sql);
+							sm_extcore();
+							sm_saferemove('index.php?m=content&d=view&cid='.intval($_getvars["cid"]));
 							if ($fname != 0)
 								{
 									delete_filesystem($fname);
 								}
-							$sql = "DELETE FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."' AND id_content<>1";
-							$result = execsql($sql);
 							sm_delete_attachments('content', intval($_getvars["cid"]));
 							if ($userinfo['level'] < 3)
 								$refresh_url = 'index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg'];

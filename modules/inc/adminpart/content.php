@@ -92,7 +92,7 @@
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('postaddctgcontent', array($ctgid));
 				}
-			if (strcmp($m["mode"], 'addctg') == 0)
+			if (sm_actionpost('addctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'content';
@@ -106,7 +106,7 @@
 						}
 					$m['groups_list'] = get_groups_list();
 				}
-			if (strcmp($m["mode"], 'posteditctg') == 0)
+			if (sm_actionpost('posteditctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'content';
@@ -163,23 +163,29 @@
 					$m['title'] = $lang['delete_category'];
 					$m["module"] = 'content';
 					$id_ctg = intval($_getvars['ctgid']);
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='".$id_ctg."'";
+					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".$id_ctg."";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
 					while ($row = database_fetch_object($result))
 						{
 							$fname = $row->filename_category;
 						}
+					sm_extcore();
+					sm_saferemove('index.php?m=content&d=viewctg&ctgid='.$id_ctg);
 					if ($fname != 0)
 						{
 							delete_filesystem($fname);
 						}
-					$sql = "DELETE FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
+					$sql = "DELETE FROM ".$tableprefix."categories WHERE id_category=$id_ctg AND id_category<>1";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$q=new TQuery($sm['t'].'content');
+					$q->Add('id_category_c', 1);
+					$q->Update('id_category_c', intval($id_ctg));
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('postdeletectgcontent', array($id_ctg));
 				}
 			if (strcmp($m["mode"], 'listctg') == 0)
 				{
+					sm_extcore();
 					$m['title'] = $lang['list_content_categories'];
 					$m["module"] = 'content';
 					add_path($lang['control_panel'], "index.php?m=admin");
@@ -217,8 +223,9 @@
 					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
 					$m['table']['columns']['tomenu']['caption'] = '';
 					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['to_menu'] = 1;
+					$m['table']['columns']['tomenu']['replace_text'] = '<nobr>'.$lang['module_menu']['add_to_menu'].'</nobr>';
+					//$m['table']['columns']['tomenu']['to_menu'] = 1;
+					//$m['table']['columns']['tomenu']['to_menu'] = 1;
 					$m['table']['default_column'] = 'edit';
 					for ($i = 0; $i < count($m['ctg']); $i++)
 						{
@@ -235,51 +242,11 @@
 							if ($m['ctg'][$i]['id'] != 1)
 								$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=content&d=postdeletectg&ctgid='.$m['ctg'][$i]['id'];
 							$m['table']['rows'][$i]['html']['url'] = 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off';
-							$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
-							$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($m['ctg'][$i]['title']);
+							//$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
+							//$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($m['ctg'][$i]['title']);
+							$m['table']['rows'][$i]['tomenu']['url'] = sm_tomenuurl($m['ctg'][$i]['title'], $m['table']['rows'][$i]['title']['url'], sm_this_url());
 							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title'];
 						}
-				}
-			if (strcmp($m["mode"], 'postedit') == 0)
-				{
-					$m['title'] = $lang['edit_content'];
-					$m["module"] = 'content';
-					$id_category_c = $_postvars["p_id_category_c"];
-					$title_content = addslashesJ($_postvars["p_title_content"]);
-					$preview_content = addslashesJ($_postvars["p_preview_content"]);
-					$text_content = addslashesJ($_postvars["p_text_content"]);
-					$type_content = $_postvars["p_type_content"];
-					$keywords_content = addslashesJ($_postvars["p_keywords_content"]);
-					$filename = addslashesJ($_postvars["p_filename"]);
-					if ($_settings['content_use_preview'] == 1)
-						$tmp_preview_sql = "preview_content='$preview_content',";
-					$sql = "UPDATE ".$tableprefix."content SET id_category_c='$id_category_c', title_content='$title_content', $tmp_preview_sql text_content='$text_content', type_content='$type_content', keywords_content = '$keywords_content' WHERE id_content='".$_getvars["cid"]."'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='".intval($_getvars["cid"])."'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					while ($row = database_fetch_object($result))
-						{
-							$fname = $row->filename_content;
-						}
-					if ($fname == 0 && !empty($filename))
-						{
-							$urlid = register_filesystem('index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
-							$sql = "UPDATE ".$tableprefix."content SET filename_content='$urlid' WHERE id_content=".$_getvars["cid"];
-							$result = database_db_query($nameDB, $sql, $lnkDB);
-						}
-					else
-						{
-							if (empty($filename))
-								{
-									$sql = "UPDATE ".$tableprefix."content SET filename_content='0' WHERE id_content=".$_getvars["cid"];
-									$result = database_db_query($nameDB, $sql, $lnkDB);
-									delete_filesystem($fname);
-								}
-							else
-								update_filesystem($fname, 'index.php?m=content&d=view&cid='.$_getvars["cid"], $filename, $title_content);
-						}
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$refresh_url = 'index.php?m=content&d=list&ctg='.$id_category_c;
 				}
 			if (strcmp($m["mode"], 'list') == 0)
 				{

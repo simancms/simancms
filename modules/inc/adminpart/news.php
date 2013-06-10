@@ -50,7 +50,7 @@
 						}
 					$m['groups_list'] = get_groups_list();
 				}
-			if (strcmp($m["mode"], 'postaddctg') == 0)
+			if (sm_actionpost('postaddctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'news';
@@ -79,7 +79,7 @@
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$m['groups_list'] = get_groups_list();
 				}
-			if (strcmp($m["mode"], 'posteditctg') == 0)
+			if (sm_actionpost('posteditctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'news';
@@ -136,17 +136,23 @@
 						{
 							$fname = $row->filename_category;
 						}
+					sm_extcore();
+					sm_saferemove('index.php?m=news&d=listnews&ctg='.$id_ctg);
 					if ($fname != 0)
 						{
 							delete_filesystem($fname);
 						}
-					$sql = "DELETE FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg'";
+					$sql = "DELETE FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg' AND id_category<>1";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$q=new TQuery($sm['t'].'news');
+					$q->Add('id_category_n', 1);
+					$q->Update('id_category_n', intval($id_ctg));
 					$refresh_url = 'index.php?m=news&d=listctg';
 					sm_event('postdeletectgnews', array($id_ctg));
 				}
 			if (strcmp($m["mode"], 'listctg') == 0)
 				{
+					sm_extcore();
 					$m['title'] = $lang['list_news_categories'];
 					$m["module"] = 'news';
 					add_path($lang['control_panel'], "index.php?m=admin");
@@ -154,7 +160,6 @@
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$sql = "SELECT ".$tableprefix."categories_news.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."categories_news LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."categories_news.filename_category=".$tableprefix."filesystem.id_fs";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
-
 					require_once('includes/admintable.php');
 					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
 					$m['table']['columns']['title']['width'] = '100%';
@@ -181,8 +186,8 @@
 					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
 					$m['table']['columns']['tomenu']['caption'] = '';
 					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['to_menu'] = 1;
+					$m['table']['columns']['tomenu']['replace_text'] = '<nobr>'.$lang['module_menu']['add_to_menu'].'</nobr>';
+					//$m['table']['columns']['tomenu']['to_menu'] = 1;
 					$m['table']['default_column'] = 'edit';
 					$i = 0;
 					while ($row = database_fetch_object($result))
@@ -199,8 +204,9 @@
 								$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=news&d=postdeletectg&ctgid='.$row->id_category;
 							//$m['table']['rows'][$i]['html']['url']='index.php?m=news&d=editctg&ctgid='.$row->id_category.'&exteditor=off';
 							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=news&id='.$row->id_category.'&db=shortnews&c='.$row->title_category;
-							$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
-							$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->title_category);
+							//$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
+							//$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->title_category);
+							$m['table']['rows'][$i]['tomenu']['url'] = sm_tomenuurl($row->title_category, $m['table']['rows'][$i]['title']['url'], sm_this_url());
 							$i++;
 						}
 
