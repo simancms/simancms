@@ -26,7 +26,7 @@
 	if (empty($m['mode']))
 		$m['mode'] = 'show';
 
-	if (strcmp($m['mode'], "postregister") == 0 && ($_settings['allow_register'] || !empty($userinfo['id'])))
+	if (sm_actionpost("postregister") && ($_settings['allow_register'] || $userinfo['level']==3))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["register"];
@@ -39,9 +39,10 @@
 				$email = $login;
 			$question = dbescape($_postvars["p_question"]);
 			$answer = dbescape($_postvars["p_answer"]);
-			if (empty($login) || empty($password) || empty($password2) || empty($email) || empty($question) || empty($answer))
+			sm_event('postregistercheckdata', array(0));
+			if (empty($login) || empty($password) || empty($password2) || empty($email) || empty($question) || empty($answer) || !empty($special['postregistercheckdataerror']))
 				{
-					$m['message'] = $lang["message_set_all_fields"];
+					$m['message'] = $lang["message_set_all_fields"].(empty($special['postregistercheckdataerror'])?'':'. '.$special['postregistercheckdataerror']);
 					$m['mode'] = 'register';
 					$m['user_login'] = $login;
 					$m['user_email'] = $email;
@@ -123,14 +124,15 @@
 								$user_status = '0';
 							else
 								$user_status = '1';
-							//$sql="INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '$question', '$answer', '$user_status')";
-							//$result=execsql($sql);
 							$id_newuser = sm_add_user($login, $password, $email, $question, $answer, $user_status);
 							sm_event('successregister', array($id_newuser));
 							if (!empty($_settings['redirect_after_register']))
 								{
-									$refresh_url = $_settings['redirect_after_register'];
-									$m['module'] = 'refresh';
+									sm_redirect($_settings['redirect_after_register']);
+								}
+							elseif ($userinfo['level']>0)
+								{
+									sm_redirect('index.php?m=account&d=usrlist');
 								}
 							$m['mode'] = 'successregister';
 							log_write(LOG_LOGIN, $lang['module_account']['log']['user_registered'].': '.$login.'. '.$lang['email'].': '.$email);

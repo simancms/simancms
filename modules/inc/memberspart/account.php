@@ -63,9 +63,10 @@
 			$question = dbescape($_postvars["p_question"]);
 			$get_mail = intval($_postvars["p_get_mail"]);
 			$answer = dbescape($_postvars["p_answer"]);
-			if (empty($email) || (!empty($question) && empty($answer)))
+			sm_event('userdetailschangedcheckdata', array(0));
+			if (empty($email) || (!empty($question) && empty($answer)) || !empty($special['userdetailschangedcheckdataerror']))
 				{
-					$m['message'] = $lang["message_set_all_fields"];
+					$m['message'] = $lang["message_set_all_fields"].(empty($special['userdetailschangedcheckdataerror'])?'':'. '.$special['userdetailschangedcheckdataerror']);
 					$m['mode'] = 'change';
 					$m['user_email'] = $email;
 					$m['user_question'] = $question;
