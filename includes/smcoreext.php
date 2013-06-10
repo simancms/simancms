@@ -380,5 +380,31 @@
 		{
 			return 'index.php?m=menu&d=addouter&p_caption='.urlencode($title).'&p_url='.urlencode($url).'&returnto='.urlencode($returnto);
 		}
+	
+	function sm_saferemove($url)
+		{
+			if (empty($url))
+				return;
+			global $sm;
+			$items=Array();
+			$q=new TQuery($sm['t'].'menu_lines');
+			$q->Add('url', dbescape($url));
+			$q->Remove();
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($url));
+			$q->Select();
+			for ($i = 0; $i < $q->Count(); $i++)
+				{
+					$items[]=$q->items[$i]['filename_fs'];
+				}
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($url));
+			$q->Remove();
+			sm_event('saferemove', Array($url));
+			for ($i = 0; $i < count($items); $i++)
+				{
+					sm_saferemove($items[$i]);
+				}
+		}
 
 ?>

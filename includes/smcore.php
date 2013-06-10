@@ -719,6 +719,21 @@
 			return false;
 		}
 
+	//Return true  if not empty $_POST and current action is in set $action1, $action2... or false otherwice
+	function sm_actionpost()
+		{
+			global $m, $sm;
+			if (count($sm['p'])==0)
+				return false;
+			for ($i = 0; $i < func_num_args(); $i++)
+				{
+					$param = func_get_arg($i);
+					if (strcmp($m["mode"], $param) == 0)
+						return true;
+				}
+			return false;
+		}
+	
 	//Change or format the parameters of the $url
 	//sm_url($url, $get_param_name, $get_param_value)
 	//sm_url($url, $param_replacers_array)
@@ -865,5 +880,6 @@
 			$groups=get_array_groups($userid_or_userinfo['groups']);
 			return in_array($groupid, $groups);
 		}
+	
 
 ?>
