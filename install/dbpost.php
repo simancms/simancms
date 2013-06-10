@@ -11,7 +11,7 @@ INSERT INTO ".$tableprefix."blocks (panel_block, position_block, name_block, cap
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="
-INSERT INTO ".$tableprefix."blocks (panel_block, position_block, name_block, caption_block, showed_id, level, editsource_block) VALUES ('1', 2, 'menu','".$lang['p_blocks']['main_menu']."',2,0,'index.php?m=menu&d=listlines&mid=1');
+INSERT INTO ".$tableprefix."blocks (panel_block, position_block, name_block, caption_block, showed_id, level, editsource_block) VALUES ('1', 2, 'menu','".$lang['p_blocks']['main_menu']."',2,0,'index.php?m=menu&d=listlines&mid=2');
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="

@@ -348,7 +348,7 @@
 										$dont_show_high_priority = 1;
 									elseif (intval($userinfo['level']) != intval($pnlrow->level) && $pnlrow->thislevelonly == 1)
 										$dont_show_high_priority = 1;
-									elseif ($special['is_index_page'] != 1 && strcmp('#index#', $pnlrow->show_on_module) == 0)
+									elseif ($special['is_index_page'] != 1 && strcmp('#index#', $pnlrow->show_on_module) == 0 && $pnlrow->dont_show_modif != 1)
 										$dont_show_high_priority = 1;
 									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == $_settings['default_theme'])
 										$dont_show_high_priority = 1;
