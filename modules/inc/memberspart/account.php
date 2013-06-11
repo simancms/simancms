@@ -21,8 +21,8 @@
 		{
 			function siman_get_userid_by_name($name)
 				{
-					global $nameDB, $lnkDB, $tableusersprefix, $_settings;
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE lower(login)='$name' LIMIT 1";
+					global $tableusersprefix, $_settings;
+					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE lower(login)=lower('".dbescape($name)."') LIMIT 1";
 					$result = execsql($sql);
 					$id = 0;
 					while ($row = database_fetch_object($result))
@@ -111,11 +111,13 @@
 				{
 					if ($userinfo['level'] == 3 && !empty($_postvars['p_user_id']))
 						{
-							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".$_postvars['p_user_id']."'";
+							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($_postvars['p_user_id'])."'";
+							if ($userinfo['id']!=1)
+								 $sql.=' AND id_user<>1';
 						}
 					else
 						{
-							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_session = '".$userinfo['session']."'";
+							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($userinfo['id'])."'";
 							if (!empty($old_password))
 								{
 									$sql .= " AND password = '".md5($old_password)."'";
@@ -146,7 +148,7 @@
 								}
 							else
 								{
-									$sql .= " WHERE  id_user = '".intval($userinfo['id'])."' AND id_session = '".$userinfo['session']."'";
+									$sql .= " WHERE  id_user = '".intval($userinfo['id'])."'";
 									$id_newuser = intval($userinfo['id']);
 								}
 							$result = execsql($sql);
@@ -186,11 +188,11 @@
 					if (strcmp($_getvars['usrid'], $userinfo['id']) != 0)
 						$m['change_to_other'] = 1;
 					$m["extended_groups"] = 1;
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".$_getvars['usrid']."'";
+					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($_getvars['usrid']);
 				}
 			else
 				{
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".$userinfo['id']."' AND id_session = '".$userinfo['session']."' AND login = '".dbescape($userinfo['login'])."' ";
+					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($userinfo['id']);
 				}
 			$result = execsql($sql);
 			$u = 0;
