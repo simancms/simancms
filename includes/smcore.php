@@ -385,8 +385,8 @@
 
 	function sm_event($eventname, $paramsarray)
 		{
-			global $_settings;
-			$listeners = nllistToArray($_settings['autoload_modules']);
+			global $sm;
+			$listeners = nllistToArray($sm['_s']['autoload_modules']);
 			for ($i = 0; $i < count($listeners); $i++)
 				{
 					$eventfn = 'event_'.$eventname.'_'.$listeners[$i];
@@ -397,6 +397,23 @@
 							call_user_func_array($eventfn, $paramsarray);
 						}
 				}
+			for ($i = 0; $i < count($sm['eventlisteners'][$eventname]); $i++)
+				{
+					$eventfn = $sm['eventlisteners'][$eventname][$i];
+					if (function_exists($eventfn))
+						{
+							if (!is_array($paramsarray))
+								$paramsarray = array($paramsarray);
+							call_user_func_array($eventfn, $paramsarray);
+						}
+				}
+		}
+
+	function sm_registerforevent($eventname, $functionname)
+		{
+			global $sm;
+			if (empty($sm['eventlisteners']) || !in_array($functionname, $sm['eventlisteners']))
+				$sm['eventlisteners'][$eventname][]=$functionname;
 		}
 
 	function sm_get_attachments($fromModule, $fromId)
