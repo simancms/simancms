@@ -11,6 +11,7 @@ if (!defined("simplyquery_DEFINED"))
 				var $tableprefix;
 				var $tablename;
 				var $noquote;
+				var $iswhere;
 				var $selectfields;
 				var $limit;
 				var $offset;
@@ -39,6 +40,24 @@ if (!defined("simplyquery_DEFINED"))
 						$this->fields[count($this->fields)]=$fieldname;
 						$this->values[count($this->values)]=$value;
 						$this->noquote[count($this->fields)-1]=false;
+						$this->iswhere[count($this->fields)-1]=false;
+						return $this;
+					}
+				function AddWhere($fieldname, $value=NULL, $operation='=')
+					{
+						if (func_num_args()==0)
+							return;
+						$fieldname=func_get_arg(0);
+						if (func_num_args()>1)
+							{
+								$value=func_get_arg(1);
+								if ($value===NULL)
+									$value='';
+							}
+						$this->fields[count($this->fields)]=$fieldname;
+						$this->values[count($this->values)]=$value;
+						$this->noquote[count($this->fields)-1]=false;
+						$this->iswhere[count($this->fields)-1]=true;
 						return $this;
 					}
 				function AddNotEmpty($fieldname, $value)
@@ -109,8 +128,6 @@ if (!defined("simplyquery_DEFINED"))
 				//Update($statement)
 				function Update()
 					{
-						if (func_num_args()==0)
-							return;
 						$keyfield=func_get_arg(0);
 						if (func_num_args()>1)
 							$keyvalue=func_get_arg(1);
@@ -118,12 +135,21 @@ if (!defined("simplyquery_DEFINED"))
 							$execute=true;
 						else
 							$execute=func_get_arg(2);
-						$sql=$this->GetPairs(', ');
+						$sql=$this->GetPairs(', ', 'notwhere');
 						$this->sql="UPDATE ".$this->tableprefix.$this->tablename." SET ".$sql." WHERE ";
 						if (func_num_args()==1)
 							$this->sql.=$keyfield;
-						else
+						elseif (func_num_args()!=0)
 							$this->sql.="`".$keyfield."` = '".$keyvalue."'";
+						$sql=$this->GetPairs(' AND ', 'where');
+						if (!empty($sql))
+							{
+								if (func_num_args()!=0)
+									$this->sql.=' AND ';
+								$this->sql.='('.$sql.')';
+							}
+						elseif (func_num_args()==0)
+							return;
 						if ($execute)
 							execsql($this->sql);
 					}
@@ -136,12 +162,16 @@ if (!defined("simplyquery_DEFINED"))
 						if ($execute)
 							execsql($this->sql);
 					}
-				private function GetPairs($combine_with=' AND ')
+				private function GetPairs($combine_with=' AND ', $filter='no')
 					{
 						$sql='';
 						for ($i=0; $i<count($this->fields); $i++)
 							{
-								if ($i!=0)
+								if ($filter=='where' && !$this->iswhere[$i])
+									continue;
+								elseif ($filter=='notwhere' && $this->iswhere[$i])
+									continue;
+								if (!empty($sql))
 									{
 										$sql.=$combine_with;
 									}
@@ -149,6 +179,17 @@ if (!defined("simplyquery_DEFINED"))
 									$sql.=$this->fields[$i];
 								elseif ($this->noquote[$i])
 									$sql.='`'.$this->fields[$i].'` = '.$this->values[$i];
+								elseif (is_array($this->values[$i]) && count($this->values[$i])>0)
+									{
+										$list='';
+										for ($j = 0; $j < count($this->values[$i]); $j++)
+											{
+												if ($j>0)
+													$list.=', ';
+												$list.="'".dbescape($this->values[$i][$j])."'";
+											}
+										$sql.='`'.$this->fields[$i].'` IN ('.$list.')';
+									}
 								else
 									$sql.='`'.$this->fields[$i].'` = \''.$this->values[$i].'\'';
 							}
