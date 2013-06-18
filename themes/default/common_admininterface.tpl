@@ -18,10 +18,14 @@
 			{include file="common_boardmessages.tpl" board=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].board}
 		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].type eq "bar"}
 			{include file="common_adminbuttons.tpl" bar=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].bar}
+		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].type eq "ui"}
+			{include file="common_admininterface.tpl" blocks=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].blocks}
 		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].type eq "pagebar"}
 			{include file="pagebar.tpl"}
-		{else}
+		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].type eq "html"}
 			{$blocks[admininterfaceblockindex].items[admininterfaceitemindex].html}
+		{else}
+			{include file=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].tpl data=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].data}
 		{/if}
 		{/section}
 		{if $blocks[admininterfaceblockindex].show_borders eq 1}

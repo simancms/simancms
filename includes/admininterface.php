@@ -41,10 +41,11 @@ if (!defined("admininterface_DEFINED"))
 						$this->blocks[$this->currentblock]['itemscount']=0;
 						$this->SetActiveItem();
 					}
-				function AddOutputObject($type, $object)
+				function AddOutputObject($type, $object, $tpl='')
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']=$type;
+						$this->item['tpl']=$tpl;
 						$this->item[$type]=$object->Output();
 						$this->SetActiveItem();
 					}
@@ -64,6 +65,10 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->AddOutputObject('bar', $buttons);
 					}
+				function AddPanel($panel)
+					{
+						$this->AddOutputObject('ui', $panel);
+					}
 				function AddPagebar($html_not_used='')
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
@@ -77,14 +82,33 @@ if (!defined("admininterface_DEFINED"))
 						$this->item['html']=$html;
 						$this->SetActiveItem();
 					}
-				function div($html, $id='', $class='', $style='')
+				function div($html, $id='', $class='', $style='', $additionaltagattrs='')
 					{
-						$code='<div'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').'>'.$html.'</div>';
+						$code='<div'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.'</div>';
 						$this->html($code);
 					}
-				function p($html, $id='', $class='', $style='')
+				function p($html, $id='', $class='', $style='', $additionaltagattrs='')
 					{
-						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').'>'.$html.'</p>';
+						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.'</p>';
+						$this->html($code);
+					}
+				function h($type=1, $html, $id='', $class='', $style='', $additionaltagattrs='')
+					{
+						$code='<h'.$type.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.'</h'.$type.'>';
+						$this->html($code);
+					}
+				function a($href, $html, $id='', $class='', $style='', $onclick='', $additionaltagattrs='')
+					{
+						$code='<a href="'.$href.'"'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').''.(empty($onclick)?'':' onclick="'.$onclick.'"').$additionaltagattrs.'>'.$html.'</a>';
+						$this->html($code);
+					}
+				function br()
+					{
+						$this->html('<br />');
+					}
+				function hr($id='', $class='', $style='', $additionaltagattrs='')
+					{
+						$code='<hr '.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.' />';
 						$this->html($code);
 					}
 				function Output($replace_template=false)
@@ -101,6 +125,15 @@ if (!defined("admininterface_DEFINED"))
 							return $this->blocks;
 					}
 			}
+		
+		class TPanel extends TInterface
+			{
+				function TPanel($width='', $height='')
+					{
+						$this->TInterface('', 0);
+					}
+			}
+		
 		define("admininterface_DEFINED", 1);
 	}
 
