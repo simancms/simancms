@@ -67,7 +67,7 @@ if (!defined("admininterface_DEFINED"))
 					}
 				function AddPanel($panel)
 					{
-						$this->AddOutputObject('ui', $panel);
+						$this->AddOutputObject('panel', $panel);
 					}
 				function AddPagebar($html_not_used='')
 					{
@@ -128,9 +128,19 @@ if (!defined("admininterface_DEFINED"))
 		
 		class TPanel extends TInterface
 			{
-				function TPanel($width='', $height='')
+				function TPanel($width='', $height='', $style='', $class='')
 					{
 						$this->TInterface('', 0);
+						if (!empty($width))
+							$style.='width:'.$width.';';
+						if (!empty($height))
+							$style.='height:'.$height.';';
+						$this->html('<div class="common_adminpanel'.(empty($class)?'':' '.$class).'" style="'.$style.'">');
+					}
+				function Output()
+					{
+						$this->html('</div>');
+						return $this->blocks;
 					}
 			}
 		
