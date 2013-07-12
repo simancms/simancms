@@ -52,7 +52,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['fields'][$name]['type']='label';
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddText($name, $title, $required=0)
+				function AddText($name, $title, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -61,7 +61,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddFile($name, $title, $required=0)
+				function AddFile($name, $title, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -70,7 +70,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['files']=addto_nllist($this->form['files'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddStatictext($name, $title, $required=0)
+				function AddStatictext($name, $title, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -94,7 +94,7 @@ if (!defined("adminform_DEFINED"))
 						$this->SetValue($name, $value);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddTextarea($name, $title, $required=0)
+				function AddTextarea($name, $title, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -103,7 +103,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddEditor($name, $title, $required=0)
+				function AddEditor($name, $title, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -116,7 +116,7 @@ if (!defined("adminform_DEFINED"))
 						if ($this->firsteditor)
 							$this->firsteditor=false;
 					}
-				function AddCheckbox($name, $title, $checkedvalue=1, $required=0)
+				function AddCheckbox($name, $title, $checkedvalue=1, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -126,7 +126,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddSelectNLList($name, $title, $nllist_values, $required=0)
+				function AddSelectNLList($name, $title, $nllist_values, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -136,7 +136,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddSelect($name, $title, $array_values, $required=0)
+				function AddSelect($name, $title, $array_values, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -146,7 +146,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddSelectVL($name, $title, $array_values, $array_labels, $required=0)
+				function AddSelectVL($name, $title, $array_values, $array_labels, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -157,7 +157,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
-				function AddSelectNLListVL($name, $title, $nllist_values, $nllist_labels, $required=0)
+				function AddSelectNLListVL($name, $title, $nllist_values, $nllist_labels, $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -194,7 +194,7 @@ if (!defined("adminform_DEFINED"))
 								$this->form['fields'][$name]['labels'][]=$label;
 							}
 					}
-				function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel='', $required=0)
+				function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel='', $required=false)
 					{
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -280,6 +280,12 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['fields'][$name]['image']['src']=$src;
 						$this->form['fields'][$name]['image']['href']=$href;
+					}
+				function AddProtectCode($name, $title)
+					{
+						siman_generate_protect_code();
+						$this->AddText($name, $title, true);
+						$this->SetImage($name, 'ext/antibot/antibot.php?rand='.rand(11111,99999));
 					}
 				//-------------------------------------------------------------
 				function SaveButton($text)
