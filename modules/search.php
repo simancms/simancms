@@ -31,7 +31,6 @@
 					$_getvars['q'] = trim($_getvars['q']);
 					while (strpos($_getvars['q'], '  '))
 						str_replace('  ', ' ', $_getvars['q']);
-					$_getvars['q'] = addslashesJ($_getvars['q']);
 					$special['search_text'] = $_getvars['q'];
 					if (empty($_getvars['q']))
 						$m['title'] = $lang['module_search']['search'];
@@ -40,7 +39,7 @@
 							$m['title'] = $lang['module_search']['search_results'];
 
 							$sql = "SELECT * FROM ".$tableprefix."modules";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							$srch_elem = 0;
 							$i = 0;
 							while ($row = database_fetch_object($result))
@@ -48,7 +47,7 @@
 									$from_record = $_getvars['from'];
 									if (empty($from_record)) $from_record = 0;
 									$from_page = ceil(($from_record+1)/$_settings['search_items_by_page']);
-									$m['pages']['url'] = 'index.php?m=search&q='.$_getvars['q'];
+									$m['pages']['url'] = 'index.php?m=search&q='.urlencode($_getvars['q']);
 									$m['pages']['selected'] = $from_page;
 									$m['pages']['interval'] = $_settings['search_items_by_page'];
 									if (empty($row->search_doing)) continue;
@@ -74,11 +73,11 @@
 													if ($k != 0) $filter .= $srch_mode;
 													if ($srch_comparefull == 1)
 														{
-															$filter .= $srch_fields[$j].'LIKE \''.$srch_query[$k].'\'';
+															$filter .= $srch_fields[$j].'LIKE \''.dbescape($srch_query[$k]).'\'';
 														}
 													else
 														{
-															$filter .= $srch_fields[$j].' LIKE \'%'.$srch_query[$k].'%\'';
+															$filter .= $srch_fields[$j].' LIKE \'%'.dbescape($srch_query[$k]).'%\'';
 														}
 												}
 											$filter .= ')';
@@ -87,7 +86,7 @@
 										$sql = 'SELECT '.$tableprefix.'content.* FROM '.$tableprefix.'content, '.$tableprefix.'categories WHERE '.$tableprefix.'content.id_category_c='.$tableprefix.'categories.id_category AND '.$tableprefix.'categories.can_view<='.$userinfo['level']." AND ($filter)";
 									else
 										$sql = "SELECT * FROM $srch_table WHERE $filter";
-									$srresult = database_db_query($nameDB, $sql, $lnkDB);
+									$srresult = execsql($sql);
 									while ($srrow = database_fetch_array($srresult))
 										{
 											if ($from_record<=$i && $i<$from_record+$_settings['search_items_by_page'])

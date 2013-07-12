@@ -8,7 +8,7 @@
 	/*
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
-	Description: Pages managemt. Base CMS module
+	Description: Pages management. Base CMS module
 	Version: 1.6.4
 	Revision: 2013-05-01
 	Author URI: http://simancms.org/
