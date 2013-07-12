@@ -215,38 +215,3 @@
 <a href="index.php?m=menu&d=add">{$lang.add_menu}</a><br>
 {include file="block_end.tpl"}
 {/if}
-
-{if $modules[$index].mode eq "postaddline"}
-{include file="block_begin.tpl"}
-{$lang.add_menu_line_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "posteditline"}
-{include file="block_begin.tpl"}
-{$lang.edit_menu_line_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postdeleteline"}
-{include file="block_begin.tpl"}
-{$lang.delete_menu_line_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postedit"}
-{include file="block_begin.tpl"}
-{$lang.edit_menu_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postdeletemenu"}
-{include file="block_begin.tpl"}
-{$lang.delete_menu_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}

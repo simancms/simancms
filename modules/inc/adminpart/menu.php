@@ -63,7 +63,7 @@
 					unset($values);
 					unset($labels);
 					$q=new TQuery($tableprefix."menus");
-					$q->OrderBy('caption_m');
+					$q->OrderBy('if (id_menu_m=1, 1, 0), caption_m');
 					$q->Select();
 					for ($i = 0; $i < $q->Count(); $i++)
 						{
@@ -119,7 +119,7 @@
 					$menu_id = $_getvars["mid"];
 					$menuline_id = $_getvars["lid"];
 					siman_delete_menu_line($menuline_id);
-					$refresh_url = 'index.php?m=menu&d=listlines&mid='.$menu_id;
+					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
 			if (strcmp($m["mode"], 'postaddouter') == 0)
 				{
@@ -210,7 +210,7 @@
 						{
 							siman_upload_image($menuline_id, 'menuitem');
 						}
-					$refresh_url = 'index.php?m=menu&d=listlines&mid='.$menu_id;
+					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
 			if (strcmp($m["mode"], 'addline') == 0)
 				{
@@ -361,7 +361,7 @@
 						{
 							siman_upload_image($menu_id, 'menu');
 						}
-					$refresh_url = 'index.php?m=menu&d=listmenu';
+					sm_redirect('index.php?m=menu&d=listmenu');
 				}
 			if (strcmp($m["mode"], 'deletemenu') == 0)
 				{
@@ -383,7 +383,7 @@
 							if (file_exists('./files/img/menu'.$menu_id.'.jpg'))
 								unlink('./files/img/menu'.$menu_id.'.jpg');
 						}
-					$refresh_url = 'index.php?m=menu&d=listmenu';
+					sm_redirect('index.php?m=menu&d=listmenu');
 				}
 			if (strcmp($m["mode"], 'add') == 0)
 				{
