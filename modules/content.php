@@ -239,6 +239,12 @@
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
+							if ($row->type_content == 2)
+								{
+									@header('Content-type: text/plain; charset='.$lang["charset"]);
+									print($row->text_content);
+									exit();
+								}
 							$m['content'][$i]["title"] = $row->title_content;
 							sm_add_title_modifier($m['content'][$i]["title"]);
 							if ($tmp_dont_set_title != 1)

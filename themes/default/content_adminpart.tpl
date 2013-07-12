@@ -52,6 +52,7 @@
 			<select name="p_type_content">
 				<option value="0"{if $modules[$index].type_content eq "0"}SELECTED{/if}>{$lang.type_content_simple_text}</option>
 				<option value="1"{if $modules[$index].type_content eq "1"}SELECTED{/if}>{$lang.type_content_HTML}</option>
+				<option value="2"{if $modules[$index].type_content eq "2"}SELECTED{/if}>{$lang.type_content_simple_text} / Header: plain/text</option>
 			</select>
 		</td>
 	<tr>
