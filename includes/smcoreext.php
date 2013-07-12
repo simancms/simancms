@@ -406,5 +406,53 @@
 					sm_saferemove($items[$i]);
 				}
 		}
+	
+	function sm_html_headstart($html)
+		{
+			global $sm;
+			$sm['s']['document']['headstart'].=$html;
+		}
+
+	function sm_html_headend($html)
+		{
+			global $sm;
+			$sm['s']['document']['headend'].=$html;
+		}
+
+	function sm_html_bodystart($html)
+		{
+			global $sm;
+			$sm['s']['document']['bodystart'].=$html;
+		}
+
+	function sm_html_bodyend($html)
+		{
+			global $sm;
+			$sm['s']['document']['bodyend'].=$html;
+		}
+
+	function sm_html_beforepanel($html, $panelindex)
+		{
+			global $sm;
+			$sm['s']['document']['panel'][$panelindex]['beforepanel'].=$html;
+		}
+
+	function sm_html_afterpanel($html, $panelindex)
+		{
+			global $sm;
+			$sm['s']['document']['panel'][$panelindex]['afterpanel'].=$html;
+		}
+
+	function sm_html_beforeblock($html, $blockindex)
+		{
+			global $sm;
+			$sm['s']['document']['block'][$blockindex]['beforeblock'].=$html;
+		}
+
+	function sm_html_afterblock($html, $blockindex)
+		{
+			global $sm;
+			$sm['s']['document']['block'][$blockindex]['afterblock'].=$html;
+		}
 
 ?>
