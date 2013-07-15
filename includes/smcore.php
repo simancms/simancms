@@ -409,7 +409,7 @@
 				}
 		}
 
-	function sm_registerforevent($eventname, $functionname)
+	function sm_event_handler($eventname, $functionname)
 		{
 			global $sm;
 			if (empty($sm['eventlisteners']) || !in_array($functionname, $sm['eventlisteners']))
