@@ -383,7 +383,7 @@
 			return $nice;
 		}
 
-	function sm_event($eventname, $paramsarray)
+	function sm_event($eventname, $paramsarray=Array())
 		{
 			global $sm;
 			$listeners = nllistToArray($sm['_s']['autoload_modules']);
