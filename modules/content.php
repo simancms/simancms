@@ -237,39 +237,38 @@
 				{
 					$result = execsql($sql);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							if ($row->type_content == 2)
+							if ($row['type_content'] == 2)
 								{
 									@header('Content-type: text/plain; charset='.$lang["charset"]);
-									print($row->text_content);
+									print($row['text_content']);
 									exit();
 								}
-							$m['content'][$i]["title"] = $row->title_content;
+							$m['content'][$i]["title"] = $row['title_content'];
 							sm_add_title_modifier($m['content'][$i]["title"]);
 							if ($tmp_dont_set_title != 1)
 								$m["title"] = $m['content'][$i]["title"];
 							if ($tmp_load_preview_only == 1)
 								{
-									$m['content'][$i]["text"] = $row->preview_content;
+									$m['content'][$i]["text"] = $row['preview_content'];
 									if (empty($m['content'][$i]["text"]))
-										//$m['content'][$i]["text"]=substr($row->text_content, 0, 300);
-										$m['content'][$i]["text"] = cut_str_by_word($row->text_content, 300, '...');
-									if (!empty($row->filename_content))
-										$m['content'][$i]["fullink"] = get_filename($row->filename_content);
+										$m['content'][$i]["text"] = cut_str_by_word($row['text_content'], 300, '...');
+									if (!empty($row['filename_content']))
+										$m['content'][$i]["fullink"] = get_filename($row['filename_content']);
 									else
-										$m['content'][$i]["fullink"] = 'index.php?m=content&d=view&cid='.$row->id_content;
+										$m['content'][$i]["fullink"] = 'index.php?m=content&d=view&cid='.$row['id_content'];
 								}
 							else
-								$m['content'][$i]["text"] = $row->text_content;
+								$m['content'][$i]["text"] = $row['text_content'];
 							sm_add_content_modifier($m['content'][$i]["text"]);
-							$m['content'][$i]["id_category"] = $row->id_category_c;
+							$m['content'][$i]["id_category"] = $row['id_category_c'];
 							if ($special['categories']['getctg'] == 1)
-								$special['categories']['id'] = $row->id_category_c;
-							$m['content'][$i]["title_category"] = $row->title_category;
-							if ($modules_index == 0 && $i == 0 && $_settings['content_use_path'] == 1 && $row->no_use_path != 1)
+								$special['categories']['id'] = $row['id_category_c'];
+							$m['content'][$i]["title_category"] = $row['title_category'];
+							if ($modules_index == 0 && $i == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1)
 								{
-									$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row->id_category_c);
+									$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row['id_category_c']);
 									add_path_home();
 									for ($tmpi = 0; $tmpi < count($tmppath); $tmpi++)
 										{
@@ -278,17 +277,17 @@
 										}
 								}
 							if ($modules_index == 0 && $i == 0)
-								$m['content'][$i]['attachments'] = sm_get_attachments('content', $row->id_content);
+								$m['content'][$i]['attachments'] = sm_get_attachments('content', $row['id_content']);
 							if ($tmp_no_alike_content != 1)
-								if ($row->no_alike_content == 1)
+								if ($row['no_alike_content'] == 1)
 									$tmp_no_alike_content = 1;
-							if ($row->can_view <= $userinfo['level'])
+							if ($row['can_view'] <= $userinfo['level'])
 								$m['content'][$i]["can_view"] = 1;
 							else
 								{
 									if (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row->groups_view) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
 												$m['content'][$i]["can_view"] = 1;
 											else
 												$m['content'][$i]["can_view"] = 0;
@@ -300,7 +299,7 @@
 											$m['content'][$i]["title"] = $lang['access_denied'];
 										}
 								}
-							if ($row->type_content == 0)
+							if ($row['type_content'] == 0)
 								{
 									$m['content'][$i]["text"] = str_replace("\n", '<br>', $m['content'][$i]["text"]);
 								}
@@ -311,7 +310,7 @@
 								}
 							elseif (!empty($userinfo['groups']))
 								{
-									if (compare_groups($userinfo['groups'], $row->groups_modify) == 1)
+									if (compare_groups($userinfo['groups'], $row['groups_modify']) == 1)
 										{
 											$m['content'][$i]["can_edit"] = 1;
 											$m['content'][$i]["can_delete"] = 1;
@@ -348,36 +347,33 @@
 								}
 							if ($modules_index == 0)
 								{
-									if (!empty($special['meta']['keywords']) && !empty($row->keywords_content))
+									if (!empty($special['meta']['keywords']) && !empty($row['keywords_content']))
 										{
-											$special['meta']['keywords'] = ($row->keywords_content).', '.$special['meta']['keywords'];
+											$special['meta']['keywords'] = ($row['keywords_content']).', '.$special['meta']['keywords'];
 										}
-									elseif (!empty($row->keywords_content))
+									elseif (!empty($row['keywords_content']))
 										{
-											$special['meta']['keywords'] = $row->keywords_content;
+											$special['meta']['keywords'] = $row['keywords_content'];
 										}
-									if (!empty($row->description_content))
-										$special['meta']['description'] = $row->description_content;
+									if (!empty($row['description_content']))
+										$special['meta']['description'] = $row['description_content'];
 								}
 							if ($tmp_no_alike_content != 1 && $modules_index == 1 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0)
 								{
 									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>'".$m['content'][$i]["cid"]."' AND id_category_c=".$m['content'][$i]["id_category"]." ORDER BY priority_content DESC LIMIT ".$_settings['alike_content_count'];
 									$tmpresult = database_db_query($nameDB, $tmpsql, $lnkDB);
 									$j = 0;
-									while ($tmprow = database_fetch_object($tmpresult))
+									while ($tmprow = database_fetch_assoc($tmpresult))
 										{
-											$m['content'][$i]['alike_texts'][$j]['id'] = $tmprow->id_content;
-											$m['content'][$i]['alike_texts'][$j]['title'] = $tmprow->title_content;
-											if (!empty($tmprow->filename_content))
-												$m['content'][$i]['alike_texts'][$j]["fullink"] = get_filename($tmprow->filename_content);
+											$m['content'][$i]['alike_texts'][$j]['id'] = $tmprow['id_content'];
+											$m['content'][$i]['alike_texts'][$j]['title'] = $tmprow['title_content'];
+											if (!empty($tmprow['filename_content']))
+												$m['content'][$i]['alike_texts'][$j]["fullink"] = get_filename($tmprow['filename_content']);
 											else
-												$m['content'][$i]['alike_texts'][$j]["fullink"] = 'index.php?m=content&d=view&cid='.$tmprow->id_content;
-											$m['content'][$i]['alike_texts'][$j]['preview'] = $tmprow->preview_content;
+												$m['content'][$i]['alike_texts'][$j]["fullink"] = 'index.php?m=content&d=view&cid='.$tmprow['id_content'];
+											$m['content'][$i]['alike_texts'][$j]['preview'] = $tmprow['preview_content'];
 											if (empty($m['content'][$i]['alike_texts'][$j]['preview']))
-												$m['content'][$i]['alike_texts'][$j]['preview'] = cut_str_by_word($tmprow->text_content, 300, '...');
-											//$m['content'][$i]['alike_texts'][$j]['id']=$tmprow->preview_content;
-											//$m['content'][$i]['alike_texts'][$j]['id']=$tmprow->id_content;
-											//$m['content'][$i]['alike_texts'][$j]['id']=$tmprow->id_content;
+												$m['content'][$i]['alike_texts'][$j]['preview'] = cut_str_by_word($tmprow['text_content'], 300, '...');
 											sm_add_title_modifier($m['content'][$i]['alike_texts'][$j]['title']);
 											sm_add_content_modifier($m['content'][$i]['alike_texts'][$j]['preview']);
 											$j++;
@@ -386,6 +382,8 @@
 								}
 							else
 								$m['content'][$i]['alike_texts_present'] = 0;
+							$m['content'][$i]['data']=$row;
+							sm_event('oncontentprocessed', $i);
 							$i++;
 						}
 					if ($i == 0)
