@@ -245,6 +245,7 @@
 									print($row['text_content']);
 									exit();
 								}
+							sm_event('onbeforecontentprocessing', $i);
 							$m['content'][$i]["title"] = $row['title_content'];
 							sm_add_title_modifier($m['content'][$i]["title"]);
 							if ($tmp_dont_set_title != 1)
@@ -402,11 +403,12 @@
 			sm_page_viewid('content-viewctg-'.$ctg_id);
 			$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='$ctg_id'";
 			$result = execsql($sql);
-			while ($row = database_fetch_object($result))
+			while ($row = database_fetch_assoc($result))
 				{
-					if ($modules_index == 0 && $_settings['content_use_path'] == 1 && $row->no_use_path != 1)
+					sm_event('onbeforecontentcategoriespathprocessing', $i);
+					if ($modules_index == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1)
 						{
-							$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row->id_maincategory);
+							$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row['id_maincategory']);
 							add_path_home();
 							for ($tmpi = 0; $tmpi < count($tmppath); $tmpi++)
 								{
@@ -415,17 +417,17 @@
 								}
 						}
 					if ($special['categories']['getctg'] == 1)
-						$special['categories']['id'] = $row->id_category;
-					$m['title'] = $row->title_category;
-					$m['preview_category'] = $row->preview_category;
-					$m['sorting_category'] = $row->sorting_category;
-					if ($row->can_view <= $userinfo['level'])
+						$special['categories']['id'] = $row['id_category'];
+					$m['title'] = $row['title_category'];
+					$m['preview_category'] = $row['preview_category'];
+					$m['sorting_category'] = $row['sorting_category'];
+					if ($row['can_view'] <= $userinfo['level'])
 						$m['category']['can_view'] = 1;
 					else
 						{
 							if (!empty($userinfo['groups']))
 								{
-									if (compare_groups($userinfo['groups'], $row->groups_view) == 1)
+									if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
 										$m['category']['can_view'] = 1;
 									else
 										$m['category']['can_view'] = 0;
@@ -435,7 +437,7 @@
 							if ($m['category']['can_view'] == 0)
 								$m['title'] = $lang['access_denied'];
 						}
-					$m['subcategories'] = siman_load_ctgs_content($row->id_category);
+					$m['subcategories'] = siman_load_ctgs_content($row['id_category']);
 					sm_add_title_modifier($m['title']);
 					sm_add_content_modifier($m['preview_category']);
 				}
@@ -451,21 +453,22 @@
 			//$sql="SELECT * FROM ".$tableprefix."content WHERE id_category_c='$ctg_id'";
 			$result = execsql($sql);
 			$i = 0;
-			while ($row = database_fetch_object($result))
+			while ($row = database_fetch_assoc($result))
 				{
-					$m['category']['ctg'][$i]['title'] = $row->title_content;
-					$m['category']['ctg'][$i]['id'] = $row->id_content;
-					if ($row->filename_content != 0)
+					sm_event('onbeforeviewctgcontentprocessing', $i);
+					$m['category']['ctg'][$i]['title'] = $row['title_content'];
+					$m['category']['ctg'][$i]['id'] = $row['id_content'];
+					if ($row['filename_content'] != 0)
 						{
-							$m['category']['ctg'][$i]['url'] = $row->filename_fs;
+							$m['category']['ctg'][$i]['url'] = $row['filename_fs'];
 						}
 					else
 						{
-							$m['category']['ctg'][$i]['url'] = 'index.php?m=content&d=view&cid='.$row->id_content;
+							$m['category']['ctg'][$i]['url'] = 'index.php?m=content&d=view&cid='.$row['id_content'];
 						}
 					if ($_settings['content_use_preview'] == 1)
 						{
-							$m['category']['ctg'][$i]['preview'] = $row->preview_content;
+							$m['category']['ctg'][$i]['preview'] = $row['preview_content'];
 						}
 					if ($_settings['content_use_image'] == 1)
 						{
@@ -500,15 +503,16 @@
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
-							$m['title'] = $row->title_category;
-							$m['sorting_category'] = $row->sorting_category;
-							if ($row->can_view <= $userinfo['level'])
+							sm_event('onbeforeblockctgviewcontentprocessing', $i);
+							$m['title'] = $row['title_category'];
+							$m['sorting_category'] = $row['sorting_category'];
+							if ($row['can_view'] <= $userinfo['level'])
 								$m['category']['can_view'] = 1;
 							else
 								{
 									if (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row->groups_view) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
 												$m['category']['can_view'] = 1;
 											else
 												$m['category']['can_view'] = 0;
@@ -534,17 +538,17 @@
 					$m['menu'] = Array();
 					while ($row = database_fetch_object($result))
 						{
-							$m['category']['ctg'][$i]['title'] = $row->title_content;
-							$m['category']['ctg'][$i]['id'] = $row->id_content;
-							if ($row->filename_content != 0)
+							$m['category']['ctg'][$i]['title'] = $row['title_content'];
+							$m['category']['ctg'][$i]['id'] = $row['id_content'];
+							if ($row['filename_content'] != 0)
 								{
-									$m['category']['ctg'][$i]['url'] = $row->filename_fs;
+									$m['category']['ctg'][$i]['url'] = $row['filename_fs'];
 								}
 							else
 								{
-									$m['category']['ctg'][$i]['url'] = 'index.php?m=content&d=view&cid='.$row->id_content;
+									$m['category']['ctg'][$i]['url'] = 'index.php?m=content&d=view&cid='.$row['id_content'];
 								}
-							sm_add_menuitem($m['menu'], $row->title_content, $m['category']['ctg'][$i]['url']);
+							sm_add_menuitem($m['menu'], $row['title_content'], $m['category']['ctg'][$i]['url']);
 							sm_add_title_modifier($m['category']['ctg'][$i]['title']);
 							$i++;
 						}

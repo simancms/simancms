@@ -72,7 +72,7 @@
 							$tmp_view_ctg_first = explode(',', $tmp_view_ctg);
 							$tmp_view_ctg_first = $tmp_view_ctg_first[0];
 							$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".intval($tmp_view_ctg_first)."'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							while ($row = database_fetch_object($result))
 								{
 									$m['title'] = $row->title_category;
@@ -169,24 +169,25 @@
 						{
 							$sql .= " LIMIT ".intval($_settings['short_news_count']);
 						}
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							$m["newsid"][$i][0] = $row->id_news;
-							$m["newsid"][$i][1] = $row->date_news;
+							sm_event('onbeforelistnewsprocessing', $i);
+							$m["newsid"][$i][0] = $row['id_news'];
+							$m["newsid"][$i][1] = $row['date_news'];
 							$m["newsid"][$i][1] = strftime($lang["datemask"], $m["newsid"][$i][1]);
-							$m["newsid"][$i][8] = strftime($lang["timemask"], $row->date_news);
-							$m["newsid"][$i][2] = $row->text_news;
-							$m["newsid"][$i][3] = $row->text_news;
-							$m["newsid"][$i][5] = $row->title_news;
-							if ($row->filename_news != 0)
+							$m["newsid"][$i][8] = strftime($lang["timemask"], $row['date_news']);
+							$m["newsid"][$i][2] = $row['text_news'];
+							$m["newsid"][$i][3] = $row['text_news'];
+							$m["newsid"][$i][5] = $row['title_news'];
+							if ($row['filename_news'] != 0)
 								{
-									$m["newsid"][$i][7] = $row->filename_fs;
+									$m["newsid"][$i][7] = $row['filename_fs'];
 								}
 							else
 								{
-									$m["newsid"][$i][7] = 'index.php?m=news&d=view&nid='.$row->id_news;
+									$m["newsid"][$i][7] = 'index.php?m=news&d=view&nid='.$row['id_news'];
 								}
 							if ($_settings['news_use_image'] == 1)
 								{
@@ -212,25 +213,26 @@
 									$tmp_cut_news = $_settings['short_news_cut'];
 								}
 							$u = 0;
-							if ($_settings['news_use_preview'] == 1 && !empty($row->preview_news))
+							if ($_settings['news_use_preview'] == 1 && !empty($row['preview_news']))
 								{
-									$m["newsid"][$i][3] = $row->preview_news;
+									$m["newsid"][$i][3] = $row['preview_news'];
 									$m["newsid"][$i][4] = 1;
 									$u = 1;
 								}
-							if (strlen($row->text_news)>$tmp_cut_news && $u != 1)
+							if (strlen($row['text_news'])>$tmp_cut_news && $u != 1)
 								{
-									$m["newsid"][$i][3] = cut_str_by_word($row->text_news, $tmp_cut_news, '...');
+									$m["newsid"][$i][3] = cut_str_by_word($row['text_news'], $tmp_cut_news, '...');
 									if ($tmp_short_news == 0)
 										$m["newsid"][$i][4] = 1;
 									else
 										$m["newsid"][$i][4] = 0;
 								}
-							if ($row->type_news == 0)
+							if ($row['type_news'] == 0)
 								{
 									$m["newsid"][$i][2] = nl2br($m["newsid"][$i][2]);
 									$m["newsid"][$i][3] = nl2br($m["newsid"][$i][3]);
 								}
+							sm_event('onlistnewsprocessed', $i);
 							sm_add_title_modifier($m["newsid"][$i][5]);
 							sm_add_content_modifier($m["newsid"][$i][2]);
 							sm_add_content_modifier($m["newsid"][$i][3]);
@@ -239,7 +241,7 @@
 					if ($tmp_short_news == 0)
 						{
 							$sql = "SELECT count(*) FROM ".$tableprefix."news".$sql2;
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							$m['pages']['records'] = 0;
 							while ($row = database_fetch_row($result))
 								{
@@ -274,34 +276,35 @@
 					else
 						{
 							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='$news_id'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
-							while ($row = database_fetch_object($result))
+							$result = execsql($sql);
+							while ($row = database_fetch_assoc($result))
 								{
-									sm_page_viewid('news-'.$m["mode"].'-'.$row->id_news);
+									sm_event('onbeforenewsprocessing', 0);
+									sm_page_viewid('news-'.$m["mode"].'-'.$row['id_news']);
 									$m['row'] = $row;
-									$m["id"] = $row->id_news;
+									$m["id"] = $row['id_news'];
 									if ($_settings['news_use_title'])
 										{
-											if (empty($row->title_news))
+											if (empty($row['title_news']))
 												{
-													$m["title"] = strftime($lang["datemask"], $row->date_news);
+													$m["title"] = strftime($lang["datemask"], $row['date_news']);
 													if ($_settings['news_use_time'] == '1')
-														$m["title"] = strftime($lang["timemask"], $row->date_news).' '.$m["title"];
+														$m["title"] = strftime($lang["timemask"], $row['date_news']).' '.$m["title"];
 												}
 											else
-												$m["title"] = $row->title_news;
+												$m["title"] = $row['title_news'];
 										}
 									else
-										$m["title"] = $lang['news'].' :: '.strftime($lang["datemask"], $row->date_news);
-									$m["date"] = $row->date_news;
-									$m["news_time"] = strftime($lang["timemask"], $row->date_news);
-									$m["news_date"] = strftime($lang["datemask"], $row->date_news);
+										$m["title"] = $lang['news'].' :: '.strftime($lang["datemask"], $row['date_news']);
+									$m["date"] = $row['date_news'];
+									$m["news_time"] = strftime($lang["timemask"], $row['date_news']);
+									$m["news_date"] = strftime($lang["datemask"], $row['date_news']);
 									$m["date"] = strftime($lang["datemask"], $m["date"]);
-									$m["text"] = $row->text_news;
-									$m["id_category"] = $row->id_category_n;
+									$m["text"] = $row['text_news'];
+									$m["id_category"] = $row['id_category_n'];
 									if ($special['categories']['getctg'] == 1)
-										$special['categories']['id'] = $row->id_category_n;
-									if ($row->no_alike_news == 1)
+										$special['categories']['id'] = $row['id_category_n'];
+									if ($row['no_alike_news'] == 1)
 										$tmp_no_alike_news = 1;
 									if ($_settings['news_use_image'] == 1)
 										{
@@ -318,12 +321,10 @@
 														$m['news_image'] .= '&height='.$_settings['news_image_fulltext_height'];
 												}
 										}
-									if ($row->type_news == 0)
+									if ($row['type_news'] == 0)
 										{
-											$m["text"] = str_replace("\n", '<br>', $m["text"]);
+											$m["text"] = nl2br($m["text"]);
 										}
-									//if ($userinfo['level']==3)
-									//	$m["can_edit"]=1;
 									if ($userinfo['level'] == 3)
 										{
 											$m["can_edit"] = 1;
@@ -331,7 +332,7 @@
 										}
 									elseif (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row->groups_modify) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_modify']) == 1)
 												{
 													$m["can_edit"] = 1;
 													$m["can_delete"] = 1;
@@ -340,20 +341,20 @@
 									if ($tmp_no_alike_news != 1 && $m['panel'] == 'center')
 										{
 											$tmpsql = "SELECT * FROM ".$tableprefix."news WHERE id_category_n=".$m["id_category"]."  AND id_news<>'$news_id' ORDER BY date_news DESC LIMIT ".$_settings['alike_news_count'];
-											$tmpresult = database_db_query($nameDB, $tmpsql, $lnkDB);
+											$tmpresult = execsql($tmpsql);
 											$j = 0;
 											while ($tmprow = database_fetch_object($tmpresult))
 												{
-													$m['alike_news'][$j]['id'] = $tmprow->id_news;
-													$m['alike_news'][$j]['title'] = $tmprow->title_news;
-													$m['alike_news'][$j]["date"] = strftime($lang["datemask"], $tmprow->date_news);
-													if (!empty($tmprow->filename_news))
-														$m['alike_news'][$j]["fullink"] = get_filename($tmprow->filename_news);
+													$m['alike_news'][$j]['id'] = $tmprow['id_news'];
+													$m['alike_news'][$j]['title'] = $tmprow['title_news'];
+													$m['alike_news'][$j]["date"] = strftime($lang["datemask"], $tmprow['date_news']);
+													if (!empty($tmprow['filename_news']))
+														$m['alike_news'][$j]["fullink"] = get_filename($tmprow['filename_news']);
 													else
-														$m['alike_news'][$j]["fullink"] = 'index.php?m=news&d=view&nid='.$tmprow->id_news;
-													$m['alike_news'][$j]['preview'] = $tmprow->preview_news;
+														$m['alike_news'][$j]["fullink"] = 'index.php?m=news&d=view&nid='.$tmprow['id_news'];
+													$m['alike_news'][$j]['preview'] = $tmprow['preview_news'];
 													if (empty($m['alike_news'][$j]['preview']))
-														$m['alike_news'][$j]['preview'] = cut_str_by_word($tmprow->text_news, $_settings['news_anounce_cut'], '...');
+														$m['alike_news'][$j]['preview'] = cut_str_by_word($tmprow['text_news'], $_settings['news_anounce_cut'], '...');
 													if (empty($m['alike_news'][$j]['title']))
 														$m['alike_news'][$j]['title'] = $m['alike_news'][$j]['preview'];
 													sm_add_title_modifier($m['alike_news'][$j]['title']);
@@ -364,20 +365,21 @@
 										}
 									else
 										$m['alike_news_present'] = 0;
-									$m['attachments'] = sm_get_attachments('news', $row->id_news);
+									$m['attachments'] = sm_get_attachments('news', $row['id_news']);
 									if ($modules_index == 0)
 										{
-											if (!empty($special['meta']['keywords']) && !empty($row->keywords_news))
+											if (!empty($special['meta']['keywords']) && !empty($row['keywords_news']))
 												{
-													$special['meta']['keywords'] = ($row->keywords_news).', '.$special['meta']['keywords'];
+													$special['meta']['keywords'] = ($row['keywords_news']).', '.$special['meta']['keywords'];
 												}
-											elseif (!empty($row->keywords_news))
+											elseif (!empty($row['keywords_news']))
 												{
-													$special['meta']['keywords'] = $row->keywords_news;
+													$special['meta']['keywords'] = $row['keywords_news'];
 												}
-											if (!empty($row->description_news))
-												$special['meta']['description'] = $row->description_news;
+											if (!empty($row['description_news']))
+												$special['meta']['description'] = $row['description_news'];
 										}
+									sm_event('onnewsprocessed', $i);
 									sm_event('onviewnews', array($m["id"]));
 								}
 							sm_add_content_modifier($m["text"]);

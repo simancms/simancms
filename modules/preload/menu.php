@@ -27,7 +27,7 @@ if (!function_exists('siman_load_menu'))
 	{
 		function siman_load_menu($menu_id, $maxlevel=-1)
 			{
-				global $nameDB, $lnkDB, $_servervars, $tableprefix, $_settings, $special;
+				global $nameDB, $lnkDB, $_servervars, $tableprefix, $_settings, $special, $row;
 				$i=0;
 				$addsql='';
 				if ($maxlevel>=0)
@@ -38,6 +38,7 @@ if (!function_exists('siman_load_menu'))
 				$main_suburl=substr($_settings['resource_url'], $tmp_index);
 				while ($row=database_fetch_assoc($result))
 					{
+						sm_event('onbeforenewslineprocessing', $i);
 						$menu[$i]['id']=$row['id_ml'];
 						$menu[$i]['mid']=$menu_id;
 						$menu[$i]['pos']=$row['position'];

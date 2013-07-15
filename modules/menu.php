@@ -24,16 +24,19 @@
 		$m["mode"] = 'view';
 	if (!empty($m["bid"]))
 		$m["mid"] = $m["bid"];
-	$menu_id = $m["mid"];
+	if (!empty($m["mid"]))
+		$menu_id = intval($m["mid"]);
+	else
+		$menu_id = intval($_getvars['mid']);
 
 	if (strcmp($m["mode"], 'view') == 0)
 		{
 			$sql = "SELECT * FROM ".$tableprefix."menus WHERE id_menu_m=".intval($menu_id);
-			$result = database_db_query($nameDB, $sql, $lnkDB);
-			while ($row = database_fetch_object($result))
+			$result = execsql($sql);
+			while ($row = database_fetch_assoc($result))
 				{
 					$m["module"] = 'menu';
-					$m["title"] = $row->caption_m;
+					$m["title"] = $row['caption_m'];
 				}
 			$m['menu'] = siman_load_menu($menu_id);
 			siman_add_modifier_menu($m['menu']);
