@@ -69,6 +69,17 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->AddOutputObject('panel', $panel);
 					}
+				function AddPagebarParams($count, $limit, $offset)
+					{
+						global $sm;
+						$sm['m']['pages']['url'] = sm_this_url('from', '');
+						$sm['m']['pages']['selected'] = ceil(($offset + 1) / $limit);
+						$sm['m']['pages']['interval'] = $limit;
+						$sm['m']['pages']['records'] = $count;
+						$sm['m']['pages']['selected'] = ceil(($offset + 1) / $sm['m']['pages']['interval']);
+						$sm['m']['pages']['pages'] = ceil(intval($sm['m']['pages']['records']) / $sm['m']['pages']['interval']);
+						$this->AddPagebar();
+					}
 				function AddPagebar($html_not_used='')
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
