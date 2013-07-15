@@ -8,7 +8,7 @@ CREATE TABLE `".$tableprefix."blocks` (
   `id_block` int(11) unsigned NOT NULL auto_increment,
   `panel_block` char(1) default NULL,
   `position_block` int(11) default NULL,
-  `name_block` varchar(150) default NULL,
+  `name_block` varchar(255) default NULL,
   `caption_block` varchar(50) default NULL,
   `showed_id` int(11) unsigned default NULL,
   `level` int(11) default '0',
@@ -38,7 +38,7 @@ $sql="
 CREATE TABLE `".$tableprefix."categories` (
   `id_category` int(11) unsigned NOT NULL auto_increment,
   `id_maincategory` int(11) unsigned NOT NULL default '0',
-  `title_category` varchar(150) default NULL,
+  `title_category` varchar(255) default NULL,
   `can_view` tinyint(4) NULL default 0,
   `public_menu` tinyint(4) default '1',
   `preview_category` TEXT NULL,
@@ -58,7 +58,7 @@ $sql="
 CREATE TABLE `".$tableprefix."content` (
   `id_content` int(11) unsigned NOT NULL auto_increment,
   `id_category_c` int(11) unsigned default '1',
-  `title_content` varchar(150) default NULL,
+  `title_content` varchar(255) default NULL,
   `preview_content` TEXT NULL,
   `text_content` text,
   `type_content` tinyint(4) default '0',
@@ -95,7 +95,7 @@ $inst['tables'][3]['result']=$result;
 $sql="
 CREATE TABLE `".$tableprefix."menus` (
   `id_menu_m` int(10) unsigned NOT NULL auto_increment,
-  `caption_m` varchar(150) default NULL,
+  `caption_m` varchar(255) default NULL,
   PRIMARY KEY  (`id_menu_m`)
 );
 ";
@@ -145,7 +145,7 @@ $inst['tables'][6]['result']=$result;
 $sql="
 CREATE TABLE `".$tableprefix."categories_news` (
   `id_category` int(1) unsigned NOT NULL auto_increment,
-  `title_category` varchar(150) default NULL,
+  `title_category` varchar(255) default NULL,
   `filename_category` int(11) NULL DEFAULT 0,
   `groups_modify` text NULL,
   `no_alike_news` tinyint(4) NULL DEFAULT 0,
