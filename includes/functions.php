@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.3	                                                               |
-//#revision 2012-07-20                                                         |
+//#ver 1.6.4
+//#revision 2013-07-16
 //==============================================================================
 
 function is_email($string) 
@@ -17,16 +17,16 @@ function is_email($string)
 		return preg_match("/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i", $s);
 	}
 
+//Deprecated
 function addslashesJ($string) 
 	{
-		global $lnkDB;
 		if (get_magic_quotes_gpc()==1)
 			{
-				$s=database_real_escape_string(stripslashes($string), $lnkDB);
+				$s=dbescape(stripslashes($string));
 			}
 		else
 			{
-				$s=database_real_escape_string($string, $lnkDB);
+				$s=dbescape($string);
 			}
 		return $s;
 	}
@@ -56,17 +56,6 @@ function siman_generate_protect_code()
 		while (strlen($code)<4)
 			$code='0'.$code;
 		$_sessionvars['protect_code']=$code;
-	}
-
-//#descr ua Повертає 1 якщо в $str знаходиться одне з слів, що зберігаються в списку цензурованих $codedlist['items']. В іншому випадку повертає 0
-//#descr en Returns 1 if $str have one of censored words $codedlist['items']. Anotherway it returnhs false
-function is_in_censored_list($str, $codedlist)
-	{
-		$list=extract_siman_vars($codedlist);
-		for ($i=0; $i<count($list['items']); $i++)
-			if (strpos($str, $list['items'][$i])!==false)
-				return 1;
-		return 0;
 	}
 
 function send_mail($from,$to,$subject,$message,$attachment='',$filename='')
@@ -99,7 +88,6 @@ function send_mail($from,$to,$subject,$message,$attachment='',$filename='')
  return mail($to,"=?".$lang["charset"]."?B?".base64_encode($subject)."?=",$body,$headers);
 }
 
-//Завантажує список з файлами вказаного розширення
 // load_file_list('./files/img/', 'jpg|gif|bmp')
 function load_file_list($path, $ext='')
 {
@@ -132,35 +120,32 @@ function load_file_list($path, $ext='')
 	return $result;
 }
 
-//Функції роботи з віртуальною файловою системою
 function register_filesystem($url, $filename, $comment)
 {
-	global $lnkDB, $nameDB, $tableprefix;
+	global $tableprefix;
 	$sql="INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".dbescape($filename)."', '".dbescape($url)."', '".dbescape($comment)."')";
-	$result=database_db_query($nameDB, $sql, $lnkDB);
-	return database_insert_id('filesystem', $nameDB, $lnkDB);
+	return insertsql($sql);
 }
 
 function update_filesystem($id, $url, $filename, $comment)
 {
-	global $lnkDB, $nameDB, $tableprefix;
+	global $tableprefix;
 	$sql="UPDATE ".$tableprefix."filesystem SET filename_fs='".dbescape($filename)."', url_fs='".dbescape($url)."', comment_fs='".dbescape($comment)."' WHERE id_fs=".intval($id)." ";
-	$result=database_db_query($nameDB, $sql, $lnkDB);
-	return database_insert_id('filesystem', $nameDB, $lnkDB);
+	execsql($sql);
 }
 
 function delete_filesystem($id)
 {
-	global $lnkDB, $nameDB, $tableprefix;
+	global $tableprefix;
 	$sql="DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
-	$result=database_db_query($nameDB, $sql, $lnkDB);
+	execsql($sql);
 }
 
 function get_filesystem($id)
 {
-	global $lnkDB, $nameDB, $tableprefix;
+	global $tableprefix;
 	$sql="SELECT * FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
-	$result=database_db_query($nameDB, $sql, $lnkDB);
+	$result=execsql($sql);
 	while ($row=database_fetch_object($result))
 		{
 			$res['id']=$row->id_fs;
@@ -192,161 +177,24 @@ function cut_str_by_word($str, $count, $end_str)
 }
 
 
-function post_genetare_insert($table, $prefix, $add_fields='', $add_values='')
-	{
-		global $_postvars;
-		$i=0;
-		while ( list( $key, $val ) = each($_postvars) )
-			{
-				if (strpos($key, $prefix)==0)
-					{
-						$fields[$i]=substr($key, strlen($prefix));
-						$values[$i]=dbescape($val);
-						$i++;
-					}
-			}					 
-		$sql="INSERT INTO $table (";
-		for ($i=0; $i<count($fields); $i++)	
-			{
-				if ($i!=0) $sql.=', ';
-				$sql.=$fields[$i];
-			}
-		if (!empty($add_fields)) $sql.=", $add_fields";
-		$sql.=') VALUES (';
-		for ($i=0; $i<count($values); $i++)	
-			{
-				if ($i!=0) $sql.=', ';
-				$sql.="'".$values[$i]."'";
-			}
-		if (!empty($add_values)) $sql.=", $add_values";
-		$sql.=')';
-		return $sql;
-	}
-
-function post_genetare_update($table, $prefix, $add_update='')
-	{
-		global $_postvars;
-		$i=0;
-		while ( list( $key, $val ) = each($_postvars) )
-			{
-				if (strpos($key, $prefix)==0)
-					{
-						$fields[$i]=substr($key, strlen($prefix));
-						$values[$i]=dbescape($val);
-						$i++;
-					}
-			}					 
-		$sql="UPDATE $table SET ";
-		for ($i=0; $i<count($fields); $i++)	
-			{
-				if ($i!=0) $sql.=', ';
-				$sql.=$fields[$i].' = \''.$values[$i].'\'';
-			}
-		if (!empty($add_update)) $sql.=", $add_update";
-		return $sql;
-	}
-
-function post_generate_filters($prefixEq='filter_', $prefixLike='like_', $prefixGt='greater_', $prefixLt='less_', $prefixMl='multu_')
-	{
-		global $_postvars, $modules_index, $modules;
-		$i=0;
-		$j=0;
-		$k=0;
-		$l=0;
-		$m=0;
-		while ( list( $key, $val ) = each($_postvars) )
-			{
-				if (strpos($key, $prefixEq)===0 && !empty($val))
-					{
-						$fields[$i]=substr($key, strlen());
-						$values[$i]=dbescape($val);
-						$i++;
-					}
-				if (strpos($key, $prefixLike)===0 && !empty($val))
-					{
-						$fieldsL[$j]=substr($key, strlen($prefixLike));
-						$valuesL[$j]=dbescape($val);
-						$j++;
-					}
-				if (strpos($key, $prefixGt)===0 && !empty($val))
-					{
-						$fieldsG[$k]=substr($key, strlen($prefixGt));
-						$valuesG[$k]=dbescape($val);
-						$k++;
-					}
-				if (strpos($key, $prefixLt)===0 && !empty($val))
-					{
-						$fieldsM[$l]=substr($key, strlen($prefixLt));
-						$valuesM[$l]=dbescape($val);
-						$l++;
-					}
-				if (strpos($key, $prefixMl)===0 && !empty($val))
-					{
-						for ($qqq=0; $qqq<count($val); $qqq++)
-							{
-								$fieldsB[$m]=substr($key, strlen($prefixMl));
-								$valuesB[$m]=dbescape($val[$qqq]);
-								$m++;
-							}
-					}
-			}
-		$sql='';
-		for ($i=0; $i<count($fields); $i++)	
-			{
-				if ($i!=0) $sql.=' AND ';
-				$sql.=$fields[$i].' = \''.$values[$i].'\'';
-			}
-		for ($i=0; $i<count($fieldsL); $i++)	
-			{
-				if ($i!=0 || !empty($sql)) $sql.=' AND ';
-				$sql.=$fieldsL[$i].' LIKE \'%'.$valuesL[$i].'%\'';
-			}
-		for ($i=0; $i<count($fieldsG); $i++)	
-			{
-				if ($i!=0 || !empty($sql)) $sql.=' AND ';
-				$sql.=$fieldsG[$i].' > \''.$valuesG[$i].'\'';
-			}
-		for ($i=0; $i<count($fieldsM); $i++)	
-			{
-				if ($i!=0 || !empty($sql)) $sql.=' AND ';
-				$sql.=$fieldsM[$i].' < \''.$valuesM[$i].'\'';
-			}
-		if (count($fieldsB)>0)
-			{
-				if (!empty($sql)) $sql.=' AND ';
-				$sql.="(";
-				for ($i=0; $i<count($fieldsB); $i++)	
-					{
-						if ($i!=0) $sql.=' OR ';
-						$sql.=$fieldsB[$i].' = \''.$valuesB[$i].'\'';
-					}
-				$sql.=")";
-			}
-		return $sql;
-	}
-
-
 function exec_sql_delete($table, $idname, $id)
 	{
-		global $nameDB, $lnkDB;
 		$sql="DELETE FROM $table WHERE $idname=".intval($id);
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		execsql($sql);
 	}
 
 function get_sql_data($table, $idname, $id)
 	{
-		global $nameDB, $lnkDB;
 		$sql="SELECT * FROM $table WHERE $idname=".intval($id);
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$result=execsql($sql);
 		return database_fetch_array($result);
 	}
 
-//Список усіх наявних груп у вигляді масиву
 function get_groups_list()
 	{
-		global $lnkDB, $nameDB, $tableusersprefix;
+		global $tableusersprefix;
 		$sql="SELECT * FROM ".$tableusersprefix."groups ORDER BY title_group ASC";
-		$result=database_db_query($nameDB, $sql, $lnkDB);
+		$result=execsql($sql);
 		$i=0;
 		while ($row=database_fetch_object($result))
 			{
@@ -359,7 +207,7 @@ function get_groups_list()
 		return $res;
 	}
 
-//Переводить список ідентифікаторів груп з рядкового формату ;X;Y;Z; в масив {X,Y,Z}
+//str ;X;Y;Z; to array {X,Y,Z}
 function get_array_groups($gr)
 	{
 		$res=explode(';', $gr);
@@ -373,7 +221,7 @@ function get_array_groups($gr)
 		return $res2;
 	}
 
-//Переводить масив {X,Y,Z} в ;X;Y;Z;
+//array {X,Y,Z} to str ;X;Y;Z;
 function create_groups_str($array)
 	{
 		$str=';';
@@ -383,7 +231,7 @@ function create_groups_str($array)
 		return $str;
 	}
 
-//Повертає 1 якщо ;X;Y;Z; ;X;R;T; мають спільний ідентифікатор
+//return 1 if both groups ;X;Y;Z; ;X;R;T; has the same group in list 
 function compare_groups($grp1, $grp2)
 	{
 		$gr1=get_array_groups($grp1);
@@ -395,7 +243,7 @@ function compare_groups($grp1, $grp2)
 		return 0;
 	}
 
-//Конвертує рядок ідентифікаторів ;X;Y;Z; в sql-представлення
+//Convert group string ;X;Y;Z; to SQL
 function convert_groups_to_sql($str, $fieldname)
 	{
 		$sql='';
@@ -409,7 +257,6 @@ function convert_groups_to_sql($str, $fieldname)
 		return $sql;
 	}
 
-//Ведення логу
 define("LOG_NOLOG", 0);
 define("LOG_DANGER", 1);
 define("LOG_LOGIN", 10);
@@ -428,7 +275,6 @@ function log_write($type, $description)
 			}
 	}
 
-//Видалення файлу/каталогу
 function delete_file_dir( $_target ) 
 	{
 	    //file?
@@ -463,7 +309,6 @@ function delete_file_dir( $_target )
 	    }
 	}
 
-//Функція для введення позиції в кінець шляху
 function add_path($title, $url)
 	{
 		global $special;
@@ -472,7 +317,6 @@ function add_path($title, $url)
 		$special['path'][$i]['url']=$url;
 	}
 
-//Функція для введення позиції на початок шляху
 function push_path($title, $url)
 	{
 		global $special;
@@ -487,21 +331,18 @@ function push_path($title, $url)
 		$special['path'][0]['url']=$url;
 	}
 
-//Функція для введення в шлях панелі керування
 function add_path_home()
 	{
 		global $lang, $_settings;
 		add_path($lang['common']['home'], 'http://'.$_settings['resource_url']);
 	}
 
-//Функція для введення в шлях панелі керування
 function add_path_control()
 	{
 		global $lang;
 		add_path($lang['control_panel'], 'index.php?m=admin');
 	}
 
-//Функція для введення в шлях панелі керування та керування модулями
 function add_path_modules()
 	{
 		global $lang;
@@ -510,7 +351,7 @@ function add_path_modules()
 	}
 
 
-//nllist - список розділений символами #13#10 або #10 - тобто переводом каретки
+//nllist - sting with items separated by new line character (s)
 function nllistToArray($nllist, $clean_empty_values=false)
 	{
 		if ($clean_empty_values)
