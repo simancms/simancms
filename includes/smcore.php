@@ -104,7 +104,7 @@
 				$special['customcss'][count($special['customcss'])] = 'themes/'.$sm['s']['theme'].'/'.$fname;
 			else
 				$special['customcss'][count($special['customcss'])] = 'themes/default/'.$fname;
-			return $special['customcss'][count($special['customcss']) - 1];
+			return $special['customcss'][count($special['customcss'])-1];
 		}
 
 	function sm_add_jsfile($fname, $includeAsIs = 0)
@@ -117,7 +117,7 @@
 				$special['customjs'][count($special['customjs'])] = 'themes/'.$sm['s']['theme'].'/'.$fname;
 			else
 				$special['customjs'][count($special['customjs'])] = 'themes/default/'.$fname;
-			return $special['customjs'][count($special['customjs']) - 1];
+			return $special['customjs'][count($special['customjs'])-1];
 		}
 
 	function sm_userinfo($id, $srchfield = 'id_user')
@@ -168,16 +168,16 @@
 	function sm_load_tree($tablename, $field_id, $field_root, $load_only_branches_of_this = -1, $extsqlwhere = '', $sortfield = '')
 		{
 			global $tableprefix;
-			$addsql='';
+			$addsql = '';
 			if (!empty($extsqlwhere))
 				$addsql .= ' WHERE '.$extsqlwhere;
-			if ($load_only_branches_of_this >= 0)
+			if ($load_only_branches_of_this>=0)
 				{
 					if (empty($addsql))
 						$addsql .= " WHERE ";
 					else
 						$addsql .= " AND ";
-					$addsql.=" $field_root='$load_only_branches_of_this'";
+					$addsql .= " $field_root='$load_only_branches_of_this'";
 				}
 			$sql = "SELECT * FROM ".$tableprefix.$tablename;
 			$sql .= $addsql;
@@ -192,23 +192,23 @@
 					$i++;
 				}
 
-			for ($i = 0; $i < count($ctg); $i++)
+			for ($i = 0; $i<count($ctg); $i++)
 				{
 					$pos[$i] = 0;
 				}
 			$fistlevelposition = 0;
 			$fistlevellastposition = 0;
-			for ($i = 0; $i < count($ctg); $i++)
+			for ($i = 0; $i<count($ctg); $i++)
 				{
 					if ($ctg[$i][$field_root] == 0)
 						{
 							$maxpos = 0;
-							for ($j = 0; $j < count($ctg); $j++)
+							for ($j = 0; $j<count($ctg); $j++)
 								{
-									if ($maxpos < $pos[$j])
+									if ($maxpos<$pos[$j])
 										$maxpos = $pos[$j];
 								}
-							$pos[$i] = $maxpos + 1;
+							$pos[$i] = $maxpos+1;
 							$fistlevelposition++;
 							$ctg[$i]['sub_position'] = $fistlevelposition;
 							$fistlevellastposition = $i;
@@ -217,36 +217,36 @@
 						{
 							$rootpos = 0;
 							$childpos = -1;
-							for ($j = 0; $j < count($ctg); $j++)
+							for ($j = 0; $j<count($ctg); $j++)
 								{
 									if ($ctg[$j][$field_id] == $ctg[$i][$field_root])
 										{
 											$rootpos = $pos[$j];
-											$ctg[$i]['level'] = $ctg[$j]['level'] + 1;
+											$ctg[$i]['level'] = $ctg[$j]['level']+1;
 											$ctg[$j]['is_main'] = 1;
 											$ctg[$j]['count_sub']++;
 											$ctg[$j]['have_sub'] = 1;
 											$ctg[$i]['sub_position'] = $ctg[$j]['count_sub'];
 										}
-									if ($ctg[$j][$field_root] == $ctg[$i][$field_root] && $j != $i && $childpos < $pos[$j])
+									if ($ctg[$j][$field_root] == $ctg[$i][$field_root] && $j != $i && $childpos<$pos[$j])
 										$childpos = $pos[$j];
 								}
-							$pos[$i] = ($rootpos > $childpos) ? ($rootpos + 1) : ($childpos + 1);
-							for ($j = 0; $j < count($ctg); $j++)
+							$pos[$i] = ($rootpos>$childpos) ? ($rootpos+1) : ($childpos+1);
+							for ($j = 0; $j<count($ctg); $j++)
 								{
-									if ($pos[$j] >= $pos[$i] && $j != $i)
+									if ($pos[$j]>=$pos[$i] && $j != $i)
 										$pos[$j]++;
 								}
 						}
 				}
-			if (count($ctg) > 0)
+			if (count($ctg)>0)
 				{
 					$ctg[0]['first'] = 1;
 					$menu[$fistlevellastposition]['last'] = 1;
 				}
-			for ($i = 0; $i < count($ctg); $i++)
+			for ($i = 0; $i<count($ctg); $i++)
 				{
-					$rctg[$pos[$i] - 1] = $ctg[$i];
+					$rctg[$pos[$i]-1] = $ctg[$i];
 				}
 
 			return $rctg;
@@ -258,14 +258,14 @@
 			if ($start_id == $stop_id) return Array();
 			$sql = "SELECT * FROM $tablename ORDER BY IF ($field_id=$start_id, 0 ,1), $field_id";
 			$r = getsqlarray($sql);
-			if (count($r) <= 0) return Array();
+			if (count($r)<=0) return Array();
 			$pos[0] = 0;
 			$curpos = 0;
 			$iteration = 0;
-			while ($r[$pos[$curpos]][$field_root] != $stop_id && $iteration <= count($r))
+			while ($r[$pos[$curpos]][$field_root] != $stop_id && $iteration<=count($r))
 				{
 					$u = 0;
-					for ($i = 1; $i < count($r); $i++)
+					for ($i = 1; $i<count($r); $i++)
 						{
 							if ($r[$i][$field_id] == $r[$pos[$curpos]][$field_root])
 								{
@@ -279,7 +279,7 @@
 					$iteration++;
 				}
 			$res = Array();
-			for ($i = count($pos) - 1; $i >= 0; $i--)
+			for ($i = count($pos)-1; $i>=0; $i--)
 				{
 					$res[count($res)] = $r[$pos[$i]];
 				}
@@ -298,7 +298,9 @@
 			if (is_array($content))
 				{
 					foreach ($content as &$item)
-						sm_add_content_modifier($item);
+						{
+							sm_add_content_modifier($item);
+						}
 				}
 			else
 				$special['contentmodifier'][count($special['contentmodifier'])] =& $content;
@@ -338,43 +340,43 @@
 			$replacers['þ'] = 'yu';
 			$replacers['ÿ'] = 'ya';
 			$replacers['´'] = 'g';
-			$replacers['À']='a';
-			$replacers['Á']='b';
-			$replacers['Â']='v';
-			$replacers['Ã']='g';
-			$replacers['Ä']='d';
-			$replacers['Å']='e';
-			$replacers['ª']='ye';
-			$replacers['Æ']='zh';
-			$replacers['Ç']='z';
-			$replacers['È']='y';
-			$replacers['²']='i';
-			$replacers['¯']='yi';
-			$replacers['É']='y';
-			$replacers['Ê']='k';
-			$replacers['Ë']='l';
-			$replacers['Ì']='m';
-			$replacers['Í']='n';
-			$replacers['Î']='o';
-			$replacers['Ï']='p';
-			$replacers['Ð']='r';
-			$replacers['Ñ']='s';
-			$replacers['Ò']='t';
-			$replacers['Ó']='u';
-			$replacers['Ô']='f';
-			$replacers['Õ']='h';
-			$replacers['Ö']='c';
-			$replacers['×']='ch';
-			$replacers['Ø']='sh';
-			$replacers['Ù']='shch';
-			$replacers['Þ']='yu';
-			$replacers['ß']='ya';
-			$replacers['¥']='g';
+			$replacers['À'] = 'a';
+			$replacers['Á'] = 'b';
+			$replacers['Â'] = 'v';
+			$replacers['Ã'] = 'g';
+			$replacers['Ä'] = 'd';
+			$replacers['Å'] = 'e';
+			$replacers['ª'] = 'ye';
+			$replacers['Æ'] = 'zh';
+			$replacers['Ç'] = 'z';
+			$replacers['È'] = 'y';
+			$replacers['²'] = 'i';
+			$replacers['¯'] = 'yi';
+			$replacers['É'] = 'y';
+			$replacers['Ê'] = 'k';
+			$replacers['Ë'] = 'l';
+			$replacers['Ì'] = 'm';
+			$replacers['Í'] = 'n';
+			$replacers['Î'] = 'o';
+			$replacers['Ï'] = 'p';
+			$replacers['Ð'] = 'r';
+			$replacers['Ñ'] = 's';
+			$replacers['Ò'] = 't';
+			$replacers['Ó'] = 'u';
+			$replacers['Ô'] = 'f';
+			$replacers['Õ'] = 'h';
+			$replacers['Ö'] = 'c';
+			$replacers['×'] = 'ch';
+			$replacers['Ø'] = 'sh';
+			$replacers['Ù'] = 'shch';
+			$replacers['Þ'] = 'yu';
+			$replacers['ß'] = 'ya';
+			$replacers['¥'] = 'g';
 			$str = strtolower($str);
 			$nice = '';
-			for ($i = 0; $i < strlen($str); $i++)
+			for ($i = 0; $i<strlen($str); $i++)
 				{
-					if ($str[$i] >= 'a' && $str[$i] <= 'z' || $str[$i] >= '0' && $str[$i] <= '9' || $str[$i] == '.' || $str[$i] == '_' || $str[$i] == '-')
+					if ($str[$i]>='a' && $str[$i]<='z' || $str[$i]>='0' && $str[$i]<='9' || $str[$i] == '.' || $str[$i] == '_' || $str[$i] == '-')
 						$nice .= $str[$i];
 					elseif (!empty($replacers[$str[$i]]))
 						$nice .= $replacers[$str[$i]];
@@ -384,11 +386,11 @@
 			return $nice;
 		}
 
-	function sm_event($eventname, $paramsarray=Array())
+	function sm_event($eventname, $paramsarray = Array())
 		{
 			global $sm;
 			$listeners = nllistToArray($sm['_s']['autoload_modules']);
-			for ($i = 0; $i < count($listeners); $i++)
+			for ($i = 0; $i<count($listeners); $i++)
 				{
 					$eventfn = 'event_'.$eventname.'_'.$listeners[$i];
 					if (function_exists($eventfn))
@@ -398,7 +400,7 @@
 							call_user_func_array($eventfn, $paramsarray);
 						}
 				}
-			for ($i = 0; $i < count($sm['eventlisteners'][$eventname]); $i++)
+			for ($i = 0; $i<count($sm['eventlisteners'][$eventname]); $i++)
 				{
 					$eventfn = $sm['eventlisteners'][$eventname][$i];
 					if (function_exists($eventfn))
@@ -414,7 +416,7 @@
 		{
 			global $sm;
 			if (empty($sm['eventlisteners']) || !in_array($functionname, $sm['eventlisteners']))
-				$sm['eventlisteners'][$eventname][]=$functionname;
+				$sm['eventlisteners'][$eventname][] = $functionname;
 		}
 
 	function sm_get_attachments($fromModule, $fromId)
@@ -439,10 +441,10 @@
 						$r[$i]['filesize'] = filesize($r[$i]['realfilename']);
 					else
 						$r[$i]['filesize'] = 0;
-					if ($r[$i]['filesize'] > 1048576)
-						$r[$i]['filesize'] = round($r[$i]['filesize'] / 1048576, 2).' MB';
-					elseif ($r[$i]['filesize'] > 1024)
-						$r[$i]['filesize'] = round($r[$i]['filesize'] / 1024, 2).' KB';
+					if ($r[$i]['filesize']>1048576)
+						$r[$i]['filesize'] = round($r[$i]['filesize']/1048576, 2).' MB';
+					elseif ($r[$i]['filesize']>1024)
+						$r[$i]['filesize'] = round($r[$i]['filesize']/1024, 2).' KB';
 					else
 						$r[$i]['filesize'] = $r[$i]['filesize'].' B';
 					$r[$i]['downloadurl'] = 'downloads/attachments/'.$r[$i]['id'].'-'.$r[$i]['filename'];
@@ -485,7 +487,7 @@
 		{
 			global $tableprefix;
 			$r = sm_get_attachments($fromModule, $fromId);
-			for ($i = 0; $i < count($r); $i++)
+			for ($i = 0; $i<count($r); $i++)
 				{
 					if (file_exists($r[$i]['realfilename']))
 						unlink($r[$i]['realfilename']);
@@ -577,7 +579,7 @@
 				{
 					$result['is_mobile'] = true;
 				}
-			elseif (strpos($useragent, 'text/vnd.wap.wml') > 0 || strpos($httpaccept, 'application/vnd.wap.xhtml+xml') > 0)
+			elseif (strpos($useragent, 'text/vnd.wap.wml')>0 || strpos($httpaccept, 'application/vnd.wap.xhtml+xml')>0)
 				{
 					$result['is_mobile'] = true;
 				}
@@ -638,12 +640,12 @@
 			$q = new TQuery($tableusersprefix."users");
 			$q->Add($fieldname, dbescape($value));
 			$q->Update('id_user', intval($userid));
-			if (!in_array($fieldname, Array('info', 'groups', 'id', 'login', 'level')) && $userid==$userinfo['id'])
+			if (!in_array($fieldname, Array('info', 'groups', 'id', 'login', 'level')) && $userid == $userinfo['id'])
 				{
-					if (strcmp($fieldname, 'email')==0)
-						$_sessionvars['userinfo_email']=$value;
-					$userinfo['info'][$fieldname]=$value;
-					$_sessionvars['userinfo_allinfo']=serialize($userinfo['info']);
+					if (strcmp($fieldname, 'email') == 0)
+						$_sessionvars['userinfo_email'] = $value;
+					$userinfo['info'][$fieldname] = $value;
+					$_sessionvars['userinfo_allinfo'] = serialize($userinfo['info']);
 				}
 		}
 
@@ -680,9 +682,9 @@
 		}
 
 	/*
- * Return preloaded settings value for key $name without checking DB.
- * This is lightweight replacement of sm_get_settings function.
- */
+	* Return preloaded settings value for key $name without checking DB.
+	* This is lightweight replacement of sm_get_settings function.
+	*/
 	function sm_settings($name)
 		{
 			global $sm;
@@ -706,7 +708,7 @@
 	function sm_action()
 		{
 			global $m;
-			for ($i = 0; $i < func_num_args(); $i++)
+			for ($i = 0; $i<func_num_args(); $i++)
 				{
 					$param = func_get_arg($i);
 					if (strcmp($m["mode"], $param) == 0)
@@ -719,9 +721,9 @@
 	function sm_actionpost()
 		{
 			global $m, $sm;
-			if (count($sm['p'])==0)
+			if (count($sm['p']) == 0)
 				return false;
-			for ($i = 0; $i < func_num_args(); $i++)
+			for ($i = 0; $i<func_num_args(); $i++)
 				{
 					$param = func_get_arg($i);
 					if (strcmp($m["mode"], $param) == 0)
@@ -729,7 +731,7 @@
 				}
 			return false;
 		}
-	
+
 	//Change or format the parameters of the $url
 	//sm_url($url, $get_param_name, $get_param_value)
 	//sm_url($url, $param_replacers_array)
@@ -801,90 +803,90 @@
 			global $m;
 			$m['title'] = $title;
 		}
-	
-	function sm_meta_title($title, $hide_site_title=true)
+
+	function sm_meta_title($title, $hide_site_title = true)
 		{
 			global $special, $_settings;
-			$special['dont_take_a_title']=1;
-			$special['pagetitle']=$title;
+			$special['dont_take_a_title'] = 1;
+			$special['pagetitle'] = $title;
 			if ($hide_site_title)
-				$_settings['meta_resource_title_position']=0;
+				$_settings['meta_resource_title_position'] = 0;
 		}
 
-	function sm_meta_keywords($keywodrs, $append=false)
+	function sm_meta_keywords($keywodrs, $append = false)
 		{
 			global $special;
 			if ($append)
-				$special['meta']['keywords'].=$keywodrs;
+				$special['meta']['keywords'] .= $keywodrs;
 			else
-				$special['meta']['keywords']=$keywodrs;
+				$special['meta']['keywords'] = $keywodrs;
 		}
 
-	function sm_meta_description($description, $append=false)
+	function sm_meta_description($description, $append = false)
 		{
 			global $special;
 			if ($append)
-				$special['meta']['description'].=$description;
+				$special['meta']['description'] .= $description;
 			else
-				$special['meta']['description']=$description;
+				$special['meta']['description'] = $description;
 		}
-	
+
 	function sm_homepage()
 		{
 			global $special, $_settings;
-			return $special['page']['parsed_url']['scheme'].'://'.$_settings['resource_url']; 
+			return $special['page']['parsed_url']['scheme'].'://'.$_settings['resource_url'];
 		}
-	
+
 	function sm_use($libname)
 		{
 			global $sm;
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
 		}
-	
+
 	function sm_setfocus($dom_id)
 		{
 			global $sm;
-			$sm['s']['autofocus']=$dom_id;
+			$sm['s']['autofocus'] = $dom_id;
 		}
-	
-	function sm_thumburl($filename, $maxwidth=0, $maxheight=0, $format='', $quality='', $path='files/img/')
+
+	function sm_thumburl($filename, $maxwidth = 0, $maxheight = 0, $format = '', $quality = '', $path = 'files/img/')
 		{
-			$info=pathinfo($filename);
-			$url='ext/showimage.php?img='.$info['filename'];
-			if ($info['extension']=='png')
-				$url.='&png=1';
-			if ($info['extension']=='gif')
-				$url.='&gif=1';
-			if (strpos($path, 'files/img/')==0 && strlen($path)>10)
-				$url.='&ext='.substr($path, 10);
+			$info = pathinfo($filename);
+			$url = 'ext/showimage.php?img='.$info['filename'];
+			if ($info['extension'] == 'png')
+				$url .= '&png=1';
+			if ($info['extension'] == 'gif')
+				$url .= '&gif=1';
+			if (strpos($path, 'files/img/') == 0 && strlen($path)>10)
+				$url .= '&ext='.substr($path, 10);
 			if (!empty($quality))
-				$url.='&quality='.$quality;
+				$url .= '&quality='.$quality;
 			if (!empty($format))
-				$url.='&format='.$format;
+				$url .= '&format='.$format;
 			if (!empty($maxwidth))
-				$url.='&width='.$maxwidth;
+				$url .= '&width='.$maxwidth;
 			if (!empty($maxheight))
-				$url.='&height='.$maxheight;
+				$url .= '&height='.$maxheight;
 			return $url;
 		}
-	
+
 	function sm_isuseringroup($userid_or_userinfo, $groupid)
 		{
 			if (!is_array($userid_or_userinfo))
-				$userid_or_userinfo=sm_userinfo(intval($userid_or_userinfo));
-			$groups=get_array_groups($userid_or_userinfo['groups']);
+				$userid_or_userinfo = sm_userinfo(intval($userid_or_userinfo));
+			$groups = get_array_groups($userid_or_userinfo['groups']);
 			return in_array($groupid, $groups);
 		}
-	
-	function sm_fs_update($title, $system_url, $register_url='', $default_extension='.html')
+
+	function sm_fs_update($title, $system_url, $register_url = '', $default_extension = '.html')
 		{
 			global $sm;
 			if (empty($register_url))
-				$register_url=sm_getnicename($title).$default_extension;
-			$q=new TQuery($sm['t'].'filesystem');
+				$register_url = sm_getnicename($title).$default_extension;
+			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
-			$info=$q->Get();
+			$info = $q->Get();
 			$q->Add('comment_fs', dbescape($title));
 			$q->Add('filename_fs', dbescape($register_url));
 			if (empty($info['id_fs']))
@@ -892,21 +894,21 @@
 			else
 				$q->Update('id_fs', intval($info['id_fs']));
 		}
-	
+
 	function sm_fs_delete($system_url)
 		{
 			global $sm;
-			$q=new TQuery($sm['t'].'filesystem');
+			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
 			$q->Remove();
 		}
-	
+
 	function sm_fs_url($system_url)
 		{
 			global $sm;
-			$q=new TQuery($sm['t'].'filesystem');
+			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
-			$info=$q->Get();
+			$info = $q->Get();
 			if (empty($info['filename_fs']))
 				return $system_url;
 			else
