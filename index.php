@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.4
-	//#revision 2013-05-10
+	//#revision 2013-07-16
 	//==============================================================================
 
 	if (php_sapi_name() != 'cli' && @get_magic_quotes_gpc() == 1)
@@ -481,6 +481,8 @@
 								include_once('modules/postload/'.$postloadmodules[$postloadmodulesindex].'.php');
 						}
 					//Postload modules end
+					
+					unset($sm['cache']);
 
 					//System temp table cleaning
 					if (intval($_settings['next_clean_temptable']) <= time())
@@ -492,6 +494,7 @@
 						}
 
 					//Final initialization
+					sm_event('beforetplgenerate');
 					$special['pathcount'] = count($special['path']);
 					$smarty->assign_by_ref('modules', $modules);
 					$smarty->assign_by_ref('refresh_url', $refresh_url);
@@ -526,6 +529,7 @@
 					//Output page
 					if (!empty($special['main_tpl']))
 						$smarty->display($special['main_tpl'].'.tpl');
+					sm_event('aftertplgenerate');
 				}
 		}
 	else
