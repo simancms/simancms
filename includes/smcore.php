@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.4
-	//#revision 2013-04-16
+	//#revision 2013-07-16
 	//==============================================================================
 
 
@@ -16,7 +16,7 @@
 		{
 			global $tableprefix;
 			$sql = "DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
-			$result = execsql($sql);
+			execsql($sql);
 		}
 
 	function sm_get_settings($settings_name, $mode = 'default')
@@ -38,21 +38,21 @@
 		{
 			global $tableprefix;
 			$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')";
-			$result = execsql($sql);
+			execsql($sql);
 		}
 
 	function sm_update_settings($settings_name, $new_value, $mode = 'default')
 		{
 			global $tableprefix;
 			$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
-			$result = execsql($sql);
+			execsql($sql);
 		}
 
 	function sm_register_module($module_name, $module_title, $search_fields = '', $search_doing = '', $search_var = '', $search_table = '', $search_title = '', $search_idfield = '', $search_text = '')
 		{
 			global $tableprefix, $_settings;
 			$sql = "INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('".dbescape($module_name)."', '".dbescape($module_title)."', '".dbescape($search_fields)."', '".dbescape($search_doing)."', '".dbescape($search_var)."', '".dbescape($search_table)."', '".dbescape($search_title)."', '".dbescape($search_idfield)."', '".dbescape($search_text)."');";
-			$result = execsql($sql);
+			execsql($sql);
 			$_settings['installed_packages'] = addto_nllist($_settings['installed_packages'], $module_name);
 			sm_update_settings('installed_packages', $_settings['installed_packages']);
 		}
@@ -96,7 +96,7 @@
 
 	function sm_add_cssfile($fname, $includeAsIs = 0)
 		{
-			global $_settings, $special, $sm;
+			global $special, $sm;
 			if (empty($fname)) return false;
 			if ($includeAsIs == 1)
 				$special['customcss'][count($special['customcss'])] = $fname;
@@ -109,7 +109,7 @@
 
 	function sm_add_jsfile($fname, $includeAsIs = 0)
 		{
-			global $_settings, $special, $sm;
+			global $special, $sm;
 			if (empty($fname)) return false;
 			if ($includeAsIs == 1)
 				$special['customjs'][count($special['customjs'])] = $fname;
@@ -167,7 +167,8 @@
 
 	function sm_load_tree($tablename, $field_id, $field_root, $load_only_branches_of_this = -1, $extsqlwhere = '', $sortfield = '')
 		{
-			global $tableprefix, $_settings;
+			global $tableprefix;
+			$addsql='';
 			if (!empty($extsqlwhere))
 				$addsql .= ' WHERE '.$extsqlwhere;
 			if ($load_only_branches_of_this >= 0)
@@ -176,7 +177,7 @@
 						$addsql .= " WHERE ";
 					else
 						$addsql .= " AND ";
-					$addsql = " AND $field_root='$load_only_branches_of_this'";
+					$addsql.=" $field_root='$load_only_branches_of_this'";
 				}
 			$sql = "SELECT * FROM ".$tableprefix.$tablename;
 			$sql .= $addsql;
@@ -453,7 +454,7 @@
 
 	function sm_upload_attachment($fromModule, $fromId, &$filesPointer, $userlevel = 0)
 		{
-			global $tableprefix, $userinfo, $_settings;
+			global $tableprefix;
 			if ($filesPointer['error'] <> UPLOAD_ERR_OK)
 				return false;
 			$fs = $filesPointer['tmp_name'];
@@ -482,7 +483,7 @@
 
 	function sm_delete_attachments($fromModule, $fromId)
 		{
-			global $tableprefix, $userinfo, $_settings;
+			global $tableprefix;
 			$r = sm_get_attachments($fromModule, $fromId);
 			for ($i = 0; $i < count($r); $i++)
 				{
@@ -494,32 +495,10 @@
 
 	function sm_delete_attachment($id)
 		{
-			global $tableprefix, $userinfo, $_settings;
+			global $tableprefix;
 			if (file_exists('files/download/attachment'.intval($id)))
 				unlink('files/download/attachment'.intval($id));
 			deletesql($tableprefix.'downloads', 'id_download', intval($id));
-		}
-
-	function sm_sqlarrayf($sql)
-		{
-			global $tableprefix, $_settings;
-			$a = getsqlarray($sql, 'a');
-			$r = Array();
-			for ($i = 0; $i < count($a); $i++)
-				{
-					if (is_array($a[$i]))
-						while (list($key, $val) = each($a[$i]))
-							{
-								if (strpos($key, '_'))
-									{
-										$key2 = substr($key, 0, strpos($key, '_'));
-										$r[$i][$key2] = $val;
-									}
-								else
-									$r[$i][$key] = $val;
-							}
-				}
-			return $r;
 		}
 
 	function sm_upload_file($upload_var = 'userfile', $upload_path = '')
@@ -898,5 +877,40 @@
 			return in_array($groupid, $groups);
 		}
 	
+	function sm_fs_update($title, $system_url, $register_url='', $default_extension='.html')
+		{
+			global $sm;
+			if (empty($register_url))
+				$register_url=sm_getnicename($title).$default_extension;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($system_url));
+			$info=$q->Get();
+			$q->Add('comment_fs', dbescape($title));
+			$q->Add('filename_fs', dbescape($register_url));
+			if (empty($info['id_fs']))
+				$q->Insert();
+			else
+				$q->Update('id_fs', intval($info['id_fs']));
+		}
+	
+	function sm_fs_delete($system_url)
+		{
+			global $sm;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($system_url));
+			$q->Remove();
+		}
+	
+	function sm_fs_url($system_url)
+		{
+			global $sm;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($system_url));
+			$info=$q->Get();
+			if (empty($info['filename_fs']))
+				return $system_url;
+			else
+				return $info['filename_fs'];
+		}
 
 ?>

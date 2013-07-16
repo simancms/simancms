@@ -8,14 +8,13 @@
 
 	//==============================================================================
 	//#ver 1.6.4
-	//#revision 2012-05-01
+	//#revision 2013-07-16
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
 		{
 			global $tableusersprefix;
 			$password = md5($password);
-			//$sql="INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status, random_code) VALUES  ('$login', '$password', '$email', '$question', '$answer', '$user_status', '".md5(rand().$login.rand())."')";
 			$q = new TQuery($tableusersprefix.'users');
 			$q->Add('login', $login);
 			$q->Add('password', $password);
@@ -52,7 +51,6 @@
 	function sm_add_userfield($fieldname, $show_as = 'text', $allowed_values = '', $replaceforallvalue = '')
 		{
 			global $tableusersprefix;
-			$password = md5($password);
 			$sql = "ALTER TABLE `".$tableusersprefix."users` ADD `".$fieldname."` TEXT NULL ;";
 			execsql($sql);
 			$allowed[] = 'text';
@@ -292,7 +290,7 @@
 		{
 			global $_sessionvars, $userinfo, $lang, $tableusersprefix;
 			$sql = "UPDATE ".$tableusersprefix."users SET id_session=NULL WHERE id_user='".intval($userinfo['id'])."'";
-			$result = execsql($sql);
+			execsql($sql);
 			sm_event('userlogout', array($userinfo['id']));
 			log_write(LOG_LOGIN, $lang['module_account']['log']['user_logout']);
 			$_sessionvars['userinfo_id'] = '';
