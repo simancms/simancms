@@ -68,7 +68,7 @@ function show_admintable_tab(num)
 	{if $field.tab eq $smarty.section.tabsectionindex.index}
 		{if $field.type neq "hidden" and  $field.type neq "separator" and $field.mergecolumns neq 1 and $field.hidedefinition neq 1}
 		<tr>
-		<td width="{if $form.options.width1 neq ""}{$form.options.width1}{else}30%{/if}">{$field.caption}{$field.column[0]}</td>
+		<td width="{if $form.options.width1 neq ""}{$form.options.width1}{else}30%{/if}">{$field.caption}{$field.column[0]}{if $field.required}<sup class="adminform-required">*</sup>{/if}</td>
 		<td width="{if $form.options.width2 neq ""}{$form.options.width2}{else}67%{/if}">
 		{elseif $field.mergecolumns eq 1}
 		<tr>

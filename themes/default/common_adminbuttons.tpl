@@ -15,7 +15,7 @@ function  button_msgbox(url, message)
 {if $button.type eq "separator"}
 	<span{if $button.style neq ""} style="{$button.style}"{/if}>{if $button.bold eq 1}<b>{/if}{if $button.image neq ""}<img src="{$button.image}" />{/if}{$button.caption}{if $button.bold eq 1}</b>{/if}</span>
 {else}
-	<button{if $button.url neq ""} onclick="{if $button.type eq "messagebox"}button_msgbox('{$button.url}', '{$button.message}'){else}location.href='{$button.url}'{/if}"{/if}{if $button.style neq "" or $button.width neq "" or $button.height neq ""} style="{$button.style}{if $button.width neq ""}width:{$button.width};{/if}{if $button.height neq ""}height:{$button.height};{/if}"{/if}>{if $button.bold eq 1}<b>{/if}{if $button.image neq ""}<img src="{$button.image}" />{/if}{$button.caption}{if $button.bold eq 1}</b>{/if}</button>
+	<button{if $button.url neq "" or $button.javascript neq ""} onclick="{if $button.type eq "messagebox"}button_msgbox('{$button.url}', '{$button.message}'){elseif $button.javascript neq ""}{$button.javascript}{else}location.href='{$button.url}'{/if}"{/if}{if $button.style neq "" or $button.width neq "" or $button.height neq ""} style="{$button.style}{if $button.width neq ""}width:{$button.width};{/if}{if $button.height neq ""}height:{$button.height};{/if}"{/if}>{if $button.bold eq 1}<b>{/if}{if $button.image neq ""}<img src="{$button.image}" />{/if}{$button.caption}{if $button.bold eq 1}</b>{/if}</button>
 {/if}
 {/foreach}	
 </div>

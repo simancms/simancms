@@ -8,8 +8,7 @@
 
 if (!defined("adminbuttons_DEFINED"))
 	{
-		//2011-07-02
-		$special['cssfiles'][count($special['cssfiles'])]='common_adminbuttons.css';
+		sm_add_cssfile('common_adminbuttons.css');
 		
 		class TButtons
 			{
@@ -18,13 +17,17 @@ if (!defined("adminbuttons_DEFINED"))
 					{
 						$this->bar['buttonbar_title']=$buttonbar_title;
 					}
-				function AddButton($name, $title, $url='', $type='button', $style='', $messagebox_messgae='')
+				function AddButton($name, $title, $url='', $type='button', $style='', $messagebox_message='', $javascript='')
 					{
+						if (empty($name))
+							$name=md5(rand(1, 999999));
 						$this->bar['buttons'][$name]['name']=$name;
 						$this->bar['buttons'][$name]['caption']=$title;
 						$this->bar['buttons'][$name]['url']=$url;
 						$this->bar['buttons'][$name]['type']=$type;
-						$this->bar['buttons'][$name]['message']=addslashes($messagebox_messgae);
+						$this->bar['buttons'][$name]['javascript']=$javascript;
+						$this->bar['buttons'][$name]['style']=$style;
+						$this->bar['buttons'][$name]['message']=addslashes($messagebox_message);
 					}
 				function AddSeparator($name, $title=' | ', $style='')
 					{
@@ -33,9 +36,14 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->bar['buttons'][$name]['style']=$style;
 						$this->bar['buttons'][$name]['type']='separator';
 					}
-				function AddMessageBox($name, $title, $url, $messagebox_messgae, $style='')
+				function AddToggle($name, $title, $toggle_id, $style='')
 					{
-						$this->AddButton($name, $title, $url, 'messagebox', $style, $messagebox_messgae);
+						$javascript="tmp=document.getElementById('".$toggle_id."');tmp.style.display=(tmp.style.display=='none')?'':'none';";
+						$this->AddButton($name, $title, '', 'button', $style, '', $javascript);
+					}
+				function AddMessageBox($name, $title, $url, $messagebox_message, $style='')
+					{
+						$this->AddButton($name, $title, $url, 'messagebox', $style, $messagebox_message);
 					}
 				function Bold($name)
 					{

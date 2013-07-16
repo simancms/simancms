@@ -139,14 +139,14 @@ if (!defined("admininterface_DEFINED"))
 		
 		class TPanel extends TInterface
 			{
-				function TPanel($width='', $height='', $style='', $class='')
+				function TPanel($width='', $height='', $style='', $class='', $id='')
 					{
 						$this->TInterface('', 0);
 						if (!empty($width))
 							$style.='width:'.$width.';';
 						if (!empty($height))
 							$style.='height:'.$height.';';
-						$this->html('<div class="common_adminpanel'.(empty($class)?'':' '.$class).'" style="'.$style.'">');
+						$this->html('<div class="common_adminpanel'.(empty($class)?'':' '.$class).'" style="'.$style.'"'.(empty($id)?'':' id="'.$id).'">');
 					}
 				function Output()
 					{
