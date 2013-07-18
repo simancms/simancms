@@ -16,6 +16,8 @@ if (!defined("simplyquery_DEFINED"))
 				var $limit;
 				var $offset;
 				var $orderby;
+				var $groupby;
+				var $leftjoin;
 				public $items;
 				public $sql;
 				function TQuery($tablename, $tableprefix='')
@@ -284,6 +286,14 @@ if (!defined("simplyquery_DEFINED"))
 					{
 						$this->orderby=$orderbyfileds;
 					}
+				function GroupBy($groupbyfileds)
+					{
+						$this->groupby=$groupbyfileds;
+					}
+				function LeftJoin($table, $on_statement)
+					{
+						$this->leftjoin=$table.' ON '.$on_statement;
+					}
 				function SelectFields($list='*')
 					{
 						$this->selectfields=$list;
@@ -297,6 +307,8 @@ if (!defined("simplyquery_DEFINED"))
 						$this->sql="SELECT ".$this->selectfields." FROM ".$this->tableprefix.$this->tablename;
 						if (!empty($sql))
 							$this->sql.=" WHERE (".$sql.")";
+						if (!empty($this->leftjoin))
+							$this->sql.=" LEFT JOIN ".$this->leftjoin;
 						if (!empty($addsql))
 							{
 								if (empty($sql))
@@ -305,6 +317,8 @@ if (!defined("simplyquery_DEFINED"))
 							}
 						if (!empty($this->orderby))
 							$this->sql.=' ORDER BY '.$this->orderby;
+						if (!empty($this->groupby))
+							$this->sql.=' GROUP BY '.$this->groupby;
 						if (!empty($this->limit))
 							$this->sql.=' LIMIT '.$this->limit;
 						if (!empty($this->offset))
