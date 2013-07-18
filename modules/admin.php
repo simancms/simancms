@@ -742,37 +742,54 @@
 					require_once('includes/admintable.php');
 					include_once('includes/admininterface.php');
 					include_once('includes/adminbuttons.php');
+					$offset=abs(intval($_getvars['from']));
+					$limit=intval($_settings['search_items_by_page']);
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('ico', '', '16');
-					$t->AddCol('title', $lang['common']['title'], '95%');
+					$t->AddCol('url', $lang['url'], '50%');
+					$t->HeaderDropDownItem('url', $lang['common']['sortingtypes']['asc'], sm_this_url(Array('orderby'=>'urlasc', 'from'=>'')));
+					$t->HeaderDropDownItem('url', $lang['common']['sortingtypes']['desc'], sm_this_url(Array('orderby'=>'urldesc', 'from'=>'')));
+					$t->AddCol('title', $lang['common']['title'], '50%');
+					$t->HeaderDropDownItem('title', $lang['common']['sortingtypes']['asc'], sm_this_url(Array('orderby'=>'titleasc', 'from'=>'')));
+					$t->HeaderDropDownItem('title', $lang['common']['sortingtypes']['desc'], sm_this_url(Array('orderby'=>'titledesc', 'from'=>'')));
 					$t->AddEdit();
 					$t->AddDelete();
 					$t->AddMenuInsert();
-					$sql = "SELECT * FROM ".$tableprefix."filesystem ORDER BY filename_fs ASC";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
+					$q=new TQuery($tableprefix."filesystem");
+					if ($_getvars['orderby']=='urldesc')
+						$q->OrderBy('filename_fs DESC');
+					elseif ($_getvars['orderby']=='titleasc')
+						$q->OrderBy('comment_fs');
+					elseif ($_getvars['orderby']=='titledesc')
+						$q->OrderBy('comment_fs DESC');        
+					else
+						$q->OrderBy('filename_fs');
+					$q->Limit($limit);
+					$q->Offset($offset);
+					$q->Select();
+					for ($i = 0; $i<count($q->items); $i++)
 						{
-							if (substr($row->filename_fs, -1) == '/')
+							if (substr($q->items[$i]['filename_fs'], -1) == '/')
 								$t->Image('ico', 'folder.gif');
 							else
 								$t->Image('ico', 'file.gif');
-							$t->Hint('ico', $row->id_fs);
-							$t->Label('title', $row->filename_fs);
-							$t->Hint('title', $row->comment_fs);
-							$t->URL('title', $row->url_fs, true);
-							$t->URL('edit', 'index.php?m=admin&d=editfilesystem&id='.$row->id_fs);
-							$t->URL('delete', 'index.php?m=admin&d=postdeletefilesystem&id='.$row->id_fs);
-							$t->Menu($row->comment_fs, $row->filename_fs);
+							$t->Hint('ico', $q->items[$i]['id_fs']);
+							$t->Label('url', $q->items[$i]['filename_fs']);
+							$t->Label('title', $q->items[$i]['comment_fs']);
+							$t->URL('url', $q->items[$i]['filename_fs'], true);
+							$t->URL('title', $q->items[$i]['url_fs'], true);
+							$t->URL('edit', 'index.php?m=admin&d=editfilesystem&id='.$q->items[$i]['id_fs']);
+							$t->URL('delete', 'index.php?m=admin&d=postdeletefilesystem&id='.$q->items[$i]['id_fs']);
+							$t->Menu($q->items[$i]['comment_fs'], $q->items[$i]['filename_fs']);
 							$t->NewRow();
-							$i++;
 						}
 					$b=new TButtons();
 					$b->AddButton('add', $lang['common']['add'], 'index.php?m=admin&d=addfilesystem');
 					$ui->AddButtons($b);
 					$ui->AddGrid($t);
 					$ui->AddButtons($b);
+					$ui->AddPagebarParams($q->Find(), $limit, $offset);
 					$ui->Output(true);
 				}
 			if (strcmp($m["mode"], 'postdeletefilesystem') == 0)

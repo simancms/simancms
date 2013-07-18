@@ -903,14 +903,19 @@
 			$q->Remove();
 		}
 
-	function sm_fs_url($system_url)
+	function sm_fs_url($system_url, $return_false_on_nonexists=false)
 		{
 			global $sm;
 			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
 			$info = $q->Get();
 			if (empty($info['filename_fs']))
-				return $system_url;
+				{
+					if ($return_false_on_nonexists)
+						return false;
+					else
+						return $system_url;
+				}
 			else
 				return $info['filename_fs'];
 		}
