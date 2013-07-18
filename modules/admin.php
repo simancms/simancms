@@ -776,11 +776,11 @@
 								$t->Image('ico', 'file.gif');
 							$t->Hint('ico', $q->items[$i]['id_fs']);
 							$t->Label('url', $q->items[$i]['filename_fs']);
-							$t->Label('title', $q->items[$i]['comment_fs']);
+							$t->Label('title', empty($q->items[$i]['comment_fs'])?'-----':$q->items[$i]['comment_fs']);
 							$t->URL('url', $q->items[$i]['filename_fs'], true);
 							$t->URL('title', $q->items[$i]['url_fs'], true);
-							$t->URL('edit', 'index.php?m=admin&d=editfilesystem&id='.$q->items[$i]['id_fs']);
-							$t->URL('delete', 'index.php?m=admin&d=postdeletefilesystem&id='.$q->items[$i]['id_fs']);
+							$t->URL('edit', 'index.php?m=admin&d=editfilesystem&id='.$q->items[$i]['id_fs'].'&returnto='.urlencode(sm_this_url()));
+							$t->URL('delete', 'index.php?m=admin&d=postdeletefilesystem&id='.$q->items[$i]['id_fs'].'&returnto='.urlencode(sm_this_url()));
 							$t->Menu($q->items[$i]['comment_fs'], $q->items[$i]['filename_fs']);
 							$t->NewRow();
 						}
@@ -797,33 +797,57 @@
 					$m['title'] = $lang['common']['delete'];
 					$sql = "DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($_getvars["id"]);
 					execsql($sql);
-					$refresh_url = 'index.php?m=admin&d=filesystem';
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=admin&d=filesystem');
 				}
-			if (strcmp($m["mode"], 'addfilesystem') == 0)
+			if (sm_action('postaddfilesystem', 'posteditfilesystem'))
 				{
-					$m['title'] = $lang['common']['add'];
-					$m['row'] = get_filesystem(intval($_getvars["id"]));
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['module_admin']['virtual_filesystem'], "index.php?m=admin&d=filesystem");
+					$q=new TQuery('sm_filesystem');
+					$q->Add('filename_fs', dbescape($_postvars['filename_fs']));
+					$q->Add('url_fs', dbescape($_postvars['url_fs']));
+					$q->Add('comment_fs', dbescape($_postvars['comment_fs']));
+					if (sm_action('postaddfilesystem'))
+						$q->Insert();
+					else
+						$q->Update('id_fs', intval($_getvars['id']));
+					sm_redirect($_getvars['returnto']);
 				}
-			if (strcmp($m["mode"], 'editfilesystem') == 0)
+			if (sm_action('addfilesystem', 'editfilesystem'))
 				{
-					$m['title'] = $lang['common']['edit'];
-					$m['row'] = get_filesystem(intval($_getvars["id"]));
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['module_admin']['virtual_filesystem'], "index.php?m=admin&d=filesystem");
-				}
-			if (strcmp($m["mode"], 'posteditfilesystem') == 0)
-				{
-					$m['title'] = $lang['common']['edit'];
-					update_filesystem(intval($_getvars['id']), $_postvars['p_url'], $_postvars['p_filename'], $_postvars['p_comment']);
-					$refresh_url = 'index.php?m=admin&d=filesystem';
-				}
-			if (strcmp($m["mode"], 'postaddfilesystem') == 0)
-				{
-					$m['title'] = $lang['common']['add'];
-					register_filesystem($_postvars['p_url'], $_postvars['p_filename'], $_postvars['p_comment']);
-					$refresh_url = 'index.php?m=admin&d=filesystem';
+					add_path_control();
+					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (!empty($error))
+						$ui->div($error, '', 'error alert-error');
+					if (sm_action('editfilesystem'))
+						{
+							sm_title($lang['common']['edit']);
+							$f=new TForm('index.php?m=admin&d=posteditfilesystem&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
+						}
+					else
+						{
+							sm_title($lang['common']['add']);
+							$f=new TForm('index.php?m=admin&d=postaddfilesystem&returnto='.urlencode($_getvars['returnto']));
+						}
+					$f->AddText('filename_fs', $lang['common']['url']);
+					$f->AddText('url_fs', $lang['module_admin']['true_url']);
+					$f->AddText('comment_fs', $lang['common']['comment']);
+					if (sm_action('editfilesystem'))
+						{
+							$q=new TQuery('sm_filesystem');
+							$q->Add('id_fs', intval($_getvars['id']));
+							$f->LoadValuesArray($q->Get());
+							unset($q);
+						}
+					if (is_array($_postvars))
+						$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('filename_fs');
 				}
 			if (strcmp($m['mode'], 'filesystemexp') == 0)
 				{

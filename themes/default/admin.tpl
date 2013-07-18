@@ -919,31 +919,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "editfilesystem" or $modules[$index].mode eq "addfilesystem"}
-{include file="block_begin.tpl"}
-<form action="{if $modules[$index].mode eq "editfilesystem"}index.php?m=admin&d=posteditfilesystem&id={$modules[$index].row.id}{else}index.php?m=admin&d=postaddfilesystem{/if}" method="post">
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
-<tr>
-    <td width="50%">{$lang.common.url}</td>
-    <td width="50%"><input type="text" name="p_filename" value="{$modules[$index].row.filename}" style="width:100%"></td>
-</tr>
-<tr>
-    <td width="50%">{$lang.module_admin.true_url}</td>
-    <td width="50%"><input type="text" name="p_url" value="{$modules[$index].row.url}" style="width:100%"></td>
-</tr>
-<tr>
-    <td width="50%">{$lang.common.comment}</td>
-    <td width="50%"><input type="text" name="p_comment" value="{$modules[$index].row.comment}" style="width:100%"></td>
-</tr>
-{$modules[$index].formadditionalhtml}
-<tr>
-    <td width="50%" colspan="2" align="center"><input type="submit" value="{$lang.submit}"></td>
-</tr>
-</table>
-</form>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'viewimg'}
 {include file="block_begin.tpl"}
 <div align="center">
