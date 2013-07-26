@@ -1,5 +1,6 @@
 <?php
 
+$lang["charset"]='utf-8';
 $lang['lang_name']='English';
 
 $lang['installation']='Installation';

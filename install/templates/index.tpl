@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>{if $inst.title eq ""}SiMan CMS{else}{$inst.title}{/if}</title>
-<META content="text/html; charset=windows-1251" http-equiv=Content-Type>
+<META content="text/html; charset={$lang.charset}" http-equiv=Content-Type>
 <style type="text/css">
 {literal}
 body

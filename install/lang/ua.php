@@ -1,5 +1,6 @@
 <?php
 
+	$lang["charset"]='utf-8';
 	$lang['lang_name']='Українська';
 
 	$lang['installation']='Встановлення';
@@ -65,6 +66,7 @@
 	$lang['settings_copyright_text']='Текст копірайту';
 	$lang['settings_default_language']='Мова сайту';
 	$lang['settings_default_theme']='Тема сайту';
+	$lang['settings_default_module']='Вміст сайту';
 
 	$lang['siman_powered_site']='Цей сайт використовує SiMan CMS';
 	$lang['use_siman']='Використовуйте SiMan CMS';
