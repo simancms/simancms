@@ -38,7 +38,7 @@ if (!function_exists('siman_load_menu'))
 				$main_suburl=substr($_settings['resource_url'], $tmp_index);
 				while ($row=database_fetch_assoc($result))
 					{
-						sm_event('onbeforenewslineprocessing', $i);
+						sm_event('onbeforemenulineprocessing', $i);
 						$menu[$i]['id']=$row['id_ml'];
 						$menu[$i]['mid']=$menu_id;
 						$menu[$i]['pos']=$row['position'];
