@@ -814,7 +814,10 @@
 						$q->Insert();
 					else
 						$q->Update('id_fs', intval($_getvars['id']));
-					sm_redirect($_getvars['returnto']);
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=admin&d=filesystem');
 				}
 			if (sm_action('addfilesystem', 'editfilesystem'))
 				{
