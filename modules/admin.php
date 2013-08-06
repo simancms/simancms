@@ -275,7 +275,7 @@
 					$module_title = dbescape($_postvars['p_title']);
 					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
-					$m['mode'] = 'view';
+					sm_redirect('index.php?m=admin&d=modules');
 				}
 			if (strcmp($m['mode'], 'postuplimg') == 0)
 				{
@@ -299,7 +299,7 @@
 					else
 						{
 							sm_event('afteruploadedimagesaveadmin', array($fd));
-							$refresh_url = 'index.php?m=admin&d=listimg';
+							sm_redirect('index.php?m=admin&d=listimg');
 						}
 				}
 			if (strcmp($m['mode'], 'view') == 0)
@@ -348,6 +348,8 @@
 							if (strpos($entry, '.php') > 0)
 								{
 									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
+										continue;
+									if (in_array(substr($entry, 0, -4), nllistToArray(sm_settings('installed_packages'))))
 										continue;
 									$info = sm_get_module_info('./modules/'.$entry);
 									if (
@@ -804,7 +806,7 @@
 				}
 			if (sm_action('postaddfilesystem', 'posteditfilesystem'))
 				{
-					$q=new TQuery('sm_filesystem');
+					$q=new TQuery($sm['t'].'filesystem');
 					$q->Add('filename_fs', dbescape($_postvars['filename_fs']));
 					$q->Add('url_fs', dbescape($_postvars['url_fs']));
 					$q->Add('comment_fs', dbescape($_postvars['comment_fs']));
@@ -838,7 +840,7 @@
 					$f->AddText('comment_fs', $lang['common']['comment']);
 					if (sm_action('editfilesystem'))
 						{
-							$q=new TQuery('sm_filesystem');
+							$q=new TQuery($sm['t'].'filesystem');
 							$q->Add('id_fs', intval($_getvars['id']));
 							$f->LoadValuesArray($q->Get());
 							unset($q);
