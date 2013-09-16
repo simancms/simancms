@@ -1,7 +1,7 @@
 {if $errorname eq "dberror"}
 <center>
 <b>Error</b><br>
-Cant't connect to the database. Try again later.
+Can't connect to the database. Try again later.
 </center>
 {/if}
 

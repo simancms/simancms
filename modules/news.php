@@ -267,7 +267,7 @@
 						$tmp_no_alike_news = 0;
 					else
 						$tmp_no_alike_news = 1;
-					if (empty($news_id) && $modules_index == 0) $news_id = $_getvars["nid"];
+					if (empty($news_id) && $modules_index == 0) $news_id = intval($_getvars["nid"]);
 					if (empty($news_id))
 						{
 							$m["title"] = $lang["error"];
