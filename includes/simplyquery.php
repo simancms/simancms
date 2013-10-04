@@ -130,7 +130,8 @@ if (!defined("simplyquery_DEFINED"))
 				//Update($statement)
 				function Update()
 					{
-						$keyfield=func_get_arg(0);
+						if (func_num_args()>0)
+							$keyfield=func_get_arg(0);
 						if (func_num_args()>1)
 							$keyvalue=func_get_arg(1);
 						if (func_num_args()<3)
