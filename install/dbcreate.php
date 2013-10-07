@@ -244,7 +244,7 @@ CREATE TABLE `".$tableusersprefix."log` (
   `id_log` int(10) unsigned NOT NULL auto_increment,
   `type` tinyint(4) NULL DEFAULT 0,
   `description` text NULL,
-  `ip` int(11) unsigned NULL,
+  `ip` BINARY(16) NULL DEFAULT NUL,
   `time` int(11) NULL,
   `user` varchar(255) NULL,
   PRIMARY KEY (`id_log`)
