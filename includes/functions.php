@@ -280,7 +280,7 @@
 			if ($_settings['log_type']>=$type)
 				{
 					$ip = $_servervars['REMOTE_ADDR'];
-					$sql = "INSERT INTO ".$tableusersprefix."log (type, description, ip, time, user) VALUES (".intval($type).", '".dbescape($description)."', ".intval(ip2long($ip)).", ".time().", '".dbescape($userinfo['login'])."')";
+					$sql = "INSERT INTO ".$tableusersprefix."log (type, description, ip, time, user) VALUES (".intval($type).", '".dbescape($description)."', '".inet_pton($ip)."', ".time().", '".dbescape($userinfo['login'])."')";
 					execsql($sql);
 				}
 		}

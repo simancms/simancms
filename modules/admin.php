@@ -964,7 +964,7 @@
 						{
 							$t->Label('time', strftime($lang["datetimemask"], $q->items[$i]['time']));
 							$t->Label('description', htmlspecialchars($q->items[$i]['description']));
-							$t->Label('ip', long2ip($q->items[$i]['ip']));
+							$t->Label('ip', inet_ntop($q->items[$i]['ip']));
 							$t->Label('user', $q->items[$i]['user']);
 							$t->NewRow();
 						}
