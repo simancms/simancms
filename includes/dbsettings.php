@@ -7,13 +7,14 @@
 
 //Database server type:
 // MySQL=0
+// SQLite=2
 $serverDB=0;
 
 //Database server name (usually localhost)
 $hostNameDB='localhost';
 
 //Database name
-$nameDB='siman_164';
+$nameDB='siman_165';
 
 //Database user name
 $userNameDB='root';
@@ -33,7 +34,7 @@ $tableprefix='sm_';
 $tableusersprefix='';
 
 //Session prefix. You need to change it for your site to prevent hacks
-$session_prefix='needchange164_';
+$session_prefix='needchange165_';
 
 //Use protect code (captcha). 1 - on, 0 - off
 $_settings['use_protect_code']=1;

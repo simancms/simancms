@@ -6,11 +6,11 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-03-31
+	//#ver 1.6.5
+	//#revision 2013-10-07
 	//==============================================================================
 
-	$_settings['version'] = '1.6.4';
+	$_settings['version'] = '1.6.5';
 
 	$_settings['default_news_text_style'] = '0'; // 0 1
 	$_settings['content_multiview'] = 'on'; // on off
@@ -18,9 +18,9 @@
 
 	$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='default'";
 	$result = database_db_query($nameDB, $sql, $lnkDB);
-	while ($row = database_fetch_object($result))
+	while ($row = database_fetch_assoc($result))
 		{
-			$_settings[$row->name_settings] = $row->value_settings;
+			$_settings[$row['name_settings']] = $row['value_settings'];
 		}
 
 	$special['deviceinfo'] = sm_detect_device();
@@ -29,9 +29,9 @@
 		{
 			$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='mobile'";
 			$result = database_db_query($nameDB, $sql, $lnkDB);
-			while ($row = database_fetch_object($result))
+			while ($row = database_fetch_assoc($result))
 				{
-					$_settings[$row->name_settings] = $row->value_settings;
+					$_settings[$row['name_settings']] = $row['value_settings'];
 				}
 		}
 
@@ -39,9 +39,9 @@
 		{
 			$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='tablet'";
 			$result = database_db_query($nameDB, $sql, $lnkDB);
-			while ($row = database_fetch_object($result))
+			while ($row = database_fetch_assoc($result))
 				{
-					$_settings[$row->name_settings] = $row->value_settings;
+					$_settings[$row['name_settings']] = $row['value_settings'];
 				}
 		}
 
