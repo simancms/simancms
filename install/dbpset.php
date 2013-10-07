@@ -374,10 +374,12 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode
 ";
 execsql($sql);
 
+//version 1.6.5
+
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20130420');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20131007');
 ";
 execsql($sql);
 
