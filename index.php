@@ -24,6 +24,7 @@
 
 	require_once("includes/dbsettings.php");
 	require_once("includes/dbengine".$serverDB.".php");
+	require_once("includes/dbelite.php");
 	require_once("includes/simplyquery.php");
 
 	$_getvars = $_GET;

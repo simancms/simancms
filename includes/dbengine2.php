@@ -1,22 +1,21 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.3	                                                               |
-	//#revision 2012-08-14                                                         |
+	//#ver 1.6.5
+	//#revision 2013-10-07
 	//==============================================================================
 
 	function database_get_fn_name($fn)
 		{
 			if (strcmp($fn, 'rand') == 0)
-				return 'rand';
-			if (strcmp($fn, 'curdate') == 0)
-				return 'curdate';
+				return 'random';
+			else
+				return $fn;
 		}
 
 	function database_connect($host, $user, $password, $database = 'siman')
@@ -103,79 +102,6 @@
 	function database_real_escape_string($unescaped_string, $lnkDB)
 		{
 			return $lnkDB->escapeString($unescaped_string);
-		}
-
-	function execsql($sql)
-		{
-			global $nameDB, $lnkDB;
-			return database_db_query($nameDB, $sql, $lnkDB);
-		}
-
-	function insertsql($sql)
-		{
-			global $nameDB, $lnkDB;
-			database_db_query($nameDB, $sql, $lnkDB);
-			return database_insert_id('', $nameDB, $lnkDB);
-		}
-
-	function deletesql($tablename, $idname, $idval)
-		{
-			execsql("DELETE FROM $tablename WHERE $idname = '".dbescape($idval)."'");
-		}
-
-	function getsql($sql, $type = 'a')
-		{
-			$result = execsql($sql);
-			if ($type == 'r')
-				return database_fetch_row($result);
-			elseif ($type == 'o')
-				return database_fetch_object($result);
-			else
-				return database_fetch_array($result);
-		}
-
-	function getsqlarray($sql, $type = 'a')
-		{
-			$result = execsql($sql);
-			$i = 0;
-			$r = Array();
-			if ($type == 'r')
-				{
-					while ($row = database_fetch_row($result))
-						{
-							$r[$i] = $row;
-							$i++;
-						}
-				}
-			elseif ($type == 'o')
-				{
-					while ($row = database_fetch_object($result))
-						{
-							$r[$i] = $row;
-							$i++;
-						}
-				}
-			else
-				{
-					while ($row = database_fetch_array($result))
-						{
-							$r[$i] = $row;
-							$i++;
-						}
-				}
-			return $r;
-		}
-
-	function getsqlfield($sql)
-		{
-			$result = getsql($sql, 'r');
-			return $result[0];
-		}
-
-	function dbescape($unescaped_string)
-		{
-			global $lnkDB;
-			return database_real_escape_string($unescaped_string, $lnkDB);
 		}
 
 ?>
