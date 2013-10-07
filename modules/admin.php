@@ -304,13 +304,16 @@
 				}
 			if (strcmp($m['mode'], 'view') == 0)
 				{
-					if (file_exists('includes/update.php'))
-						{
-							sm_update_settings('install_not_erased', 1);
-						}
 					$m["title"] = $lang['control_panel'];
 					if (is_writeable('./'))
 						$m['can_use_package'] = 1;
+					if (intval(sm_settings('ignore_update'))!=1)
+						{
+							if (file_exists('includes/update.php'))
+								{
+									sm_update_settings('install_not_erased', 1);
+								}
+						}
 				}
 			if (strcmp($m['mode'], 'uplimg') == 0)
 				{
@@ -1028,12 +1031,15 @@
 							$zip = new PclZip($fd);
 							$ext = $zip->extract(PCLZIP_OPT_SET_CHMOD, 0777);
 							unlink($fd);
-							if (file_exists('includes/update.php'))
+							if (intval(sm_settings('ignore_update'))!=1)
 								{
-									include('includes/update.php');
-									@unlink('includes/update.php');
-									if (file_exists('includes/update.php') && empty($refresh_url))
-										sm_update_settings('install_not_erased', 1);
+									if (file_exists('includes/update.php'))
+										{
+											include('includes/update.php');
+											@unlink('includes/update.php');
+											if (file_exists('includes/update.php') && empty($refresh_url))
+												sm_update_settings('install_not_erased', 1);
+										}
 								}
 							if (empty($refresh_url))
 								sm_redirect('index.php?m=admin&d=view', $message);
