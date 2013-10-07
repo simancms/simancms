@@ -956,7 +956,6 @@
 					$t->AddCol('ip', 'IP', '10%');
 					$t->AddCol('user', $lang['user'], '10%');
 					$q=new TQuery($tableusersprefix."log");
-					$q->SelectFields("*, INET_NTOA(ip) AS stringip");
 					$q->OrderBy('id_log DESC');
 					$q->Limit($limit);
 					$q->Offset($offset);
@@ -965,7 +964,7 @@
 						{
 							$t->Label('time', strftime($lang["datetimemask"], $q->items[$i]['time']));
 							$t->Label('description', htmlspecialchars($q->items[$i]['description']));
-							$t->Label('ip', $q->items[$i]['stringip']);
+							$t->Label('ip', long2ip($q->items[$i]['ip']));
 							$t->Label('user', $q->items[$i]['user']);
 							$t->NewRow();
 						}
