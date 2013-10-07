@@ -748,7 +748,7 @@
 					include_once('includes/admininterface.php');
 					include_once('includes/adminbuttons.php');
 					$offset=abs(intval($_getvars['from']));
-					$limit=intval($_settings['search_items_by_page']);
+					$limit=intval($_settings['admin_items_by_page']);
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('ico', '', '16');

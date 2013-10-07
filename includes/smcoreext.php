@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-07-16
+	//#ver 1.6.5
+	//#revision 2013-10-07
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -322,6 +322,7 @@
 				curl_setopt($ch, CURLOPT_USERAGENT, sm_settings('curl_default_useragent'));
 			if (!empty($postvars))
 				{
+					$postvars=http_build_query($postvars);
 					curl_setopt($ch, CURLOPT_POST, 1);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
 				}
