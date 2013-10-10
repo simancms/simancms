@@ -14,6 +14,9 @@ if (!defined("admintable_DEFINED"))
 			{
 				var $table;
 				var $rownumber;
+
+				private $sort_statement='';
+
 				function TGrid($default_column='')
 					{
 						$this->rownumber=0;
@@ -215,6 +218,32 @@ if (!defined("admintable_DEFINED"))
 						else
 							$i=$index;
 						$this->table['columns'][$name]['dropdownitems'][$i]['selected']=1;
+					}
+				private function USortRowsByColumnData($a, $b)
+					{
+						if ($a==$b)
+							return 0;
+						$cols=explode(',', $this->sort_statement);
+						for ($j = 0; $j < count($cols); $j++)
+							{
+								$col=explode(' ', trim($cols[$j]));
+								if (strtoupper($col[2])=='NUM' || strtoupper($col[1])=='NUM')
+									{
+										if ($a[$col[0]]['data']==$b[$col[0]]['data'])
+											$result=0;
+										else
+											$result=$a[$col[0]]['data']>$b[$col[0]]['data']?1:-1;
+									}
+								else
+									$result=strcmp($a[$col[0]]['data'], $b[$col[0]]['data']);
+								if ($result!=0)
+									return (strtoupper($col[1])=='DESC'?-1:1)*($result<0?-1:1);
+							}
+					}
+				function SortRowsByColumnData($comma_separaded_columns)
+					{
+						$this->sort_statement=$comma_separaded_columns;
+						usort($this->table['rows'], array($this, "USortRowsByColumnData"));
 					}
 			}
 
