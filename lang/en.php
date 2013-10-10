@@ -486,6 +486,7 @@ $lang['module_download']['upload_file'] = 'Upload file';
 $lang['module_download']['short_description_download'] = 'Short description';
 $lang['module_download']['really_want_delete_file'] = 'Are you sure you want to delete the file';
 $lang['module_download']['delete_file_successful'] = 'Downloads removed';
+$lang['module_download']['file_already_exists']='File already exists';
 $lang['question'] = 'Question';
 $lang['answer'] = 'Answer';
 $lang['questions_to_administration'] = 'Questions to the administration';

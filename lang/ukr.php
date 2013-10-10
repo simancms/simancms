@@ -509,6 +509,7 @@
 	$lang['module_download']['short_description_download']='Короткий опис файлу, що завантажується';
 	$lang['module_download']['really_want_delete_file']='Ви дійсно хочете видалити файл';
 	$lang['module_download']['delete_file_successful']='Завантаження видалене';
+	$lang['module_download']['file_already_exists']='Файл з таким іменем вже існує';
 
 	//Questions
 	$lang['question']='Запитання';
