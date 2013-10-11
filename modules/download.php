@@ -120,6 +120,8 @@
 				{
 					add_path_modules();
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
+					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=list');
+					add_path_current();
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
@@ -144,6 +146,7 @@
 					include_once('includes/adminbuttons.php');
 					add_path_modules();
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
+					add_path_current();
 					sm_title($lang['module_download']['downloads']);
 					$offset=abs(intval($_getvars['from']));
 					$limit=30;

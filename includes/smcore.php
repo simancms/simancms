@@ -800,8 +800,14 @@
 
 	function sm_title($title)
 		{
-			global $m;
-			$m['title'] = $title;
+			global $sm;
+			$sm['m']['title'] = $title;
+			if ($sm['index']==0)
+				for ($i = 0; $i < count($sm['s']['path']); $i++)
+					{
+						if ($sm['s']['path'][$i]['tag']=='currentpage')
+							$sm['s']['path'][$i]['title']=$title;
+					}
 		}
 
 	function sm_meta_title($title, $hide_site_title = true)

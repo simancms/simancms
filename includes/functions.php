@@ -330,12 +330,13 @@
 				}
 		}
 
-	function add_path($title, $url)
+	function add_path($title, $url, $tag='')
 		{
 			global $special;
 			$i = count($special['path']);
 			$special['path'][$i]['title'] = $title;
 			$special['path'][$i]['url'] = $url;
+			$special['path'][$i]['tag'] = $tag;
 		}
 
 	function push_path($title, $url)
@@ -369,6 +370,12 @@
 			global $lang;
 			add_path($lang['control_panel'], 'index.php?m=admin');
 			add_path($lang['modules_mamagement'], 'index.php?m=admin&d=modules');
+		}
+
+	function add_path_current()
+		{
+			global $sm;
+			add_path($sm['modules'][0]['title'], sm_this_url(), 'currentpage');
 		}
 
 
