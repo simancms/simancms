@@ -12,6 +12,7 @@
 	
 	require_once("includes/dbsettings.php");
 	require_once("includes/dbengine".$serverDB.".php");
+	require_once("includes/dbelite.php");
 
 	$url = '';
 

@@ -52,6 +52,7 @@
 
 	require("../includes/dbsettings.php");
 	require("../includes/dbengine".$serverDB.".php");
+	require("../includes/dbelite.php");
 
 	$smarty = new Smarty;
 

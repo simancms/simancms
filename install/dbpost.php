@@ -50,6 +50,17 @@ INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('".$lang['p_menu']['main_m
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
+//---------------[Top and bottom nav]---------------------
+
+$sql="
+INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('".$lang['p_menu']['top_menu']."');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+$sql="
+INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('".$lang['p_menu']['bottom_menu']."');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+
 
 //-----------------[Рядки меню]-[Menu lines]--------------------
 
@@ -58,7 +69,7 @@ INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) V
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="
-INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) VALUES (2,'index.php?m=news&d=listnews','".$lang['p_mlines']['news']."',2);
+INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) VALUES (2,'news/','".$lang['p_mlines']['news']."',2);
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
@@ -125,6 +136,18 @@ $sql="
 INSERT INTO ".$tableprefix."news (id_category_n, date_news, title_news, text_news, type_news) VALUES ('1', '".time()."', '".$inst['p_news']['firs_news']."', '".$inst['p_news']['firs_news_text']."', '1')
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
+
+//-------------[virtual filesystem]------------
+
+$sql="
+INSERT INTO ".$tableprefix."filesystem (filename_fs, url_fs, comment_fs) VALUES ('login/', 'index.php?m=account', '".$lang['p_blocks']['login']."');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+$sql="
+INSERT INTO ".$tableprefix."filesystem (filename_fs, url_fs, comment_fs) VALUES ('news/', 'index.php?m=news', '".$lang['p_mlines']['news']."');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+
 
 
 ?>

@@ -87,7 +87,7 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('max
 ";
 execsql($sql);
 $sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('upper_menu_id', '');
+INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('upper_menu_id', '3');
 ";
 execsql($sql);
 $sql="
@@ -128,7 +128,7 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('con
 ";
 execsql($sql);
 $sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('bottom_menu_id', '')
+INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('bottom_menu_id', '4')
 ";
 execsql($sql);
 $sql="

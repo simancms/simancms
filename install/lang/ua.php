@@ -41,6 +41,8 @@
 
 	$lang['p_menu']['main_menu']='Меню';
 	$lang['p_menu']['admin_menu']='Адміністрування';
+	$lang['p_menu']['top_menu']='Верхнє меню';
+	$lang['p_menu']['bottom_menu']='Нижнє меню';
 
 	$lang['p_mlines']['main']='Головна';
 	$lang['p_mlines']['news']='Новини';

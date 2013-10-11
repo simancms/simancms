@@ -41,6 +41,8 @@ $lang['p_welcome_page']['text']='This is default SiMan CMS start page.<br /><br 
 
 $lang['p_menu']['main_menu']='Navigation';
 $lang['p_menu']['admin_menu']='Administration';
+$lang['p_menu']['top_menu']='Top Navigation';
+$lang['p_menu']['bottom_menu']='Bottom Navigation';
 
 $lang['p_mlines']['main']='Home';
 $lang['p_mlines']['news']='News';
