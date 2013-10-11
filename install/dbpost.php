@@ -65,7 +65,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 //-----------------[Рядки меню]-[Menu lines]--------------------
 
 $sql="
-INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) VALUES (2,'index.php','".$lang['p_mlines']['main']."',1);
+INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) VALUES (2,'".(strlen(str_replace('/install/install.php', '', $_SERVER['SCRIPT_NAME']))==0?'/':'index.php')."','".$lang['p_mlines']['main']."',1);
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="
@@ -98,8 +98,13 @@ INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) V
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
+$sql="
+INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, url, caption_ml, position) VALUES (3,'".(strlen(str_replace('/install/install.php', '', $_SERVER['SCRIPT_NAME']))==0?'/':'index.php')."','".$lang['p_mlines']['main']."',1);
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
 
-//---------------------[Модулі]-[Modules]-----------------------
+
+	//---------------------[Модулі]-[Modules]-----------------------
 
 $sql="
 INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('content', '".$lang['p_modules']['content']."', 'title_content text_content', 'view', 'cid', 'content', 'title_content', 'id_content', 'text_content');

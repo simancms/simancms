@@ -7,7 +7,7 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('ins
 ";
 execsql($sql);
 $sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('cookprefix','_siman');
+INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('cookprefix','_siman".rand(11111111, 99999999)."_');
 ";
 execsql($sql);
 $sql="
