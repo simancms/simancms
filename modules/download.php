@@ -80,7 +80,6 @@
 				}
 			if (strcmp($m["mode"], 'postadd') == 0)
 				{
-					$m['title'] = $lang['module_download']['upload_file'];
 					$descr = dbescape($_postvars['p_shortdesc']);
 					$fs = $_uplfilevars['userfile']['tmp_name'];
 					if (empty($_postvars['p_optional']))
@@ -115,6 +114,57 @@
 							else
 								sm_redirect('index.php?m=download&d=view');
 						}
+				}
+			if (sm_action('postupload'))
+				{
+					$fs = $_uplfilevars['userfile']['tmp_name'];
+					$fd = './files/download/'.$fd;
+					if (!file_exists($fs))
+						{
+							$error=$lang['error_file_upload_message'];
+							$m['mode'] = 'upload';
+						}
+					else
+						{
+							//need to finish here
+							if (!move_uploaded_file($fs, $fd))
+								{
+									$error=$lang['error_file_upload_message'];
+									$m['mode'] = 'upload';
+								}
+							else
+								{
+									$q=new TQuery($sm['t'].'downloads');
+									$q->Add('file_download', dbescape(basename($fd)));
+									$q->Add('description_download', dbescape($_postvars['description_download']));
+									$q->Add('userlevel_download', intval($_postvars['userlevel_download']));
+									$q->Insert();
+									//sm_notify($lang['operation_complete']);
+									if (!empty($_getvars['returnto']))
+										sm_redirect($_getvars['returnto']);
+									else
+										sm_redirect('index.php?m=download&d=view');
+								}
+						}
+				}
+			if (sm_action('upload'))
+				{
+					add_path_modules();
+					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
+					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=list');
+					add_path_current();
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (!empty($error))
+						$ui->div($error, '', 'error alert-error errormessage error-message');
+					sm_title($lang['module_download']['upload_file']);
+					$f=new TForm('index.php?m=download&d=postupload&returnto='.urlencode($_getvars['returnto']));
+					$f->AddFile('userfile', $lang['file_name']);
+					$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('userfile');
 				}
 			if (sm_action('add'))
 				{
