@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-09
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -19,7 +18,7 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (strcmp($m["mode"], 'delete') == 0)
+			if (sm_action('delete'))
 				{
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['delete'];
@@ -27,7 +26,7 @@
 					$_msgbox['yes'] = 'index.php?m=account&d=postdelete&uid='.$_getvars["uid"];
 					$_msgbox['no'] = 'index.php?m=account&d=usrlist';
 				}
-			if (strcmp($m['mode'], 'postdelete') == 0)
+			if (sm_action('postdelete'))
 				{
 					$id_user = intval($_getvars['uid']);
 					$sql = "DELETE FROM ".$tableusersprefix."users WHERE id_user=$id_user AND id_user>1";
@@ -35,7 +34,7 @@
 					sm_event('deleteuser', array($id_user));
 					sm_redirect($_getvars['returnto']);
 				}
-			if (strcmp($m['mode'], 'setstatus') == 0)
+			if (sm_action('setstatus'))
 				{
 					$status = $_getvars['status'];
 					$id_user = $_getvars['uid'];
@@ -43,7 +42,7 @@
 					$result = execsql($sql);
 					sm_redirect($_getvars['returnto']);
 				}
-			if (strcmp($m['mode'], 'usrlist') == 0)
+			if (sm_action('usrlist'))
 				{
 					add_path_control();
 					add_path($lang["user_list"], 'index.php?m=account&d=usrlist');
@@ -113,7 +112,7 @@
 					$ui->AddPagebar('');
 					$ui->Output(true);
 				}
-			if (strcmp($m['mode'], 'setpwd') == 0)
+			if (sm_action('setpwd'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['set_password'];
@@ -127,7 +126,7 @@
 							$m['user']['status'] = $row->user_status;
 						}
 				}
-			if (strcmp($m['mode'], 'postsetpwd') == 0)
+			if (sm_action('postsetpwd'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['set_password'];
@@ -138,7 +137,7 @@
 					$result = execsql($sql);
 					sm_redirect($_getvars['returnto']);
 				}
-			if (strcmp($m['mode'], 'listgroups') == 0)
+			if (sm_action('listgroups'))
 				{
 					add_path_control();
 					add_path($lang['module_account']['groups'], 'index.php?m=account&d=listgroups');
@@ -171,7 +170,7 @@
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
-			if (strcmp($m['mode'], 'addgroup') == 0)
+			if (sm_action('addgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['add_group'];
@@ -184,7 +183,7 @@
 					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
 					$m['form'] = $f->Output();
 				}
-			if (strcmp($m['mode'], 'editgroup') == 0)
+			if (sm_action('editgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['common']['edit'];
@@ -196,7 +195,7 @@
 					$f->LoadValues('SELECT * FROM '.$tableusersprefix.'groups WHERE id_group='.intval($_getvars['id']));
 					$m['form'] = $f->Output();
 				}
-			if (strcmp($m['mode'], 'postaddgroup') == 0)
+			if (sm_action('postaddgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['add_group'];
@@ -208,7 +207,7 @@
 					$q->Insert();
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
-			if (strcmp($m['mode'], 'posteditgroup') == 0)
+			if (sm_action('posteditgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['common']['edit'];
@@ -219,14 +218,14 @@
 					$q->Update('id_group', intval($_getvars['id']));
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
-			if (strcmp($m['mode'], 'postdeletegroup') == 0)
+			if (sm_action('postdeletegroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['common']['delete'];
 					exec_sql_delete($tableusersprefix.'groups', 'id_group', $_getvars['id']);
 					$refresh_url = 'index.php?m=account&d=listgroups';
 				}
-			if (strcmp($m['mode'], "postchangegrp") == 0)
+			if (sm_action('postchangegrp'))
 				{
 					$m["module"] = 'account';
 					$m["title"] = $lang['change'];

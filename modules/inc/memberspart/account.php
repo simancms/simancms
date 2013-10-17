@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-04-20
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -52,7 +51,7 @@
 			define("ACCOUNT_MEMBERS_FUNCTIONS_DEFINED", 1);
 		}
 
-	if (strcmp($m['mode'], "postchange") == 0)
+	if (sm_action('postchange'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['change'];
@@ -179,7 +178,7 @@
 				}
 		}
 
-	if (strcmp($m['mode'], 'change') == 0)
+	if (sm_action('change'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['change'];
@@ -213,7 +212,7 @@
 			sm_event('onchreginfo', array($m['user_id']));
 			sm_page_viewid('account-change');
 		}
-	if (strcmp($m['mode'], 'logout') == 0)
+	if (sm_action('logout'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["logout"];
@@ -226,7 +225,7 @@
 			else
 				$refresh_url = 'http://'.$_settings['resource_url'];
 		}
-	if (strcmp($m['mode'], 'cabinet') == 0 && !empty($userinfo['id']))
+	if (sm_action('cabinet') && !empty($userinfo['id']))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["my_cabinet"];
@@ -255,7 +254,7 @@
 				}
 			sm_page_viewid('account-cabinet');
 		}
-	if (strcmp($m['mode'], 'savenbook') == 0 && !empty($userinfo['id']))
+	if (sm_action('savenbook') && !empty($userinfo['id']))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['module_account']['notebook'];
@@ -270,7 +269,7 @@
 				}
 			$refresh_url = 'index.php?m=account&d=cabinet';
 		}
-	if (strcmp($m['mode'], 'viewprivmsg') == 0 && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+	if (sm_action('viewprivmsg') && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		{
 			sm_page_viewid('account-viewprivmsg');
 			$m["module"] = 'account';
@@ -329,7 +328,7 @@
 					$i++;
 				}
 		}
-	if (strcmp($m['mode'], 'postsendprivmsg') == 0 && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+	if (sm_action('postsendprivmsg') && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['module_account']['send_message'];
@@ -370,7 +369,7 @@
 					$refresh_url = 'index.php?m=account&d=viewprivmsg&folder=inbox';
 				}
 		}
-	if (strcmp($m['mode'], 'sendprivmsg') == 0 && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+	if (sm_action('sendprivmsg') && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		{
 			sm_page_viewid('account-sendprivmsg');
 			$m["module"] = 'account';
@@ -379,7 +378,7 @@
 			$m['data']['theme'] = htmlspecialchars($_postvars['p_theme']);
 			$m['data']['text'] = htmlspecialchars($_postvars['p_body']);
 		}
-	if (strcmp($m['mode'], 'readprivmsg') == 0 && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+	if (sm_action('readprivmsg') && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		{
 			sm_page_viewid('account-readprivmsg');
 			$m["module"] = 'account';
@@ -413,7 +412,7 @@
 					$result = execsql($sql);
 				}
 		}
-	if (strcmp($m['mode'], 'postdeleteprivmsg') == 0 && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+	if (sm_action('postdeleteprivmsg') && $_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['common']['delete'];
@@ -423,7 +422,7 @@
 			$result = execsql($sql);
 			$refresh_url = 'index.php?m=account&d=viewprivmsg&folder='.$_getvars['folder'];
 		}
-	if (strcmp($m['mode'], 'postlogin') == 0)
+	if (sm_action('postlogin'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["login_caption"];

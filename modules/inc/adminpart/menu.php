@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-04-24
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -43,14 +42,14 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["settings"];
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 				}
-			if (strcmp($m["mode"], 'addouter') == 0)
+			if (sm_action('addouter'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -86,7 +85,7 @@
 					$ui->Output(true);
 					sm_setfocus('p_caption');
 				}
-			if (strcmp($m["mode"], 'postadd') == 0)
+			if (sm_action('postadd'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["add_menu"];
@@ -104,7 +103,7 @@
 					$_msgbox['yes'] = 'index.php?m=menu&d=addline&mid='.database_insert_id('menus', $nameDB, $lnkDB);
 					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
 				}
-			if (strcmp($m["mode"], 'deleteline') == 0)
+			if (sm_action('deleteline'))
 				{
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['delete_menu_line'];
@@ -112,7 +111,7 @@
 					$_msgbox['yes'] = 'index.php?m=menu&d=postdeleteline&mid='.$_getvars['mid'].'&lid='.$_getvars['lid'];
 					$_msgbox['no'] = 'index.php?m=menu&d=listlines&mid='.$_getvars['mid'];
 				}
-			if (strcmp($m["mode"], 'postdeleteline') == 0)
+			if (sm_action('postdeleteline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["delete_menu_line"];
@@ -121,7 +120,7 @@
 					siman_delete_menu_line($menuline_id);
 					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
-			if (strcmp($m["mode"], 'postaddouter') == 0)
+			if (sm_action('postaddouter'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -129,7 +128,7 @@
 					$lposition = 0;
 					$m["mode"] = 'postaddline';
 				}
-			if (strcmp($m["mode"], 'postaddline') == 0)
+			if (sm_action('postaddline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -167,7 +166,7 @@
 					else
 						sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
-			if (strcmp($m["mode"], 'posteditline') == 0)
+			if (sm_action('posteditline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -212,7 +211,7 @@
 						}
 					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
-			if (strcmp($m["mode"], 'addline') == 0)
+			if (sm_action('addline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -220,7 +219,7 @@
 					$m['idmenu'] = $menu_id;
 					$m['menu'] = siman_load_menu($menu_id);
 				}
-			if (strcmp($m["mode"], 'prepareaddline') == 0)
+			if (sm_action('prepareaddline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
@@ -240,7 +239,7 @@
 							$i++;
 						}
 				}
-			if (strcmp($m["mode"], 'editline') == 0)
+			if (sm_action('editline'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["menu"];
@@ -288,7 +287,7 @@
 								}
 						}
 				}
-			if (strcmp($m["mode"], 'listlines') == 0)
+			if (sm_action('listlines'))
 				{
 					$m["module"] = 'menu';
 					$menu_id = intval($_getvars["mid"]);
@@ -333,7 +332,7 @@
 							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'];
 						}
 				}
-			if (strcmp($m["mode"], 'editmenu') == 0)
+			if (sm_action('editmenu'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["edit_menu"];
@@ -349,7 +348,7 @@
 							$m["caption"] = $row->caption_m;
 						}
 				}
-			if (strcmp($m["mode"], 'postedit') == 0)
+			if (sm_action('postedit'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['edit_menu'];
@@ -363,7 +362,7 @@
 						}
 					sm_redirect('index.php?m=menu&d=listmenu');
 				}
-			if (strcmp($m["mode"], 'deletemenu') == 0)
+			if (sm_action('deletemenu'))
 				{
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['delete_menu'];
@@ -371,7 +370,7 @@
 					$_msgbox['yes'] = 'index.php?m=menu&d=postdeletemenu&mid='.$_getvars['mid'];
 					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
 				}
-			if (strcmp($m["mode"], 'postdeletemenu') == 0)
+			if (sm_action('postdeletemenu'))
 				{
 					$m["module"] = 'menu';
 					$menu_id = $_getvars["mid"];
@@ -385,7 +384,7 @@
 						}
 					sm_redirect('index.php?m=menu&d=listmenu');
 				}
-			if (strcmp($m["mode"], 'add') == 0)
+			if (sm_action('add'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["add_menu"];
@@ -393,7 +392,7 @@
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
 				}
-			if (strcmp($m["mode"], 'listmenu') == 0)
+			if (sm_action('listmenu'))
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang["list_menus"];

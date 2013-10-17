@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
 	Version: 1.6.5
-	Revision: 2013-10-10
+	Revision: 2013-10-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -42,7 +42,7 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (strcmp($m["mode"], 'deleteattachment') == 0)
+			if (sm_action('deleteattachment'))
 				{
 					$m["module"] = 'download';
 					$m['title'] = $lang['common']['delete'];
@@ -52,7 +52,7 @@
 					$_msgbox['yes'] = 'index.php?m=download&d=postdeleteattachment&id='.$_getvars["id"];
 					$_msgbox['no'] = 'index.php?m=download';
 				}
-			if (strcmp($m["mode"], 'postdeleteattachment') == 0)
+			if (sm_action('postdeleteattachment'))
 				{
 					$m["module"] = 'download';
 					$m['title'] = $lang['common']['delete'];
@@ -77,7 +77,7 @@
 					//sm_notify($lang['module_download']['delete_file_successful']);
 					sm_redirect($_getvars['returnto']);
 				}
-			if (strcmp($m["mode"], 'postadd') == 0)
+			if (sm_action('postadd'))
 				{
 					$descr = dbescape($_postvars['p_shortdesc']);
 					$fs = $_uplfilevars['userfile']['tmp_name'];
@@ -265,7 +265,7 @@
 					$ui->br();
 					$ui->Output(true);
 				}
-			if (strcmp($m["mode"], 'edit') == 0)
+			if (sm_action('edit'))
 				{
 					$m["module"] = 'download';
 					$m['title'] = $lang['edit'];
@@ -278,7 +278,7 @@
 							$m['short_desc'] = $row->description_download;
 						}
 				}
-			if (strcmp($m["mode"], 'postedit') == 0)
+			if (sm_action('postedit'))
 				{
 					$m["module"] = 'download';
 					$iddownl = $_getvars['did'];
@@ -289,13 +289,13 @@
 				}
 		}
 
-	if (strcmp($m["mode"], 'errorupload') == 0)
+	if (sm_action('errorupload'))
 		{
 			$m['title'] = $lang['error'];
 			$m["module"] = 'download';
 		}
 
-	if (strcmp($m["mode"], 'view') == 0)
+	if (sm_action('view'))
 		{
 			sm_page_viewid('download-view');
 			$m["module"] = 'download';

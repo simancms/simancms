@@ -9,8 +9,8 @@
 	Module Name: Search
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
-	Version: 1.6.4
-	Revision: 2013-06-07
+	Version: 1.6.5
+	Revision: 2013-10-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -19,7 +19,7 @@
 
 	$m["module"] = 'search';
 
-	if (strcmp($m["mode"], 'search') == 0)
+	if (sm_action('search'))
 		{
 			if (!empty($m["bid"]))
 				{
@@ -111,14 +111,14 @@
 				}
 		}
 
-	if (strcmp($m["mode"], 'shortview') == 0)
+	if (sm_action('shortview'))
 		{
 			$m['title'] = $lang['module_search']['search'];
 		}
 
 	if ($userinfo['level'] == 3)
 		{
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					$m['title'] = $lang['settings'];
 				}

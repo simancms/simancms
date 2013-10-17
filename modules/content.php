@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.4
-	Revision: 2013-05-01
+	Version: 1.6.5
+	Revision: 2013-10-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -120,7 +120,7 @@
 	/*
 	$m["module"]='content';
 	*/
-	if (strcmp($m["mode"], 'view') == 0)
+	if (sm_action('view'))
 		{
 			$m["module"] = 'content';
 			if (!empty($m["bid"])) $m["cid"] = $m["bid"];
@@ -143,7 +143,7 @@
 				$tmp_no_alike_content = 1;
 		}
 
-	if (strcmp($m["mode"], 'viewlast') == 0 || strcmp($m["mode"], 'viewfirst') == 0)
+	if (sm_action('viewlast') || sm_action('viewfirst'))
 		{
 			sm_page_viewid('content-viewlast');
 			$m["module"] = 'content';
@@ -151,7 +151,7 @@
 			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
 			if (!empty($tmp_ctg))
 				$sql .= " AND ".$tableprefix."content.id_category_c='$tmp_ctg'";
-			if (strcmp($m["mode"], 'viewlast') == 0)
+			if (sm_action('viewlast'))
 				$sql .= " ORDER BY ".$tableprefix."content.id_content DESC LIMIT 1";
 			else
 				$sql .= " ORDER BY ".$tableprefix."content.id_content ASC LIMIT 1";
@@ -160,7 +160,7 @@
 				$tmp_no_alike_content = 1;
 		}
 
-	if (strcmp($m["mode"], 'multiview') == 0)
+	if (sm_action('multiview'))
 		{
 			$m["module"] = 'content';
 			if (!empty($m["bid"]))
@@ -214,7 +214,7 @@
 			$m["mode"] = 'view';
 		}
 
-	if (strcmp($m["mode"], 'rndctgview') == 0)
+	if (sm_action('rndctgview'))
 		{
 			sm_page_viewid('content-rndctgview');
 			$m["module"] = 'content';
@@ -231,7 +231,7 @@
 			$tmp_no_alike_content = 1;
 		}
 
-	if (strcmp($m["mode"], 'view') == 0)
+	if (sm_action('view'))
 		{
 			if ($content_error != 1)
 				{
@@ -394,7 +394,7 @@
 				}
 		}
 
-	if (strcmp($m["mode"], 'viewctg') == 0)
+	if (sm_action('viewctg'))
 		{
 			$m["module"] = 'content';
 			if (empty($_getvars["ctgid"]) && !empty($_getvars["ctg"]))
@@ -491,7 +491,7 @@
 				}
 		}
 
-	if (strcmp($m["mode"], 'blockctgview') == 0)
+	if (sm_action('blockctgview'))
 		{
 			$m["module"] = 'content';
 			$ctg_id = intval($modules[0]['content'][0]["id_category"]);

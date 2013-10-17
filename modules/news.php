@@ -1,17 +1,16 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	/*
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.4
-	Revision: 2013-04-09
+	Version: 1.6.5
+	Revision: 2013-10-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -46,25 +45,25 @@
 			$tmp_short_news = 0;
 
 
-			if (strcmp($m["mode"], 'listnews') == 0 || strcmp($m["mode"], 'listdate') == 0)
+			if (sm_action('listnews') || sm_action('listdate'))
 				{
 					$tmp_view_ctg = $_getvars['ctg'];
 				}
-			elseif (strcmp($m["mode"], 'shortnews') == 0)
+			elseif (sm_action('shortnews'))
 				{
 					$tmp_short_news = 1;
 					$m["mode"] = 'listnews';
 					$tmp_view_ctg = $m["bid"];
 					//$_getvars['ctg']='';
 				}
-			elseif (strcmp($m["mode"], 'viewctg') == 0)
+			elseif (sm_action('viewctg'))
 				{
 					$_getvars['ctg'] = $_getvars["ctgid"];
 					$tmp_view_ctg = $_getvars['ctg'];
 					$m["mode"] = 'listnews';
 				}
 
-			if (strcmp($m["mode"], 'listnews') == 0 || strcmp($m["mode"], 'listdate') == 0)
+			if (sm_action('listnews') || sm_action('listdate'))
 				{
 					$m["module"] = 'news';
 					if (!empty($tmp_view_ctg))
@@ -81,7 +80,7 @@
 								}
 						}
 					$ctg_id = $tmp_view_ctg;
-					if (strcmp($m["mode"], 'listnews') == 0)
+					if (sm_action('listnews'))
 						{
 							if (!empty($ctg_id))
 								sm_page_viewid('news-'.$m["mode"].'-'.$ctg_id);
@@ -95,7 +94,7 @@
 					$from_record = $_getvars['from'];
 					if (empty($from_record)) $from_record = 0;
 					$from_page = ceil(($from_record+1)/$_settings['news_by_page']);
-					if (strcmp($m["mode"], 'listdate') == 0)
+					if (sm_action('listdate'))
 						$m['pages']['url'] = 'index.php?m=news&d=listdate&dy='.$_getvars['dy'].'&dm='.$_getvars['dm'].'&dd='.$_getvars['dd'];
 					elseif (!empty($tmp_view_ctg))
 						$m['pages']['url'] = 'index.php?m=news&d=listnews&ctg='.$tmp_view_ctg;
@@ -106,7 +105,7 @@
 					if (empty($m['title']))
 						$m['title'] = $lang['news'];
 					$sql2 = " WHERE date_news<=".time();
-					if (strcmp($m["mode"], 'listdate') == 0)
+					if (sm_action('listdate'))
 						{
 							if (!empty($_getvars['dy']))
 								{
@@ -258,7 +257,7 @@
 					sm_add_title_modifier($m['title']);
 				}
 
-			if (strcmp($m["mode"], 'view') == 0)
+			if (sm_action('view'))
 				{
 					$m["module"] = 'news';
 					if (!empty($m["bid"])) $m["nid"] = $m["bid"];

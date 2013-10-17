@@ -2,10 +2,12 @@
 
 	//------------------------------------------------------------------------------
 	//|            Content Management System SiMan CMS                             |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#verCMS 1.6.2                                                                |
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -19,19 +21,17 @@
 			define("simpleshortcodes_FUNCTIONS_DEFINED", 1);
 		}
 
-	$m =& $modules[$modules_index];
-
 	if ($userinfo['level'] == 3)
 		{
 			sm_include_lang('simpleshortcodes');
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					$m["module"] = 'simpleshortcodes';
 					add_path_modules();
 					add_path($lang['module_simpleshortcodes']['module_simpleshortcodes'], 'index.php?m=simpleshortcodes&d=admin');
 					$m['title'] = $lang['settings'];
 				}
-			if (strcmp($m["mode"], 'install') == 0)
+			if (sm_action('install'))
 				{
 					$m['title'] = $lang['common']['install'];
 					$m["module"] = 'simpleshortcodes';
@@ -40,7 +40,7 @@
 					sm_register_postload('simpleshortcodes');
 					sm_redirect('index.php?m=admin&d=modules');
 				}
-			if (strcmp($m["mode"], 'uninstall') == 0)
+			if (sm_action('uninstall'))
 				{
 					$m['title'] = $lang['common']['install'];
 					$m["module"] = 'simpleshortcodes';

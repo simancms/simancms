@@ -2,17 +2,14 @@
 
 	//------------------------------------------------------------------------------
 	//|            Content Management System SiMan CMS                             |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
-
-	//==============================================================================
-	//#verCMS 1.6.2                                                                |
-	//==============================================================================
 
 	/*
 	Module Name: Replacers
 	Module URI: http://simancms.org/
 	Description: Template replacers for custom themes
-	Version: 2012-07-20
+	Version: 2013-10-17
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -97,7 +94,7 @@
 					$ui->Output(true);
 					$m['title'] = $lang['settings'];
 				}
-			if (strcmp($m["mode"], 'install') == 0)
+			if (sm_action('install'))
 				{
 					$m['title'] = $lang['common']['install'];
 					sm_register_module('replacers', 'Replacers');
@@ -109,7 +106,7 @@
 							);");
 					sm_redirect('index.php?m=admin&d=modules');
 				}
-			if (strcmp($m["mode"], 'uninstall') == 0)
+			if (sm_action('uninstall'))
 				{
 					$m['title'] = $lang['common']['install'];
 					sm_unregister_module('replacers');

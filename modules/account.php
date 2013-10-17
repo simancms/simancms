@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-04-09
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -23,8 +22,7 @@
 			define("ACCOUNT_FUNCTIONS_DEFINED", 1);
 		}
 
-	if (empty($m['mode']))
-		$m['mode'] = 'show';
+	sm_default_action('show');
 
 	if (sm_actionpost("postregister") && ($_settings['allow_register'] || $userinfo['level']==3))
 		{
@@ -143,12 +141,12 @@
 
 	if ($_settings['allow_forgot_password'] == 1)
 		{
-			if (strcmp($m['mode'], 'getpasswd') == 0)
+			if (sm_action('getpasswd'))
 				{
 					$m["module"] = 'account';
 					$m["title"] = $lang["get_password"];
 				}
-			if (strcmp($m['mode'], 'getpasswd3') == 0)
+			if (sm_action('getpasswd3'))
 				{
 					$m["module"] = 'account';
 					$m["title"] = $lang["get_password"];
@@ -171,7 +169,7 @@
 							$m['mode'] = 'getpasswd2';
 						}
 				}
-			if (strcmp($m['mode'], 'getpasswd2') == 0)
+			if (sm_action('getpasswd2'))
 				{
 					$m["module"] = 'account';
 					$m["title"] = $lang["get_password"];
@@ -188,7 +186,7 @@
 				}
 		}
 
-	if (strcmp($m['mode'], 'register') == 0)
+	if (sm_action('register'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["register"];
@@ -197,7 +195,7 @@
 			sm_event('onregister', array(''));
 			sm_page_viewid('account-register');
 		}
-	if (strcmp($m['mode'], 'login') == 0)
+	if (sm_action('login'))
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang["login_caption"];
@@ -257,7 +255,7 @@
 			else
 				$m['mode'] = 'show';
 		}
-	if (strcmp($m['mode'], 'show') == 0)
+	if (sm_action('show'))
 		{
 			if ($modules_index == 0 && !empty($userinfo['id']))
 				$m['mode'] = 'cabinet';

@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-10
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -19,14 +18,14 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					$m['title'] = $lang['settings'];
 					$m["module"] = 'news';
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 				}
-			if (strcmp($m["mode"], 'editctg') == 0)
+			if (sm_action('editctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'news';
@@ -70,7 +69,7 @@
 					$refresh_url = 'index.php?m=news&d=listctg';
 					sm_event('postaddctgnews', array($ctgid));
 				}
-			if (strcmp($m["mode"], 'addctg') == 0)
+			if (sm_action('addctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'news';
@@ -116,7 +115,7 @@
 					$refresh_url = 'index.php?m=news&d=listctg';
 					sm_event('posteditctgnews', array($id_ctg));
 				}
-			if (strcmp($m["mode"], 'deletectg') == 0)
+			if (sm_action('deletectg'))
 				{
 					$m["module"] = 'news';
 					$_msgbox['mode'] = 'yesno';
@@ -125,7 +124,7 @@
 					$_msgbox['yes'] = 'index.php?m=news&d=postdeletectg&ctgid='.$_getvars["ctgid"];
 					$_msgbox['no'] = 'index.php?m=news&d=listctg';
 				}
-			if (strcmp($m["mode"], 'postdeletectg') == 0)
+			if (sm_action('postdeletectg'))
 				{
 					$m['title'] = $lang['delete_category'];
 					$m["module"] = 'news';
@@ -150,7 +149,7 @@
 					$refresh_url = 'index.php?m=news&d=listctg';
 					sm_event('postdeletectgnews', array($id_ctg));
 				}
-			if (strcmp($m["mode"], 'listctg') == 0)
+			if (sm_action('listctg'))
 				{
 					sm_extcore();
 					$m['title'] = $lang['list_news_categories'];
@@ -223,7 +222,7 @@
 							$i++;
 						}
 				}
-			if (strcmp($m["mode"], 'list') == 0)
+			if (sm_action('list'))
 				{
 					$m["module"] = 'news';
 					add_path($lang['control_panel'], "index.php?m=admin");

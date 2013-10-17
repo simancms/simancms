@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-04-11
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -51,7 +51,7 @@
 	if ($userinfo['level'] == 3)
 		{
 			$m["module"] = 'admin';
-			if (strcmp($m['mode'], 'postsettings') == 0 && $_postvars['marker'] == 1)
+			if (sm_action('postsettings') && $_postvars['marker'] == 1)
 				{
 					if (!empty($_getvars['viewmode']))
 						$m['mode_settings'] = $_getvars['viewmode'];
@@ -270,14 +270,14 @@
 					include('includes/config.php');
 					$refresh_url = 'index.php?m=admin&d=settings&viewmode='.$m['mode_settings'];
 				}
-			if (strcmp($m['mode'], 'postchgttl') == 0)
+			if (sm_action('postchgttl'))
 				{
 					$module_title = dbescape($_postvars['p_title']);
 					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module=".intval($_getvars['mid']);
 					$result = execsql($sql);
 					sm_redirect('index.php?m=admin&d=modules');
 				}
-			if (strcmp($m['mode'], 'postuplimg') == 0)
+			if (sm_action('postuplimg'))
 				{
 					$m['title'] = $lang['upload_image'];
 					$fs = $_uplfilevars['userfile']['tmp_name'];
@@ -302,7 +302,7 @@
 							sm_redirect('index.php?m=admin&d=listimg');
 						}
 				}
-			if (strcmp($m['mode'], 'view') == 0)
+			if (sm_action('view'))
 				{
 					$m["title"] = $lang['control_panel'];
 					if (is_writeable('./'))
@@ -315,7 +315,7 @@
 								}
 						}
 				}
-			if (strcmp($m['mode'], 'uplimg') == 0)
+			if (sm_action('uplimg'))
 				{
 					$m["title"] = $lang['upload_image'];
 					add_path_control();
@@ -443,7 +443,7 @@
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
-			if (strcmp($m['mode'], 'chgttl') == 0)
+			if (sm_action('chgttl'))
 				{
 					$m["title"] = $lang['change_title'];
 					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module=".intval($_getvars['mid']);
@@ -455,7 +455,7 @@
 							$m['mod']['id'] = $row->id_module;
 						}
 				}
-			if (strcmp($m['mode'], 'copysettings') == 0)
+			if (sm_action('copysettings'))
 				{
 					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
@@ -468,7 +468,7 @@
 						}
 					sm_redirect('index.php?m=admin&d=settings');
 				}
-			if (strcmp($m['mode'], 'remsettings') == 0)
+			if (sm_action('remsettings'))
 				{
 					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
@@ -480,7 +480,7 @@
 						}
 					sm_redirect('index.php?m=admin&d=settings');
 				}
-			if (strcmp($m['mode'], 'settings') == 0)
+			if (sm_action('settings'))
 				{
 					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['viewmode']))
@@ -576,7 +576,7 @@
 							$i++;
 						}
 				}
-			if (strcmp($m['mode'], 'tstatus') == 0)
+			if (sm_action('tstatus'))
 				{
 					add_path_control();
 					add_path($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus');
@@ -598,7 +598,7 @@
 							$m["table_count"] = $i;
 						}
 				}
-			if (strcmp($m['mode'], 'optimize') == 0)
+			if (sm_action('optimize'))
 				{
 					$m["title"] = $lang['module_admin']['optimize_database'];
 					$tc = $_postvars['p_table_count'];
@@ -615,12 +615,12 @@
 							$refresh_url = 'index.php?m=admin&d=tstatus';
 						}
 				}
-			if (strcmp($m['mode'], 'viewimg') == 0)
+			if (sm_action('viewimg'))
 				{
 					$m["title"] = $lang['common']['image'];
 					$m["viewed_img_name"] = $_getvars['path'];
 				}
-			if (strcmp($m['mode'], 'listimg') == 0)
+			if (sm_action('listimg'))
 				{
 					$m["title"] = $lang['module_admin']['images_list'];
 					require_once('includes/admintable.php');
@@ -665,7 +665,7 @@
 					$m['pages']['records']=$i;
 					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
 				}
-			if (strcmp($m['mode'], 'delimg') == 0)
+			if (sm_action('delimg'))
 				{
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['module_admin']['delete_image'];
@@ -673,7 +673,7 @@
 					$_msgbox['yes'] = 'index.php?m=admin&d=postdelimg&imgn='.$_getvars["imgn"];
 					$_msgbox['no'] = 'index.php?m=admin&d=listimg';
 				}
-			if (strcmp($m['mode'], 'postdelimg') == 0)
+			if (sm_action('postdelimg'))
 				{
 					$m["title"] = $lang['module_admin']['delete_image'];
 					$img = $_getvars["imgn"];
@@ -681,7 +681,7 @@
 						unlink('./files/img/'.$img);
 					$refresh_url = 'index.php?m=admin&d=listimg';
 				}
-			if (strcmp($m['mode'], 'postrenimg') == 0)
+			if (sm_action('postrenimg'))
 				{
 					$m["title"] = $lang['module_admin']['rename_image'];
 					$img1 = $_getvars["on"];
@@ -703,14 +703,14 @@
 							$_getvars["imgn"] = $img1;
 						}
 				}
-			if (strcmp($m['mode'], 'renimg') == 0)
+			if (sm_action('renimg'))
 				{
 					$m["title"] = $lang['module_admin']['rename_image'];
 					$m['image']['old_name'] = $_getvars["imgn"];
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['module_admin']['images_list'], "index.php?m=admin&d=listimg");
 				}
-			if (strcmp($m['mode'], 'massemail') == 0)
+			if (sm_action('massemail'))
 				{
 					add_path_control();
 					add_path($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail');
@@ -723,7 +723,7 @@
 					else
 						$m['email']['text'] = $_settings['email_signature'];
 				}
-			if (strcmp($m['mode'], 'postmassemail') == 0)
+			if (sm_action('postmassemail'))
 				{
 					$m['title'] = $lang['module_admin']['mass_email'];
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE get_mail=1";
@@ -739,7 +739,7 @@
 						}
 					$refresh_url = 'index.php?m=admin';
 				}
-			if (strcmp($m['mode'], 'filesystem') == 0)
+			if (sm_action('filesystem'))
 				{
 					add_path_control();
 					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
@@ -797,7 +797,7 @@
 					$ui->AddPagebarParams($q->Find(), $limit, $offset);
 					$ui->Output(true);
 				}
-			if (strcmp($m["mode"], 'postdeletefilesystem') == 0)
+			if (sm_action('postdeletefilesystem'))
 				{
 					$m['title'] = $lang['common']['delete'];
 					$sql = "DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($_getvars["id"]);
@@ -857,7 +857,7 @@
 					$ui->Output(true);
 					sm_setfocus('filename_fs');
 				}
-			if (strcmp($m['mode'], 'filesystemexp') == 0)
+			if (sm_action('filesystemexp'))
 				{
 					$m["title"] = $lang['module_admin']['virtual_filesystem_regexp'];
 					require_once('includes/admintable.php');
@@ -890,14 +890,14 @@
 							$i++;
 						}
 				}
-			if (strcmp($m["mode"], 'postdeletefilesystemexp') == 0)
+			if (sm_action('postdeletefilesystemexp'))
 				{
 					$m['title'] = $lang['common']['delete'];
 					$sql = "DELETE FROM ".$tableprefix."filesystem_regexp WHERE id_fsr='".intval($_getvars["id"])."'";
 					$result = execsql($sql);
 					$refresh_url = 'index.php?m=admin&d=filesystemexp';
 				}
-			if (strcmp($m["mode"], 'addfilesystemexp') == 0)
+			if (sm_action('addfilesystemexp'))
 				{
 					$m['title'] = $lang['common']['add'];
 					add_path($lang['control_panel'], "index.php?m=admin");
@@ -908,7 +908,7 @@
 					$f->AddText('url', $lang['module_admin']['regexp_replace']);
 					$m['form'] = $f->Output();
 				}
-			if (strcmp($m["mode"], 'editfilesystemexp') == 0)
+			if (sm_action('editfilesystemexp'))
 				{
 					$m['title'] = $lang['common']['edit'];
 					add_path($lang['control_panel'], "index.php?m=admin");
@@ -920,7 +920,7 @@
 					$f->LoadValues("SELECT * FROM ".$tableprefix.'filesystem_regexp WHERE id_fsr='.intval($_getvars['id']));
 					$m['form'] = $f->Output();
 				}
-			if (strcmp($m["mode"], 'posteditfilesystemexp') == 0)
+			if (sm_action('posteditfilesystemexp'))
 				{
 					$m['title'] = $lang['common']['edit'];
 					$q = new TQuery($tableprefix.'filesystem_regexp');
@@ -929,7 +929,7 @@
 					$q->Update('id_fsr', intval($_getvars['id']));
 					sm_redirect('index.php?m=admin&d=filesystemexp');
 				}
-			if (strcmp($m["mode"], 'postaddfilesystemexp') == 0)
+			if (sm_action('postaddfilesystemexp'))
 				{
 					$m['title'] = $lang['common']['add'];
 					$q = new TQuery($tableprefix.'filesystem_regexp');
@@ -938,7 +938,7 @@
 					$q->Insert();
 					sm_redirect('index.php?m=admin&d=filesystemexp');
 				}
-			if (strcmp($m['mode'], 'viewlog') == 0)
+			if (sm_action('viewlog'))
 				{
 					add_path_control();
 					add_path($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog');
@@ -980,14 +980,14 @@
 					$ui->AddPagebar('');
 					$ui->Output(true);
 				}
-			if (strcmp($m['mode'], 'package') == 0)
+			if (sm_action('package'))
 				{
 					$m["title"] = $lang['module_admin']['upload_package'];
 					add_path($lang['control_panel'], 'index.php?m=admin');
 					if (function_exists('curl_init'))
 						$m["can_upload_from_server"] = 1;
 				}
-			if (strcmp($m['mode'], 'postpackage') == 0)
+			if (sm_action('postpackage'))
 				{
 					$m['title'] = $lang['module_admin']['upload_package'];
 					$message = '';
@@ -1045,7 +1045,7 @@
 								sm_redirect('index.php?m=admin&d=view', $message);
 						}
 				}
-			if (strcmp($m['mode'], 'errorupload') == 0)
+			if (sm_action('errorupload'))
 				{
 					$m["title"] = $lang['upload'];
 				}

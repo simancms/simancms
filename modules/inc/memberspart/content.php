@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-09
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -20,7 +19,7 @@
 	if ($userinfo['level'] > 0)
 		{
 
-			if (strcmp($m["mode"], 'add') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('add') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -45,7 +44,7 @@
 						}
 				}
 
-			if (strcmp($m["mode"], 'postadd') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('postadd') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
@@ -211,7 +210,7 @@
 						}
 				}
 
-			if (strcmp($m["mode"], 'edit') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('edit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -278,7 +277,7 @@
 						}
 				}
 
-			if (strcmp($m["mode"], 'delete') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('delete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -311,7 +310,7 @@
 								$_msgbox['no'] = 'index.php?m=content&d=list&ctg='.$_getvars['ctg'];
 						}
 				}
-			if (strcmp($m["mode"], 'postdelete') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('postdelete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 				{
 					if ($userinfo['level'] < 3)
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');

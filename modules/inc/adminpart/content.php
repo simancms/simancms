@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-09
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -19,7 +18,7 @@
 
 	if ($userinfo['level'] > 2)
 		{
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					$m['title'] = $lang['settings'];
 					$m["module"] = 'content';
@@ -27,7 +26,7 @@
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 				}
-			if (strcmp($m["mode"], 'editctg') == 0)
+			if (sm_action('editctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'content';
@@ -65,7 +64,7 @@
 					$m['ctg'] = siman_load_ctgs_content();
 					$m['groups_list'] = get_groups_list();
 				}
-			if (strcmp($m["mode"], 'postaddctg') == 0)
+			if (sm_action('postaddctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'content';
@@ -149,7 +148,7 @@
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('posteditctgcontent', array($id_ctg));
 				}
-			if (strcmp($m["mode"], 'deletectg') == 0)
+			if (sm_action('deletectg'))
 				{
 					$m["module"] = 'content';
 					$_msgbox['mode'] = 'yesno';
@@ -158,7 +157,7 @@
 					$_msgbox['yes'] = 'index.php?m=content&d=postdeletectg&ctgid='.$_getvars["ctgid"];
 					$_msgbox['no'] = 'index.php?m=content&d=listctg';
 				}
-			if (strcmp($m["mode"], 'postdeletectg') == 0)
+			if (sm_action('postdeletectg'))
 				{
 					$m['title'] = $lang['delete_category'];
 					$m["module"] = 'content';
@@ -183,7 +182,7 @@
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('postdeletectgcontent', array($id_ctg));
 				}
-			if (strcmp($m["mode"], 'listctg') == 0)
+			if (sm_action('listctg'))
 				{
 					sm_extcore();
 					$m['title'] = $lang['list_content_categories'];
@@ -248,7 +247,7 @@
 							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title'];
 						}
 				}
-			if (strcmp($m["mode"], 'list') == 0)
+			if (sm_action('list'))
 				{
 					sm_extcore();
 					if (intval($_getvars['showall']) == 1)
@@ -383,7 +382,7 @@
 							$m['pages']['pages'] = ceil($m['pages']['records'] / $_settings['admin_items_by_page']);
 						}
 				}
-			if (strcmp($m["mode"], 'exchange') == 0)
+			if (sm_action('exchange'))
 				{
 					$m['title'] = $lang['operation_complete'];
 					$m["module"] = 'content';

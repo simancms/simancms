@@ -1,14 +1,13 @@
 <?php
 
 	//------------------------------------------------------------------------------
-	//|                                                                            |
 	//|            Content Management System SiMan CMS                             |
-	//|                                                                            |
+	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-05-09
+	//#ver 1.6.5
+	//#revision 2013-10-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -121,7 +120,7 @@
 		}
 
 
-	if (strcmp($m["mode"], 'add') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_action('add') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			if ($userinfo['level'] < 3)
 				$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
@@ -162,7 +161,7 @@
 		}
 
 
-	if (strcmp($m["mode"], 'delete') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_action('delete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			$candelete = 0;
 			if ($userinfo['level'] == 3)
@@ -194,7 +193,7 @@
 				}
 		}
 
-	if (strcmp($m["mode"], 'postdelete') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_action('postdelete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			$candelete = 0;
 			if ($userinfo['level'] == 3)
@@ -367,7 +366,7 @@
 		}
 
 
-	if (strcmp($m["mode"], 'edit') == 0 && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+	if (sm_action('edit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
 		{
 			$canedit = 0;
 			if ($userinfo['level'] == 3)
