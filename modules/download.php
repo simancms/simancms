@@ -42,7 +42,6 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			$m["module"] = 'download';
 			if (strcmp($m["mode"], 'deleteattachment') == 0)
 				{
 					$m["module"] = 'download';
@@ -117,33 +116,43 @@
 				}
 			if (sm_action('postupload'))
 				{
-					$fs = $_uplfilevars['userfile']['tmp_name'];
-					$fd = './files/download/'.$fd;
-					if (!file_exists($fs))
+					$q = new TQuery($sm['t'].'downloads');
+					$q->Add('id_download', intval($_getvars['id']));
+					$info = $q->Get();
+					if (!empty($info['id_download']))
 						{
-							$error=$lang['error_file_upload_message'];
-							$m['mode'] = 'upload';
-						}
-					else
-						{
-							//need to finish here
-							if (!move_uploaded_file($fs, $fd))
+							$fs = $_uplfilevars['userfile']['tmp_name'];
+							$fd = './files/download/'.$info['file_download'];
+							if (!file_exists($fs))
 								{
-									$error=$lang['error_file_upload_message'];
+									$error = $lang['error_file_upload_message'];
 									$m['mode'] = 'upload';
 								}
 							else
 								{
-									$q=new TQuery($sm['t'].'downloads');
-									$q->Add('file_download', dbescape(basename($fd)));
-									$q->Add('description_download', dbescape($_postvars['description_download']));
-									$q->Add('userlevel_download', intval($_postvars['userlevel_download']));
-									$q->Insert();
-									//sm_notify($lang['operation_complete']);
-									if (!empty($_getvars['returnto']))
-										sm_redirect($_getvars['returnto']);
+									if (file_exists($fd))
+										{
+											$tmp['file'] = 'files/temp/'.md5(time()).rand(1, 9999);
+											$tmp['tmpfilecreated'] = true;
+											rename($fd, $tmp['file']);
+										}
+									if (!move_uploaded_file($fs, $fd))
+										{
+											$error = $lang['error_file_upload_message'];
+											$m['mode'] = 'upload';
+											if ($tmp['tmpfilecreated'])
+												rename($tmp['file'], $fd);
+										}
 									else
-										sm_redirect('index.php?m=download&d=view');
+										{
+											if ($tmp['tmpfilecreated'])
+												unlink($tmp['file']);
+											//sm_notify($lang['operation_complete']);
+											if (!empty($_getvars['returnto']))
+												sm_redirect($_getvars['returnto']);
+											else
+												sm_redirect('index.php?m=download&d=view');
+										}
 								}
 						}
 				}
@@ -159,7 +168,7 @@
 					if (!empty($error))
 						$ui->div($error, '', 'error alert-error errormessage error-message');
 					sm_title($lang['module_download']['upload_file']);
-					$f=new TForm('index.php?m=download&d=postupload&returnto='.urlencode($_getvars['returnto']));
+					$f=new TForm('index.php?m=download&d=postupload&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
 					$f->AddFile('userfile', $lang['file_name']);
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
@@ -258,6 +267,7 @@
 				}
 			if (strcmp($m["mode"], 'edit') == 0)
 				{
+					$m["module"] = 'download';
 					$m['title'] = $lang['edit'];
 					$iddownl = $_getvars['did'];
 					$m['iddownl'] = $iddownl;
@@ -270,6 +280,7 @@
 				}
 			if (strcmp($m["mode"], 'postedit') == 0)
 				{
+					$m["module"] = 'download';
 					$iddownl = $_getvars['did'];
 					$m['mode'] = 'view';
 					$descr = dbescape($_postvars['p_shortdesc']);
