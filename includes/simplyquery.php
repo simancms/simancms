@@ -2,7 +2,6 @@
 
 if (!defined("simplyquery_DEFINED"))
 	{
-		//2012-10-21
 		
 		class TQuery
 			{
@@ -18,12 +17,19 @@ if (!defined("simplyquery_DEFINED"))
 				var $orderby;
 				var $groupby;
 				var $leftjoin;
+				var $sqlgenerationmode;
 				public $items;
 				public $sql;
 				function TQuery($tablename, $tableprefix='')
 					{
 						$this->tableprefix=$tableprefix;
 						$this->tablename=$tablename;
+						$this->sqlgenerationmode=false;
+						return $this;
+					}
+				function SQLGenerationModeOn()
+					{
+						$this->sqlgenerationmode=true;
 						return $this;
 					}
 				//Add($expression)
@@ -89,7 +95,7 @@ if (!defined("simplyquery_DEFINED"))
 				function AddPost($fieldname, $prefix='')
 					{
 						global $_postvars;
-						$this->Add($fieldname, addslashesJ($_postvars[$prefix.$fieldname]));
+						$this->Add($fieldname, dbescape($_postvars[$prefix.$fieldname]));
 						return $this;
 					}
 				function AddPostNllist($nllist, $prefix='')
@@ -104,6 +110,7 @@ if (!defined("simplyquery_DEFINED"))
 							}
 						return $this;
 					}
+				//$execute - DEPRECATED
 				function Insert($execute=true)
 					{
 						$sqlf='';
@@ -122,12 +129,13 @@ if (!defined("simplyquery_DEFINED"))
 									$sqlv.='\''.$this->values[$i].'\'';
 							}
 						$this->sql="INSERT INTO ".$this->tableprefix.$this->tablename." (".$sqlf.") VALUES (".$sqlv.")";
-						if ($execute)
+						if ($execute || !$this->sqlgenerationmode)
 							return insertsql($this->sql);
 					}
 				//Update($keyfield, $keyvalue, $execute=true)
 				//Update($keyfield, $keyvalue)
 				//Update($statement)
+				// $execute - DEPRECATED
 				function Update()
 					{
 						if (func_num_args()>0)
@@ -153,16 +161,17 @@ if (!defined("simplyquery_DEFINED"))
 							}
 						elseif (func_num_args()==0)
 							return;
-						if ($execute)
+						if ($execute || !$this->sqlgenerationmode)
 							execsql($this->sql);
 					}
+			// $execute - DEPRECATED
 				function Remove($addsql='', $execute=true)
 					{
 						$sql=$this->GetPairs();
 						$this->sql="DELETE FROM ".$this->tableprefix.$this->tablename." WHERE (".$sql.")";
 						if (!empty($addsql))
 							$this->sql.=' '.$addsql;
-						if ($execute)
+						if ($execute || !$this->sqlgenerationmode)
 							execsql($this->sql);
 					}
 				private function GetPairs($combine_with=' AND ', $filter='no')
@@ -208,8 +217,11 @@ if (!defined("simplyquery_DEFINED"))
 							$this->sql="SELECT count(*) FROM ".$this->tableprefix.$this->tablename;
 						if (!empty($addsql))
 							$this->sql.=' '.$addsql;
-						$r=getsql($this->sql, 'r');
-						return intval($r[0]);
+						if (!$this->sqlgenerationmode)
+							{
+								$r=getsql($this->sql, 'r');
+								return intval($r[0]);
+							}
 					}
 				function ChangeValue($fieldname, $value)
 					{
@@ -254,7 +266,7 @@ if (!defined("simplyquery_DEFINED"))
 						for ($i=0; $i<count($src); $i++)
 							if (in_array($src[$i], $dest) && !in_array($src[$i], $exclude))
 								$fields[]=$src[$i];
-						$sql.="SELECT * FROM ".$this->tableprefix.$this->tablename;
+						$sql="SELECT * FROM ".$this->tableprefix.$this->tablename;
 						if (!empty($conditionWhere))
 							$sql.=" WHERE ".$conditionWhere;
 						$result=database_db_query($nameDB, $sql, $lnkDB);
@@ -264,7 +276,7 @@ if (!defined("simplyquery_DEFINED"))
 							{
 								$q->Clear();
 								for ($i=0; $i<count($fields); $i++)
-									$q->Add($fields[$i], addslashesJ($row[$fields[$i]]));
+									$q->Add($fields[$i], dbescape($row[$fields[$i]]));
 								$id=$q->Insert();
 								$cnt++;
 							}
@@ -324,8 +336,11 @@ if (!defined("simplyquery_DEFINED"))
 							$this->sql.=' LIMIT '.$this->limit;
 						if (!empty($this->offset))
 							$this->sql.=' OFFSET '.$this->offset;
-						$this->items=getsqlarray($this->sql, $type);
-						return $this->items[0];
+						if (!$this->sqlgenerationmode)
+							{
+								$this->items=getsqlarray($this->sql, $type);
+								return $this->items[0];
+							}
 					}
 				function Get($addsql='', $type='a')
 					{
