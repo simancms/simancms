@@ -261,7 +261,7 @@
 							$from_page = ceil(($from_record + 1) / $_settings['admin_items_by_page']);
 							$m['pages']['url'] = 'index.php?m=content&d=list&ctg='.$ctg_id;
 							$m['pages']['selected'] = $from_page;
-							$m['pages']['interval'] = $_settings['admin_items_by_page'];
+							$m['pages']['interval'] = intval($_settings['admin_items_by_page']);
 						}
 					$m['ctg_id'] = $ctg_id;
 					$m['ctg'] = siman_load_ctgs_content();
@@ -295,91 +295,53 @@
 					else
 						$sql .= " ORDER BY title_content ASC";
 					if ($showall != 1)
-						$sql .= " LIMIT ".$_settings['admin_items_by_page']." OFFSET $from_record";
+						$sql .= " LIMIT ".intval($_settings['admin_items_by_page'])." OFFSET $from_record";
 					require_once('includes/admintable.php');
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['html']['caption'] = '';
-					$m['table']['columns']['html']['hint'] = $lang['common']['edit'].' ('.$lang['common']['html'].')';
-					$m['table']['columns']['html']['replace_text'] = $lang['common']['html'];
-					$m['table']['columns']['html']['replace_image'] = 'edit_html.gif';
-					$m['table']['columns']['html']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['module_content']['really_want_delete_text']);
-					$m['table']['columns']['stick']['caption'] = '';
-					$m['table']['columns']['stick']['hint'] = $lang["set_as_block"];
-					$m['table']['columns']['stick']['replace_text'] = $lang['common']['stick'];
-					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
-					$m['table']['columns']['tomenu']['caption'] = '';
-					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = '<nobr>'.$lang['module_menu']['add_to_menu'].'</nobr>';
-					//$m['table']['columns']['tomenu']['to_menu'] = 1;
+					$t=new TGrid('edit');
+					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddEdit();
+					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
+					$t->AddDelete();
+					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'delete.gif');
+					$t->AddMenuInsert();
 					if ($sort == 2 || $sort == 3)
 						{
-							$m['table']['columns']['up']['caption'] = '';
-							$m['table']['columns']['up']['hint'] = $lang['up'];
-							$m['table']['columns']['up']['replace_text'] = $lang['up'];
-							$m['table']['columns']['up']['replace_image'] = 'up.gif';
-							$m['table']['columns']['up']['width'] = '16';
-							$m['table']['columns']['down']['caption'] = '';
-							$m['table']['columns']['down']['hint'] = $lang['down'];
-							$m['table']['columns']['down']['replace_text'] = $lang['down'];
-							$m['table']['columns']['down']['replace_image'] = 'down.gif';
-							$m['table']['columns']['down']['width'] = '16';
+							$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
+							$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
 						}
 					$m['table']['default_column'] = 'edit';
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$i = 0;
-					while ($row = database_fetch_object($result))
+					$items = getsqlarray($sql);
+					for ($i = 0; $i<count($items); $i++)
 						{
-							$m['table']['rows'][$i]['title']['data'] = $row->title_content;
-							$m['table']['rows'][$i]['title']['hint'] = $row->title_content;
-							if ($row->filename_content != 0)
-								{
-									$m['table']['rows'][$i]['title']['url'] = $row->filename_fs;
-								}
+							$t->Label('title', $items[$i]['title_content']);
+							if ($items[$i]['filename_content'] != 0)
+								$items[$i]['url']=$items[$i]['filename_fs'];
 							else
+								$items[$i]['url']='index.php?m=content&d=view&cid='.$items[$i]['id_content'];
+							$t->URL('title', $items[$i]['url'], true);
+							$t->URL('edit', 'index.php?m=content&d=edit&cid='.$items[$i]['id_content']);
+							$t->URL('html', 'index.php?m=content&d=edit&cid='.$items[$i]['id_content'].'&exteditor=off');
+							if ($items[$i]['id_content'] != 1)
+								$t->URL('delete', 'index.php?m=content&d=postdelete&cid='.$items[$i]['id_content'].'&ctg='.$items[$i]['id_category_c']);
+							$t->URL('tomenu', sm_tomenuurl($items[$i]['title_content'], $url, sm_this_url()));
+							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$items[$i]['id_content'].'&c='.$items[$i]['title_content']);
+							if ($sort == 2 || $sort == 3)
 								{
-									$m['table']['rows'][$i]['title']['url'] = 'index.php?m=content&d=view&cid='.$row->id_content;
+									if ($i>0)
+										$t->URL('up', 'index.php?m=content&d=exchange&id1='.$items[$i]['id_content'].'&id2='.$items[$i-1]['id_content'].'&ctg='.$ctg_id.'&showall='.$showall);
+									if ($i+1<count($items))
+										$t->URL('down', 'index.php?m=content&d=exchange&id1='.$items[$i]['id_content'].'&id2='.$items[$i+1]['id_content'].'&ctg='.$ctg_id.'&showall='.$showall);
 								}
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=content&d=edit&cid='.$row->id_content;
-							if ($row->id_content != 1)
-								$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=content&d=postdelete&cid='.$row->id_content.'&ctg='.$row->id_category_c;
-							$m['table']['rows'][$i]['html']['url'] = 'index.php?m=content&d=edit&cid='.$row->id_content.'&exteditor=off';
-							//$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
-							//$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($row->title_content);
-							$m['table']['rows'][$i]['tomenu']['url'] = sm_tomenuurl($row->title_content, $m['table']['rows'][$i]['title']['url'], sm_this_url());
-							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=content&id='.$row->id_content.'&c='.$row->title_content;
-							if ($i > 0 && ($sort == 2 || $sort == 3))
-								{
-									$m['table']['rows'][$i - 1]['down']['url'] = 'index.php?m=content&d=exchange&id1='.$row->id_content.'&id2='.$id_prewious.'&ctg='.$ctg_id.'&showall='.$showall;
-									$m['table']['rows'][$i]['up']['url'] = $m['table']['rows'][$i - 1]['down']['url'];
-								}
-							$id_prewious = $row->id_content;
-							$i++;
+							$t->NewRow();
 						}
+					$m['table']=$t->Output();
 
 					if ($showall != 1)
 						{
 							$sql = "SELECT count(*) FROM ".$tableprefix."content";
 							if (!empty($ctg_id)) $sql .= " WHERE id_category_c = '$ctg_id'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
-							$m['pages']['records'] = 0;
-							while ($row = database_fetch_row($result))
-								{
-									$m['pages']['records'] = $row[0];
-								}
-							$m['pages']['pages'] = ceil($m['pages']['records'] / $_settings['admin_items_by_page']);
+							$m['pages']['records'] = intval(getsqlfield($sql));
+							$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
 						}
 				}
 			if (sm_action('exchange'))
@@ -400,7 +362,7 @@
 						{
 							$pr2 = $row->priority_content;
 						}
-					if (!empty($pr1) && !empty($pr2))
+					if (!empty($pr1) || !empty($pr2))
 						{
 							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr1' WHERE id_content='$id2'";
 							$result = database_db_query($nameDB, $sql, $lnkDB);
