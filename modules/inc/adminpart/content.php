@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#revision 2013-10-24
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -35,7 +35,7 @@
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='".intval($_getvars['ctgid'])."'";
 					;
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
 						{
 							$special['ext_editor_on'] = 1;
@@ -64,34 +64,34 @@
 					$m['ctg'] = siman_load_ctgs_content();
 					$m['groups_list'] = get_groups_list();
 				}
-			if (sm_action('postaddctg'))
+			if (sm_actionpost('postaddctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'content';
-					$title_category = addslashesJ($_postvars["p_title_category"]);
+					$title_category = dbescape($_postvars["p_title_category"]);
 					$can_view = $_postvars["p_can_view"];
 					$id_maincategory = $_postvars["p_mainctg"];
 					$id_maincategory = $_postvars["p_mainctg"];
-					$preview_category = addslashesJ($_postvars["p_preview_ctg"]);
-					$filename = addslashesJ($_postvars["p_filename"]);
+					$preview_category = dbescape($_postvars["p_preview_ctg"]);
+					$filename = dbescape($_postvars["p_filename"]);
 					$groups_view = create_groups_str($_postvars['p_groups_view']);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
 					$no_alike_content = intval($_postvars['p_no_alike_content']);
 					$sorting_category = intval($_postvars['p_sorting_category']);
 					$no_use_path = intval($_postvars['p_no_use_path']);
 					$sql = "INSERT INTO ".$tableprefix."categories (title_category, id_maincategory, can_view, preview_category, groups_view, groups_modify, no_alike_content, sorting_category, no_use_path) VALUES ('$title_category', '$id_maincategory', $can_view, '$preview_category', '$groups_view', '$groups_modify', '$no_alike_content', '$sorting_category', '$no_use_path')";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$ctgid = database_insert_id('categories', $nameDB, $lnkDB);
 					if (!empty($filename))
 						{
 							$urlid = register_filesystem('index.php?m=content&d=viewctg&ctgid='.$ctgid, $filename, $title_category);
 							$sql = "UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$ctgid;
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 						}
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('postaddctgcontent', array($ctgid));
 				}
-			if (sm_actionpost('addctg'))
+			if (sm_action('addctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'content';
@@ -109,21 +109,21 @@
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'content';
-					$title_category = addslashesJ($_postvars["p_title_category"]);
+					$title_category = dbescape($_postvars["p_title_category"]);
 					$id_maincategory = $_postvars["p_mainctg"];
 					$can_view = $_postvars["p_can_view"];
 					$id_ctg = intval($_getvars['ctgid']);
-					$preview_category = addslashesJ($_postvars["p_preview_ctg"]);
-					$filename = addslashesJ($_postvars["p_filename"]);
+					$preview_category = dbescape($_postvars["p_preview_ctg"]);
+					$filename = dbescape($_postvars["p_filename"]);
 					$groups_view = create_groups_str($_postvars['p_groups_view']);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
 					$no_alike_content = intval($_postvars['p_no_alike_content']);
 					$sorting_category = intval($_postvars['p_sorting_category']);
 					$no_use_path = intval($_postvars['p_no_use_path']);
 					$sql = "UPDATE ".$tableprefix."categories SET title_category = '$title_category', can_view = $can_view, preview_category='$preview_category', id_maincategory='$id_maincategory', groups_view='$groups_view', groups_modify='$groups_modify', no_alike_content='$no_alike_content', sorting_category = '$sorting_category', no_use_path = '$no_use_path' WHERE id_category='$id_ctg'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$fname = $row->filename_category;
@@ -132,14 +132,14 @@
 						{
 							$urlid = register_filesystem('index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
 							$sql = "UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$id_ctg;
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 						}
 					else
 						{
 							if (empty($filename) && $fname != 0)
 								{
 									$sql = "UPDATE ".$tableprefix."categories SET filename_category='0' WHERE id_category=".$_getvars["cid"];
-									$result = database_db_query($nameDB, $sql, $lnkDB);
+									$result = execsql($sql);
 									delete_filesystem($fname);
 								}
 							else
@@ -163,7 +163,7 @@
 					$m["module"] = 'content';
 					$id_ctg = intval($_getvars['ctgid']);
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".$id_ctg."";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$fname = $row->filename_category;
@@ -175,7 +175,7 @@
 							delete_filesystem($fname);
 						}
 					$sql = "DELETE FROM ".$tableprefix."categories WHERE id_category=$id_ctg AND id_category<>1";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$q=new TQuery($sm['t'].'content');
 					$q->Add('id_category_c', 1);
 					$q->Update('id_category_c', intval($id_ctg));
@@ -192,40 +192,17 @@
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					$m['ctg'] = siman_load_ctgs_content();
 					require_once('includes/admintable.php');
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['search']['caption'] = '';
-					$m['table']['columns']['search']['hint'] = $lang['search'];
-					$m['table']['columns']['search']['replace_text'] = $lang['search'];
-					$m['table']['columns']['search']['replace_image'] = 'search.gif';
-					$m['table']['columns']['search']['width'] = '16';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['html']['caption'] = '';
-					$m['table']['columns']['html']['hint'] = $lang['common']['edit'].' ('.$lang['common']['html'].')';
-					$m['table']['columns']['html']['replace_text'] = $lang['common']['html'];
-					$m['table']['columns']['html']['replace_image'] = 'edit_html.gif';
-					$m['table']['columns']['html']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['really_want_delete_category']);
-					$m['table']['columns']['stick']['caption'] = '';
-					$m['table']['columns']['stick']['hint'] = $lang['set_as_block_random_text'];
-					$m['table']['columns']['stick']['replace_text'] = $lang['common']['stick'];
-					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
-					$m['table']['columns']['tomenu']['caption'] = '';
-					$m['table']['columns']['tomenu']['hint'] = $lang['module_menu']['add_to_menu'];
-					$m['table']['columns']['tomenu']['replace_text'] = '<nobr>'.$lang['module_menu']['add_to_menu'].'</nobr>';
-					//$m['table']['columns']['tomenu']['to_menu'] = 1;
-					//$m['table']['columns']['tomenu']['to_menu'] = 1;
-					$m['table']['default_column'] = 'edit';
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
+					$t=new TGrid('edit');
+					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddCol('search', '', '16', $lang['search'], '', 'search.gif');
+					$t->AddEdit();
+					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
+					$t->AddDelete();
+					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'delete.gif');
+					$t->AddMenuInsert();
 					for ($i = 0; $i < count($m['ctg']); $i++)
 						{
 							$lev = '';
@@ -233,19 +210,24 @@
 								{
 									$lev .= '-';
 								}
-							$m['table']['rows'][$i]['title']['data'] = $lev.$m['ctg'][$i]['title'];
-							$m['table']['rows'][$i]['title']['hint'] = $m['ctg'][$i]['title'];
-							$m['table']['rows'][$i]['title']['url'] = $m['ctg'][$i]['filename'];
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'];
-							$m['table']['rows'][$i]['search']['url'] = 'index.php?m=content&d=list&ctg='.$m['ctg'][$i]['id'];
+							$t->Label('title', $lev.$m['ctg'][$i]['title']);
+							$t->URL('title', $m['ctg'][$i]['filename']);
+							$t->URL('search', 'index.php?m=content&d=list&ctg='.$m['ctg'][$i]['id']);
 							if ($m['ctg'][$i]['id'] != 1)
-								$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=content&d=postdeletectg&ctgid='.$m['ctg'][$i]['id'];
-							$m['table']['rows'][$i]['html']['url'] = 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off';
-							//$m['table']['rows'][$i]['tomenu']['menu_url'] = addslashes($m['table']['rows'][$i]['title']['url']);
-							//$m['table']['rows'][$i]['tomenu']['menu_caption'] = addslashes($m['ctg'][$i]['title']);
-							$m['table']['rows'][$i]['tomenu']['url'] = sm_tomenuurl($m['ctg'][$i]['title'], $m['table']['rows'][$i]['title']['url'], sm_this_url());
-							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title'];
+								$t->URL('delete', 'index.php?m=content&d=postdeletectg&ctgid='.$m['ctg'][$i]['id']);
+							$t->URL('edit', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id']);
+							$t->URL('html', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off');
+							$t->URL('tomenu', sm_tomenuurl($m['ctg'][$i]['title'], $m['table']['rows'][$i]['title']['url'], sm_this_url()));
+							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title']);
+							$t->NewRow();
 						}
+					$b=new TButtons();
+					$b->AddButton('add', $lang['add_category'], 'index.php?m=content&d=addctg');
+					$b->AddButton('addhtml', $lang['common']['add'].' ('.$lang['common']['html'].')', 'index.php?m=content&d=addctg&exteditor=off');
+					$ui->AddButtons($b);
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
 			if (sm_action('list'))
 				{
@@ -351,13 +333,13 @@
 					$id1 = intval($_getvars['id1']);
 					$id2 = intval($_getvars['id2']);
 					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='$id1'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$pr1 = $row->priority_content;
 						}
 					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='$id2'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$pr2 = $row->priority_content;
@@ -365,9 +347,9 @@
 					if (!empty($pr1) || !empty($pr2))
 						{
 							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr1' WHERE id_content='$id2'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr2' WHERE id_content='$id1'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 						}
 					$refresh_url = 'index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall']));
 				}

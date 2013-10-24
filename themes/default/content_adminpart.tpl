@@ -130,15 +130,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "listctg"}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<a href="index.php?m=content&d=addctg">{$lang.add_category}</a>
-(<a href="index.php?m=content&d=addctg&exteditor=off">{$lang.common.html}</a>)
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=content_list_categories&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "addctg"}
 {include file="block_begin.tpl"}
 <form action="index.php?m=content&d=postaddctg" method="post" name="post">															
