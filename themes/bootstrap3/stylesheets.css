@@ -1,5 +1,184 @@
-/* Move down content because we have a fixed navbar that is 50px tall */
+
 body {
-  padding-top: 50px;
+  padding-top: 55px;
   padding-bottom: 20px;
+}
+
+
+
+
+
+input[type=submit], button {
+	color: #333333;
+	background-color: #ffffff;
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-color: #cccccc;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+input[type=submit]:focus, button:focus {
+	outline: thin dotted #333;
+	outline: 5px auto -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+
+input[type=submit]:hover,
+input[type=submit]:focus,
+button:hover,
+button:focus {
+	color: #333333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+	text-decoration: none;
+}
+
+input[type=submit]:active,
+input[type=submit].active,
+button:active,
+button.active {
+	color: #333333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+	background-image: none;
+	outline: 0;
+	-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+input[type=submit]:disabled,
+input[type=submit].disabled,
+button.disabled,
+button[disabled],
+fieldset[disabled] button {
+	pointer-events: none;
+	cursor: not-allowed;
+	opacity: 0.65;
+	filter: alpha(opacity=65);
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+
+
+
+input[type=password]:-moz-placeholder, input[type=text]:-moz-placeholder {
+	color: #999999;
+}
+
+input[type=password]::-moz-placeholder, input[type=text]::-moz-placeholder {
+	color: #999999;
+}
+
+input[type=password]:-ms-input-placeholder, input[type=text]:-ms-input-placeholder {
+	color: #999999;
+}
+
+input[type=password]::-webkit-input-placeholder, input[type=text]::-webkit-input-placeholder {
+	color: #999999;
+}
+
+input[type=password], input[type=text] {
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555555;
+	vertical-align: middle;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+input[type=password]:focus, input[type=text]:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+input[type=password][disabled],
+input[type=password][readonly],
+fieldset[disabled] input[type=password],
+input[type=text][disabled],
+input[type=text][readonly],
+fieldset[disabled] input[type=text] {
+	cursor: not-allowed;
+	background-color: #eeeeee;
+}
+
+
+
+
+
+
+
+select:-moz-placeholder {
+	color: #999999;
+}
+
+select::-moz-placeholder {
+	color: #999999;
+}
+
+select:-ms-input-placeholder {
+	color: #999999;
+}
+
+select::-webkit-input-placeholder {
+	color: #999999;
+}
+
+select {
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555555;
+	vertical-align: middle;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+select:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+select[disabled],
+select[readonly],
+fieldset[disabled] select {
+	cursor: not-allowed;
+	background-color: #eeeeee;
+}
+
+select[multiple],
+select[size] {
+	height: 34px;
 }
