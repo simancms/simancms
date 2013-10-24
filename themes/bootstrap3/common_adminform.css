@@ -1,0 +1,11 @@
+.adminform-separator
+{
+	background:#4a4a4a;
+	color:#ffffff;
+}
+
+.adminform_table td input
+{
+	width:80%;
+}
+.admintable_row td img {max-width:280px;}
