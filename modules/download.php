@@ -175,6 +175,43 @@
 					$ui->Output(true);
 					sm_setfocus('userfile');
 				}
+			if (sm_action('postedit'))
+				{
+					$m["module"] = 'download';
+					$iddownl = $_getvars['did'];
+					$m['mode'] = 'view';
+					$descr = dbescape($_postvars['p_shortdesc']);
+					$sql = "UPDATE ".$tableprefix."downloads SET description_download = '$descr' WHERE id_download = '$iddownl'";
+					$result = database_db_query($nameDB, $sql, $lnkDB);
+				}
+			if (sm_action('edit'))
+				{
+					$q=new TQuery($tableprefix."downloads");
+					$q->Add('id_download', intval($_getvars['id']));
+					$info=$q->Get();
+					if (!empty($info['id_download']))
+						{
+							add_path_modules();
+							add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
+							add_path($lang['module_download']['downloads'], 'index.php?m=download&d=list');
+							add_path_current();
+							include_once('includes/admininterface.php');
+							include_once('includes/adminform.php');
+							$ui = new TInterface();
+							if (!empty($error))
+								$ui->div($error, '', 'error alert-error errormessage error-message');
+							sm_title($lang['edit']);
+							$f=new TForm('index.php?m=download&d=postedit&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
+							$f->AddText('optional_name', $lang['optional_file_name']);
+							$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
+							$f->AddSelectVL('userlevel_download', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
+							$f->LoadValuesArray($info);
+							$f->LoadValuesArray($_postvars);
+							$ui->AddForm($f);
+							$ui->Output(true);
+							sm_setfocus('optional_name');
+						}
+				}
 			if (sm_action('add'))
 				{
 					add_path_modules();
@@ -264,28 +301,6 @@
 					$ui->a(sm_tomenuurl($lang['module_download']['downloads'], 'index.php?m=download&d=add'), $lang['add_to_menu'].' - '.$lang['module_download']['downloads']);
 					$ui->br();
 					$ui->Output(true);
-				}
-			if (sm_action('edit'))
-				{
-					$m["module"] = 'download';
-					$m['title'] = $lang['edit'];
-					$iddownl = $_getvars['did'];
-					$m['iddownl'] = $iddownl;
-					$sql = "SELECT * FROM ".$tableprefix."downloads WHERE id_download = '$iddownl'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					while ($row = database_fetch_object($result))
-						{
-							$m['short_desc'] = $row->description_download;
-						}
-				}
-			if (sm_action('postedit'))
-				{
-					$m["module"] = 'download';
-					$iddownl = $_getvars['did'];
-					$m['mode'] = 'view';
-					$descr = dbescape($_postvars['p_shortdesc']);
-					$sql = "UPDATE ".$tableprefix."downloads SET description_download = '$descr' WHERE id_download = '$iddownl'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
 				}
 		}
 
