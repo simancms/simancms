@@ -53,7 +53,7 @@
 			{$lang.module_news.caption}:
 		</td>
 		<td>
-			<input type="text" name="p_title_news" size="50" value="{$modules[$index].title_news}" />
+			<input type="text" name="p_title_news" id="title_news" size="50" value="{$modules[$index].title_news}" />
 		</td>
 	</tr>
 	{/if}
@@ -177,15 +177,6 @@
 (<a href="index.php?m=news&d=add&ctg={$sm.g.ctg}&exteditor=off">{$lang.common.html}</a>)<br>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_news_lisnews&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
 {include file="pagebar.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "listctg"}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-<a href="index.php?m=news&d=addctg">{$lang.add_category}</a>
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_news_listcategories&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
 {include file="block_end.tpl"}
 {/if}
 

@@ -416,7 +416,7 @@
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['common']['delete'];
-			$id = $_getvars['id'];
+			$id = intval($_getvars['id']);
 			$user = intval($userinfo['id']);
 			$sql = "DELETE FROM ".$tableusersprefix."privmsg WHERE id_privmsg=$id and (folder_privmsg=1 and id_sender_privmsg=$user or folder_privmsg=0 and id_recipient_privmsg=$user)";
 			$result = execsql($sql);

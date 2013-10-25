@@ -201,7 +201,7 @@
 					$t->AddEdit();
 					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
 					$t->AddDelete();
-					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'delete.gif');
+					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'stick.gif');
 					$t->AddMenuInsert();
 					for ($i = 0; $i < count($m['ctg']); $i++)
 						{
@@ -217,7 +217,7 @@
 								$t->URL('delete', 'index.php?m=content&d=postdeletectg&ctgid='.$m['ctg'][$i]['id']);
 							$t->URL('edit', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id']);
 							$t->URL('html', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off');
-							$t->URL('tomenu', sm_tomenuurl($m['ctg'][$i]['title'], $m['table']['rows'][$i]['title']['url'], sm_this_url()));
+							$t->URL('tomenu', sm_tomenuurl($m['ctg'][$i]['title'], $m['ctg'][$i]['filename'], sm_this_url()));
 							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title']);
 							$t->NewRow();
 						}
@@ -284,7 +284,7 @@
 					$t->AddEdit();
 					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
 					$t->AddDelete();
-					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'delete.gif');
+					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'stick.gif');
 					$t->AddMenuInsert();
 					if ($sort == 2 || $sort == 3)
 						{

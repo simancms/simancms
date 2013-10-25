@@ -156,6 +156,7 @@
 					add_path($lang['module_news']['list_news'], "index.php?m=news&d=list");
 					$m['date'] = getdate(time());
 					$m['images'] = load_file_list('./files/img/', 'jpg|gif|jpeg|png');
+					sm_setfocus('title_news');
 					sm_event('onaddnews', array($m['date']));
 				}
 		}
