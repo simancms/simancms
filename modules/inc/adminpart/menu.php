@@ -137,7 +137,7 @@
 					$lurl = $_postvars["p_url"];
 					$submenu_from = $_postvars["p_sub"];
 					$lposition = $_postvars["p_position"];
-					$alt_ml = addslashesJ($_postvars["p_alt"]);
+					$alt_ml = dbescape($_postvars["p_alt"]);
 					$newpage_ml = intval($_postvars["p_newpage"]);
 					if ($lposition == 0)
 						{
@@ -176,8 +176,8 @@
 					$lurl = $_postvars["p_url"];
 					$lposition = $_postvars["p_position"];
 					$partial_select = intval($_postvars["p_partial_select"]);
-					$alt_ml = addslashesJ($_postvars["p_alt"]);
-					$attr_ml = addslashesJ($_postvars["attr_ml"]);
+					$alt_ml = dbescape($_postvars["p_alt"]);
+					$attr_ml = dbescape($_postvars["attr_ml"]);
 					$newpage_ml = intval($_postvars["p_newpage"]);
 					if (empty($lposition))
 						{

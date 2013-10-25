@@ -56,15 +56,15 @@
 							$m["module"] = 'news';
 							$m['title'] = $lang['add_news'];
 							$id_category_n = $_postvars["p_id_category_n"];
-							$preview_news = addslashesJ($_postvars['p_preview_news']);
-							$text_news = addslashesJ($_postvars["p_text_news"]);
-							$title_news = addslashesJ($_postvars['p_title_news']);
+							$preview_news = dbescape($_postvars['p_preview_news']);
+							$text_news = dbescape($_postvars["p_text_news"]);
+							$title_news = dbescape($_postvars['p_title_news']);
 							$m['date'] = getdate(time());
 							$type_news = $_postvars["p_type_news"];
-							$filename = addslashesJ($_postvars["p_filename"]);
-							$keywords_news = addslashesJ($_postvars["keywords_news"]);
-							$description_news = addslashesJ($_postvars["description_news"]);
-							$img_copyright_news = addslashesJ($_postvars["img_copyright_news"]);
+							$filename = dbescape($_postvars["p_filename"]);
+							$keywords_news = dbescape($_postvars["keywords_news"]);
+							$description_news = dbescape($_postvars["description_news"]);
+							$img_copyright_news = dbescape($_postvars["img_copyright_news"]);
 							if ($_settings['news_use_time'])
 								{
 									$m['date']['hours'] = $_postvars['p_time_hours'];
@@ -294,14 +294,14 @@
 									$m['date']['minutes'] = $_postvars['p_time_minutes'];
 								}
 							$date_news = mktime($m['date']['hours'], $m['date']['minutes'], $m['date']['seconds'], $_postvars['p_date_month'], $_postvars['p_date_day'], $_postvars['p_date_year']);
-							$title_news = addslashesJ($_postvars['p_title_news']);
-							$preview_news = addslashesJ($_postvars['p_preview_news']);
-							$text_news = addslashesJ($_postvars["p_text_news"]);
+							$title_news = dbescape($_postvars['p_title_news']);
+							$preview_news = dbescape($_postvars['p_preview_news']);
+							$text_news = dbescape($_postvars["p_text_news"]);
 							$type_news = $_postvars["p_type_news"];
 							$id_news = intval($_getvars["nid"]);
-							$filename = addslashesJ($_postvars["p_filename"]);
-							$keywords_news = addslashesJ($_postvars["keywords_news"]);
-							$description_news = addslashesJ($_postvars["description_news"]);
+							$filename = dbescape($_postvars["p_filename"]);
+							$keywords_news = dbescape($_postvars["keywords_news"]);
+							$description_news = dbescape($_postvars["description_news"]);
 							$sql = "UPDATE ".$tableprefix."news SET id_category_n='$id_category_n', title_news='$title_news', preview_news='$preview_news', text_news='$text_news', type_news='$type_news', date_news='$date_news', keywords_news='$keywords_news', description_news='$description_news' WHERE id_news='".$id_news."'";
 							$result = execsql($sql);
 							if ($_settings['news_use_image'] == 1)

@@ -108,7 +108,7 @@
 					$id_block = intval($_postvars["p_id"]);
 					$old_panel = $_postvars["p_old_pnl"];
 					$old_position = $_postvars["p_old_pos"];
-					$caption_block = addslashesJ($_postvars["p_caption"]);
+					$caption_block = dbescape($_postvars["p_caption"]);
 					$panel_block = $_postvars["p_panel"];
 					$level = $_postvars["p_level"];
 					$arr_show_on = explode('|', $_postvars['p_show_on']);
@@ -152,7 +152,7 @@
 				{
 					$id_block = $_postvars["p_id"];
 					$name_block = $_postvars["p_block"];
-					$caption_block = addslashesJ($_postvars["p_caption"]);
+					$caption_block = dbescape($_postvars["p_caption"]);
 					$panel_block = $_postvars["p_panel"];
 					$level = $_postvars["p_level"];
 					$arr_show_on = explode('|', $_postvars['p_show_on']);

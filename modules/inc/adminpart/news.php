@@ -52,8 +52,8 @@
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'news';
-					$title_category = addslashesJ($_postvars["p_title_category"]);
-					$filename = addslashesJ($_postvars["p_filename"]);
+					$title_category = dbescape($_postvars["p_title_category"]);
+					$filename = dbescape($_postvars["p_filename"]);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
 					$no_alike_news = intval($_postvars['p_no_alike_news']);
 					$sql = "INSERT INTO ".$tableprefix."categories_news (title_category, groups_modify, no_alike_news) VALUES ('$title_category', '$groups_modify', '$no_alike_news')";
@@ -81,8 +81,8 @@
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'news';
-					$title_category = addslashesJ($_postvars["p_title_category"]);
-					$filename = addslashesJ($_postvars["p_filename"]);
+					$title_category = dbescape($_postvars["p_title_category"]);
+					$filename = dbescape($_postvars["p_filename"]);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
 					$id_ctg = intval($_getvars['ctgid']);
 					$no_alike_news = intval($_postvars['p_no_alike_news']);

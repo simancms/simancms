@@ -80,12 +80,11 @@
 					$sorting_category = intval($_postvars['p_sorting_category']);
 					$no_use_path = intval($_postvars['p_no_use_path']);
 					$sql = "INSERT INTO ".$tableprefix."categories (title_category, id_maincategory, can_view, preview_category, groups_view, groups_modify, no_alike_content, sorting_category, no_use_path) VALUES ('$title_category', '$id_maincategory', $can_view, '$preview_category', '$groups_view', '$groups_modify', '$no_alike_content', '$sorting_category', '$no_use_path')";
-					$result = execsql($sql);
-					$ctgid = database_insert_id('categories', $nameDB, $lnkDB);
+					$ctgid = insertsql($sql);
 					if (!empty($filename))
 						{
 							$urlid = register_filesystem('index.php?m=content&d=viewctg&ctgid='.$ctgid, $filename, $title_category);
-							$sql = "UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$ctgid;
+							$sql = "UPDATE ".$tableprefix."categories SET filename_category=".intval($urlid)." WHERE id_category=".intval($ctgid);
 							$result = execsql($sql);
 						}
 					$refresh_url = 'index.php?m=content&d=listctg';
@@ -147,15 +146,6 @@
 						}
 					$refresh_url = 'index.php?m=content&d=listctg';
 					sm_event('posteditctgcontent', array($id_ctg));
-				}
-			if (sm_action('deletectg'))
-				{
-					$m["module"] = 'content';
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['delete_category'];
-					$_msgbox['msg'] = $lang['really_want_delete_category'];
-					$_msgbox['yes'] = 'index.php?m=content&d=postdeletectg&ctgid='.$_getvars["ctgid"];
-					$_msgbox['no'] = 'index.php?m=content&d=listctg';
 				}
 			if (sm_action('postdeletectg'))
 				{

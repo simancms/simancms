@@ -25,7 +25,7 @@
 				{
 					$modules[$modules_index]['title'] = $lang['settings'];
 					$name_settings = $_postvars['p_name'];
-					$value_settings = addslashesJ($_postvars['p_value']);
+					$value_settings = dbescape($_postvars['p_value']);
 					if (!empty($name_settings))
 						{
 							$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings) VALUES ('".$name_settings."', '".$value_settings."')";
@@ -94,7 +94,7 @@
 				{
 					$modules[$modules_index]['title'] = $lang['settings'];
 					$name_settings = $_postvars['p_name'];
-					$value_settings = addslashesJ($_postvars['p_value']);
+					$value_settings = dbescape($_postvars['p_value']);
 					$sql = "UPDATE ".$tableprefix."settings SET name_settings='".$name_settings."', value_settings='".$value_settings."' WHERE mode='default' AND name_settings='".$_getvars['param']."'";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
 					$refresh_url = 'index.php?m=adminsettings&d=admin';
@@ -103,7 +103,7 @@
 				{
 					$modules[$modules_index]['title'] = $lang['settings'];
 					$name_settings = $_postvars['p_name'];
-					$value_settings = addslashesJ($_postvars['p_value']);
+					$value_settings = dbescape($_postvars['p_value']);
 					$sql = "DELETE FROM ".$tableprefix."settings WHERE mode='default' AND name_settings='".$_getvars['param']."'";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
 					$refresh_url = 'index.php?m=adminsettings&d=admin';

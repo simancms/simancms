@@ -18,20 +18,6 @@
 			return preg_match("/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i", $s);
 		}
 
-	function addslashesJ($string)
-		{
-			global $lnkDB;
-			if (get_magic_quotes_gpc() == 1)
-				{
-					$s = database_real_escape_string(stripslashes($string), $lnkDB);
-				}
-			else
-				{
-					$s = database_real_escape_string($string, $lnkDB);
-				}
-			return $s;
-		}
-
 	if (!is_writeable('../files'))
 		{
 			print('<html><head><title>Siman CMS Installation</title></head><body>');
@@ -236,10 +222,10 @@
 					elseif ($inst['step'] == 5)
 						{
 							$inst['title'] = $lang['step5_title'];
-							$inst['settings']['title'] = addslashesJ($_postvars['p_title']);
-							$inst['settings']['addr'] = addslashesJ($_postvars['p_url']);
-							$inst['settings']['logo'] = addslashesJ($_postvars['p_logo']);
-							$inst['settings']['copyright'] = addslashesJ($_postvars['p_copyright']);
+							$inst['settings']['title'] = dbescape($_postvars['p_title']);
+							$inst['settings']['addr'] = dbescape($_postvars['p_url']);
+							$inst['settings']['logo'] = dbescape($_postvars['p_logo']);
+							$inst['settings']['copyright'] = dbescape($_postvars['p_copyright']);
 							$inst['settings']['lang'] = $_postvars['p_lang'];
 							$inst['settings']['theme'] = $_postvars['p_theme'];
 							$inst['settings']['default_module'] = $_postvars['default_module'];
@@ -259,11 +245,11 @@
 					elseif ($inst['step'] == 7)
 						{
 							$inst['title'] = $lang['step7_title'];
-							$login = addslashesJ($_postvars["p_login"]);
+							$login = dbescape($_postvars["p_login"]);
 							$password = $_postvars["p_password"];
-							$email = addslashesJ($_postvars["p_email"]);
-							$question = addslashesJ($_postvars["p_question"]);
-							$answer = addslashesJ($_postvars["p_answer"]);
+							$email = dbescape($_postvars["p_email"]);
+							$question = dbescape($_postvars["p_question"]);
+							$answer = dbescape($_postvars["p_answer"]);
 							if (empty($login) || empty($password) || empty($email))
 								{
 									$inst['step'] = 6;
