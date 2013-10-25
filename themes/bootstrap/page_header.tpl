@@ -14,8 +14,8 @@ setTimeout(function() { document.location.href = "{/literal}{$refresh_url}{liter
 {/literal}
 </script>
 {/if}
-	<script src="themes/bootstrap/js/jquery.js"></script>
-	<script src="themes/bootstrap/js/bootstrap.js"></script>
+	<script src="themes/{$special.theme}/js/jquery.js"></script>
+	<script src="themes/{$special.theme}/js/bootstrap.js"></script>
 	<script type="text/javascript" src="themes/{$special.theme}/script.js"></script>
 {section name=i loop=$special.customjs}
 	<script type="text/javascript" src="{$special.customjs[i]}"></script>
