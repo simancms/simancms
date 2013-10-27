@@ -6,11 +6,11 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-07-16
+	//#ver 1.6.5
+	//#revision 2013-10-27
 	//==============================================================================
 
-	if (php_sapi_name() != 'cli' && @get_magic_quotes_gpc() == 1)
+	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
 		exit('Configuration error! magic_quotes_gpc is on.');
 
 	define("SIMAN_DEFINED", 1);
@@ -110,16 +110,6 @@
 			$special['page']['scheme'] = $special['page']['parsed_url']['scheme'];
 			if (!empty($initialStatementDB))
 				$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
-			if (!empty($_getvars['chngdmode']))
-				{
-					$sql = "SELECT count(*) FROM ".$tableprefix."settings WHERE mode='".$_getvars['chngdmode']."'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					while ($row = database_fetch_row($result))
-						{
-							if ($row[0] > 0)
-								$_sessionvars['overwritesitemode'] = $_getvars['chngdmode'];
-						}
-				}
 			require("includes/config.php");
 			$sm['_s'] =& $_settings;
 			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($_settings['resource_url'], strpos($_settings['resource_url'], '/')).'index.php')
