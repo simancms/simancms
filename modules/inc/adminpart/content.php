@@ -281,7 +281,6 @@
 							$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
 							$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
 						}
-					$m['table']['default_column'] = 'edit';
 					$items = getsqlarray($sql);
 					for ($i = 0; $i<count($items); $i++)
 						{
@@ -296,7 +295,7 @@
 							if ($items[$i]['id_content'] != 1)
 								$t->URL('delete', 'index.php?m=content&d=postdelete&cid='.$items[$i]['id_content'].'&ctg='.$items[$i]['id_category_c']);
 							$t->URL('tomenu', sm_tomenuurl($items[$i]['title_content'], $url, sm_this_url()));
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$items[$i]['id_content'].'&c='.$items[$i]['title_content']);
+							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$items[$i]['id_content'].'&c='.urlencode($items[$i]['title_content']));
 							if ($sort == 2 || $sort == 3)
 								{
 									if ($i>0)

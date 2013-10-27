@@ -1,12 +1,3 @@
-{if $modules[$index].mode eq 'listmenu'}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-<a href="index.php?m=menu&d=add">{$lang.add_menu}</a>
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_listmenu&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'add'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=menu&d=postadd" method="post" enctype="multipart/form-data">
@@ -66,7 +57,7 @@
     <td width="34%">{$lang.module_menu.add_to_menu}</td>
 </tr>
 <tr>
-    <td><input type="text" name="p_caption" size="20" style="width: 100%;"></td>
+    <td><input type="text" name="p_caption" id="caption" size="20" style="width: 100%;"></td>
     <td>
 	  <input type="text" name="p_url" size="20" style="width: 100%;">
 	</td>
@@ -106,7 +97,7 @@
 </tr>
 <tr>
     <td width="50%">{$lang.module_menu.alt_text}</td>
-    <td><input type="text" name="p_alt" value="" /></td>
+    <td><input type="text" name="p_alt" id="alt" value="" /></td>
 </tr>
 <tr>
     <td width="50%">{$lang.module_menu.open_in_new_page}</td>
@@ -196,22 +187,5 @@
 </table>
 </form>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_addeditmenuline&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq 'listlines'}
-{include file="block_begin.tpl"}
-{include file="common_admintable.tpl" table=$modules[$index].table}
-<br />
-<a href="index.php?m=menu&d=addline&mid={$modules[$index].idmenu}">{$lang.module_menu.add_menu_line}</a>
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_listmenulines&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq 'admin'}
-{include file="block_begin.tpl"}
-<a href="index.php?m=menu&d=listmenu">{$lang.list_menus}</a><br>
-<br>
-<a href="index.php?m=menu&d=add">{$lang.add_menu}</a><br>
 {include file="block_end.tpl"}
 {/if}

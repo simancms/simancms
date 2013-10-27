@@ -215,7 +215,6 @@
 	$lang['module_account']['error_message_recipient']='Вкажіть вірного отримувача повідомлення';
 	$lang['module_account']['sended']='Надіслано';
 	$lang['module_account']['reply']='Відповісти';
-	$lang['module_account']['really_want_delete_message']='Ви дійсно хочете видалити це повідомлення?';
 	$lang['module_account']['log']['user_registered']='Зареєстровано користувача';
 	$lang['module_account']['log']['user_logged']='Користувач увійшов у систему';
 	$lang['module_account']['log']['user_logout']='Користувач вийшов з системи';
@@ -286,9 +285,7 @@
 	
 	//Menu
 	$lang["add_menu"]='Створити меню';
-	$lang["delete_menu_line"]='Видалити рядок меню';
 	$lang["edit_menu"]='Редагувати меню';
-	$lang["delete_menu"]='Видалити меню';
 	$lang["list_menus"]='Список меню';
 	$lang["menu"]='Меню';
 	$lang["do_not_change"]='Не змінювати';
@@ -298,7 +295,6 @@
 	$lang['you_want_add_line']='Ви хочете додати рядок до цього меню';
 	$lang["add_menu_line_successful"]='Рядок додано';
 	$lang["edit_menu_line_successful"]='Рядок змінено';
-	$lang["delete_menu_line_successful"]='Рядок видалено';
 	$lang["edit_menu_successful"]='Меню змінено';
 	$lang["delete_menu_successful"]='Меню видалено';
 	$lang['module_menu']['module_menu_name']='Меню';

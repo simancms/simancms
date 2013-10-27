@@ -45,9 +45,16 @@
 			if (sm_action('admin'))
 				{
 					$m["module"] = 'menu';
-					$m["title"] = $lang["settings"];
+					sm_title($lang['module_menu']['module_menu_name'].': '.$lang["settings"]);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					include_once('includes/admininterface.php');
+					$ui = new TInterface();
+					$ui->a('index.php?m=menu&d=listmenu', $lang['list_menus']);
+					$ui->br();
+					$ui->br();
+					$ui->a('index.php?m=menu&d=add', $lang['add_menu']);
+					$ui->Output(true);
 				}
 			if (sm_action('addouter'))
 				{
@@ -88,35 +95,23 @@
 			if (sm_action('postadd'))
 				{
 					$m["module"] = 'menu';
-					$m["title"] = $lang["add_menu"];
-					$mcaption = $_postvars["p_caption"];
-					$sql = "INSERT INTO ".$tableprefix."menus (caption_m) VALUES ('".dbescape($mcaption)."')";
-					$result = execsql($sql);
+					sm_title($lang["add_menu"]);
+					$sql = "INSERT INTO ".$sm['t']."menus (caption_m) VALUES ('".dbescape($_postvars["p_caption"])."')";
+					$id_menu = insertsql($sql);
 					if ($_settings['menus_use_image'] == 1)
 						{
-							$id_menu = database_insert_id('menus', $nameDB, $lnkDB);
 							siman_upload_image($id_menu, 'menu');
 						}
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['module_menu']['add_menu_line'];
 					$_msgbox['msg'] = $lang['you_want_add_line'];
-					$_msgbox['yes'] = 'index.php?m=menu&d=addline&mid='.database_insert_id('menus', $nameDB, $lnkDB);
+					$_msgbox['yes'] = 'index.php?m=menu&d=addline&mid='.$id_menu;
 					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
-				}
-			if (sm_action('deleteline'))
-				{
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['delete_menu_line'];
-					$_msgbox['msg'] = $lang['really_want_delete_line'];
-					$_msgbox['yes'] = 'index.php?m=menu&d=postdeleteline&mid='.$_getvars['mid'].'&lid='.$_getvars['lid'];
-					$_msgbox['no'] = 'index.php?m=menu&d=listlines&mid='.$_getvars['mid'];
 				}
 			if (sm_action('postdeleteline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang["delete_menu_line"];
-					$menu_id = $_getvars["mid"];
-					$menuline_id = $_getvars["lid"];
+					$menu_id = intval($_getvars["mid"]);
+					$menuline_id = intval($_getvars["lid"]);
 					siman_delete_menu_line($menuline_id);
 					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
 				}
@@ -218,6 +213,7 @@
 					$menu_id = $_getvars["mid"];
 					$m['idmenu'] = $menu_id;
 					$m['menu'] = siman_load_menu($menu_id);
+					sm_setfocus('caption');
 				}
 			if (sm_action('prepareaddline'))
 				{
@@ -238,6 +234,7 @@
 							$m['menu'][$i]['pos'] = $row->position;
 							$i++;
 						}
+					sm_setfocus('alt');
 				}
 			if (sm_action('editline'))
 				{
@@ -300,24 +297,15 @@
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
 					add_path($lang['list_menus'], "index.php?m=menu&d=listmenu");
 					add_path($menuinfo['caption_m'], "index.php?m=menu&d=listlines&mid=".$menu_id);
-					$m['idmenu'] = $menu_id;
 					$m['menu'] = siman_load_menu($menu_id);
 					require_once('includes/admintable.php');
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['really_want_delete_line']);
-					$m['table']['default_column'] = 'edit';
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
+					$t=new TGrid('edit');
+					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddEdit();
+					$t->AddDelete();
 					for ($i = 0; $i < count($m['menu']); $i++)
 						{
 							$lev = '';
@@ -325,12 +313,18 @@
 								{
 									$lev .= '-';
 								}
-							$m['table']['rows'][$i]['title']['data'] = $lev.$m['menu'][$i]['caption'];
-							$m['table']['rows'][$i]['title']['hint'] = $m['menu'][$i]['caption'];
-							$m['table']['rows'][$i]['title']['url'] = $m['menu'][$i]['url'];
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=menu&d=editline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'].'&sid='.$m['menu'][$i]['submenu_from'];
-							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'];
+							$t->Label('title', $lev.$m['menu'][$i]['caption']);
+							$t->URL('title', $m['menu'][$i]['url'], true);
+							$t->URL('edit', 'index.php?m=menu&d=editline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'].'&sid='.$m['menu'][$i]['submenu_from']);
+							$t->URL('delete', 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id']);
+							$t->NewRow();
 						}
+					$b=new TButtons();
+					$b->AddButton('add', $lang['module_menu']['add_menu_line'], 'index.php?m=menu&d=addline&mid='.$menu_id);
+					$ui->AddButtons($b);
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
 			if (sm_action('editmenu'))
 				{
@@ -362,26 +356,19 @@
 						}
 					sm_redirect('index.php?m=menu&d=listmenu');
 				}
-			if (sm_action('deletemenu'))
-				{
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['delete_menu'];
-					$_msgbox['msg'] = $lang['really_want_delete_menu'];
-					$_msgbox['yes'] = 'index.php?m=menu&d=postdeletemenu&mid='.$_getvars['mid'];
-					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
-				}
 			if (sm_action('postdeletemenu'))
 				{
 					$m["module"] = 'menu';
-					$menu_id = $_getvars["mid"];
-					$m["title"] = $lang["delete_menu"];
-					$sql = "DELETE FROM ".$tableprefix."menus WHERE id_menu_m='$menu_id'";
-					$result = execsql($sql);
+					$menu_id = intval($_getvars["mid"]);
+					execsql("DELETE FROM ".$tableprefix."menus WHERE id_menu_m=".$menu_id);
 					if ($_settings['menuitems_use_image'] == 1)
 						{
 							if (file_exists('./files/img/menu'.$menu_id.'.jpg'))
 								unlink('./files/img/menu'.$menu_id.'.jpg');
 						}
+					$q=new TQuery($sm['t'].'menu_lines');
+					$q->Add('id_menu_ml', $menu_id);
+					$q->Remove();
 					sm_redirect('index.php?m=menu&d=listmenu');
 				}
 			if (sm_action('add'))
@@ -394,44 +381,37 @@
 				}
 			if (sm_action('listmenu'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang["list_menus"];
+					sm_title($lang["list_menus"]);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
-					$sql = "SELECT * FROM ".$tableprefix."menus";
 					require_once('includes/admintable.php');
-					$m['table']['columns']['title']['caption'] = $lang['common']['title'];
-					$m['table']['columns']['title']['width'] = '100%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['really_want_delete_menu']);
-					$m['table']['columns']['stick']['caption'] = '';
-					$m['table']['columns']['stick']['hint'] = $lang['set_as_block_random_text'];
-					$m['table']['columns']['stick']['replace_text'] = $lang['common']['stick'];
-					$m['table']['columns']['stick']['replace_image'] = 'stick.gif';
-					$m['table']['default_column'] = 'edit';
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
+					$t=new TGrid('edit');
+					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddEdit();
+					$t->AddDelete();
+					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'stick.gif');
+					$q=new TQuery($tableprefix."menus");
+					$q->OrderBy('caption_m');
+					$q->Select();
+					for ($i = 0; $i < $q->Count(); $i++)
 						{
-							$m['table']['rows'][$i]['title']['data'] = $row->caption_m;
-							$m['table']['rows'][$i]['title']['hint'] = $row->caption_m;
-							$m['table']['rows'][$i]['title']['url'] = 'index.php?m=menu&d=listlines&mid='.$row->id_menu_m;
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=menu&d=editmenu&mid='.$row->id_menu_m;
-							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=menu&d=postdeletemenu&mid='.$row->id_menu_m;
-							$m['table']['rows'][$i]['stick']['url'] = 'index.php?m=blocks&d=add&b=menu&id='.$row->id_menu_m.'&c='.$row->caption_m;
-							$i++;
+							$t->Label('title', $q->items[$i]['caption_m']);
+							$t->URL('title', 'index.php?m=menu&d=listlines&mid='.$q->items[$i]['id_menu_m']);
+							$t->URL('edit', 'index.php?m=menu&d=editmenu&mid='.$q->items[$i]['id_menu_m']);
+							$t->URL('delete', 'index.php?m=menu&d=postdeletemenu&mid='.$q->items[$i]['id_menu_m']);
+							$t->URL('stick', 'index.php?m=blocks&d=add&b=menu&id='.$q->items[$i]['id_menu_m'].'&c='.urlencode($q->items[$i]['caption_m']));
+							$t->NewRow();
 						}
+					$b=new TButtons();
+					$b->AddButton('add', $lang['add_menu'], 'index.php?m=menu&d=add');
+					$ui->AddButtons($b);
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
 		}
 
