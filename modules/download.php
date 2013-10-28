@@ -177,12 +177,35 @@
 				}
 			if (sm_action('postedit'))
 				{
-					$m["module"] = 'download';
-					$iddownl = $_getvars['did'];
-					$m['mode'] = 'view';
-					$descr = dbescape($_postvars['p_shortdesc']);
-					$sql = "UPDATE ".$tableprefix."downloads SET description_download = '$descr' WHERE id_download = '$iddownl'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$q = new TQuery($sm['t'].'downloads');
+					$q->Add('id_download', intval($_getvars['id']));
+					$info = $q->Get();
+					if (!empty($info['id_download']))
+						{
+							if (!empty($_postvars['optional_name']) && file_exists('files/download/'.basename($_postvars['optional_name'])))
+								{
+									$error = $lang['module_download']['file_already_exists'];
+									$m['mode']='edit';
+								}
+							elseif (!empty($_postvars['optional_name']) && !rename('files/download/'.basename($info['file_download']), 'files/download/'.basename($_postvars['optional_name'])))
+								{
+									$error = $lang['error'];
+									$m['mode']='edit';
+								}
+							else
+								{
+									$q = new TQuery($sm['t'].'downloads');
+									if (!empty($_postvars['optional_name']))
+										$q->Add('file_download', dbescape($_postvars['optional_name']));
+									$q->AddPost('description_download');
+									$q->Add('userlevel_download', intval($_postvars['userlevel_download']));
+									$q->Update('id_download', intval($_getvars['id']));
+									if (!empty($_getvars['returnto']))
+										sm_redirect($_getvars['returnto']);
+									else
+										sm_redirect('index.php?m=downloads&d=list');
+								}
+						}
 				}
 			if (sm_action('edit'))
 				{
