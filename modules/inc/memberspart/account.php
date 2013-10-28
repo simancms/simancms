@@ -16,6 +16,8 @@
 			exit();
 		}
 
+	if ($_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
+		include('modules/inc/memberspart/account_privatemessages.php');
 	if (sm_action('postchange'))
 		{
 			$m["module"] = 'account';
@@ -215,7 +217,8 @@
 								}
 							$m['userlinkcount'] = $i;
 						}
-					$m['privmsgdata'] = siman_get_privmsgcount($userinfo['id']);
+					if ($_settings['allow_private_messages'] == 1)
+						$m['privmsgdata'] = siman_get_privmsgcount($userinfo['id']);
 				}
 			sm_page_viewid('account-cabinet');
 		}
@@ -239,8 +242,6 @@
 			$m["module"] = 'account';
 			$m["title"] = $lang["login_caption"];
 		}
-	if ($_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
-		include('modules/inc/memberspart/account_privatemessages.php');
 	if ($userinfo['level'] == 3)
 		include('modules/inc/adminpart/account.php');
 
