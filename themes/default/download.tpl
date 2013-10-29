@@ -13,12 +13,3 @@
 </table>
 {include file="block_end.tpl"}
 {/if}
-
-{if $modules[$index].mode eq "edit"}
-{include file="block_begin.tpl"}
-<form action="index.php?m=download&d=postedit&did={$modules[$index].iddownl}" method="post">
-{$lang.module_download.short_description_download} <textarea cols="50" rows="5" name="p_shortdesc">{$modules[$index].short_desc}</textarea>
-{$modules[$index].formadditionalhtml}
-<input type="submit" value="{$lang.submit}">
-{include file="block_end.tpl"}
-{/if}
