@@ -314,7 +314,6 @@
 	$lang['left_panel']='Ліва панель';
 	$lang['right_panel']='Права панель';
 	$lang['short_block_name']='Коротка назва блоку';
-	$lang['really_want_delete_block']='Ви дійсно хочете видалити цей блок';
 	$lang['show_on']='Показувати на';
 	$lang['show_on_all_pages']='всіх сторінках';
 	$lang['show_on_category']='Категорія';

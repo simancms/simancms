@@ -226,111 +226,78 @@
 			if (sm_action('view'))
 				{
 					$m["module"] = 'blocks';
-					$m["title"] = $lang['static_blocks'];
+					sm_title($lang['static_blocks']);
 					add_path_control();
 					add_path($lang['static_blocks'], "index.php?m=blocks");
 					require_once('includes/admintable.php');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$q=new TQuery($sm['t']."blocks");
+					$q->Add('panel_block', 'c');
+					$q->OrderBy('panel_block, position_block');
+					$q->Select();
+					$t=new TGrid('edit');
+					$t->AddCol('title', $lang['center_panel'], '100%');
+					$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
+					$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
+					$t->AddEdit();
+					$t->AddDelete();
+					$v=Array(0);
+					$l=Array($lang['first']);
+					for ($i = 0; $i<$q->Count(); $i++)
+						{
+							$v[]=$i+1;
+							$l[]=$lang['after'].': '.$q->items[$i]['caption_block'];
+							$t->Label('title', $q->items[$i]['caption_block']);
+							$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
+							if ($i>0)
+								$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+							if ($i+1<$q->Count())
+								$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+							$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+							$t->NewRow();
+						}
+					if (intval($_settings['main_block_position']) > $q->Count())
+						{
+							$_settings['main_block_position'] = $q->Count();
+						}
+					$f = new TForm('index.php?m=blocks&d=setmain');
+					$f->AddSelectVL('p_mainpos', $lang['module_blocks']['main_block_position'], $v, $l);
+					$f->SetValue('p_mainpos', $_settings['main_block_position']);
+					$ui->AddForm($f);
+					unset($f);
+					$ui->br();
+					$ui->AddGrid($t);
+					unset($t);
 					for ($panel = 1; $panel < intval($_settings['sidepanel_count']) + 1; $panel++)
 						{
-							$m['tablepanels'][$panel]['columns']['title']['caption'] = $lang['panel'].' '.$panel;
-							$m['tablepanels'][$panel]['columns']['title']['width'] = '100%';
-							$m['tablepanels'][$panel]['columns']['up']['caption'] = '';
-							$m['tablepanels'][$panel]['columns']['up']['hint'] = $lang['up'];
-							$m['tablepanels'][$panel]['columns']['up']['replace_text'] = $lang['up'];
-							$m['tablepanels'][$panel]['columns']['up']['replace_image'] = 'up.gif';
-							$m['tablepanels'][$panel]['columns']['up']['width'] = '16';
-							$m['tablepanels'][$panel]['columns']['down']['caption'] = '';
-							$m['tablepanels'][$panel]['columns']['down']['hint'] = $lang['down'];
-							$m['tablepanels'][$panel]['columns']['down']['replace_text'] = $lang['down'];
-							$m['tablepanels'][$panel]['columns']['down']['replace_image'] = 'down.gif';
-							$m['tablepanels'][$panel]['columns']['down']['width'] = '16';
-							$m['tablepanels'][$panel]['columns']['edit']['caption'] = '';
-							$m['tablepanels'][$panel]['columns']['edit']['hint'] = $lang['common']['edit'];
-							$m['tablepanels'][$panel]['columns']['edit']['replace_text'] = $lang['common']['edit'];
-							$m['tablepanels'][$panel]['columns']['edit']['replace_image'] = 'edit.gif';
-							$m['tablepanels'][$panel]['columns']['edit']['width'] = '16';
-							$m['tablepanels'][$panel]['columns']['delete']['caption'] = '';
-							$m['tablepanels'][$panel]['columns']['delete']['hint'] = $lang['common']['delete'];
-							$m['tablepanels'][$panel]['columns']['delete']['replace_text'] = $lang['common']['delete'];
-							$m['tablepanels'][$panel]['columns']['delete']['replace_image'] = 'delete.gif';
-							$m['tablepanels'][$panel]['columns']['delete']['width'] = '16';
-							$m['tablepanels'][$panel]['columns']['delete']['messagebox'] = 1;
-							$m['tablepanels'][$panel]['columns']['delete']['messagebox_text'] = addslashes($lang['really_want_delete_block']);
-							$m['tablepanels'][$panel]['default_column'] = 'edit';
-							$panelstr = "panel_block='".$panel."'";
-							if ($panel == 1)
-								$panelstr .= " OR panel_block='l'";
-							if ($panel == 2)
-								$panelstr .= " OR panel_block='r'";
-							$sql = "SELECT * FROM ".$tableprefix."blocks WHERE $panelstr ORDER BY panel_block, position_block";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
-							$i = 0;
-							while ($row = database_fetch_object($result))
+							$t=new TGrid('edit');
+							$t->AddCol('title', $lang['panel'].' '.$panel, '100%');
+							$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
+							$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
+							$t->AddEdit();
+							$t->AddDelete();
+							$q=new TQuery($sm['t']."blocks");
+							$q->Add('panel_block', intval($panel));
+							$q->OrderBy('panel_block, position_block');
+							$q->Select();
+							for ($i = 0; $i<$q->Count(); $i++)
 								{
-									$m['tablepanels'][$panel]['rows'][$i]['title']['data'] = $row->caption_block;
-									$m['tablepanels'][$panel]['rows'][$i]['title']['hint'] = $row->caption_block;
-									$m['tablepanels'][$panel]['rows'][$i]['edit']['url'] = 'index.php?m=blocks&d=edit&id='.$row->id_block;
-									$m['tablepanels'][$panel]['rows'][$i]['up']['url'] = 'index.php?m=blocks&d=up&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-									$m['tablepanels'][$panel]['rows'][$i]['down']['url'] = 'index.php?m=blocks&d=down&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-									$m['tablepanels'][$panel]['rows'][$i]['delete']['url'] = 'index.php?m=blocks&d=postdelete&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-									$i++;
+									$t->Label('title', $q->items[$i]['caption_block']);
+									$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
+									if ($i>0)
+										$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+									if ($i+1<$q->Count())
+										$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+									$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+									$t->NewRow();
 								}
-							if (count($m['tablepanels'][$panel]['rows']) > 0)
-								{
-									$m['tablepanels'][$panel]['rows'][0]['up']['url'] = '';
-									$m['tablepanels'][$panel]['rows'][count($m['tablepanels'][$panel]['rows']) - 1]['down']['url'] = '';
-								}
+							$ui->br();
+							$ui->AddGrid($t);
+							unset($t);
 						}
-					$m['table3']['columns']['id']['hide'] = 1;
-					$m['table3']['columns']['title']['caption'] = $lang['center_panel'];
-					$m['table3']['columns']['title']['width'] = '100%';
-					$m['table3']['columns']['up']['caption'] = '';
-					$m['table3']['columns']['up']['hint'] = $lang['up'];
-					$m['table3']['columns']['up']['replace_text'] = $lang['up'];
-					$m['table3']['columns']['up']['replace_image'] = 'up.gif';
-					$m['table3']['columns']['up']['width'] = '16';
-					$m['table3']['columns']['down']['caption'] = '';
-					$m['table3']['columns']['down']['hint'] = $lang['down'];
-					$m['table3']['columns']['down']['replace_text'] = $lang['down'];
-					$m['table3']['columns']['down']['replace_image'] = 'down.gif';
-					$m['table3']['columns']['down']['width'] = '16';
-					$m['table3']['columns']['edit']['caption'] = '';
-					$m['table3']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table3']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table3']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table3']['columns']['edit']['width'] = '16';
-					$m['table3']['columns']['delete']['caption'] = '';
-					$m['table3']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table3']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table3']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table3']['columns']['delete']['width'] = '16';
-					$m['table3']['columns']['delete']['messagebox'] = 1;
-					$m['table3']['columns']['delete']['messagebox_text'] = addslashes($lang['really_want_delete_block']);
-					$m['table3']['default_column'] = 'edit';
-					$sql = "SELECT * FROM ".$tableprefix."blocks WHERE panel_block='c' ORDER BY panel_block, position_block";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['table3']['rows'][$i]['id']['data'] = $row->id_block;
-							$m['table3']['rows'][$i]['title']['data'] = $row->caption_block;
-							$m['table3']['rows'][$i]['title']['hint'] = $row->caption_block;
-							$m['table3']['rows'][$i]['edit']['url'] = 'index.php?m=blocks&d=edit&id='.$row->id_block;
-							$m['table3']['rows'][$i]['up']['url'] = 'index.php?m=blocks&d=up&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-							$m['table3']['rows'][$i]['down']['url'] = 'index.php?m=blocks&d=down&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-							$m['table3']['rows'][$i]['delete']['url'] = 'index.php?m=blocks&d=postdelete&id='.$row->id_block.'&pos='.$row->position_block.'&pnl='.$row->panel_block;
-							$i++;
-						}
-					if (count($m['table3']['rows']) > 0)
-						{
-							$m['table3']['rows'][0]['up']['url'] = '';
-							$m['table3']['rows'][count($m['table3']['rows']) - 1]['down']['url'] = '';
-						}
-
-					if (intval($_settings['main_block_position']) > count($m['table3']['rows']))
-						{
-							$_settings['main_block_position'] = count($m['table3']['rows']);
-						}
+					$ui->Output(true);
 				}
 			if (sm_action('setmain'))
 				{

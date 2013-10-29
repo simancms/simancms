@@ -298,7 +298,6 @@ $lang['center_panel'] = 'Center panel';
 $lang['left_panel'] = 'Left panel';
 $lang['right_panel'] = 'Right panel';
 $lang['short_block_name'] = 'Short block name';
-$lang['really_want_delete_block'] = 'Do you really want to delete this block';
 $lang['show_on'] = 'Show on';
 $lang['show_on_all_pages'] = 'all pages';
 $lang['show_on_category'] = 'category';

@@ -1,25 +1,3 @@
-{if $modules[$index].mode eq 'view'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=blocks&d=setmain" method="post">
-{$lang.module_blocks.main_block_position}
-<select name="p_mainpos" size="1">
-	<option value="0"{if $_settings.main_block_position eq "0"} SELECTED{/if}>{$lang.first}</option>
-	{section name=i loop=$modules[$index].table3.rows}
-	<option value="{$smarty.section.i.index+1}"{if $_settings.main_block_position eq $smarty.section.i.index+1} SELECTED{/if}>{$lang.after} &quot;{$modules[$index].table3.rows[i].title.data}&quot;</option>
-	{/section}
-</select>
-<input type="submit" value="{$lang.save}">
-</form>
-{include file="common_admintable.tpl" table=$modules[$index].table3 postfix="t3"}
-<br />
-{section name=i loop=$_settings.sidepanel_count+1 start=1}
-{include file="common_admintable.tpl" table=$modules[$index].tablepanels[i] postfix=$smarty.section.i.index}
-<br />
-{/section}
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=blocks_list&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'add'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=blocks&d=postadd" method="post" enctype="multipart/form-data">
@@ -211,11 +189,5 @@
 </table>
 </form>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=blocks_edit&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "up" or $modules[$index].mode eq "down" or $modules[$index].mode eq "postdelete" or $modules[$index].mode eq "setmain"}
-{include file="block_begin.tpl"}
-	{include file="refresh.tpl"}
 {include file="block_end.tpl"}
 {/if}
