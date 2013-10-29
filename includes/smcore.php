@@ -808,6 +808,7 @@
 						if ($sm['s']['path'][$i]['tag']=='currentpage')
 							$sm['s']['path'][$i]['title']=$title;
 					}
+			sm_add_title_modifier($sm['m']['title']);
 		}
 
 	function sm_meta_title($title, $hide_site_title = true)

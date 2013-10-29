@@ -21,7 +21,7 @@
 			if (sm_action('deleteattachment'))
 				{
 					$m["module"] = 'download';
-					$m['title'] = $lang['common']['delete'];
+					sm_title($lang['common']['delete']);
 					$_msgbox['mode'] = 'yesno';
 					$_msgbox['title'] = $lang['common']['delete'];
 					$_msgbox['msg'] = $lang['module_download']['really_want_delete_file'];
@@ -30,8 +30,6 @@
 				}
 			if (sm_action('postdeleteattachment'))
 				{
-					$m["module"] = 'download';
-					$m['title'] = $lang['common']['delete'];
 					sm_delete_attachment(intval($_getvars['id']));
 					sm_event('postdeleteattachment', array(intval($_getvars['id'])));
 					if (!empty($_getvars['returnto']))
@@ -69,15 +67,20 @@
 							$fd = basename($_postvars['optional_name']);
 						}
 					$fd = './files/download/'.$fd;
-					if (file_exists($fd))
+					if (empty($fs))
+						{
+							$error = $lang["message_set_all_fields"];
+							sm_set_action('add');
+						}
+					elseif (file_exists($fd))
 						{
 							$error = $lang['module_download']['file_already_exists'];
-							$m['mode'] = 'add';
+							sm_set_action('add');
 						}
 					elseif (!move_uploaded_file($fs, $fd))
 						{
 							$error=$lang['error_file_upload_message'];
-							$m['mode'] = 'add';
+							sm_set_action('add');
 						}
 					else
 						{
@@ -102,10 +105,15 @@
 						{
 							$fs = $_uplfilevars['userfile']['tmp_name'];
 							$fd = './files/download/'.$info['file_download'];
-							if (!file_exists($fs))
+							if (empty($fs))
+								{
+									$error = $lang["message_set_all_fields"];
+									sm_set_action('upload');
+								}
+							elseif (!file_exists($fs))
 								{
 									$error = $lang['error_file_upload_message'];
-									$m['mode'] = 'upload';
+									sm_set_action('upload');
 								}
 							else
 								{
@@ -118,7 +126,7 @@
 									if (!move_uploaded_file($fs, $fd))
 										{
 											$error = $lang['error_file_upload_message'];
-											$m['mode'] = 'upload';
+											sm_set_action('upload');
 											if ($tmp['tmpfilecreated'])
 												rename($tmp['file'], $fd);
 										}
@@ -145,10 +153,10 @@
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'error alert-error errormessage error-message');
+						$ui->div($error, '', 'errormessage error-message');
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postupload&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
-					$f->AddFile('userfile', $lang['file_name']);
+					$f->AddFile('userfile', $lang['file_name'], true);
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);
@@ -164,12 +172,12 @@
 							if (!empty($_postvars['optional_name']) && file_exists('files/download/'.basename($_postvars['optional_name'])))
 								{
 									$error = $lang['module_download']['file_already_exists'];
-									$m['mode']='edit';
+									sm_set_action('edit');
 								}
 							elseif (!empty($_postvars['optional_name']) && !rename('files/download/'.basename($info['file_download']), 'files/download/'.basename($_postvars['optional_name'])))
 								{
 									$error = $lang['error'];
-									$m['mode']='edit';
+									sm_set_action('edit');
 								}
 							else
 								{
@@ -201,17 +209,17 @@
 							include_once('includes/adminform.php');
 							$ui = new TInterface();
 							if (!empty($error))
-								$ui->div($error, '', 'error alert-error errormessage error-message');
+								$ui->div($error, '', 'errormessage error-message');
 							sm_title($lang['edit']);
 							$f=new TForm('index.php?m=download&d=postedit&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
-							$f->AddText('optional_name', $lang['optional_file_name']);
 							$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
 							$f->AddSelectVL('userlevel_download', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
+							$f->AddText('optional_name', $lang['optional_file_name']);
 							$f->LoadValuesArray($info);
 							$f->LoadValuesArray($_postvars);
 							$ui->AddForm($f);
 							$ui->Output(true);
-							sm_setfocus('optional_name');
+							sm_setfocus('description_download');
 						}
 				}
 			if (sm_action('add'))
@@ -224,17 +232,17 @@
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'error alert-error errormessage error-message');
+						$ui->div($error, '', 'errormessage error-message');
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postadd&returnto='.urlencode($_getvars['returnto']));
-					$f->AddFile('userfile', $lang['file_name']);
-					$f->AddText('optional_name', $lang['optional_file_name']);
+					$f->AddFile('userfile', $lang['file_name'], true);
 					$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
 					$f->AddSelectVL('userlevel_download', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
+					$f->AddText('optional_name', $lang['optional_file_name']);
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);
-					sm_setfocus('file_download');
+					sm_setfocus('userfile');
 				}
 			if (sm_action('list'))
 				{
@@ -303,7 +311,7 @@
 					$ui->a('index.php?m=download&d=add', $lang['module_download']['upload_file']);
 					$ui->br();
 					$ui->br();
-					$ui->a(sm_tomenuurl($lang['module_download']['downloads'], 'index.php?m=download&d=add'), $lang['add_to_menu'].' - '.$lang['module_download']['downloads']);
+					$ui->a(sm_tomenuurl($lang['module_download']['downloads'], sm_fs_url('index.php?m=download&d=view')), $lang['add_to_menu'].' - '.$lang['module_download']['downloads']);
 					$ui->br();
 					$ui->br();
 					$ui->Output(true);

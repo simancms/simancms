@@ -182,3 +182,21 @@ select[multiple],
 select[size] {
 	height: 34px;
 }
+
+
+
+
+/*=========================*/
+
+
+.errormessage, .error-message
+{
+	background-color: #F2DEDE;
+	border-color: #EED3D7;
+	color: #B94A48;
+	border-radius: 4px 4px 4px 4px;
+	margin-bottom: 20px;
+	padding: 15px;
+	font-size: 14px;
+	line-height: 1.42857;
+}

@@ -20,8 +20,7 @@
 			exit();
 		}
 
-	if (empty($m["mode"]))
-		$m["mode"] = 'view';
+	sm_default_action('view');
 
 	if (sm_action('attachment', 'showattachedfile'))
 		{
@@ -32,7 +31,7 @@
 					$special['main_tpl'] = '';
 					$special['no_blocks'] = 1;
 					header("Content-type: ".$att['attachment_type']);
-					if (strcmp($m["mode"], 'showattachedfile') != 0)
+					if (!sm_action('showattachedfile'))
 						header("Content-Disposition: attachment; filename=".basename($att['file_download']));
 					$fp = fopen('files/download/attachment'.intval($_getvars['id']), 'rb');
 					fpassthru($fp);
@@ -44,7 +43,7 @@
 		{
 			sm_page_viewid('download-view');
 			$m["module"] = 'download';
-			$m['title'] = $lang['module_download']['downloads'];
+			sm_title($lang['module_download']['downloads']);
 			$sql = "SELECT * FROM ".$tableprefix."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]);
 			$i = 0;
 			$result = database_db_query($nameDB, $sql, $lnkDB);
@@ -58,7 +57,6 @@
 					sm_add_content_modifier($m['files'][$i]['description']);
 					$i++;
 				}
-			sm_add_title_modifier($m['title']);
 		}
 	if ($userinfo['level'] == 3 || (intval(sm_settings('perm_downloads_management_level'))>0 && sm_settings('perm_downloads_management_level')<=intval($userinfo['level'])))
 		include('modules/inc/adminpart/download.php');
