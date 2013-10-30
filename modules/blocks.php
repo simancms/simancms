@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#revision 2013-10-30
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -23,15 +23,16 @@
 			if (sm_action('add'))
 				{
 					$m["module"] = 'blocks';
-					$m["title"] = $lang['static_blocks'];
+					sm_title($lang['static_blocks'].': '.$lang['common']['add']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['static_blocks'], "index.php?m=blocks");
+					add_path_current();
 					$m["id"] = $_getvars['id'];
 					$m["block"] = $_getvars['b'];
 					$m["doing"] = $_getvars['db'];
 					$m["caption_block"] = $_getvars['c'];
 					$sql = "SELECT * FROM ".$tableprefix."modules ORDER BY module_name='content' ASC";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
@@ -55,12 +56,13 @@
 			if (sm_action('edit'))
 				{
 					$m["module"] = 'blocks';
-					$m["title"] = $lang['static_blocks'];
+					sm_title($lang['static_blocks'].': '.$lang['common']['edit']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['static_blocks'], "index.php?m=blocks");
-					$id_block = $_getvars["id"];
+					add_path_current();
+					$id_block = intval($_getvars["id"]);
 					$sql = "SELECT * FROM ".$tableprefix."blocks WHERE id_block='$id_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$m["id"] = $row->id_block;
@@ -80,7 +82,7 @@
 						}
 					$m["show_on_all"] = 1;
 					$sql = "SELECT * FROM ".$tableprefix."modules ORDER BY module_name='content' ASC";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_object($result))
 						{
@@ -125,7 +127,7 @@
 					if ($panel_block != $old_panel)
 						{
 							$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='$panel_block'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							$pos_block = 0;
 							while ($row = database_fetch_row($result))
 								{
@@ -133,14 +135,14 @@
 								}
 							$pos_block++;
 							$sql = "UPDATE ".$tableprefix."blocks SET level = '$level', panel_block='$panel_block', position_block='$pos_block', caption_block='$caption_block', show_on_module='$module_block', show_on_doing='$show_doing_block', show_on_ctg='$ctg_block', no_borders='$no_borders', dont_show_modif ='$dont_show_modif', rewrite_title = '$rewrite_title', groups_view = '$groups_view', thislevelonly='$thislevelonly', show_on_device='$show_on_device', show_on_viewids='$show_on_viewids' WHERE id_block = '$id_block'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 							$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>='".($old_position)."' AND panel_block='$old_panel'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 						}
 					else
 						{
 							$sql = "UPDATE ".$tableprefix."blocks SET level = '$level', caption_block = '$caption_block', show_on_module='$module_block', show_on_doing='$show_doing_block', show_on_ctg='$ctg_block', no_borders='$no_borders', dont_show_modif ='$dont_show_modif', rewrite_title = '$rewrite_title', groups_view = '$groups_view', thislevelonly='$thislevelonly', show_on_device='$show_on_device', show_on_viewids='$show_on_viewids'  WHERE id_block = '$id_block'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = execsql($sql);
 						}
 					if ($_settings['blocks_use_image'] == 1)
 						{
@@ -168,7 +170,7 @@
 					$thislevelonly = intval($_postvars['p_thislevelonly']);
 					$show_on_viewids = $_postvars['show_on_viewids'];
 					$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='$panel_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					$pos_block = 0;
 					while ($row = database_fetch_row($result))
 						{
@@ -176,7 +178,7 @@
 						}
 					$pos_block++;
 					$sql = "INSERT INTO ".$tableprefix."blocks (level, panel_block, position_block, name_block, caption_block, showed_id, show_on_module, show_on_doing, show_on_ctg, dont_show_modif, doing_block, no_borders, rewrite_title, groups_view, thislevelonly, show_on_device, show_on_viewids) VALUES ('$level', '$panel_block', '$pos_block', '$name_block', '$caption_block', '$id_block', '$module_block', '$show_doing_block', '$ctg_block', '$dont_show_modif', '$doing_block', '$no_borders', '$rewrite_title', '$groups_view', '$thislevelonly', '$show_on_device', '$show_on_viewids')";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = execsql($sql);
 					if ($_settings['blocks_use_image'] == 1)
 						{
 							$id_block = database_insert_id('blocks', $nameDB, $lnkDB);
@@ -186,42 +188,21 @@
 				}
 			if (sm_action('postdelete'))
 				{
-					$m["title"] = $lang['static_blocks'];
-					$m["module"] = 'blocks';
-					$refresh_url = 'index.php?m=blocks';
-					$id_block = $_getvars["id"];
-					$pos_block = $_getvars["pos"];
-					$panel_block = $_getvars["pnl"];
-					$sql = "DELETE FROM ".$tableprefix."blocks  WHERE id_block='$id_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>='".($pos_block)."' AND panel_block='$panel_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					execsql("DELETE FROM ".$tableprefix."blocks  WHERE id_block=".intval($_getvars['id']));
+					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>=".intval($_getvars['pos'])." AND panel_block='".dbescape($_getvars['pnl'])."'");
+					sm_redirect('index.php?m=blocks');
 				}
 			if (sm_action('up'))
 				{
-					$m["title"] = $lang['static_blocks'];
-					$m["module"] = 'blocks';
-					$refresh_url = 'index.php?m=blocks';
-					$id_block = $_getvars["id"];
-					$pos_block = $_getvars["pos"];
-					$panel_block = $_getvars["pnl"];
-					$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE position_block='".($pos_block - 1)."' AND panel_block='$panel_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>'1' AND id_block='$id_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE position_block=".(intval($_getvars["pos"]) - 1)." AND panel_block='".dbescape($panel_block)."'");
+					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>'1' AND id_block=".intval($_getvars["id"]));
+					sm_redirect('index.php?m=blocks');
 				}
 			if (sm_action('down'))
 				{
-					$m["title"] = $lang['static_blocks'];
-					$m["module"] = 'blocks';
-					$refresh_url = 'index.php?m=blocks';
-					$id_block = $_getvars["id"];
-					$pos_block = $_getvars["pos"];
-					$panel_block = $_getvars["pnl"];
-					$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block='".($pos_block + 1)."' AND panel_block='$panel_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE id_block='$id_block'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block=".(intval($_getvars["pos"]) + 1)." AND panel_block='".dbescape($_getvars["pnl"])."'");
+					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE id_block=".intval($_getvars["id"]));
+					sm_redirect('index.php?m=blocks');
 				}
 			if (sm_action('view'))
 				{
@@ -301,11 +282,8 @@
 				}
 			if (sm_action('setmain'))
 				{
-					$m["title"] = $lang['static_blocks'];
-					$m["module"] = 'blocks';
-					$refresh_url = 'index.php?m=blocks';
-					$sql = "UPDATE ".$tableprefix."settings SET value_settings='".intval($_postvars['p_mainpos'])."' WHERE name_settings='main_block_position' AND mode='default'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					execsql("UPDATE ".$tableprefix."settings SET value_settings='".intval($_postvars['p_mainpos'])."' WHERE name_settings='main_block_position' AND mode='default'");
+					sm_redirect('index.php?m=blocks');
 				}
 		}
 
