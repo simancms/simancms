@@ -81,7 +81,7 @@
 									$prefix=' - ';
 									for ($k = 1; $k < $lines[$j]['level']; $k++)
 										$prefix.=' - ';
-									$values[]=$q->items[$i]['id_menu_m'].'|'.$lines[$j]['add_param'];
+									$values[]=$lines[$j]['add_param'];
 									$labels[]=$prefix.$lines[$j]['caption'];
 								}
 						}
@@ -110,33 +110,27 @@
 				}
 			if (sm_action('postdeleteline'))
 				{
-					$menu_id = intval($_getvars["mid"]);
-					$menuline_id = intval($_getvars["lid"]);
-					siman_delete_menu_line($menuline_id);
-					sm_redirect('index.php?m=menu&d=listlines&mid='.$menu_id);
+					siman_delete_menu_line(intval($_getvars["lid"]));
+					sm_redirect('index.php?m=menu&d=listlines&mid='.intval($_getvars["mid"]));
 				}
 			if (sm_action('postaddouter'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
 					$_getvars["mid"] = $_postvars["p_mid"];
 					$lposition = 0;
 					$m["mode"] = 'postaddline';
 				}
 			if (sm_action('postaddline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
 					$lcaption = $_postvars["p_caption"];
-					$menu_id = $_getvars["mid"];
+					$menu_id = intval($_getvars["mid"]);
 					$lurl = $_postvars["p_url"];
-					$submenu_from = $_postvars["p_sub"];
-					$lposition = $_postvars["p_position"];
+					$submenu_from = intval($_postvars["p_sub"]);
+					$lposition = intval($_postvars["p_position"]);
 					$alt_ml = dbescape($_postvars["p_alt"]);
 					$newpage_ml = intval($_postvars["p_newpage"]);
 					if ($lposition == 0)
 						{
-							$sql = "SELECT max(position) FROM ".$tableprefix."menu_lines WHERE id_menu_ml='$menu_id' AND submenu_from='$submenu_from'";
+							$sql = "SELECT max(position) FROM ".$tableprefix."menu_lines WHERE id_menu_ml=".$menu_id." AND submenu_from=".$submenu_from;
 							$lposition = 1;
 							$result = execsql($sql);
 							while ($row = database_fetch_row($result))
@@ -146,14 +140,13 @@
 						}
 					else
 						{
-							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position >= '$lposition' AND id_menu_ml='$menu_id' AND submenu_from='$submenu_from'";
+							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position >= ".$lposition." AND id_menu_ml=".$menu_id." AND submenu_from=".$submenu_from;
 							$result = execsql($sql);
 						}
 					$sql = "INSERT INTO ".$tableprefix."menu_lines (id_menu_ml, submenu_from, url, caption_ml, position, alt_ml, newpage_ml) VALUES ('".dbescape($menu_id)."', '".dbescape($submenu_from)."', '".dbescape($lurl)."', '".dbescape($lcaption)."', '".dbescape($lposition)."', '".dbescape($alt_ml)."', '".dbescape($newpage_ml)."')";
-					$result = execsql($sql);
+					$id_ml = insertsql($sql);
 					if ($_settings['menuitems_use_image'] == 1)
 						{
-							$id_ml = database_insert_id('menu_lines', $nameDB, $lnkDB);
 							siman_upload_image($id_ml, 'menuitem');
 						}
 					if (!empty($_getvars['returnto']))
@@ -163,13 +156,11 @@
 				}
 			if (sm_action('posteditline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
-					$menu_id = $_getvars["mid"];
-					$menuline_id = $_getvars["lid"];
+					$menu_id = intval($_getvars["mid"]);
+					$menuline_id = intval($_getvars["lid"]);
 					$lcaption = $_postvars["p_caption"];
 					$lurl = $_postvars["p_url"];
-					$lposition = $_postvars["p_position"];
+					$lposition = intval($_postvars["p_position"]);
 					$partial_select = intval($_postvars["p_partial_select"]);
 					$alt_ml = dbescape($_postvars["p_alt"]);
 					$attr_ml = dbescape($_postvars["attr_ml"]);
@@ -180,7 +171,7 @@
 						}
 					elseif ($lposition == -1)
 						{
-							$sql = "SELECT max(position) FROM ".$tableprefix."menu_lines WHERE id_menu_ml='$menu_id'";
+							$sql = "SELECT max(position) FROM ".$tableprefix."menu_lines WHERE id_menu_ml=".$menu_id;
 							$lposition = 1;
 							$result = execsql($sql);
 							while ($row = database_fetch_row($result))
@@ -190,7 +181,7 @@
 						}
 					else
 						{
-							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position>='$lposition'";
+							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position>=".$lposition;
 							$result = execsql($sql);
 						}
 					$sql = "UPDATE ".$tableprefix."menu_lines SET url = '".dbescape($lurl)."', caption_ml = '".dbescape($lcaption)."', partial_select='".dbescape($partial_select)."', alt_ml = '".dbescape($alt_ml)."', attr_ml = '".dbescape($attr_ml)."', newpage_ml = '".dbescape($newpage_ml)."' ";
