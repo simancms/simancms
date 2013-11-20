@@ -30,6 +30,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']='';
 						$this->currentTab=0;
 						$this->form['tabs'][0]['title']='';
+						$this->form['postfix']=mt_rand(1000, 9999);
 					}
 				function AddTab($title)
 					{
@@ -58,6 +59,15 @@ if (!defined("adminform_DEFINED"))
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
 						$this->form['fields'][$name]['type']='text';
+						$this->form['updates']=addto_nllist($this->form['updates'], $name);
+						$this->form['fields'][$name]['tab']=$this->currentTab;
+					}
+				function AddPassword($name, $title, $required=false)
+					{
+						$this->form['fields'][$name]['name']=$name;
+						$this->form['fields'][$name]['caption']=$title;
+						$this->form['fields'][$name]['required']=$required;
+						$this->form['fields'][$name]['type']='password';
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}

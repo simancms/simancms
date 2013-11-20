@@ -1,3 +1,6 @@
+{if $postfix eq ""}
+	{assign var=postfix value=$form.postfix}
+{/if}
 <script type="text/javascript">
 {literal}
 function set_adminform_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, r2h)
@@ -33,7 +36,7 @@ function set_adminform_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, 
  }
 } 
 
-function show_admintable_tab(num)
+function show_admintable_tab{/literal}{$postfix}{literal}(num)
 	{
 		{/literal}
 		{section name=tabsectionindex loop=$form.tabs start=1}{* tab titles *}
@@ -58,12 +61,12 @@ function show_admintable_tab(num)
 <div id="adminform-tabs-titles">
 	{section name=tabsectionindex2 loop=$form.tabs start=1}{* tab titles *}
 	{if $smarty.section.tabsectionindex2.index gt 1} | {/if}
-		<a id="adminform-tabtitle-{$smarty.section.tabsectionindex2.index}" href="javascript:;" onclick="show_admintable_tab('{$smarty.section.tabsectionindex2.index}')">{$form.tabs[tabsectionindex2].title}</a>
+		<a id="adminform-tabtitle-{$smarty.section.tabsectionindex2.index}" href="javascript:;" onclick="show_admintable_tab{$postfix}('{$smarty.section.tabsectionindex2.index}')">{$form.tabs[tabsectionindex2].title}</a>
 	{/section}
 </div>
 {/if}
 <div id="adminform-tab-{$smarty.section.tabsectionindex.index}">
-<table width="100%" cellspacing="2" cellpadding="2" id="adminform_table{$smarty.section.tabsectionindex.index}" class="adminform_table">
+<table width="100%" cellspacing="2" cellpadding="2" id="adminform_table{$postfix}-{$smarty.section.tabsectionindex.index}" class="adminform_table">
 	{foreach name=form_field_index from=$form.fields item=field key=field_name}
 	{if $field.tab eq $smarty.section.tabsectionindex.index}
 		{if $field.type neq "hidden" and  $field.type neq "separator" and $field.mergecolumns neq 1 and $field.hidedefinition neq 1}
@@ -83,12 +86,10 @@ function show_admintable_tab(num)
 		{$field.begintext}
 		{if $field.type eq "label"}
 			{$field.labeltext}
-		{elseif $field.type eq "hidden"}
-			<input type="hidden" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} />
 		{elseif $field.type eq "statictext"}
 			<input type="hidden" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} /> {$form.data.$field_db}
-		{elseif $field.type eq "text"}
-			<input type="text" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} />
+		{elseif $field.type eq "text" or $field.type eq "password" or $field.type eq "hidden"}
+			<input type="{$field.type}" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} />
 		{elseif $field.type eq "file"}
 			<input type="hidden" name="MAX_FILE_SIZE" value="{$_settings.max_upload_filesize}" />
 			<input type="file" name="{$form.prefix}{$field.name}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach}  />
@@ -138,10 +139,10 @@ function show_admintable_tab(num)
 <script type="text/javascript">
 {if $form.no_highlight neq 1}
 {section name=tabsectionindex2 loop=$form.tabs}{* tab titles *}
-	set_adminform_style(document.getElementById('adminform_table{$smarty.section.tabsectionindex2.index}'), '#efefef', '#e5e5e5', '#dbdbdb', '#e5e5e5');
+	set_adminform_style{$postfix}(document.getElementById('adminform_table{$postfix}-{$smarty.section.tabsectionindex2.index}'), '#efefef', '#e5e5e5', '#dbdbdb', '#e5e5e5');
 {/section}
 {/if}
 {if $form.tabscount gt 1}
-	show_admintable_tab(1);
+	show_admintable_tab{$postfix}(1);
 {/if}
 </script>
