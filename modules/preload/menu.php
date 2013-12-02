@@ -139,6 +139,7 @@ function sm_add_menuitem(&$menu, $title, $url, $level=1, $partial_select='', $al
 		$menu[$i]['url']=$url;
 		$menu[$i]['caption']=$title;
 		$menu[$i]['partial']=$partial_select;
+		$menu[$i]['level']=$level;
 		$menu[$i]['alt']=$alt_text;
 		$menu[$i]['newpage']=$newpage;
 	}
