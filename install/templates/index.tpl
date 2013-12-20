@@ -78,6 +78,11 @@ a
 				<input type="submit" value="OK &gt;&gt;">
 				</form>
 				</center>
+					<h3>Database information</h3>
+					Host: <b>{$inst.db.host}</b><br />
+					Database: <b>{$inst.db.db}</b><br />
+					User: <b>{$inst.db.user}</b><br />
+					Password: <b>{$inst.db.password}</b><br />
 				{elseif $inst.step eq "1"}
 				{include file="listmsg.tpl"}
 				{if $inst.error eq "1"}{include file="listerrors.tpl"}{else}

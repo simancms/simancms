@@ -76,6 +76,10 @@
 						}
 				}
 			$dir->close();
+			$inst['db']['host']=$hostNameDB;
+			$inst['db']['db']=$nameDB;
+			$inst['db']['user']=$userNameDB;
+			$inst['db']['password']=$userPasswordDB;
 		}
 	else
 		{
@@ -155,7 +159,7 @@
 							$inst['tables'][14]['name'] = 'privmsg';
 							$inst['tables'][15]['name'] = 'log';
 							$inst['tables'][16]['name'] = 'tempdata';
-							include('dbcreate.php');
+							include('dbcreate'.$serverDB.'.php');
 							for ($i = 0; $i < count($inst['tables']); $i++)
 								{
 									if ($inst['tables'][$i]['result'])
