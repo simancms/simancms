@@ -22,4 +22,4 @@ RewriteRule ^content/([0-9]+)\.html$ index.php?m=content&d=view&cid=$1 [L]
 RewriteRule ^downloads/attachments/([0-9]+)-(.*)$ index.php?m=download&d=attachment&id=$1 [L]
 RewriteRule ^downloads/viewattachment/([0-9]+)-(.*)$ index.php?m=download&d=showattachedfile&id=$1 [L]
 RewriteRule ^downloads/$ index.php?m=download [L]
-RewriteRule (.*) rewrite.php?rewrittenquery=$1
+RewriteRule (.*) rewrite.php?rewrittenquery=$1 [QSA,L]
