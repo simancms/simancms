@@ -7,14 +7,13 @@
 
 	if (!defined("SIMAN_DEFINED"))
 		{
-			print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+			print('Hacking attempt!');
 			exit();
 		}
 
-
 	function event_generaterss_rss($feed)
 		{
-			global $modules, $special, $singleWindow, $lang, $_settings;
+			global $special, $singleWindow, $lang;
 			$special['ajax'] = 1;
 			$special['main_tpl'] = 'simpleout';
 			$singleWindow = 1;
@@ -27,7 +26,8 @@
 				out(' <link>'.$feed['link'].'</link>'."\n");
 			if (!empty($feed['description']))
 				out(' <description>'.$feed['description'].'</description>'."\n");
-			out(' <image><url>http://'.$_settings['resource_url'].'files/img/rss_logo.gif</url><title>'.$feed['description'].'</title><link>'.$feed['link'].'</link></image>'."\n");
+			if (sm_settings('rss_shownimagetag')==1)
+				out(' <image><url>http://'.sm_settings('resource_url').'files/img/rss_logo.png</url><title>'.$feed['description'].'</title><link>'.$feed['link'].'</link></image>'."\n");
 			for ($i = 0; $i < count($feed['items']); $i++)
 				{
 					out('   <item>'."\n");
@@ -41,7 +41,7 @@
 						out('    <category>'.$feed['items'][$i]['category'].'</category>');
 					if (!empty($feed['items'][$i]['pubDate']))
 						out('    <pubDate>'.$feed['items'][$i]['pubDate'].'</pubDate>');
-					if (!empty($feed['items'][$i]['fulltext']))
+					if (!empty($feed['items'][$i]['fulltext']) && sm_settings('rss_showfulltext')==1)
 						out('    <yandex:full-text>'.$feed['items'][$i]['fulltext'].'</yandex:full-text>');
 					out('   </item>'."\n");
 				}
@@ -49,13 +49,13 @@
 			out('</rss>');
 		}
 
-	$special['document']['headend'] .= '<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://'.$_settings['resource_url'].'index.php?m=rss">';
-	if ($_settings['rss_shownewsctgs'] == 1)
+	sm_html_headend('<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://'.$_settings['resource_url'].'index.php?m=rss">');
+	if (sm_settings('rss_shownewsctgs') == 1)
 		{
 			$tmpnewsctgs = getsqlarray("SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category");
 			for ($tmpirss = 0; $tmpirss < count($tmpnewsctgs); $tmpirss++)
 				{
-					$special['document']['headend'] .= '<link rel="alternate" type="application/rss+xml" title="'.htmlspecialchars($tmpnewsctgs[$tmpirss]['title_category']).'" href="http://'.$_settings['resource_url'].'index.php?m=rss&ctg='.$tmpnewsctgs[$tmpirss]['id_category'].'">';
+					sm_html_headend('<link rel="alternate" type="application/rss+xml" title="'.htmlspecialchars($tmpnewsctgs[$tmpirss]['title_category']).'" href="http://'.sm_settings('resource_url').'index.php?m=rss&ctg='.$tmpnewsctgs[$tmpirss]['id_category'].'">');
 				}
 			unset($tmpnewsctgs);
 		}

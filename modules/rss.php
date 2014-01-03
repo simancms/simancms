@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/content/
 	Description: RSS-Export module
 	Version: 1.6.5
-	Revision: 2014-01-02
+	Revision: 2014-01-03
 	Author URI: http://simancms.org/
 	*/
 
@@ -31,9 +31,9 @@
 	if (sm_action('news'))
 		{
 			$m["module"] = 'rss';
-			$rss['title'] = $_settings['resource_title'];
-			$rss['link'] = 'http://'.$_settings['resource_url'];
-			$rss['description'] = $_settings['logo_text'];
+			$rss['title'] = sm_settings('resource_title');
+			$rss['link'] = 'http://'.sm_settings('resource_url');
+			$rss['description'] = sm_settings('logo_text');
 			$ctg = intval($_getvars['ctg']);
 			$sql = "SELECT * FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE id_category_n=id_category ";
 			if (!empty($ctg))
@@ -41,7 +41,7 @@
 					$sql .= " AND id_category_n=".$ctg;
 				}
 			$sql .= " AND (date_news<=".time().") ";
-			$sql .= " ORDER BY date_news DESC LIMIT ".intval($_settings['rss_itemscount']);
+			$sql .= " ORDER BY date_news DESC LIMIT ".intval(sm_settings('rss_itemscount'));
 			$result = execsql($sql);
 			$i = 0;
 			while ($row = database_fetch_object($result))
@@ -51,7 +51,7 @@
 					//$rss['items'][$i]['pubDate']=date('D, d M Y H:i:s +0200', $row->date_news);
 					if (empty($row->prewiew_news))
 						{
-							$rss['items'][$i]['description'] = cut_str_by_word(strip_tags($row->text_news), $_settings['news_anounce_cut'], '...');
+							$rss['items'][$i]['description'] = cut_str_by_word(strip_tags($row->text_news), sm_settings('news_anounce_cut'), '...');
 						}
 					else
 						$rss['items'][$i]['description'] = strip_tags($row->prewiew_news);
@@ -76,44 +76,53 @@
 	if ($userinfo['level'] == 3)
 		{
 			sm_include_lang('rss');
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('postsettings'))
 				{
-					$m["module"] = 'rss';
+					$cnt=intval($_postvars['rss_itemscount']);
+					if ($cnt<=0)
+						$cnt=15;
+					sm_update_settings('rss_itemscount', $cnt);
+					sm_update_settings('rss_showfulltext', intval($_postvars['rss_showfulltext']));
+					sm_update_settings('rss_shownewsctgs', intval($_postvars['rss_shownewsctgs']));
+					sm_update_settings('rss_shownimagetag', intval($_postvars['rss_shownimagetag']));
+					sm_redirect('index.php?m=rss&d=admin');
+				}
+			if (sm_action('admin'))
+				{
 					add_path_modules();
 					add_path($lang['module_rss']['module_rss'], 'index.php?m=rss&d=admin');
-					$m['title'] = $lang['settings'];
+					sm_title($lang['settings']);
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=rss&d=postsettings');
+					$f->AddText('rss_itemscount', $lang['module_rss']['settings']['rss_itemscount']);
+					$f->AddCheckbox('rss_showfulltext', $lang['module_rss']['settings']['rss_showfulltext']);
+					$f->AddCheckbox('rss_shownewsctgs', $lang['module_rss']['settings']['rss_shownewsctgs']);
+					$f->AddCheckbox('rss_shownimagetag', $lang['module_rss']['settings']['rss_shownimagetag']);
+					$f->LoadValuesArray($_settings);
+					$ui->AddForm($f);
+					$ui->Output(true);
 				}
-			if (strcmp($m["mode"], 'install') == 0)
+			if (sm_action('install'))
 				{
-					$m['title'] = $lang['common']['install'];
-					$m["module"] = 'rss';
 					sm_register_module('rss', $lang['module_rss']['module_rss']);
 					sm_register_autoload('rss');
 					sm_new_settings('rss_itemscount', 15);
 					sm_new_settings('rss_showfulltext', 0);
 					sm_new_settings('rss_shownewsctgs', 0);
+					sm_new_settings('rss_shownimagetag', 0);
 					sm_redirect('index.php?m=admin&d=modules');
 				}
-			if (strcmp($m["mode"], 'uninstall') == 0)
+			if (sm_action('uninstall'))
 				{
-					$m['title'] = $lang['common']['install'];
-					$m["module"] = 'rss';
 					sm_unregister_module('rss');
 					sm_unregister_autoload('rss');
 					sm_delete_settings('rss_itemscount');
 					sm_delete_settings('rss_showfulltext');
 					sm_delete_settings('rss_shownewsctgs');
+					sm_delete_settings('rss_shownimagetag');
 					sm_redirect('index.php?m=admin&d=modules');
-				}
-			if (strcmp($m['mode'], 'postsettings') == 0)
-				{
-					$m['title'] = $lang['settings'];
-					$m["module"] = 'rss';
-					$m["mode"] = 'redirect';
-					sm_update_settings('rss_itemscount', intval($_postvars['rss_itemscount']));
-					sm_update_settings('rss_showfulltext', intval($_postvars['rss_showfulltext']));
-					sm_update_settings('rss_shownewsctgs', intval($_postvars['rss_shownewsctgs']));
-					sm_redirect('index.php?m=rss&d=admin');
 				}
 		}
 
