@@ -1,0 +1,63 @@
+<?php
+
+	//------------------------------------------------------------------------------
+	//|            Content Management System SiMan CMS                             |
+	//|                http://www.simancms.org                                     |
+	//------------------------------------------------------------------------------
+
+	if (!defined("SIMAN_DEFINED"))
+		{
+			print('Спроба несанкціонованого доступу!<br><br>Hacking attempt!');
+			exit();
+		}
+
+
+	function event_generaterss_rss($feed)
+		{
+			global $modules, $special, $singleWindow, $lang, $_settings;
+			$special['ajax'] = 1;
+			$special['main_tpl'] = 'simpleout';
+			$singleWindow = 1;
+			out('<?xml version="1.0" encoding="'.$lang["charset"].'"?>');
+			out('<rss version="2.0">');
+			out('<channel>'."\n");
+			if (!empty($feed['title']))
+				out(' <title>'.$feed['title'].'</title>'."\n");
+			if (!empty($feed['link']))
+				out(' <link>'.$feed['link'].'</link>'."\n");
+			if (!empty($feed['description']))
+				out(' <description>'.$feed['description'].'</description>'."\n");
+			out(' <image><url>http://'.$_settings['resource_url'].'files/img/rss_logo.gif</url><title>'.$feed['description'].'</title><link>'.$feed['link'].'</link></image>'."\n");
+			for ($i = 0; $i < count($feed['items']); $i++)
+				{
+					out('   <item>'."\n");
+					if (!empty($feed['items'][$i]['title']))
+						out('    <title>'.$feed['items'][$i]['title'].'</title>');
+					if (!empty($feed['items'][$i]['link']))
+						out('    <link>'.$feed['items'][$i]['link'].'</link>');
+					if (!empty($feed['items'][$i]['description']))
+						out('    <description>'.$feed['items'][$i]['description'].'</description>');
+					if (!empty($feed['items'][$i]['category']))
+						out('    <category>'.$feed['items'][$i]['category'].'</category>');
+					if (!empty($feed['items'][$i]['pubDate']))
+						out('    <pubDate>'.$feed['items'][$i]['pubDate'].'</pubDate>');
+					if (!empty($feed['items'][$i]['fulltext']))
+						out('    <yandex:full-text>'.$feed['items'][$i]['fulltext'].'</yandex:full-text>');
+					out('   </item>'."\n");
+				}
+			out('</channel>');
+			out('</rss>');
+		}
+
+	$special['document']['headend'] .= '<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://'.$_settings['resource_url'].'index.php?m=rss">';
+	if ($_settings['rss_shownewsctgs'] == 1)
+		{
+			$tmpnewsctgs = getsqlarray("SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category");
+			for ($tmpirss = 0; $tmpirss < count($tmpnewsctgs); $tmpirss++)
+				{
+					$special['document']['headend'] .= '<link rel="alternate" type="application/rss+xml" title="'.htmlspecialchars($tmpnewsctgs[$tmpirss]['title_category']).'" href="http://'.$_settings['resource_url'].'index.php?m=rss&ctg='.$tmpnewsctgs[$tmpirss]['id_category'].'">';
+				}
+			unset($tmpnewsctgs);
+		}
+
+?>
