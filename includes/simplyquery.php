@@ -347,6 +347,12 @@ if (!defined("simplyquery_DEFINED"))
 						$this->Limit(1);
 						return $this->Select($addsql, $type);
 					}
+				function GetField($field)
+					{
+						$this->SelectFields($field);
+						$row=$this->Get();
+						return $row[$field];
+					}
 				function Count()
 					{
 						return count($this->items);
