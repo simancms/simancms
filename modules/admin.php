@@ -266,6 +266,8 @@
 					sm_update_settings('resource_url_tablet', $_postvars['resource_url_tablet'], $m['mode_settings']);
 					sm_update_settings('redirect_on_success_change_usrdata', $_postvars['redirect_on_success_change_usrdata'], $m['mode_settings']);
 					sm_update_settings('signinwithloginandemail', intval($_postvars['signinwithloginandemail']), $m['mode_settings']);
+					sm_update_settings('content_editor_level', intval($_postvars['content_editor_level']), $m['mode_settings']);
+					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
 
 					include('includes/config.php');
 					$refresh_url = 'index.php?m=admin&d=settings&viewmode='.$m['mode_settings'];

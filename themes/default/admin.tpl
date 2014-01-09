@@ -461,6 +461,18 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=content_image_fulltext_height&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.content_editor_level eq 1}
+		<tr>
+			<td>{$lang.settings_editor_level}: </td>
+			<td><select name="content_editor_level" size="1">
+				<option value="3"{if 3 eq $modules[$index].edit_settings.content_editor_level} SELECTED{/if}>{$lang.administrators}</option>
+				<option value="2"{if 2 eq $modules[$index].edit_settings.content_editor_level} SELECTED{/if}>{$lang.power_users}</option>
+				<option value="1"{if 1 eq $modules[$index].edit_settings.content_editor_level} SELECTED{/if}>{$lang.logged_users}</option>
+			</select></td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.news_settings}</td>
 </tr>
@@ -614,6 +626,18 @@
 			</select></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='news_news_attachments_count'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_attachments_count&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
+	{if $modules[$index].show_settings.news_editor_level eq 1}
+		<tr>
+			<td>{$lang.settings_editor_level}: </td>
+			<td><select name="news_editor_level" size="1">
+				<option value="3"{if 3 eq $modules[$index].edit_settings.news_editor_level} SELECTED{/if}>{$lang.administrators}</option>
+				<option value="2"{if 2 eq $modules[$index].edit_settings.news_editor_level} SELECTED{/if}>{$lang.power_users}</option>
+				<option value="1"{if 1 eq $modules[$index].edit_settings.news_editor_level} SELECTED{/if}>{$lang.logged_users}</option>
+			</select></td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 <tr>
