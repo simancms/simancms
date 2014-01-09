@@ -324,7 +324,7 @@
 										{
 											$m["text"] = nl2br($m["text"]);
 										}
-									if ($userinfo['level'] == 3)
+									if ($userinfo['level']>=intval(sm_settings('news_editor_level')))
 										{
 											$m["can_edit"] = 1;
 											$m["can_delete"] = 1;
