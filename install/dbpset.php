@@ -375,11 +375,19 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode
 execsql($sql);
 
 //version 1.6.5
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('news_editor_level', '2', 'default');
+";
+execsql($sql);
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('content_editor_level', '2', 'default');
+";
+execsql($sql);
 
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20131007');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20140115');
 ";
 execsql($sql);
 

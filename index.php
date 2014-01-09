@@ -235,8 +235,7 @@
 						}
 					else
 						{
-							$sql = "UPDATE ".$tableprefix."settings SET value_settings='' WHERE name_settings='install_not_erased'";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							sm_update_settings('install_not_erased', '');
 						}
 				}
 
