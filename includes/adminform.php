@@ -31,6 +31,7 @@ if (!defined("adminform_DEFINED"))
 						$this->currentTab=0;
 						$this->form['tabs'][0]['title']='';
 						$this->form['postfix']=mt_rand(1000, 9999);
+						$this->form['tooltip_present']=false;
 					}
 				function AddTab($title)
 					{
@@ -322,9 +323,14 @@ if (!defined("adminform_DEFINED"))
 						else
 							$this->form['no_highlight']=0;
 					}
-				function Tooltip($name, $text)
+				function Tooltip($name, $text, $image='help.gif')
 					{
 						$this->form['fields'][$name]['tooltip']=$text;
+						if (!file_exists('themes/'.sm_settings('default_theme').'/images/admintable/'.$image))
+							$this->form['fields'][$name]['tooltipimg']='themes/default/images/admintable/'.$image;
+						else
+							$this->form['fields'][$name]['tooltipimg']='themes/'.sm_settings('default_theme').'/images/admintable/'.$image;
+						$this->form['tooltip_present']=true;
 					}
 			}
 

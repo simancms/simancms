@@ -72,14 +72,14 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 		{if $field.type neq "hidden" and  $field.type neq "separator" and $field.mergecolumns neq 1 and $field.hidedefinition neq 1}
 		<tr>
 		<td width="{if $form.options.width1 neq ""}{$form.options.width1}{else}30%{/if}">{$field.caption}{$field.column[0]}{if $field.required}<sup class="adminform-required">*</sup>{/if}</td>
-		<td width="{if $form.options.width2 neq ""}{$form.options.width2}{else}67%{/if}">
+		<td width="{if $form.options.width2 neq ""}{$form.options.width2}{else}{if $form.tooltip_present}67%{else}70%{/if}{/if}">
 		{elseif $field.mergecolumns eq 1}
 		<tr>
-		<td colspan="3">
+		<td colspan="2">
 			{$field.caption}
 		{elseif $field.type eq "separator"}
 		<tr class="adminform-separator">
-		<td colspan="2"><strong>{$field.caption}</strong>
+		<td colspan="{if $form.tooltip_present}3{else}2{/if}"><strong>{$field.caption}</strong>
 		{/if}
 		{assign var=field_db value=$field.name}
 		{if $field.toptext neq ""}{$field.toptext}<br />{/if}
@@ -111,14 +111,13 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 		{if $field.bottomtext neq ""}<br />{$field.bottomtext}{/if}
 		{if $field.type neq "hidden" and $field.hideencloser neq 1}
 		{$field.column[1]}
-		{if $field.mergecolumns neq 1}
+		</td>
+		{if $form.tooltip_present}
 			<td width="{if $form.options.width3 neq ""}{$form.options.width2}{else}3%{/if}">
-				{if $field.tooltip neq ""}<div class="tooltip" title="{$field.tooltip}"></div>{/if}
+				{if $field.tooltip neq ""}<div class="adminform-tooltip" title="{$field.tooltip}"><img src="{$field.tooltipimg}" /></div>{/if}
 				{$field.column[2]}
 			</td>
-			<td>
 		{/if}
-		</td>
 		</tr>
 		{/if}
 	{/if}
