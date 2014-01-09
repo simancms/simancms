@@ -873,12 +873,21 @@
 
 {if $modules[$index].mode eq 'listimg'}
 {include file="block_begin.tpl"}
-<form action="index.php">
-	<input type="hidden" name="m" value="admin">
-	<input type="hidden" name="d" value="listimg">
-	{$lang.search}: <input type="text" name="filter" value="{$sm.g.filter}">
-	<input type="submit" value="{$lang.common.ok}">
-</form>
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<form action="index.php">
+				<input type="hidden" name="m" value="admin">
+				<input type="hidden" name="d" value="listimg">
+				{$lang.search}: <input type="text" name="filter" value="{$sm.g.filter}">
+				<input type="submit" value="{$lang.common.ok}">
+			</form>
+		</td>
+		<td align="right">
+			<a href="index.php?m=admin&d=uplimg">{$lang.upload_image}</a><br />
+		</td>
+	</tr>
+</table>
 {include file="common_admintable.tpl" table=$modules[$index].table}
 {include file="pagebar.tpl"}
 <br /><br />
