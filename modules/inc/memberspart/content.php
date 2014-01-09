@@ -19,9 +19,9 @@
 	if ($userinfo['level'] > 0)
 		{
 
-			if (sm_action('add') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('add') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level'] < intval(sm_settings('content_editor_level')))
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 					else
 						$extsql = '';
@@ -44,9 +44,9 @@
 						}
 				}
 
-			if (sm_action('postadd') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('postadd') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
 						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
 					else
 						$extsql = '';
@@ -111,9 +111,9 @@
 						}
 				}
 
-			if (sm_actionpost('postedit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_actionpost('postedit') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
 						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
 					else
 						{
@@ -210,9 +210,9 @@
 						}
 				}
 
-			if (sm_action('edit') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('edit') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 					else
 						$extsql = '';
@@ -277,9 +277,9 @@
 						}
 				}
 
-			if (sm_action('delete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('delete') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 					else
 						{
@@ -310,9 +310,9 @@
 								$_msgbox['no'] = 'index.php?m=content&d=list&ctg='.$_getvars['ctg'];
 						}
 				}
-			if (sm_action('postdelete') && ($userinfo['level'] == 3 || !empty($userinfo['groups'])))
+			if (sm_action('postdelete') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
 				{
-					if ($userinfo['level'] < 3)
+					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
 						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
 					else
 						{
@@ -364,6 +364,8 @@
 						}
 				}
 
+			if ($userinfo['level'] > 2)
+				include('modules/inc/adminpart/content.php');
 		}
 
 ?>

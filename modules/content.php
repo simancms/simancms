@@ -302,9 +302,9 @@
 								}
 							if ($row['type_content'] == 0)
 								{
-									$m['content'][$i]["text"] = str_replace("\n", '<br>', $m['content'][$i]["text"]);
+									$m['content'][$i]["text"] = nl2br($m['content'][$i]["text"]);
 								}
-							if ($userinfo['level'] == 3)
+							if ($userinfo['level']>=intval(sm_settings('content_editor_level')))
 								{
 									$m['content'][$i]["can_edit"] = 1;
 									$m['content'][$i]["can_delete"] = 1;
@@ -561,10 +561,8 @@
 						$m['mode'] = 'donotshow';
 				}
 		}
-
-	if ($userinfo['level'] > 1)
+	
+	if ($userinfo['level']>0)
 		include('modules/inc/memberspart/content.php');
-	if ($userinfo['level'] > 2)
-		include('modules/inc/adminpart/content.php');
 
 ?>
