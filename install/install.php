@@ -138,6 +138,8 @@
 											$inst['messages'][count($inst['messages'])]['text'] = $lang['warning'].': '.$lang['directory_creation'].' <b>'.$inst['created'][$i].'. </b> <i>'.$lang['directory_exist'].'</i>';
 										}
 								}
+							if (!file_exists(dirname(dirname(__FILE__)).'/files/.htaccess'))
+								copy(dirname(dirname(__FILE__)).'/ext/.htaccess', dirname(dirname(__FILE__)).'/files/.htaccess');
 						}
 					elseif ($inst['step'] == 2)
 						{
