@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.5
-	//#revision 2013-10-27
+	//#revision 2014-01-13
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -159,9 +159,7 @@
 						}
 				}
 
-			require("lang/".$_settings['default_language'].".php");
-			if (file_exists("./lang/user/".$_settings['default_language'].".php"))
-				require("lang/user/".$_settings['default_language'].".php");
+			sm_change_language($_settings['default_language']);
 
 			sm_change_theme($_settings['default_theme']);
 
@@ -340,9 +338,9 @@
 										$dont_show_high_priority = 1;
 									elseif ($special['is_index_page'] != 1 && strcmp('#index#', $pnlrow->show_on_module) == 0 && $pnlrow->dont_show_modif != 1)
 										$dont_show_high_priority = 1;
-									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == $_settings['default_theme'])
+									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == $sm['s']['theme'])
 										$dont_show_high_priority = 1;
-									if (!empty($pnlrow->showonlang) && $pnlrow->showontheme == $_settings['default_language'])
+									if (!empty($pnlrow->showonlang) && $pnlrow->showontheme == $sm['s']['lang'])
 										$dont_show_high_priority = 1;
 									$show_panel = 1;
 									if (!empty($pnlrow->show_on_module))

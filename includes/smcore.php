@@ -154,15 +154,17 @@
 
 	function sm_include_lang($modulename, $langname = '')
 		{
-			global $lang, $_settings;
+			global $lang, $sm;
 			if (empty($langname))
-				$langname = $_settings['default_language'];
+				$langname = $sm['s']['lang'];
 			if (file_exists("./lang/modules/".$langname."_".$modulename.".php"))
 				require("lang/modules/".$langname."_".$modulename.".php");
 			elseif (file_exists("./lang/modules/en_".$modulename.".php"))
 				require("lang/modules/en_".$modulename.".php");
 			elseif (file_exists("./lang/modules/ukr_".$modulename.".php"))
 				require("lang/modules/ukr_".$modulename.".php");
+			if (!is_array($sm['other']['includedlanguages']) || !in_array(Array('module'=>$modulename, 'language'=>$langname), $sm['other']['includedlanguages']))
+				$sm['other']['includedlanguages'][]=Array('module'=>$modulename, 'language'=>$langname);
 		}
 
 	function sm_load_tree($tablename, $field_id, $field_root, $load_only_branches_of_this = -1, $extsqlwhere = '', $sortfield = '')
@@ -979,6 +981,20 @@
 	function sm_notify($message, $title='')
 		{
 			return;
+		}
+	
+	function sm_change_language($langname)
+		{
+			global $sm, $lang;
+			require("lang/".$langname.".php");
+			if (file_exists("./lang/user/".$langname.".php"))
+				require("lang/user/".$langname.".php");
+			$sm['s']['lang']=$langname;
+			if (is_array($sm['other']['includedlanguages']))
+				for ($i = 0; $i<count($sm['other']['includedlanguages']); $i++)
+					{
+						sm_include_lang($sm['other']['includedlanguages'][$i]['module'], $sm['other']['includedlanguages'][$i]['language']);
+					}
 		}
 
 ?>
