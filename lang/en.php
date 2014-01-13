@@ -32,6 +32,7 @@ $lang['all_users'] = 'All users';
 $lang['logged_users'] = 'Authorised users';
 $lang['power_users'] = 'Privilegied users';
 $lang['administrators'] = 'Administrators';
+$lang['common']['file']='File';
 $lang['common']['nobody'] = 'Nobody';
 $lang['common']['image'] = 'Image';
 $lang['common']['add'] = 'Add';

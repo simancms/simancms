@@ -816,21 +816,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-
-{if $modules[$index].mode eq "postsettings"}
-{include file="block_begin.tpl"}
-{$lang.settings_saved_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postuplimg"}
-{include file="block_begin.tpl"}
-{$lang.operation_complete}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'tstatus'}
 {include file="block_begin.tpl"}
 {if $modules[$index].table_count gt "0"}
@@ -864,13 +849,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'optimize'}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_optimize_successfull}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'listimg'}
 {include file="block_begin.tpl"}
 <table width="100%">
@@ -897,13 +875,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "postdelimg"}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_delete_image_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "renimg"}
 {include file="block_begin.tpl"}
 <!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&m=listimg">{$lang.module_admin.images_list}</a><br /><br />-->
@@ -922,13 +893,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "postrenimg"}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_rename_image_successful}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'massemail'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=admin&d=postmassemail" method="post">
@@ -942,13 +906,6 @@
 {$modules[$index].formadditionalhtml}
 <div align="center"><input type="submit" value="{$lang.submit}"></div>
 </form>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postmassemail"}
-{include file="block_begin.tpl"}
-{$lang.module_admin.message_mass_email_successfull}
-{include file="refresh.tpl"}
 {include file="block_end.tpl"}
 {/if}
 
@@ -977,25 +934,5 @@
 <!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&d=filesystemexp">{$lang.module_admin.virtual_filesystem_regexp}</a><br />
 <br />-->
 {include file="common_adminform.tpl" form=$modules[$index].form}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq 'package'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=admin&d=postpackage" method="post" enctype="multipart/form-data" class="pkgfrm">
-<input TYPE="hidden" name="MAX_FILE_SIZE" value="{$_settings.max_upload_filesize}">
-{$lang.file_name}: <input NAME="userfile" TYPE="file">
-{$modules[$index].formadditionalhtml1}
-<input type="submit" value="{$lang.upload}">
-</form>
-{if $modules[$index].can_upload_from_server eq "1"}
-<br />
-<form action="index.php?m=admin&d=postpackage&typeupload=url" method="post" enctype="multipart/form-data" class="pkgfrm">
-{$lang.common.url}: <input NAME="urlupload" TYPE="text">
-{$modules[$index].formadditionalhtml2}
-<input type="submit" value="{$lang.upload}">
-</form>
-{/if}
-{if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_upload_image&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
 {include file="block_end.tpl"}
 {/if}

@@ -77,6 +77,7 @@
 	$lang['save']='Зберегти';
 	$lang['rename']='Перейменувати';
 	$lang['message_unavaliable_feature']='Дана можливість відключена';
+	$lang['common']['file']='Файл';
 	$lang['common']['image']='Малюнок';
 	$lang['common']['add']='Додати';
 	$lang['common']['edit']='Редагувати';

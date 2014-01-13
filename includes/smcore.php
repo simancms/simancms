@@ -975,5 +975,10 @@
 			$sm['s']['document']['block'][$blockindex]['afterblock'].=$html;
 		}
 
+	//Dummy function for further implementation
+	function sm_notify($message, $title='')
+		{
+			return;
+		}
 
 ?>

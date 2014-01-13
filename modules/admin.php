@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#revision 2014-01-13
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -57,7 +57,6 @@
 						$m['mode_settings'] = $_getvars['viewmode'];
 					else
 						$m['mode_settings'] = 'default';
-					$m["title"] = $lang['settings'];
 					$i = 0;
 					$set[$i]['name'] = 'cookprefix';
 					$set[$i]['value'] = dbescape($_postvars['p_cook']);
@@ -270,7 +269,8 @@
 					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
 
 					include('includes/config.php');
-					$refresh_url = 'index.php?m=admin&d=settings&viewmode='.$m['mode_settings'];
+					sm_notify($lang['settings_saved_successful']);
+					sm_redirect('index.php?m=admin&d=settings&viewmode='.$m['mode_settings']);
 				}
 			if (sm_action('postchgttl'))
 				{
@@ -281,7 +281,7 @@
 				}
 			if (sm_action('postuplimg'))
 				{
-					$m['title'] = $lang['upload_image'];
+					sm_title($lang['upload_image']);
 					$fs = $_uplfilevars['userfile']['tmp_name'];
 					if (empty($_postvars['p_optional']))
 						{
@@ -301,6 +301,7 @@
 					else
 						{
 							sm_event('afteruploadedimagesaveadmin', array($fd));
+							sm_notify($lang['operation_complete']);
 							sm_redirect('index.php?m=admin&d=listimg');
 						}
 				}
@@ -614,7 +615,8 @@
 											$result = execsql($sql);
 										}
 								}
-							$refresh_url = 'index.php?m=admin&d=tstatus';
+							sm_notify($lang['module_admin']['message_optimize_successfull']);
+							sm_redirect('index.php?m=admin&d=tstatus');
 						}
 				}
 			if (sm_action('viewimg'))
@@ -677,11 +679,12 @@
 				}
 			if (sm_action('postdelimg'))
 				{
-					$m["title"] = $lang['module_admin']['delete_image'];
+					sm_title($lang['module_admin']['delete_image']);
 					$img = $_getvars["imgn"];
 					if (!strpos($img, '..') && !strpos($img, '/') && !strpos($img, '\\'))
 						unlink('./files/img/'.$img);
-					$refresh_url = 'index.php?m=admin&d=listimg';
+					sm_notify($lang['module_admin']['message_delete_image_successful']);
+					sm_redirect('index.php?m=admin&d=listimg');
 				}
 			if (sm_action('postrenimg'))
 				{
@@ -698,7 +701,10 @@
 								$m["error_message"] = $lang['module_admin']['message_cant_reaname'];
 						}
 					if (empty($m["error_message"]))
-						$refresh_url = 'index.php?m=admin&d=listimg';
+						{
+							sm_notify($lang['module_admin']['message_rename_image_successful']);
+							sm_redirect('index.php?m=admin&d=listimg');
+						}
 					else
 						{
 							$m['mode'] = 'renimg';
@@ -727,7 +733,7 @@
 				}
 			if (sm_action('postmassemail'))
 				{
-					$m['title'] = $lang['module_admin']['mass_email'];
+					sm_title($lang['module_admin']['mass_email']);
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE get_mail=1";
 					$result = execsql($sql);
 					$i = 0;
@@ -739,7 +745,8 @@
 						{
 							send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row->email, $_postvars['p_theme'], $_postvars['p_body']);
 						}
-					$refresh_url = 'index.php?m=admin';
+					sm_notify($lang['module_admin']['message_mass_email_successfull']);
+					sm_redirect('index.php?m=admin');
 				}
 			if (sm_action('filesystem'))
 				{
@@ -984,10 +991,27 @@
 				}
 			if (sm_action('package'))
 				{
-					$m["title"] = $lang['module_admin']['upload_package'];
-					add_path($lang['control_panel'], 'index.php?m=admin');
+					sm_title($lang['module_admin']['upload_package']);
+					add_path_control();
+					add_path_current();
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['file'].')');
+					$f = new TForm('index.php?m=admin&d=postpackage');
+					$f->AddFile('userfile', $lang['file_name']);
+					$f->SaveButton($lang['upload']);
+					$ui->AddForm($f);
+					$ui->Output(true);
 					if (function_exists('curl_init'))
-						$m["can_upload_from_server"] = 1;
+						{
+							$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['url'].')');
+							$f = new TForm('index.php?m=admin&d=postpackage&typeupload=url');
+							$f->AddText('urlupload', $lang['common']['url']);
+							$f->SaveButton($lang['upload']);
+							$ui->AddForm($f);
+							$ui->Output(true);
+						}
 				}
 			if (sm_action('postpackage'))
 				{
