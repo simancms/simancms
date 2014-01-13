@@ -6,13 +6,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "install" or $modules[$index].mode eq "uninstall" or $modules[$index].mode eq "postedit" or $modules[$index].mode eq "postadd" or $modules[$index].mode eq "postdelete"}
-{include file="block_begin.tpl"}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-
 {if $modules[$index].mode eq "edit" or $modules[$index].mode eq "html"}
 {include file="block_begin.tpl"}
 <form action="index.php?m=adminsettings&d=postedit&param={$modules[$index].name_settings}" method="post">

@@ -5,10 +5,14 @@
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
-	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
-	//==============================================================================
+	/*
+	Module Name: Simple Shortcodes
+	Module URI: http://simancms.org/modules/simpleshortcodes/
+	Description: Simple shortcodes to use in your texts
+	Version: 2013-10-17
+	Author: SiMan CMS Team
+	Author URI: http://simancms.org/
+	*/
 
 	if (!defined("SIMAN_DEFINED"))
 		{
