@@ -51,7 +51,7 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 {if $form.dont_use_form_tag neq 1}
 <form action="{$form.action}" method="{if $form.method eq ""}post{else}{$form.method}{/if}" class="adminform_form" enctype="multipart/form-data">
 {/if}
-{if $form.method neq "get"}
+{if $form.send_fields_info}
 	<input type="hidden" name="adminform_updates_nllist" value="{$form.updates}">
 	<input type="hidden" name="adminform_files_nllist" value="{$form.files}">
 {/if}

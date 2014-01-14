@@ -28,6 +28,7 @@ if (!defined("adminform_DEFINED"))
 						$this->form['method']=$method;
 						$this->form['prefix']=$prefix;
 						$this->form['updates']='';
+						$this->form['send_fields_info']=false;
 						$this->currentTab=0;
 						$this->form['tabs'][0]['title']='';
 						$this->form['postfix']=mt_rand(1000, 9999);
@@ -331,6 +332,10 @@ if (!defined("adminform_DEFINED"))
 						else
 							$this->form['fields'][$name]['tooltipimg']='themes/'.sm_settings('default_theme').'/images/admintable/'.$image;
 						$this->form['tooltip_present']=true;
+					}
+				function SendFieldsInfo()
+					{
+						$this->form['send_fields_info']=true;
 					}
 			}
 
