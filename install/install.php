@@ -112,7 +112,7 @@
 							$i = 5;
 							while ($entry = $dir->read())
 								{
-									if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0 && strcmp(strtolower($entry), '.ds_store') != 0)
+									if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0 && strcmp(strtolower($entry), '.ds_store') != 0 && strcmp(strtolower($entry), '.htaccess') != 0)
 										{
 											$inst['created'][$i] = '../files/themes/'.$entry;
 											$i++;
@@ -217,7 +217,7 @@
 							$i = 0;
 							while ($entry = $dir->read())
 								{
-									if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0 && strcmp($entry, 'default') != 0)
+									if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0 && strcmp($entry, 'default') != 0 && strcmp(strtolower($entry), '.ds_store') != 0 && strcmp(strtolower($entry), '.htaccess') != 0)
 										{
 											$inst['themes'][$i] = $entry;
 											$i++;
@@ -238,7 +238,7 @@
 							if ($inst['settings']['default_module'] == 'news')
 								$inst['settings']['news_use_time'] = 1;
 							include('dbpset.php');
-							if ($inst['settings']['theme'] == 'bootstrap')
+							if ($inst['settings']['theme'] == 'bootstrap' || $inst['settings']['theme'] == 'bootstrap3')
 								{
 									execsql("UPDATE ".$tableprefix."blocks SET panel_block=1, position_block=3 WHERE name_block='account'");
 								}
