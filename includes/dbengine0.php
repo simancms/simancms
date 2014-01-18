@@ -40,13 +40,14 @@
 			if ($_settings['show_script_info'] == 'on')
 				{
 					$special['sql']['count']++;
-					//$special['sql']['last_query']=$sql;
-					//$special['sql']['queries'][count($special['sql']['queries'])]=$sql;
+					$special['sql']['last_query']=$sql;
+					$special['sql']['queries'][count($special['sql']['queries'])]=$sql;
 				}
 			$r = mysql_query($sql);
 			if (!$r)
 				{
-					//print('<hr />'.mysql_error($lnkDB).'<br /> ====&gt;<br />'.$sql.'<hr />');
+					if ($_settings['show_script_info'] == 'on')
+						print('<hr />'.mysql_error($lnkDB).'<br /> ====&gt;<br />'.$sql.'<hr />');
 				}
 			return $r;
 		}
