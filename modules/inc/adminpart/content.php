@@ -248,7 +248,7 @@
 					if (!empty($ctg_id))
 						{
 							$sql .= " WHERE id_category_c = '$ctg_id'";
-							for ($i = 0; $i < 10; $i++)
+							for ($i = 0; $i < count($m['ctg']); $i++)
 								{
 									if ($m['ctg'][$i]['id'] == $ctg_id)
 										{
