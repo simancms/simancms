@@ -245,6 +245,57 @@ if (!defined("admintable_DEFINED"))
 						$this->sort_statement=$comma_separaded_columns;
 						usort($this->table['rows'], array($this, "USortRowsByColumnData"));
 					}
+				//-------- FORM FUNCTIONS ------------------------------------------------------------------------------------------------
+				function Textbox($name, $varname, $value)
+					{
+						$this->table['rows'][$this->rownumber][$name]['data']=$value;
+						$this->table['rows'][$this->rownumber][$name]['element']='text';
+						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+					}
+				function Selectbox($name, $varname, $value, $valuesarrayornllist, $labelsarrayornllist)
+					{
+						if (!is_array($valuesarrayornllist))
+							$valuesarrayornllist=nllistToArray($valuesarrayornllist);
+						if (!is_array($labelsarrayornllist))
+							$labelsarrayornllist=nllistToArray($labelsarrayornllist);
+						$this->table['rows'][$this->rownumber][$name]['data']=$value;
+						$this->table['rows'][$this->rownumber][$name]['element']='select';
+						$this->table['rows'][$this->rownumber][$name]['values']=$valuesarrayornllist;
+						$this->table['rows'][$this->rownumber][$name]['labels']=$labelsarrayornllist;
+						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+					}
+				function Checkbox($name, $varname, $checkedvalue, $checked=false)
+					{
+						$this->table['rows'][$this->rownumber][$name]['data']=$checkedvalue;
+						$this->table['rows'][$this->rownumber][$name]['element']='checkbox';
+						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+						$this->table['rows'][$this->rownumber][$name]['checked']=$checked;
+					}
+				function RadioItem($name, $varname, $checkedvalue, $checked=false)
+					{
+						$this->table['rows'][$this->rownumber][$name]['data']=$checkedvalue;
+						$this->table['rows'][$this->rownumber][$name]['element']='radioitem';
+						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+						$this->table['rows'][$this->rownumber][$name]['checked']=$checked;
+					}
+				//Input type=hidden + Label
+				function StoredLabel($name, $varname, $value)
+					{
+						$this->table['rows'][$this->rownumber][$name]['data']=$value;
+						$this->table['rows'][$this->rownumber][$name]['element']='storedlabel';
+						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+					}
+				//-------- /FORM FUNCTIONS ------------------------------------------------------------------------------------------------
+				function NoHighlight()
+					{
+						$this->table['no_highlight']=1;
+					}
+				function HeaderBulkCheckbox($name)
+					{
+						$this->table['columns'][$name]['html']='<input type="checkbox" id="'.$name.'-'.($this->table['postfix']).'-bulkcheckbox" onchange="'.
+							"$('.admintable-".($this->table['postfix'])."-control-checbox').attr('checked', $('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').attr('checked')?true:false);".
+							'" />';
+					}
 			}
 
 
