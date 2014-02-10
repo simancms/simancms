@@ -5,16 +5,7 @@
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
-	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-07
-	//==============================================================================
-
-	$_settings['version'] = '1.6.5';
-
-	$_settings['default_news_text_style'] = '0'; // 0 1
-	$_settings['content_multiview'] = 'on'; // on off
-	$_settings['show_script_info'] = 'off'; // on off
+	$_settings['version'] = '1.6.6';
 
 	$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='default'";
 	$result = database_db_query($nameDB, $sql, $lnkDB);
@@ -44,7 +35,9 @@
 					$_settings[$row['name_settings']] = $row['value_settings'];
 				}
 		}
-
-	$_settings['show_help'] = 'on'; //on off
+	
+	include(dirname(__FILE__).'/config_def.php');
+	if (file_exists(dirname(__FILE__).'/config_usr.php'))
+		include(dirname(__FILE__).'/config_usr.php');
 
 ?>

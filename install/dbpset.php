@@ -384,10 +384,24 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode
 ";
 execsql($sql);
 
+//version 1.6.6
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('content_multiview', 'on', 'default');
+";
+execsql($sql);
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('default_news_text_style', '0', 'default');
+";
+execsql($sql);
+$sql="
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('show_help', 'on', 'default');
+";
+execsql($sql);
+
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20140115');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20140315');
 ";
 execsql($sql);
 

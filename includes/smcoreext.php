@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-07
+	//#ver 1.6.6
+	//#revision 2014-02-10
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -404,6 +404,15 @@
 				{
 					sm_saferemove($items[$i]);
 				}
+		}
+	
+	function sm_is_allowed_to_upload($filename)
+		{
+			$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+			$disallowed=explode('|', sm_settings('disallowed_upload_extensions'));
+			if (count($disallowed)==0)
+				return false;
+			return !in_array($ext, $disallowed);
 		}
 	
 ?>

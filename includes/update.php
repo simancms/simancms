@@ -13,5 +13,12 @@
 			sm_add_settings('content_editor_level', '3');
 			sm_update_settings('database_date', '20140115');
 		}
+	if (intval(sm_settings('database_date'))<20140315)//1.6.6
+		{
+			sm_add_settings('content_multiview', 'on');
+			sm_add_settings('default_news_text_style', '0');
+			sm_add_settings('show_help', 'on');
+			sm_update_settings('database_date', '20140315');
+		}
 
 ?>
