@@ -9,5 +9,7 @@
 	$_settings['use_protect_code']=1;
 	
 	$_settings['disallowed_upload_extensions']='php|phps|php3|php4|php5|htm|xhtml|html|exe|sh|pl|py|bash|zsh|csh|ksh|cmd|wsf|bat|bin|com|lnk|pif|vb|vbs|vbscript|ws';
+	
+	$_settings['packages_upload_allowed']=true;
 
 ?>

@@ -312,7 +312,7 @@
 			if (sm_action('view'))
 				{
 					$m["title"] = $lang['control_panel'];
-					if (is_writeable('./'))
+					if (is_writeable('./') && $_settings['packages_upload_allowed'])
 						$m['can_use_package'] = 1;
 					if (intval(sm_settings('ignore_update'))!=1)
 						{
@@ -993,7 +993,7 @@
 					$ui->AddPagebar('');
 					$ui->Output(true);
 				}
-			if (sm_action('package'))
+			if (sm_action('package') && $_settings['packages_upload_allowed'])
 				{
 					sm_title($lang['module_admin']['upload_package']);
 					add_path_control();
@@ -1017,7 +1017,7 @@
 							$ui->Output(true);
 						}
 				}
-			if (sm_action('postpackage'))
+			if (sm_action('postpackage') && $_settings['packages_upload_allowed'])
 				{
 					$m['title'] = $lang['module_admin']['upload_package'];
 					$message = '';
