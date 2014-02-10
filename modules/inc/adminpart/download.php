@@ -56,6 +56,7 @@
 				}
 			if (sm_action('postadd'))
 				{
+					sm_extcore();
 					$descr = dbescape($_postvars['p_shortdesc']);
 					$fs = $_uplfilevars['userfile']['tmp_name'];
 					if (empty($_postvars['p_optional']))
@@ -71,6 +72,11 @@
 						{
 							$error = $lang["message_set_all_fields"];
 							sm_set_action('add');
+						}
+					elseif (!sm_is_allowed_to_upload($fd))
+						{
+							$error = $lang['error_file_upload_message'];
+							sm_set_action('upload');
 						}
 					elseif (file_exists($fd))
 						{
@@ -98,6 +104,7 @@
 				}
 			if (sm_action('postupload'))
 				{
+					sm_extcore();
 					$q = new TQuery($sm['t'].'downloads');
 					$q->Add('id_download', intval($_getvars['id']));
 					$info = $q->Get();
@@ -108,6 +115,11 @@
 							if (empty($fs))
 								{
 									$error = $lang["message_set_all_fields"];
+									sm_set_action('upload');
+								}
+							elseif (!sm_is_allowed_to_upload($fd))
+								{
+									$error = $lang['error_file_upload_message'];
 									sm_set_action('upload');
 								}
 							elseif (!file_exists($fs))

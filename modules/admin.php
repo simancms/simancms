@@ -281,7 +281,7 @@
 				}
 			if (sm_action('postuplimg'))
 				{
-					sm_title($lang['upload_image']);
+					sm_extcore();
 					$fs = $_uplfilevars['userfile']['tmp_name'];
 					if (empty($_postvars['p_optional']))
 						{
@@ -294,7 +294,11 @@
 					$fd = './files/img/'.$fd;
 					$m['fs'] = $fs;
 					$m['fd'] = $fd;
-					if (!move_uploaded_file($fs, $fd))
+					if (!sm_is_allowed_to_upload($fd))
+						{
+							$m['mode'] = 'errorupload';
+						}
+					elseif (!move_uploaded_file($fs, $fd))
 						{
 							$m['mode'] = 'errorupload';
 						}
