@@ -176,6 +176,7 @@
 				}
 			if (sm_action('postedit'))
 				{
+					sm_extcore();
 					$q = new TQuery($sm['t'].'downloads');
 					$q->Add('id_download', intval($_getvars['id']));
 					$info = $q->Get();
@@ -184,6 +185,11 @@
 							if (!empty($_postvars['optional_name']) && file_exists('files/download/'.basename($_postvars['optional_name'])))
 								{
 									$error = $lang['module_download']['file_already_exists'];
+									sm_set_action('edit');
+								}
+							elseif (!empty($_postvars['optional_name']) && !sm_is_allowed_to_upload($_postvars['optional_name']))
+								{
+									$error = $lang['module_admin']['message_wrong_file_name'];
 									sm_set_action('edit');
 								}
 							elseif (!empty($_postvars['optional_name']) && !rename('files/download/'.basename($info['file_download']), 'files/download/'.basename($_postvars['optional_name'])))
