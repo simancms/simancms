@@ -875,24 +875,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "renimg"}
-{include file="block_begin.tpl"}
-<!--<a href="index.php?m=admin">{$lang.control_panel}</a> :: <a href="index.php?m=admin&m=listimg">{$lang.module_admin.images_list}</a><br /><br />-->
-{if $modules[$index].error_message neq ""}
-<div class="errormessage">{$modules[$index].error_message}</div>
-<br />
-{/if}
-<form action="index.php">
-<input type="hidden" name="m" value="admin">
-<input type="hidden" name="d" value="postrenimg">
-<input type="hidden" name="on" value="{$modules[$index].image.old_name}">
-<input type="text" name="nn" value="{if $modules[$index].image.new_name eq ""}{$modules[$index].image.old_name}{else}{$modules[$index].image.new_name}{/if}">
-{$modules[$index].formadditionalhtml}
-<input type="submit" value="{$lang.rename}">
-</form>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'massemail'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=admin&d=postmassemail" method="post">

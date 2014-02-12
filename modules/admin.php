@@ -692,10 +692,10 @@
 				}
 			if (sm_action('postrenimg'))
 				{
-					$m["title"] = $lang['module_admin']['rename_image'];
+					sm_extcore();
 					$img1 = $_getvars["on"];
 					$img2 = $_getvars["nn"];
-					if (!(!strpos($img1, '..') && !strpos($img1, '/') && !strpos($img1, '\\') && !strpos($img2, '..') && !strpos($img2, '/') && !strpos($img2, '\\')) || empty($img1) || empty($img2))
+					if (!(!strpos($img1, '..') && !strpos($img1, '/') && !strpos($img1, '\\') && !strpos($img2, '..') && !strpos($img2, '/') && !strpos($img2, '\\')) || empty($img1) || empty($img2) || !sm_is_allowed_to_upload($img2))
 						{
 							$m["error_message"] = $lang['module_admin']['message_wrong_file_name'];
 						}
@@ -715,12 +715,29 @@
 							$_getvars["imgn"] = $img1;
 						}
 				}
-			if (sm_action('renimg'))
+			if (sm_action('renimg') && !empty($_getvars["imgn"]))
 				{
-					$m["title"] = $lang['module_admin']['rename_image'];
+					sm_title($lang['module_admin']['rename_image']);
 					$m['image']['old_name'] = $_getvars["imgn"];
-					add_path($lang['control_panel'], "index.php?m=admin");
+					add_path_control();
 					add_path($lang['module_admin']['images_list'], "index.php?m=admin&d=listimg");
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (!empty($m['error_message']))
+						$ui->div($m['error_message'], '', 'errormessage');
+					$f = new TForm('index.php', '', 'get');
+					$f->AddText('nn', $lang['file_name']);
+					$f->LoadValuesArray($_getvars);
+					if (empty($_getvars['nn']))
+						$f->SetValue('nn', $_getvars["imgn"]);
+					$f->AddHidden('m', 'admin');
+					$f->AddHidden('d', 'postrenimg');
+					$f->AddHidden('on', $_getvars["imgn"]);
+					$f->SaveButton($lang['rename']);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('nn');
 				}
 			if (sm_action('massemail'))
 				{
