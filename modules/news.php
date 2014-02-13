@@ -274,7 +274,7 @@
 						}
 					else
 						{
-							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news='$news_id'";
+							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news=".intval($news_id);
 							$result = execsql($sql);
 							while ($row = database_fetch_assoc($result))
 								{
@@ -300,7 +300,7 @@
 									$m["news_date"] = strftime($lang["datemask"], $row['date_news']);
 									$m["date"] = strftime($lang["datemask"], $m["date"]);
 									$m["text"] = $row['text_news'];
-									$m["id_category"] = $row['id_category_n'];
+									$m["id_category"] = intval($row['id_category_n']);
 									if ($special['categories']['getctg'] == 1)
 										$special['categories']['id'] = $row['id_category_n'];
 									if ($row['no_alike_news'] == 1)
@@ -339,7 +339,7 @@
 										}
 									if ($tmp_no_alike_news != 1 && $m['panel'] == 'center')
 										{
-											$tmpsql = "SELECT * FROM ".$tableprefix."news WHERE id_category_n=".$m["id_category"]."  AND id_news<>'$news_id' ORDER BY date_news DESC LIMIT ".$_settings['alike_news_count'];
+											$tmpsql = "SELECT * FROM ".$tableprefix."news WHERE id_category_n=".intval($m["id_category"])." AND id_news<>".intval($news_id)." ORDER BY date_news DESC LIMIT ".intval($_settings['alike_news_count']);
 											$tmpresult = execsql($tmpsql);
 											$j = 0;
 											while ($tmprow = database_fetch_object($tmpresult))

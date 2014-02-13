@@ -135,7 +135,7 @@
 			else
 				{
 					sm_page_viewid('content-view-'.$content_id);
-					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category AND id_content='$content_id'";
+					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category AND id_content=".intval($content_id);
 					if ($modules_index == 0)
 						$sql .= " AND refuse_direct_show <> 1";
 				}
@@ -150,7 +150,7 @@
 			$tmp_ctg = intval($_getvars['ctg']);
 			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
 			if (!empty($tmp_ctg))
-				$sql .= " AND ".$tableprefix."content.id_category_c='$tmp_ctg'";
+				$sql .= " AND ".$tableprefix."content.id_category_c=".intval($tmp_ctg);
 			if (sm_action('viewlast'))
 				$sql .= " ORDER BY ".$tableprefix."content.id_content DESC LIMIT 1";
 			else
@@ -172,7 +172,7 @@
 					sm_page_viewid('content-multiview-'.$ctg_id);
 					$m['subcategories'] = siman_load_ctgs_content($ctg_id);
 					$m['subcategories_present'] = 1;
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".$ctg_id;
+					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".intval($ctg_id);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
@@ -186,9 +186,9 @@
 			else
 				sm_page_viewid('content-multiview');
 			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
-			$sql .= ' AND '.$tableprefix.'categories.can_view<='.$userinfo['level'];
+			$sql .= ' AND '.$tableprefix.'categories.can_view<='.intval($userinfo['level']);
 			if (!empty($ctg_id))
-				$sql .= ' AND '.$tableprefix.'content.id_category_c=\''.$ctg_id."'";
+				$sql .= ' AND '.$tableprefix.'content.id_category_c='.intval($ctg_id);
 			$sql .= ' ORDER BY '.$tableprefix.'content.priority_content DESC"';
 			if ($_settings['content_multiview'] == 'off')
 				{
@@ -223,9 +223,9 @@
 			else
 				$ctg_id = $_getvars["ctgid"];
 			$sql = "SELECT ".database_get_fn_name('rand')."() as rndrow,".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
-			$sql .= ' AND '.$tableprefix.'categories.can_view<='.$userinfo['level'];
+			$sql .= ' AND '.$tableprefix.'categories.can_view<='.intval($userinfo['level']);
 			if (!empty($ctg_id))
-				$sql .= ' AND '.$tableprefix.'content.id_category_c=\''.$ctg_id."'";
+				$sql .= ' AND '.$tableprefix.'content.id_category_c='.intval($ctg_id);
 			$sql .= ' ORDER BY rndrow LIMIT 1';
 			$m["mode"] = 'view';
 			$tmp_no_alike_content = 1;
@@ -361,7 +361,7 @@
 								}
 							if ($tmp_no_alike_content != 1 && $modules_index == 1 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0)
 								{
-									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>'".$m['content'][$i]["cid"]."' AND id_category_c=".$m['content'][$i]["id_category"]." ORDER BY priority_content DESC LIMIT ".$_settings['alike_content_count'];
+									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>".intval($m['content'][$i]["cid"])." AND id_category_c=".intval($m['content'][$i]['id_category'])." ORDER BY priority_content DESC LIMIT ".intval($_settings['alike_content_count']);
 									$tmpresult = database_db_query($nameDB, $tmpsql, $lnkDB);
 									$j = 0;
 									while ($tmprow = database_fetch_assoc($tmpresult))
@@ -401,7 +401,7 @@
 				$_getvars["ctgid"] = $_getvars["ctg"];
 			$ctg_id = intval($_getvars["ctgid"]);
 			sm_page_viewid('content-viewctg-'.$ctg_id);
-			$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='$ctg_id'";
+			$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".intval($ctg_id);
 			$result = execsql($sql);
 			while ($row = database_fetch_assoc($result))
 				{
@@ -441,7 +441,7 @@
 					sm_add_title_modifier($m['title']);
 					sm_add_content_modifier($m['preview_category']);
 				}
-			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c='$ctg_id'";
+			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c=".intval($ctg_id);
 			if ($m['sorting_category'] == 3)
 				$sql .= " ORDER BY priority_content DESC";
 			elseif ($m['sorting_category'] == 1)
@@ -499,7 +499,7 @@
 				$m['mode'] = 'donotshow';
 			else
 				{
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='$ctg_id'";
+					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".intval($ctg_id);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
@@ -524,7 +524,7 @@
 								}
 							sm_add_title_modifier($m['title']);
 						}
-					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c='$ctg_id'";
+					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c=".intval($ctg_id);
 					if ($m['sorting_category'] == 3)
 						$sql .= " ORDER BY priority_content DESC";
 					elseif ($m['sorting_category'] == 1)
