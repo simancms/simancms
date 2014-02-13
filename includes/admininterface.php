@@ -117,6 +117,14 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->html('<br />');
 					}
+				function style($css)
+					{
+						$this->html('<style type="text/css">'.$css.'</style>');
+					}
+				function javascript($jscode)
+					{
+						$this->html('<script type="text/javascript">'.$jscode.'</script>');
+					}
 				function hr($id='', $class='', $style='', $additionaltagattrs='')
 					{
 						$code='<hr '.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.' />';
