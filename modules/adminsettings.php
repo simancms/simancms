@@ -9,7 +9,7 @@
 	Module Name: Settings (Expert Mode)
 	Module URI: http://simancms.org/modules/adminsettings/
 	Description: Manage default settings in expert mode.
-	Version: 2014-01-13
+	Version: 2014-02-13
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -22,93 +22,116 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (empty($m["mode"])) $m["mode"] = 'admin';
+			sm_default_action('admin');
 			sm_include_lang('adminsettings');
 			$m["module"] = 'adminsettings';
-			if (strcmp($m["mode"], 'postadd') == 0)
-				{
-					$m['title'] = $lang['settings'];
-					$name_settings = $_postvars['p_name'];
-					$value_settings = dbescape($_postvars['p_value']);
-					if (!empty($name_settings))
-						{
-							$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings) VALUES ('".$name_settings."', '".$value_settings."')";
-							$result = database_db_query($nameDB, $sql, $lnkDB);
-						}
-					$refresh_url = 'index.php?m=adminsettings&d=admin';
-				}
-			if (strcmp($m["mode"], 'addeditor') == 0 || strcmp($m["mode"], 'addhtml') == 0)
+			if (sm_action('addeditor', 'addhtml', 'edit', 'html'))
 				{
 					add_path_modules();
 					add_path($lang['module_adminsettings']['module_adminsettings'], 'index.php?m=adminsettings&d=admin');
-					$m['title'] = $lang['common']['add'];
-				}
-			if (strcmp($m["mode"], 'edit') == 0 || strcmp($m["mode"], 'html') == 0)
-				{
-					add_path_modules();
-					add_path($lang['module_adminsettings']['module_adminsettings'], 'index.php?m=adminsettings&d=admin');
-					$m['title'] = $lang['common']['edit'];
-					$m['name_settings'] = $_getvars['param'];
-					if (function_exists('siman_prepare_to_exteditor'))
-						$m['value_settings_ext'] = siman_prepare_to_exteditor($_settings[$_getvars['param']]);
+					add_path_current();
+					if (sm_action('addeditor', 'addhtml'))
+						sm_title($lang['common']['add']);
 					else
-						$m['value_settings_ext'] = $_settings[$_getvars['param']];
-					$m['value_settings_html'] = htmlspecialchars($_settings[$_getvars['param']]);
+						sm_title($lang['common']['edit']);
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (sm_action('addeditor', 'addhtml'))
+						$f = new TForm('index.php?m=adminsettings&d=postadd');
+					else
+						$f = new TForm('index.php?m=adminsettings&d=postedit&param='.urlencode($_getvars['param']).'&mode='.urlencode($_getvars['mode']));
+					$f->AddText('name_settings', 'name_settings');
+					if (sm_action('addeditor', 'edit'))
+						$f->AddEditor('value_settings', 'value_settings');
+					else
+						$f->AddTextarea('value_settings', 'value_settings');
+					$f->AddText('mode', 'mode');
+					if (sm_action('addeditor', 'addhtml'))
+						{
+							$f->SetValue('mode', 'default');
+						}
+					else
+						{
+							$q=new TQuery($tableprefix."settings");
+							$q->Add('mode', empty($_getvars['mode'])?'default':dbescape($_getvars['mode']));
+							$q->Add('name_settings', dbescape($_getvars['param']));
+							$f->LoadValuesArray($q->Get());
+						}
+					$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('name_settings');
 				}
-			if (strcmp($m["mode"], 'admin') == 0)
+			if (sm_action('admin'))
 				{
 					add_path_modules();
 					add_path($lang['module_adminsettings']['module_adminsettings'], 'index.php?m=adminsettings&d=admin');
 					require_once('includes/admintable.php');
-					$m['title'] = $lang['settings'];
+					require_once('includes/adminbuttons.php');
+					require_once('includes/admininterface.php');
+					sm_title($lang['settings']);
+					$ui = new TInterface();
+					$b=new TButtons();
+					$b->AddButton('', $lang['common']['add'], 'index.php?m=adminsettings&d=addeditor');
+					$b->AddButton('', $lang['common']['add'].'('.$lang['common']['html'].')', 'index.php?m=adminsettings&d=addhtml');
+					$ui->AddButtons($b);
 					$t=new TGrid('edit');
-					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddCol('title', $lang['common']['title'], '80%');
+					$t->AddCol('mode', '', '20%');
 					$t->AddEdit();
 					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
 					$t->AddDelete();
-					$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='default'";
+					$sql = "SELECT * FROM ".$tableprefix."settings ORDER BY if(mode='default', 0, 1), mode, name_settings";
 					$result = database_db_query($nameDB, $sql, $lnkDB);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							$t->Label('title', $row->name_settings);
-							$t->Hint('title', strip_tags($row->value_settings));
-							$t->URL('edit', 'index.php?m=adminsettings&d=edit&param='.$row->name_settings);
-							$t->URL('html', 'index.php?m=adminsettings&d=edit&param='.$row->name_settings);
-							$t->URL('delete', 'index.php?m=adminsettings&d=postdelete&param='.$row->name_settings);
+							$t->Label('title', $row['name_settings']);
+							$t->Hint('title', strip_tags($row['value_settings']));
+							$t->Label('mode', $row['mode']);
+							$t->URL('edit', 'index.php?m=adminsettings&d=edit&param='.urlencode($row['name_settings']).'&mode='.urlencode($row['mode']));
+							$t->URL('html', 'index.php?m=adminsettings&d=html&param='.urlencode($row['name_settings']).'&mode='.urlencode($row['mode']));
+							$t->URL('delete', 'index.php?m=adminsettings&d=postdelete&param='.urlencode($row['name_settings']).'&mode='.urlencode($row['mode']));
 							$t->NewRow();
 						}
-					$m['table']=$t->Output();
+					$ui->AddGrid($t);
+					$ui->AddButtons($b);
+					$ui->Output(true);
 				}
-			if (strcmp($m["mode"], 'postedit') == 0)
+			if (sm_action('postadd', 'postedit'))
 				{
-					$m['title'] = $lang['settings'];
-					$name_settings = dbescape($_postvars['p_name']);
-					$value_settings = dbescape($_postvars['p_value']);
-					$sql = "UPDATE ".$tableprefix."settings SET name_settings='".$name_settings."', value_settings='".$value_settings."' WHERE mode='default' AND name_settings='".$_getvars['param']."'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$q=new TQuery($tableprefix."settings");
+					$q->Add('mode', empty($_postvars['mode'])?'default':dbescape($_postvars['mode']));
+					$q->Add('name_settings', dbescape($_postvars['name_settings']));
+					$q->Add('value_settings', dbescape($_postvars['value_settings']));
+					if (sm_action('postedit'))
+						{
+							$q->AddWhere('mode', empty($_getvars['mode'])?'default':dbescape($_getvars['mode']));
+							$q->AddWhere('name_settings', dbescape($_getvars['param']));
+							$q->Update();
+						}
+					else
+						$q->Insert();
+					sm_redirect('index.php?m=adminsettings&d=admin');
+				}
+			if (sm_action('postdelete'))
+				{
+					$q=new TQuery($tableprefix."settings");
+					$q->Add('mode', empty($_getvars['mode'])?'default':dbescape($_getvars['mode']));
+					$q->Add('name_settings', dbescape($_getvars['param']));
+					$q->Remove();
 					$refresh_url = 'index.php?m=adminsettings&d=admin';
 				}
-			if (strcmp($m["mode"], 'postdelete') == 0)
+			if (sm_action('install'))
 				{
-					$m['title'] = $lang['settings'];
-					$name_settings = $_postvars['p_name'];
-					$value_settings = dbescape($_postvars['p_value']);
-					$sql = "DELETE FROM ".$tableprefix."settings WHERE mode='default' AND name_settings='".$_getvars['param']."'";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
-					$refresh_url = 'index.php?m=adminsettings&d=admin';
-				}
-			if (strcmp($m["mode"], 'install') == 0)
-				{
-					$m['title'] = $lang['common']['install'];
 					sm_register_module('adminsettings', $lang['module_adminsettings']['module_adminsettings']);
-					$refresh_url = 'index.php?m=admin&d=modules';
+					sm_redirect('index.php?m=admin&d=modules');
 				}
-			if (strcmp($m["mode"], 'uninstall') == 0)
+			if (sm_action('uninstall'))
 				{
-					$m['title'] = $lang['common']['install'];
 					sm_unregister_module('adminsettings');
-					$refresh_url = 'index.php?m=admin&d=modules';
+					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}
 
