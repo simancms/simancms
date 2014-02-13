@@ -15,17 +15,13 @@
 	function sm_delete_settings($settings_name, $mode = 'default')
 		{
 			global $tableprefix;
-			$sql = "DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
-			execsql($sql);
+			execsql("DELETE FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'");
 		}
 
 	function sm_get_settings($settings_name, $mode = 'default')
 		{
 			global $tableprefix;
-			$sql = "SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."' LIMIT 1";
-			$result = execsql($sql);
-			$r = database_fetch_row($result);
-			return $r[0];
+			return getsqlfield("SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."' LIMIT 1");
 		}
 
 	//Alias for sm_new_settings
@@ -37,22 +33,19 @@
 	function sm_new_settings($settings_name, $settings_value, $mode = 'default')
 		{
 			global $tableprefix;
-			$sql = "INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')";
-			execsql($sql);
+			execsql("INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')");
 		}
 
 	function sm_update_settings($settings_name, $new_value, $mode = 'default')
 		{
 			global $tableprefix;
-			$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'";
-			execsql($sql);
+			execsql("UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'");
 		}
 
 	function sm_register_module($module_name, $module_title, $search_fields = '', $search_doing = '', $search_var = '', $search_table = '', $search_title = '', $search_idfield = '', $search_text = '')
 		{
 			global $tableprefix, $_settings;
-			$sql = "INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('".dbescape($module_name)."', '".dbescape($module_title)."', '".dbescape($search_fields)."', '".dbescape($search_doing)."', '".dbescape($search_var)."', '".dbescape($search_table)."', '".dbescape($search_title)."', '".dbescape($search_idfield)."', '".dbescape($search_text)."');";
-			execsql($sql);
+			execsql("INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('".dbescape($module_name)."', '".dbescape($module_title)."', '".dbescape($search_fields)."', '".dbescape($search_doing)."', '".dbescape($search_var)."', '".dbescape($search_table)."', '".dbescape($search_title)."', '".dbescape($search_idfield)."', '".dbescape($search_text)."');");
 			$_settings['installed_packages'] = addto_nllist($_settings['installed_packages'], $module_name);
 			sm_update_settings('installed_packages', $_settings['installed_packages']);
 		}
@@ -60,8 +53,7 @@
 	function sm_unregister_module($module_name)
 		{
 			global $tableprefix, $_settings;
-			$sql = "DELETE FROM ".$tableprefix."modules WHERE module_name = '$module_name'";
-			$result = execsql($sql);
+			execsql("DELETE FROM ".$tableprefix."modules WHERE module_name = '".dbescape($module_name)."'");
 			$_settings['installed_packages'] = removefrom_nllist($_settings['installed_packages'], $module_name);
 			sm_update_settings('installed_packages', $_settings['installed_packages']);
 		}
@@ -125,7 +117,7 @@
 			global $tableusersprefix;
 			if ($srchfield != 'email' && $srchfield != 'login')
 				$srchfield = 'id_user';
-			$sql = "SELECT * FROM ".$tableusersprefix."users WHERE $srchfield='".dbescape($id)."'";
+			$sql = "SELECT * FROM ".$tableusersprefix."users WHERE `".dbescape($srchfield)."`='".dbescape($id)."'";
 			$result = execsql($sql);
 			while ($row = database_fetch_assoc($result))
 				{
@@ -179,13 +171,13 @@
 						$addsql .= " WHERE ";
 					else
 						$addsql .= " AND ";
-					$addsql .= " $field_root='$load_only_branches_of_this'";
+					$addsql .= " `".dbescape($field_root)."`='".dbescape($load_only_branches_of_this)."'";
 				}
-			$sql = "SELECT * FROM ".$tableprefix.$tablename;
+			$sql = "SELECT * FROM `".$tableprefix.$tablename."`";
 			$sql .= $addsql;
-			$sql .= " ORDER BY $field_root";
+			$sql .= " ORDER BY `".dbescape($field_root)."`";
 			if (!empty($sortfield))
-				$sql .= ', '.$sortfield;
+				$sql .= ', `'.dbescape($sortfield).'`';
 			$result = execsql($sql);
 			$i = 0;
 			while ($row = database_fetch_array($result))
