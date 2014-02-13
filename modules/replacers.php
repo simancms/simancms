@@ -9,7 +9,7 @@
 	Module Name: Replacers
 	Module URI: http://simancms.org/
 	Description: Template replacers for custom themes
-	Version: 2013-10-17
+	Version: 2014-02-13
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -50,6 +50,13 @@
 				{
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
+					add_path_modules();
+					add_path('Replacers', 'index.php?m=replacers&d=admin');
+					add_path_current();
+					if (sm_action('add'))
+						sm_title($lang['common']['add']);
+					else
+						sm_title($lang['common']['edit']);
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=replacers&d=post'.$m['mode'].'&id='.intval($_getvars['id']));
 					$f->AddText('key_r', 'Key');
@@ -63,15 +70,19 @@
 					$f->LoadValuesArray($sm['p']);
 					$ui->AddForm($f);
 					$ui->Output(true);
+					sm_setfocus('key_r');
 				}
 			if (sm_action('admin'))
 				{
 					include_once('includes/admininterface.php');
 					include_once('includes/admintable.php');
+					include_once('includes/adminbuttons.php');
 					add_path_modules();
 					add_path('Replacers', 'index.php?m=replacers&d=admin');
 					$ui = new TInterface();
-					$ui->div('<a href="index.php?m=replacers&d=add">'.$lang['common']['add'].'</a>');
+					$b=new TButtons();
+					$b->AddButton('', $lang['common']['add'], 'index.php?m=replacers&d=add');
+					$ui->AddButtons($b);
 					$t = new TGrid();
 					$t->AddCol('key_r', 'Key', '100%');
 					$t->AddEdit();
@@ -91,12 +102,12 @@
 							$t->OneLine('key_r');
 						}
 					$ui->AddGrid($t);
+					$ui->AddButtons($b);
 					$ui->Output(true);
-					$m['title'] = $lang['settings'];
+					sm_title($lang['settings']);
 				}
 			if (sm_action('install'))
 				{
-					$m['title'] = $lang['common']['install'];
 					sm_register_module('replacers', 'Replacers');
 					sm_register_autoload('replacers');
 					execsql("CREATE TABLE `".$sm['t']."replacers` (
@@ -108,7 +119,6 @@
 				}
 			if (sm_action('uninstall'))
 				{
-					$m['title'] = $lang['common']['install'];
 					sm_unregister_module('replacers');
 					sm_unregister_autoload('replacers');
 					execsql("DROP TABLE `".$sm['t']."replacers`");
