@@ -456,14 +456,15 @@
 			$fs = $filesPointer['tmp_name'];
 			if (!empty($fs))
 				{
-					$file_download = "'".dbescape(sm_getnicename($filesPointer['name']))."'";
-					$userlevel_download = $userlevel;
-					$attachment_from = "'".dbescape($fromModule)."'";
-					$attachment_id = intval($fromId);
-					$attachment_type = "'".$filesPointer['type']."'";
-					$sql = "INSERT INTO ".$tableprefix."downloads (file_download, userlevel_download, attachment_from, attachment_id, attachment_type) VALUES ($file_download, $userlevel_download, $attachment_from, $attachment_id, $attachment_type)";
-					$newid = insertsql($sql);
-					if (empty($newid)) return false;
+					$q=new TQuery($tableprefix."downloads");
+					$q->Add('file_download', dbescape(sm_getnicename($filesPointer['name'])));
+					$q->Add('userlevel_download', intval($userlevel));
+					$q->Add('attachment_from', dbescape($fromModule));
+					$q->Add('attachment_id', intval($fromId));
+					$q->Add('attachment_type', dbescape($filesPointer['type']));
+					$newid = $q->Insert();
+					if (empty($newid))
+						return false;
 					$fd = 'files/download/attachment'.$newid;
 					if (file_exists($fd))
 						unlink($fd);
@@ -474,7 +475,6 @@
 				}
 			else
 				return false;
-
 		}
 
 	function sm_delete_attachments($fromModule, $fromId)
