@@ -7,8 +7,7 @@
 
 	$_settings['version'] = '1.6.6';
 
-	$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='default'";
-	$result = database_db_query($nameDB, $sql, $lnkDB);
+	$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='default'");
 	while ($row = database_fetch_assoc($result))
 		{
 			$_settings[$row['name_settings']] = $row['value_settings'];
@@ -18,8 +17,7 @@
 
 	if ($special['deviceinfo']['is_mobile'])
 		{
-			$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='mobile'";
-			$result = database_db_query($nameDB, $sql, $lnkDB);
+			$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='mobile'");
 			while ($row = database_fetch_assoc($result))
 				{
 					$_settings[$row['name_settings']] = $row['value_settings'];
@@ -28,8 +26,7 @@
 
 	if ($special['deviceinfo']['is_tablet'])
 		{
-			$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='tablet'";
-			$result = database_db_query($nameDB, $sql, $lnkDB);
+			$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='tablet'");
 			while ($row = database_fetch_assoc($result))
 				{
 					$_settings[$row['name_settings']] = $row['value_settings'];
