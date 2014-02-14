@@ -274,9 +274,9 @@
 				}
 			if (sm_action('postchgttl'))
 				{
-					$module_title = dbescape($_postvars['p_title']);
-					$sql = "UPDATE ".$tableprefix."modules SET module_title = '$module_title' WHERE id_module=".intval($_getvars['mid']);
-					$result = execsql($sql);
+					$q=new TQuery($tableprefix."modules");
+					$q->AddPost('module_title');
+					$q->Update('id_module', intval($_getvars['mid']));
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 			if (sm_action('postuplimg'))
@@ -452,15 +452,20 @@
 				}
 			if (sm_action('chgttl'))
 				{
-					$m["title"] = $lang['change_title'];
-					$sql = "SELECT * FROM ".$tableprefix."modules WHERE id_module=".intval($_getvars['mid']);
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$m['mod']['title'] = $row->module_title;
-							$m['mod']['name'] = $row->module_name;
-							$m['mod']['id'] = $row->id_module;
-						}
+					add_path_control();
+					add_path_current();
+					sm_title($lang['change_title']);
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=admin&d=postchgttl&mid='.intval($_getvars['mid']));
+					$f->AddText('module_title', $lang['title']);
+					$q=new TQuery($tableprefix."modules");
+					$q->Add('id_module', intval($_getvars['mid']));
+					$f->LoadValuesArray($q->Get());
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('module_title');
 				}
 			if (sm_action('copysettings'))
 				{

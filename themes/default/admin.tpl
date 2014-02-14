@@ -20,16 +20,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'chgttl'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=admin&d=postchgttl&mid={$modules[$index].mod.id}" method="post">
-<input type="text" name="p_title" value="{$modules[$index].mod.title}">
-{$modules[$index].formadditionalhtml}
-<input type="submit" value="{$lang.submit}">
-</form>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'errorupload'}
 {include file="block_begin.tpl"}
 {$lang.error_file_upload_message}<br />
