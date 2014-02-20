@@ -865,22 +865,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'massemail'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=admin&d=postmassemail" method="post">
-{$lang.module_admin.mass_email_theme}: <input type="text" name="p_theme" value=""><br />
-{$lang.module_admin.mass_email_message}:<br />
-{if $special.ext_editor_on eq "1"}
-{include file="editors_`$_settings.ext_editor`.tpl" editor_doing="common" var='p_body' value=$modules[$index].email.text}
-{else}
-<textarea cols="50" rows="20" name="p_body">{$modules[$index].email.text}</textarea>
-{/if}
-{$modules[$index].formadditionalhtml}
-<div align="center"><input type="submit" value="{$lang.submit}"></div>
-</form>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'viewimg'}
 {include file="block_begin.tpl"}
 <div align="center">

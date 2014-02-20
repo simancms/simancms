@@ -469,7 +469,6 @@
 				}
 			if (sm_action('copysettings'))
 				{
-					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
 						{
 							$q = new TQuery($tableprefix."settings");
@@ -482,7 +481,6 @@
 				}
 			if (sm_action('remsettings'))
 				{
-					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['destmode']) && !empty($_getvars['name']))
 						{
 							$q = new TQuery($tableprefix."settings");
@@ -620,7 +618,7 @@
 								{
 									if (isset($_postvars['p_opt_'.$i]))
 										{
-											$sql = "OPTIMIZE TABLE ".$_postvars['p_opt_'.$i];
+											$sql = "OPTIMIZE TABLE `".dbescape($_postvars['p_opt_'.$i])."`";
 											$result = execsql($sql);
 										}
 								}
@@ -744,35 +742,43 @@
 					$ui->Output(true);
 					sm_setfocus('nn');
 				}
+			if (sm_action('postmassemail'))
+				{
+					if (empty($_postvars['subject']) || empty($_postvars['message']))
+						{
+							$error=$lang['message_set_all_fields'];
+							sm_set_action('massemail');
+						}
+					else
+						{
+							$result = execsql("SELECT * FROM ".$sm['tu']."users WHERE get_mail=1");
+							while ($row = database_fetch_assoc($result))
+								{
+									send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row['email'], $_postvars['subject'], $_postvars['message']);
+								}
+							sm_notify($lang['module_admin']['message_mass_email_successfull']);
+							sm_redirect('index.php?m=admin');
+						}
+				}
 			if (sm_action('massemail'))
 				{
 					add_path_control();
-					add_path($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail');
-					$m['title'] = $lang['module_admin']['mass_email'];
-					if (!empty($_settings['ext_editor']))
-						{
-							$special['ext_editor_on'] = 1;
-							$m['email']['text'] = siman_prepare_to_exteditor(nl2br($_settings['email_signature']));
-						}
-					else
-						$m['email']['text'] = $_settings['email_signature'];
-				}
-			if (sm_action('postmassemail'))
-				{
+					add_path_current();
 					sm_title($lang['module_admin']['mass_email']);
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE get_mail=1";
-					$result = execsql($sql);
-					$i = 0;
-					if (empty($_settings['ext_editor']))
-						$msg = nl2br($_postvars['p_body']);
-					else
-						$msg = $_postvars['p_body'];
-					while ($row = database_fetch_object($result))
-						{
-							send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row->email, $_postvars['p_theme'], $_postvars['p_body']);
-						}
-					sm_notify($lang['module_admin']['message_mass_email_successfull']);
-					sm_redirect('index.php?m=admin');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (!empty($error))
+						$ui->div($error, '', 'errormessage error-message');
+					$f = new TForm('index.php?m=admin&d=postmassemail');
+					$f->AddText('subject', $lang['module_admin']['mass_email_theme']);
+					$f->AddEditor('message', $lang['module_admin']['mass_email_message']);
+					$f->LoadValuesArray($_postvars);
+					if (count($_postvars)==0)
+						$f->SetValue('message', $_settings['email_signature']);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('subject');
 				}
 			if (sm_action('filesystem'))
 				{
