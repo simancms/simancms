@@ -12,4 +12,6 @@
 	
 	$_settings['packages_upload_allowed']=true;
 
+	$_settings['show_script_info'] = 'off';
+
 ?>
