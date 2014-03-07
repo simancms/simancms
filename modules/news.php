@@ -91,7 +91,7 @@
 						{
 							sm_page_viewid('news-'.$m["mode"].'-'.$_getvars['dy'].'-'.$_getvars['dm'].'-'.$_getvars['dd']);
 						}
-					$from_record = $_getvars['from'];
+					$from_record = intval($_getvars['from']);
 					if (empty($from_record)) $from_record = 0;
 					$from_page = ceil(($from_record+1)/$_settings['news_by_page']);
 					if (sm_action('listdate'))
