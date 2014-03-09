@@ -125,7 +125,7 @@
 			$m["module"] = 'content';
 			if (!empty($m["bid"])) $m["cid"] = $m["bid"];
 			$content_id = intval($m["cid"]);
-			if (empty($content_id) && $modules_index == 0) $content_id = $_getvars["cid"];
+			if (empty($content_id) && $modules_index == 0) $content_id = intval($_getvars["cid"]);
 			if (empty($content_id))
 				{
 					$m["title"] = $lang["error"];
@@ -219,9 +219,9 @@
 			sm_page_viewid('content-rndctgview');
 			$m["module"] = 'content';
 			if (!empty($m["bid"]))
-				$ctg_id = $m["bid"];
+				$ctg_id = intval($m["bid"]);
 			else
-				$ctg_id = $_getvars["ctgid"];
+				$ctg_id = intval($_getvars["ctgid"]);
 			$sql = "SELECT ".database_get_fn_name('rand')."() as rndrow,".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
 			$sql .= ' AND '.$tableprefix.'categories.can_view<='.intval($userinfo['level']);
 			if (!empty($ctg_id))

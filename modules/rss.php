@@ -38,7 +38,7 @@
 			$sql = "SELECT * FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE id_category_n=id_category ";
 			if (!empty($ctg))
 				{
-					$sql .= " AND id_category_n=".$ctg;
+					$sql .= " AND id_category_n=".intval($ctg);
 				}
 			$sql .= " AND (date_news<=".time().") ";
 			$sql .= " ORDER BY date_news DESC LIMIT ".intval(sm_settings('rss_itemscount'));

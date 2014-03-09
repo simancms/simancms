@@ -70,7 +70,7 @@
 						{
 							$tmp_view_ctg_first = explode(',', $tmp_view_ctg);
 							$tmp_view_ctg_first = $tmp_view_ctg_first[0];
-							$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".intval($tmp_view_ctg_first)."'";
+							$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category=".intval($tmp_view_ctg_first);
 							$result = execsql($sql);
 							while ($row = database_fetch_object($result))
 								{
@@ -92,7 +92,6 @@
 							sm_page_viewid('news-'.$m["mode"].'-'.$_getvars['dy'].'-'.$_getvars['dm'].'-'.$_getvars['dd']);
 						}
 					$from_record = intval($_getvars['from']);
-					if (empty($from_record)) $from_record = 0;
 					$from_page = ceil(($from_record+1)/$_settings['news_by_page']);
 					if (sm_action('listdate'))
 						$m['pages']['url'] = 'index.php?m=news&d=listdate&dy='.$_getvars['dy'].'&dm='.$_getvars['dm'].'&dd='.$_getvars['dd'];
@@ -150,15 +149,14 @@
 								}
 							else
 								{
-									$ctg_id = intval($ctg_id);
-									$sql2 .= " AND id_category_n = $ctg_id ";
+									$sql2 .= " AND id_category_n = ".intval($ctg_id);
 								}
 						}
 					$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."news LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."news.filename_news=".$tableprefix."filesystem.id_fs";
 					$sql .= " $sql2 ORDER BY date_news DESC";
 					if ($tmp_short_news == 0)
 						{
-							$sql .= " LIMIT ".intval($_settings['news_by_page'])." OFFSET $from_record";
+							$sql .= " LIMIT ".intval($_settings['news_by_page'])." OFFSET ".intval($from_record);
 						}
 					elseif (!empty($m['limitnews']))
 						{
