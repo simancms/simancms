@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2014-01-13
+	//#ver 1.6.6
+	//#revision 2014-03-08
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -472,7 +472,7 @@
 					
 					//Head section generation start
 					if (!$sm['s']['headgen']['custom_encoding'])
-						$sm['s']['document']['headdef'].='<meta content="text/html; charset='.$lang['charset'].'" http-equiv=Content-Type>';
+						$sm['s']['document']['headdef'].='<meta content="text/html; charset='.$sm['s']['charset'].'" http-equiv=Content-Type>';
 					$sm['s']['document']['headdef'].='<title>';
 					if (intval(sm_settings('meta_resource_title_position'))==1 || intval(sm_settings('meta_resource_title_position'))==0 && strcmp($sm['s']['pagetitle'], "")==0)
 						{
@@ -480,7 +480,7 @@
 							if (strcmp($sm['s']['pagetitle'], "")!=0)
 								$sm['s']['document']['headdef'].=sm_settings('title_delimiter');
 						}
-					$sm['s']['document']['headdef'].=$sm['s']['pagetitle'];
+					$sm['s']['document']['headdef'].=strip_tags($sm['s']['pagetitle']);
 					if (intval(sm_settings('meta_resource_title_position'))==2)
 						{
 							if (strcmp($sm['s']['pagetitle'], "")!=0)
@@ -544,7 +544,7 @@
 								@header($_servervars['SERVER_PROTOCOL']." ".$special['header_error_code']);
 							elseif (empty($modules[0]['module']) || $modules[0]['module'] == '404')
 								@header("HTTP/1.0 404 Not Found");
-							@header('Content-type: text/html; charset='.$lang["charset"]);
+							@header('Content-type: text/html; charset='.$sm['s']['charset']);
 						}
 
 					//Output page
