@@ -470,6 +470,39 @@
 						}
 					//Postload modules end
 					
+					//Head section generation start
+					if (!$sm['s']['headgen']['custom_encoding'])
+						$sm['s']['document']['headdef'].='<meta content="text/html; charset='.$lang['charset'].'" http-equiv=Content-Type>';
+					$sm['s']['document']['headdef'].='<title>';
+					if (intval(sm_settings('meta_resource_title_position'))==1 || intval(sm_settings('meta_resource_title_position'))==0 && strcmp($sm['s']['pagetitle'], "")==0)
+						{
+							$sm['s']['document']['headdef'].=sm_settings('resource_title');
+							if (strcmp($sm['s']['pagetitle'], "")!=0)
+								$sm['s']['document']['headdef'].=sm_settings('title_delimiter');
+						}
+					$sm['s']['document']['headdef'].=$sm['s']['pagetitle'];
+					if (intval(sm_settings('meta_resource_title_position'))==2)
+						{
+							if (strcmp($sm['s']['pagetitle'], "")!=0)
+								$sm['s']['document']['headdef'].=sm_settings('title_delimiter');
+							$sm['s']['document']['headdef'].=sm_settings('resource_title');
+						}
+					$sm['s']['document']['headdef'].='</title>';
+					if (!empty($sm['s']['meta']['description']))
+						$sm['s']['document']['headdef'].='<meta name="description" content="'.htmlescape($sm['s']['meta']['description']).'">';
+					if (!empty($sm['s']['meta']['keywords']))
+						$sm['s']['document']['headdef'].='<meta name="keywords" content="'.htmlescape($sm['s']['meta']['keywords']).'">';
+					$sm['s']['document']['headdef'].='<base href="'.$sm['s']['page']['scheme'].'://'.$sm['s']['resource_url'].'">';
+					if (!empty($refresh_url))
+						$sm['s']['document']['headdef'].='<script type="text/javascript">setTimeout(function() { document.location.href = "'.$refresh_url.'"; }, 3000)</script>';
+					for ($i = 0; $i < count($sm['s']['customjs']); $i++)
+						$sm['s']['document']['headdef'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
+					for ($i = 0; $i < count($sm['s']['cssfiles']); $i++)
+						$sm['s']['document']['headdef'].='<link href="themes/'.$sm['s']['theme'].'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
+					for ($i = 0; $i < count($sm['s']['customcss']); $i++)
+						$sm['s']['document']['headdef'].='<link href="'.$sm['s']['customcss'][$i].'" type="text/css" rel="stylesheet" />';
+					//Head section generation end
+
 					unset($sm['cache']);
 
 					//System temp table cleaning

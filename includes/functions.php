@@ -449,5 +449,13 @@
 			$special['textout'] .= $txt;
 		}
 
+	function htmlescape($html)
+		{
+			global $lang;
+			$charset=sm_settings('htmlescapecharset');
+			if (empty($charset))
+				$charset=$lang['charset'];
+			return htmlspecialchars($html, ENT_COMPAT | ENT_HTML401, $charset);
+		}
 
 ?>
