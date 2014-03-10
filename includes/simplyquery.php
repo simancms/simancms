@@ -27,6 +27,11 @@ if (!defined("simplyquery_DEFINED"))
 						$this->sqlgenerationmode=false;
 						return $this;
 					}
+				public static function ForTable($tablename)
+					{
+						$query=new TQuery($tablename);
+						return $query;
+					}
 				function SQLGenerationModeOn()
 					{
 						$this->sqlgenerationmode=true;
@@ -298,14 +303,17 @@ if (!defined("simplyquery_DEFINED"))
 				function OrderBy($orderbyfileds)
 					{
 						$this->orderby=$orderbyfileds;
+						return $this;
 					}
 				function GroupBy($groupbyfileds)
 					{
 						$this->groupby=$groupbyfileds;
+						return $this;
 					}
 				function LeftJoin($table, $on_statement)
 					{
 						$this->leftjoin=$table.' ON '.$on_statement;
+						return $this;
 					}
 				function SelectFields($list='*')
 					{
