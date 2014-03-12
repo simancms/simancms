@@ -2,6 +2,7 @@
 <html lang="en"><head>{$special.document.headstart}{$special.document.headdef}
 
 	<link href="themes/{$special.theme}/css/bootstrap.css" rel="stylesheet">
+	<link href="themes/{$special.theme}/stylesheets.css" rel="stylesheet">
 
 	<script src="themes/{$special.theme}/js/jquery.js"></script>
 	<script src="themes/{$special.theme}/js/bootstrap.js"></script>
