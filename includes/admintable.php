@@ -296,6 +296,17 @@ if (!defined("admintable_DEFINED"))
 							"$('.admintable-".($this->table['postfix'])."-control-checbox').attr('checked', $('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').attr('checked')?true:false);".
 							'" />';
 					}
+				//-----------------------------
+				function LabelsFromArray($array)
+					{
+						if (!is_array($this->table['columns']) || !is_array($array))
+							return;
+						foreach ($this->table['columns'] as $key=>$val)
+							{
+								if (array_key_exists($key, $array))
+									$this->Label($key, $array[$key]);
+							}
+					}
 			}
 
 
