@@ -142,6 +142,14 @@ function sm_add_menuitem(&$menu, $title, $url, $level=1, $partial_select='', $al
 		$menu[$i]['level']=$level;
 		$menu[$i]['alt']=$alt_text;
 		$menu[$i]['newpage']=$newpage;
+		if ($level==1)
+			{
+				$menu[$i]['last']=1;
+				if ($i==0)
+					$menu[$i]['first']=1;
+				else
+					$menu[$i-1]['last']=0;
+			}
 	}
 
 if (!empty($_settings['upper_menu_id']))
