@@ -143,12 +143,12 @@ function atdropdowncancelclosetime{$postfix}()
 				{/if}
 			{/if}
 			{if $column.replace_image neq ""}
-				<img src="{if not $column.imagepath}themes/{$_settings.default_theme}/images/admintable/{/if}{$column.replace_image}" border="0">
+				<img src="{if not $column.imagepath}themes/{$sm.s.theme}/images/admintable/{/if}{$column.replace_image}" border="0">
 			{else}
 				{if $column.replace_text neq ""}
 					{$column.replace_text}			
 				{elseif $table.rows[table_row_index].$column_name.image neq ""}
-					<img src="{if not $table.rows[table_row_index].$column_name.imagepath}themes/{$_settings.default_theme}/images/admintable/{/if}{$table.rows[table_row_index].$column_name.image}" border="0">
+					<img src="{if not $table.rows[table_row_index].$column_name.imagepath}themes/{$sm.s.theme}/images/admintable/{/if}{$table.rows[table_row_index].$column_name.image}" border="0">
 				{else}
 					{if $table.rows[table_row_index].$column_name.element eq "text"}
 						<input type="text" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}" id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-text admintable-{$postfix}-control-text" />

@@ -25,7 +25,7 @@ if (!defined("admintable_DEFINED"))
 					}
 				function AddCol($name, $title, $width='', $hint='', $replace_text='', $replace_image='', $messagebox=0, $messagebox_text='', $to_menu=0)
 					{
-						global $_settings;
+						global $sm;
 						$this->table['columns'][$name]['caption']=$title;
 						$this->table['columns'][$name]['width']=$width;
 						$this->table['columns'][$name]['hint']=$hint;
@@ -33,7 +33,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['imagepath']=false;
 						if (!empty($replace_image) && strpos($replace_image, '/')===false)
 							{
-								if (!file_exists('themes/'.$_settings['default_theme'].'/images/admintable/'.$replace_image))
+								if (!file_exists('themes/'.$sm['s']['theme'].'/images/admintable/'.$replace_image))
 									{
 										$replace_image='themes/default/images/admintable/'.$replace_image;
 										$this->table['columns'][$name]['imagepath']=true;
@@ -112,11 +112,11 @@ if (!defined("admintable_DEFINED"))
 					}
 				function Image($name, $replace_image)
 					{
-						global $_settings;
+						global $sm;
 						$this->table['rows'][$this->rownumber][$name]['imagepath']=false;
 						if (!empty($replace_image) && strpos($replace_image, '/')===false)
 							{
-								if (!file_exists('themes/'.$_settings['default_theme'].'/images/admintable/'.$replace_image))
+								if (!file_exists('themes/'.$sm['s']['theme'].'/images/admintable/'.$replace_image))
 									{
 										$replace_image='themes/default/images/admintable/'.$replace_image;
 										$this->table['rows'][$this->rownumber][$name]['imagepath']=true;
