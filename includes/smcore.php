@@ -590,6 +590,7 @@
 				{
 					if (preg_match("/".$regexp."/i", $useragent))
 						{
+							$result['is_mobile'] = false;
 							$result['is_tablet'] = true;
 							$result['devicename'] = $device;
 							break;
