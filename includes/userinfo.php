@@ -36,6 +36,4 @@
 			$userinfo['level'] = 3;
 		}
 
-	$smarty->assign('userinfo', $userinfo);
-
 ?>

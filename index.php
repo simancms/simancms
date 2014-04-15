@@ -517,6 +517,7 @@
 					//Final initialization
 					sm_event('beforetplgenerate');
 					$special['pathcount'] = count($special['path']);
+					$smarty->assign_by_ref('userinfo', $userinfo);
 					$smarty->assign_by_ref('modules', $modules);
 					$smarty->assign_by_ref('refresh_url', $refresh_url);
 					$smarty->assign_by_ref('lang', $lang);
