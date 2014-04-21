@@ -92,8 +92,8 @@
 			if (empty($fname)) return false;
 			if ($includeAsIs == 1)
 				$special['customcss'][count($special['customcss'])] = $fname;
-			elseif (file_exists('themes/'.$sm['s']['theme'].'/'.$fname))
-				$special['customcss'][count($special['customcss'])] = 'themes/'.$sm['s']['theme'].'/'.$fname;
+			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
+				$special['customcss'][count($special['customcss'])] = 'themes/'.sm_current_theme().'/'.$fname;
 			else
 				$special['customcss'][count($special['customcss'])] = 'themes/default/'.$fname;
 			return $special['customcss'][count($special['customcss'])-1];
@@ -105,8 +105,8 @@
 			if (empty($fname)) return false;
 			if ($includeAsIs == 1)
 				$special['customjs'][count($special['customjs'])] = $fname;
-			elseif (file_exists('themes/'.$sm['s']['theme'].'/'.$fname))
-				$special['customjs'][count($special['customjs'])] = 'themes/'.$sm['s']['theme'].'/'.$fname;
+			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
+				$special['customjs'][count($special['customjs'])] = 'themes/'.sm_current_theme().'/'.$fname;
 			else
 				$special['customjs'][count($special['customjs'])] = 'themes/default/'.$fname;
 			return $special['customjs'][count($special['customjs'])-1];
@@ -989,6 +989,12 @@
 						sm_include_lang($sm['other']['includedlanguages'][$i]['module'], $sm['other']['includedlanguages'][$i]['language']);
 					}
 			$sm['s']['charset']=$lang['charset'];
+		}
+	
+	function sm_current_theme()
+		{
+			global $sm;
+			return $sm['s']['theme'];
 		}
 
 ?>

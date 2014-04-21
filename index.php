@@ -338,7 +338,7 @@
 										$dont_show_high_priority = 1;
 									elseif ($special['is_index_page'] != 1 && strcmp('#index#', $pnlrow->show_on_module) == 0 && $pnlrow->dont_show_modif != 1)
 										$dont_show_high_priority = 1;
-									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == $sm['s']['theme'])
+									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == sm_current_theme())
 										$dont_show_high_priority = 1;
 									if (!empty($pnlrow->showonlang) && $pnlrow->showontheme == $sm['s']['lang'])
 										$dont_show_high_priority = 1;
@@ -498,7 +498,7 @@
 					for ($i = 0; $i < count($sm['s']['customjs']); $i++)
 						$sm['s']['document']['headdef'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
 					for ($i = 0; $i < count($sm['s']['cssfiles']); $i++)
-						$sm['s']['document']['headdef'].='<link href="themes/'.$sm['s']['theme'].'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
+						$sm['s']['document']['headdef'].='<link href="themes/'.sm_current_theme().'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
 					for ($i = 0; $i < count($sm['s']['customcss']); $i++)
 						$sm['s']['document']['headdef'].='<link href="'.$sm['s']['customcss'][$i].'" type="text/css" rel="stylesheet" />';
 					//Head section generation end
