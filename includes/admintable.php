@@ -33,7 +33,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['imagepath']=false;
 						if (!empty($replace_image) && strpos($replace_image, '/')===false)
 							{
-								if (!file_exists('themes/'.$sm['s']['theme'].'/images/admintable/'.$replace_image))
+								if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
 									{
 										$replace_image='themes/default/images/admintable/'.$replace_image;
 										$this->table['columns'][$name]['imagepath']=true;
@@ -45,6 +45,16 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['messagebox']=$messagebox;
 						$this->table['columns'][$name]['messagebox_text']=$messagebox_text;
 						$this->table['columns'][$name]['to_menu']=$to_menu;//Deprecated
+					}
+				function SetHeaderImage($name, $image)
+					{
+						if (strpos($image, '://')!==false || file_exists($image))
+							$img=$image;
+						elseif (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image))
+							$img='themes/'.sm_current_theme().'/images/admintable/'.$image;
+						else
+							$img='themes/default/images/admintable/'.$image;
+						$this->table['columns'][$name]['html'].='<img src="'.$img.'" class="adminform_header_image" />';
 					}
 				function AddIcon($name, $image, $hint='')
 					{
@@ -116,7 +126,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['imagepath']=false;
 						if (!empty($replace_image) && strpos($replace_image, '/')===false)
 							{
-								if (!file_exists('themes/'.$sm['s']['theme'].'/images/admintable/'.$replace_image))
+								if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
 									{
 										$replace_image='themes/default/images/admintable/'.$replace_image;
 										$this->table['rows'][$this->rownumber][$name]['imagepath']=true;
