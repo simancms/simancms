@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.6
-	//#revision 2014-03-08
+	//#ver 1.6.7
+	//#revision 2014-04-23
 	//==============================================================================
 	
 	require_once("includes/dbsettings.php");
@@ -25,12 +25,7 @@
 			if (substr($_GET['rewrittenquery'], -1) == '/')
 				$_GET['rewrittenquery'] = substr($_GET['rewrittenquery'], 0, -1);
 			$tmp=dbescape($_GET['rewrittenquery']);
-			$sql = "SELECT * FROM `".$tableprefix."filesystem` WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/'";
-			$result = database_db_query($nameDB, $sql, $lnkDB);
-			while ($row = database_fetch_assoc($result))
-				{
-					$url = $row['url_fs'];
-				}
+			$url = getsqlfield("SELECT url_fs FROM `".$tableprefix."filesystem` WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/' LIMIT 1");
 		}
 
 	if (empty($url))
