@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.7
+	//#revision 2013-04-26
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -188,12 +188,20 @@
 
 	if (sm_action('register'))
 		{
-			$m["module"] = 'account';
-			$m["title"] = $lang["register"];
-			if ($_settings['use_protect_code'] == 1)
-				siman_generate_protect_code();
-			sm_event('onregister', array(''));
-			sm_page_viewid('account-register');
+			if ($_settings['allow_register'] || $userinfo['level']==3)
+				{
+					$m["module"] = 'account';
+					$m["title"] = $lang["register"];
+					if ($_settings['use_protect_code'] == 1)
+						siman_generate_protect_code();
+					sm_event('onregister', array(''));
+					sm_page_viewid('account-register');
+				}
+			else
+				{
+					sm_extcore();
+					sm_error_page($lang['error'], $lang['you_cant_register']);
+				}
 		}
 	if (sm_action('login'))
 		{

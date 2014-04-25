@@ -1,6 +1,5 @@
 {if $modules[$index].mode eq "register"}
 {include file="block_begin.tpl"}
-{if $_settings.allow_register eq "1" or $userinfo.id neq ""}
 {if $modules[$index].message neq ""}{$modules[$index].message}{/if}
 <table width="100%" border="0">
 <form action="index.php?m=account&d=postregister" method="post" class="registerForm">
@@ -36,9 +35,6 @@
 </form>
 </table>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=account_register&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{else}
-{$lang.you_cant_register}
-{/if}
 {include file="block_end.tpl"}
 {/if}
 
