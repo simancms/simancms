@@ -29,7 +29,7 @@
 				{
 					$m["module"] = 'download';
 					$special['main_tpl'] = '';
-					$special['no_blocks'] = 1;
+					$special['no_blocks'] = true;
 					header("Content-type: ".$att['attachment_type']);
 					if (!sm_action('showattachedfile'))
 						header("Content-Disposition: attachment; filename=".basename($att['file_download']));

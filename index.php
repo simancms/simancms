@@ -73,8 +73,8 @@
 	if ($_getvars['theonepage'] == 1 || $_getvars['theonepage'] == 'on')
 		{
 			$special['main_tpl'] = 'theonepage';
-			$special['no_blocks'] = 1;
-			$special['no_borders_main_block'] = 1;
+			$special['no_blocks'] = true;
+			$special['no_borders_main_block'] = true;
 		}
 	if (!empty($_getvars['chngdsrc']))
 		{
@@ -301,7 +301,7 @@
 					$sm['index'] =& $modules_index;
 					$m =& $modules[$modules_index];
 					$sm['m'] =& $modules[$modules_index];
-					if ($special['no_borders_main_block'] == 1)
+					if ($special['no_borders_main_block'])
 						$modules[$modules_index]['borders_off'] = 1;
 					if ($module <> '404')
 						include('modules/'.$module.'.php');
@@ -322,7 +322,7 @@
 					$special['categories']['getctg'] = 0;
 					//Main module loading end
 
-					if ($special['no_blocks'] != 1)
+					if (!$special['no_blocks'])
 						{
 							//Static blocks out
 							$sql = "SELECT * FROM ".$tableprefix."blocks ORDER BY position_block ASC";
