@@ -6,12 +6,14 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.6
-	//#revision 2014-03-08
+	//#ver 1.6.7
+	//#revision 2014-04-26
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
 		exit('Configuration error! magic_quotes_gpc is on.');
+	if (!file_exists('files/temp'))
+		exit('SiMan CMS is not instaled!');
 
 	define("SIMAN_DEFINED", 1);
 
@@ -125,12 +127,10 @@
 		}
 	else
 		$special['dberror'] = true;
-	if (!file_exists('files/temp'))
-		$special['dberror'] = true;
-
+	
 	$smarty = new Smarty;
 
-	if ($special['dberror'] != true)
+	if (!$special['dberror'])
 		{
 			if ($_settings['resource_url_rewrite'] == 1)
 				{
@@ -556,8 +556,6 @@
 		}
 	else
 		{
-			if (!file_exists('files/temp'))
-				exit('SiMan CMS is not instaled!');
 			$smarty->template_dir = 'themes/default/';
 			$smarty->compile_dir = 'files/temp/';
 			$smarty->config_dir = 'themes/default/';
