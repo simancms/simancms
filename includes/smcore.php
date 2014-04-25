@@ -617,6 +617,12 @@
 			$refresh_url = $url;
 		}
 
+	function sm_redirect_now($url)
+		{
+			@header('Location: '.$url);
+			exit;
+		}
+
 	function sm_page_viewid($id, $rewriteanyway = false)
 		{
 			global $special, $modules_index;
