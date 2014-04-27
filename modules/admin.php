@@ -566,25 +566,23 @@
 								}
 						}
 					$dir->close();
-					$sql = "SELECT * FROM ".$tableprefix."modules";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['modules'][$i]['title'] = $row->module_title;
-							$m['modules'][$i]['name'] = $row->module_name;
-							$m['modules'][$i]['id'] = $row->id_module;
-							$i++;
-						}
-					$sql = "SELECT * FROM ".$tableprefix."menus";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['menus'][$i]['title'] = $row->caption_m;
-							$m['menus'][$i]['id'] = $row->id_menu_m;
-							$i++;
-						}
+					$q=new TQuery($tableprefix."modules");
+					$q->Open();
+					while ($q->Fetch())
+						$m['modules'][]=Array(
+							'title' => $q->row['module_title'].(empty($q->row['module_title'])?$q->row['module_name']:''),
+							'name' => $q->row['module_name'],
+							'id' => $q->row['id_module']
+						);
+					unset($q);
+					$q=new TQuery($tableprefix."menus");
+					$q->Open();
+					while ($q->Fetch())
+						$m['menus'][]=Array(
+							'title' => $q->row['caption_m'],
+							'id' => $q->row['id_menu_m']
+						);
+					unset($q);
 				}
 			if (sm_action('tstatus'))
 				{
@@ -814,7 +812,7 @@
 					$q->Limit($limit);
 					$q->Offset($offset);
 					$q->Select();
-					for ($i = 0; $i<count($q->items); $i++)
+					for ($i = 0; $i<$q->Count(); $i++)
 						{
 							if (substr($q->items[$i]['filename_fs'], -1) == '/')
 								$t->Image('ico', 'folder.gif');
