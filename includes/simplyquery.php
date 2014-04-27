@@ -19,7 +19,9 @@ if (!defined("simplyquery_DEFINED"))
 				var $leftjoin;
 				var $sqlgenerationmode;
 				public $items;
+				public $row;
 				public $sql;
+				private $result;
 				function TQuery($tablename, $tableprefix='')
 					{
 						$this->tableprefix=$tableprefix;
@@ -320,7 +322,7 @@ if (!defined("simplyquery_DEFINED"))
 						$this->selectfields=$list;
 						return $this;
 					}
-				function Select($addsql='', $type='a')
+				private function SelectStqtement($addsql='')
 					{
 						if (empty($this->selectfields))
 							$this->SelectFields();
@@ -344,11 +346,32 @@ if (!defined("simplyquery_DEFINED"))
 							$this->sql.=' LIMIT '.$this->limit;
 						if (!empty($this->offset))
 							$this->sql.=' OFFSET '.$this->offset;
+					}
+				function Select($addsql='', $type='a')
+					{
+						$this->SelectStqtement($addsql);
 						if (!$this->sqlgenerationmode)
 							{
 								$this->items=getsqlarray($this->sql, $type);
 								return $this->items[0];
 							}
+					}
+				function Open($addsql='')
+					{
+						$this->SelectStqtement($addsql);
+						$this->result=execsql($this->sql);
+					}
+				function Fetch($type='a')
+					{
+						if ($type == 'r')
+							$this->row=database_fetch_row($this->result);
+						elseif ($type == 'o')
+							$this->row=database_fetch_object($this->result);
+						elseif ($type == 'b')
+							$this->row=database_fetch_array($this->result);
+						else
+							$this->row=database_fetch_assoc($this->result);
+						return $this->row;
 					}
 				function Get($addsql='', $type='a')
 					{
