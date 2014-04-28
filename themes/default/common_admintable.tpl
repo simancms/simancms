@@ -124,10 +124,10 @@ function atdropdowncancelclosetime{$postfix}()
 		{/foreach}
 	</tr>{/strip}{/if}
 	{section name=table_row_index loop=$table.rows}
-	{strip}<tr class="admintable_row"{if $table.rows[table_row_index].$default_column.url neq ""} onDblClick="admintable_goto{$postfix}('{$table.rows[table_row_index].$default_column.url}')"{/if}>
+	{strip}<tr class="admintable_row{$table.rowparams[table_row_index].class}"{if $table.rows[table_row_index].$default_column.url neq ""} onDblClick="admintable_goto{$postfix}('{$table.rows[table_row_index].$default_column.url}')"{/if}{if $table.rowparams[table_row_index].style neq ""} style="{$table.rowparams[table_row_index].style}"{/if}>
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $table.rows[table_row_index].$column_name.hide neq 1}
-		<td{if $table.rows[table_row_index].$column_name.hint neq ""} title="{$table.rows[table_row_index].$column_name.hint}"{elseif $column.hint neq ""} title="{$column.hint}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $table.rows[table_row_index].$column_name.colspan neq ""} colspan="{$table.rows[table_row_index].$column_name.colspan}"{/if}{if $column.width neq "" and $table.hideheader eq 1} width="{$column.width}"{/if}>
+		<td{if $table.rows[table_row_index].$column_name.hint neq ""} title="{$table.rows[table_row_index].$column_name.hint}"{elseif $column.hint neq ""} title="{$column.hint}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $table.rows[table_row_index].$column_name.colspan neq ""} colspan="{$table.rows[table_row_index].$column_name.colspan}"{/if}{if $column.width neq "" and $table.hideheader eq 1} width="{$column.width}"{/if} id="at{$postfix}-cell-{$column_name}-{$smarty.section.table_row_index.index}" class="at-cell-{$column_name}{if $table.rows[table_row_index].$column_name.class neq ""}{$table.rows[table_row_index].$column_name.class}{/if}"{if $table.rows[table_row_index].$column_name.style neq ""} style="{$table.rows[table_row_index].$column_name.style}"{/if}>
 			{if $column.nobr eq "1"}
 				<nobr>
 			{/if}
@@ -202,46 +202,3 @@ function atdropdowncancelclosetime{$postfix}()
 	{/section}
 </table>
 
-{if $table.no_highlight neq 1}
-<script type="text/javascript">
-{literal}
-function set_admintable_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, r2h)
-	{
-		while (element && element.nodeName != "TR")
-			element = element.childNodes.length ? element.childNodes[0] : element.nextSibling;
-		var n = 0;
-		while (element)
-		{
-			if (element.nodeName == "TR")
-				{
-					if (element.id!="admintable_header{/literal}{$postfix}{literal}")
-						if (element.style.display!="none")
-							{
-								if (n % 2)
-									{
-										element.style.background = r1;
-										if (r1h)
-											{
-												element.onmouseover = function() { this.style.background = r1h; }
-												element.onmouseout = function() { this.style.background = r1; }
-											}
-									}
-								else
-									{
-										element.style.background = r2;
-										if (r2h)
-											{
-												element.onmouseover = function() { this.style.background = r2h; }
-												element.onmouseout = function() { this.style.background = r2; }
-											}
-									}
-								n++;
-							}
-				}
-			element = element.nextSibling;
-		}
-	} 
-{/literal}
-set_admintable_style{$postfix}(document.getElementById('admintable{$postfix}'), '#efefef', '#e5e5e5', '#dbdbdb', '#e5e5e5');
-</script>
-{/if}

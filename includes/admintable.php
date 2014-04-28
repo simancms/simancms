@@ -14,14 +14,20 @@ if (!defined("admintable_DEFINED"))
 			{
 				var $table;
 				var $rownumber;
+				
+				static $grids_used;
 
 				private $sort_statement='';
 
-				function TGrid($default_column='')
+				function TGrid($default_column='', $postfix='')
 					{
 						$this->rownumber=0;
 						$this->table['default_column']='';
-						$this->table['postfix']=mt_rand(1000, 9999);
+						if (strlen($postfix)==0)
+							$this->table['postfix']=TGrid::$grids_used;
+						else
+							$this->table['postfix']=$postfix;
+						TGrid::$grids_used++;
 					}
 				function AddCol($name, $title, $width='', $hint='', $replace_text='', $replace_image='', $messagebox=0, $messagebox_text='', $to_menu=0)
 					{
@@ -101,12 +107,6 @@ if (!defined("admintable_DEFINED"))
 				function Colspan($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['colspan']=$value;
-					}
-				function Output()
-					{
-						$this->table['colcount']=count($this->table['columns']);
-						$this->table['rowcount']=count($this->table['rows']);
-						return $this->table;
 					}
 				function NewRow()
 					{
@@ -317,8 +317,37 @@ if (!defined("admintable_DEFINED"))
 									$this->Label($key, $array[$key]);
 							}
 					}
+				//-----------------------------
+				function RowAddClass($classname, $rownumber=NULL)
+					{
+						if ($rownumber===NULL)
+							$rownumber=$this->rownumber;
+						$this->table['rowparams'][$rownumber]['class'].=' '.$classname;
+					}
+				function RowAddStyle($rule, $rownumber=NULL)
+					{
+						if ($rownumber===NULL)
+							$rownumber=$this->rownumber;
+						$this->table['rowparams'][$rownumber]['style'].=$rule;
+					}
+				//====================================================
+				function Output()
+					{
+						$this->table['colcount']=count($this->table['columns']);
+						$this->table['rowcount']=count($this->table['rows']);
+						for ($i = 0; $i<count($this->table['rows']); $i++)
+							{
+								$this->RowAddClass('at-row-'.$i, $i);
+								if ($i % 2 == 0)
+									$this->RowAddClass('at-row-pair', $i);
+								else
+									$this->RowAddClass('at-row-odd', $i);
+							}
+						return $this->table;
+					}
 			}
-
+		
+		TGrid::$grids_used=0;
 
 		define("admintable_DEFINED", 1);
 	}

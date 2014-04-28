@@ -42,3 +42,18 @@
 {	background: #6f6f6f;
 	color: #FFF
 }
+
+.at-row-odd
+{
+	background-color:#efefef;
+}
+
+.at-row-pair
+{
+	background-color:#fafafa;
+}
+
+tr.admintable_row:hover td
+{
+	background-color:#e0e0e0;
+}
