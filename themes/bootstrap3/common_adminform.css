@@ -8,4 +8,10 @@
 {
 	width:80%;
 }
+
+.adminform_table td input[type=checkbox]
+{
+	width:auto;
+}
+
 .admintable_row td img {max-width:280px;}
