@@ -496,11 +496,11 @@
 					if (!empty($refresh_url))
 						$sm['s']['document']['headdef'].='<script type="text/javascript">setTimeout(function() { document.location.href = "'.$refresh_url.'"; }, 3000)</script>';
 					for ($i = 0; $i < count($sm['s']['customjs']); $i++)
-						$sm['s']['document']['headdef'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
+						$sm['s']['document']['headend'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
 					for ($i = 0; $i < count($sm['s']['cssfiles']); $i++)
-						$sm['s']['document']['headdef'].='<link href="themes/'.sm_current_theme().'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
+						$sm['s']['document']['headend'].='<link href="themes/'.sm_current_theme().'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
 					for ($i = 0; $i < count($sm['s']['customcss']); $i++)
-						$sm['s']['document']['headdef'].='<link href="'.$sm['s']['customcss'][$i].'" type="text/css" rel="stylesheet" />';
+						$sm['s']['document']['headend'].='<link href="'.$sm['s']['customcss'][$i].'" type="text/css" rel="stylesheet" />';
 					//Head section generation end
 
 					unset($sm['cache']);
