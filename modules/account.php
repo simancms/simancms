@@ -253,8 +253,7 @@
 							//Autoban checking
 							if (intval(sm_tempdata_aggregate('wronglogin', $_servervars['REMOTE_ADDR'], SM_AGGREGATE_COUNT)) > intval(sm_get_settings('autoban_attempts', 'general')))
 								{
-									sm_update_settings('autoban_ips', addto_nllist(sm_get_settings('autoban_ips'), $_servervars['REMOTE_ADDR']));
-									sm_tempdata_addint('bannedip', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
+									sm_ban_ip($autoban_time);
 									sm_tempdata_remove('wronglogin', $_servervars['REMOTE_ADDR']);
 									sm_access_denied();
 								}

@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.6
-	//#revision 2014-02-10
+	//#ver 1.6.7
+	//#revision 2014-04-28
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -21,7 +21,7 @@
 			$q->Add('email', $email);
 			$q->Add('question', $question);
 			$q->Add('answer', $answer);
-			$q->Add('user_status', 1);
+			$q->Add('user_status', intval($user_status));
 			$q->Add('random_code', md5(time().rand()));
 			$groups = get_groups_list();
 			for ($i = 0; $i < count($groups); $i++)
@@ -413,6 +413,15 @@
 			if (count($disallowed)==0)
 				return false;
 			return !in_array($ext, $disallowed);
+		}
+	
+	function sm_ban_ip($bantime, $ip=NULL)
+		{
+			global $sm;
+			if ($ip==NULL)
+				$ip=$sm['server']['REMOTE_ADDR'];
+			sm_update_settings('autoban_ips', addto_nllist(sm_get_settings('autoban_ips'), $ip));
+			sm_tempdata_addint('bannedip', $ip, time(), intval($bantime));
 		}
 	
 ?>
