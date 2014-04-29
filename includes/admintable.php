@@ -338,10 +338,11 @@ if (!defined("admintable_DEFINED"))
 						for ($i = 0; $i<count($this->table['rows']); $i++)
 							{
 								$this->RowAddClass('at-row-'.$i, $i);
-								if ($i % 2 == 0)
-									$this->RowAddClass('at-row-pair', $i);
-								else
-									$this->RowAddClass('at-row-odd', $i);
+								if (intval($this->table['no_highlight'])!=1)
+									if ($i % 2 == 0)
+										$this->RowAddClass('at-row-pair', $i);
+									else
+										$this->RowAddClass('at-row-odd', $i);
 							}
 						return $this->table;
 					}
