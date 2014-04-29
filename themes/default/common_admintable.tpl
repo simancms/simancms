@@ -49,20 +49,18 @@ function admintable_checbulk{/literal}{$postfix}{literal}()
 
 function  admintable_ajax_load{/literal}{$postfix}{literal}(url, id)
 	{
-		alert(url);
-		$('#'+id).html('{/literal}{$lang.common.loading|addslashes}{literal}');
-		$.get(url, function(data){alert("Data Loaded: " + data);});
+		if (!$("#"+id).is(':visible'))
+			return;
+		$('#'+id).html('{/literal}<div class="at-expander-loading">{$lang.common.loading|addslashes}</div>{literal}');
 		$("#"+id).load(
 				url,
 				function(response, status, xhr)
 					{
-						alert(status);
 						if (status == "error")
 							{
 								var msg = '{/literal}{$lang.error}{literal}';
 								$("#"+id).html(msg + ' ' + xhr.status + " " + xhr.statusText);
 							}
-						alert($('#'+id).html());
 					}
 			);
 	}
@@ -194,8 +192,8 @@ function atdropdowncancelclosetime{$postfix}()
 		{/if}
 		{/foreach}
 	</tr>{/strip}
-	<tr style="display:none;" id="admintable-expander-{$smarty.section.table_row_index.index}-{$postfix}">
-		<td colspan="{$table.colcount}" id="admintable-expanderarea-{$smarty.section.table_row_index.index}-{$postfix}">
+	<tr style="display:none;" id="admintable-expander-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expander">
+		<td colspan="{$table.colcount}" id="admintable-expanderarea-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expanderarea">
 			{$table.expanders[table_row_index].html}
 		</td>
 	</tr>

@@ -166,8 +166,8 @@ if (!defined("admintable_DEFINED"))
 					}
 				function ExpandAJAX($name, $url)
 					{
-						$this->table['rows'][$this->rownumber][$name]['onclick'].="admintable_ajax_load".$this->table['postfix']."('".$url."', 'admintable-expanderarea-".$this->rownumber."-".$this->table['postfix']."');";
 						$this->Expand($name);
+						$this->table['rows'][$this->rownumber][$name]['onclick'].="admintable_ajax_load".$this->table['postfix']."('".$url."', 'admintable-expanderarea-".$this->rownumber."-".$this->table['postfix']."');";
 					}
 				//--------------------------------------------------------------------------------------------------------
 				function HeaderColspan($name, $value=2)
