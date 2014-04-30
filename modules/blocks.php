@@ -194,14 +194,36 @@
 				}
 			if (sm_action('up'))
 				{
-					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE position_block=".(intval($_getvars["pos"]) - 1)." AND panel_block='".dbescape($panel_block)."'");
-					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>'1' AND id_block=".intval($_getvars["id"]));
+					$block=TQuery::ForTable($tableprefix."blocks")->Add('id_block', intval($_getvars['id']))->Get();
+					$block2=TQuery::ForTable($tableprefix."blocks")->Add('panel_block', dbescape($block['panel_block']))->Add('position_block<'.intval($block['position_block']))->OrderBy('position_block DESC')->Get();
+					if (!empty($block['position_block']) && !empty($block2['position_block']))
+						{
+							$q=new TQuery($tableprefix."blocks");
+							$q->Add('position_block', intval($block2['position_block']));
+							$q->Update('id_block', intval($block['id_block']));
+							unset($q);
+							$q=new TQuery($tableprefix."blocks");
+							$q->Add('position_block', intval($block['position_block']));
+							$q->Update('id_block', intval($block2['id_block']));
+							unset($q);
+						}
 					sm_redirect('index.php?m=blocks');
 				}
 			if (sm_action('down'))
 				{
-					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block=".(intval($_getvars["pos"]) + 1)." AND panel_block='".dbescape($_getvars["pnl"])."'");
-					execsql("UPDATE ".$tableprefix."blocks SET position_block=position_block+1 WHERE id_block=".intval($_getvars["id"]));
+					$block=TQuery::ForTable($tableprefix."blocks")->Add('id_block', intval($_getvars['id']))->Get();
+					$block2=TQuery::ForTable($tableprefix."blocks")->Add('panel_block', dbescape($block['panel_block']))->Add('position_block>'.intval($block['position_block']))->OrderBy('position_block ASC')->Get();
+					if (!empty($block['position_block']) && !empty($block2['position_block']))
+						{
+							$q=new TQuery($tableprefix."blocks");
+							$q->Add('position_block', intval($block2['position_block']));
+							$q->Update('id_block', intval($block['id_block']));
+							unset($q);
+							$q=new TQuery($tableprefix."blocks");
+							$q->Add('position_block', intval($block['position_block']));
+							$q->Update('id_block', intval($block2['id_block']));
+							unset($q);
+						}
 					sm_redirect('index.php?m=blocks');
 				}
 			if (sm_action('view'))
@@ -233,9 +255,9 @@
 							$t->Label('title', $q->items[$i]['caption_block']);
 							$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
 							if ($i>0)
-								$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+								$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block']);
 							if ($i+1<$q->Count())
-								$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+								$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block']);
 							$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
 							$t->NewRow();
 						}
