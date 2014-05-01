@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -59,7 +59,7 @@
 					$ui->AddButtons($b);
 					$t = new TGrid();
 					$limit = $_settings['admin_items_by_page'];
-					$offset = intval($_getvars['from']);
+					$offset = abs(intval($_getvars['from']));
 					$t->AddCol('user', $lang['user'], '60%');
 					$t->AddCol('status', $lang['status'], '20%');
 					$t->AddCol('action', $lang['action'], '20%');

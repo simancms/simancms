@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-24
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -225,7 +225,7 @@
 					if (intval($_getvars['showall']) == 1)
 						$showall = 1;
 					$m['showall'] = $showall;
-					$from_record = intval($_getvars['from']);
+					$from_record = abs(intval($_getvars['from']));
 					$ctg_id = intval($_getvars['ctg']);
 					if ($showall != 1)
 						{

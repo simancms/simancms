@@ -9,8 +9,8 @@
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.5
-	Revision: 2013-10-17
+	Version: 1.6.7
+	Revision: 2014-05-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -91,7 +91,7 @@
 						{
 							sm_page_viewid('news-'.$m["mode"].'-'.$_getvars['dy'].'-'.$_getvars['dm'].'-'.$_getvars['dd']);
 						}
-					$from_record = intval($_getvars['from']);
+					$from_record = abs(intval($_getvars['from']));
 					$from_page = ceil(($from_record+1)/$_settings['news_by_page']);
 					if (sm_action('listdate'))
 						$m['pages']['url'] = 'index.php?m=news&d=listdate&dy='.$_getvars['dy'].'&dm='.$_getvars['dm'].'&dd='.$_getvars['dd'];

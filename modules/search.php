@@ -9,8 +9,8 @@
 	Module Name: Search
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
-	Version: 1.6.5
-	Revision: 2013-10-17
+	Version: 1.6.7
+	Revision: 2014-05-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -44,7 +44,7 @@
 							$i = 0;
 							while ($row = database_fetch_object($result))
 								{
-									$from_record = $_getvars['from'];
+									$from_record = abs(intval($_getvars['from']));
 									if (empty($from_record)) $from_record = 0;
 									$from_page = ceil(($from_record+1)/$_settings['search_items_by_page']);
 									$m['pages']['url'] = 'index.php?m=search&q='.urlencode($_getvars['q']);

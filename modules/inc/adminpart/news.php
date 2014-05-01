@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -198,7 +198,7 @@
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
-					$from_record = intval($_getvars['from']);
+					$from_record = abs(intval($_getvars['from']));
 					if (empty($from_record)) $from_record = 0;
 					$from_page = ceil(($from_record + 1) / $_settings['admin_items_by_page']);
 					$m['pages']['url'] = 'index.php?m=news&d=list';

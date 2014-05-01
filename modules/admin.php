@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2014-01-13
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -644,7 +644,7 @@
 					$i = 0;
 					$j = -1;
 					$files = load_file_list('./files/img/');
-					$offset=intval($_getvars['from']);
+					$offset=abs(intval($_getvars['from']));
 					$limit=intval($_settings['admin_items_by_page']);
 					while ($j + 1 < count($files))
 						{
@@ -990,7 +990,7 @@
 					require_once('includes/admintable.php');
 					include_once('includes/admininterface.php');
 					$limit=100;
-					$offset=intval($_getvars['from']);
+					$offset=abs(intval($_getvars['from']));
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('time', $lang['common']['time'], '20%');
