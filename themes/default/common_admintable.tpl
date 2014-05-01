@@ -40,13 +40,6 @@ function  admintable_to_menu{/literal}{$postfix}{literal}(url, caption)
 		//document.getElementById('menuform').submit();
 	}
 
-var admintable_checbulk{/literal}{$postfix}{literal}_state=false;
-function admintable_checbulk{/literal}{$postfix}{literal}()
-	{
-		admintable_checbulk{/literal}{$postfix}{literal}_state=(admintable_checbulk{/literal}{$postfix}{literal}_state)?true:false;
-		$('admintable-{/literal}{$postfix}{literal}-control-checbox').attr('checked', admintable_checbulk{/literal}{$postfix}{literal}_state);
-	}
-
 function  admintable_ajax_load{/literal}{$postfix}{literal}(url, id)
 	{
 		if (!$("#"+id).is(':visible'))
@@ -157,7 +150,7 @@ function atdropdowncancelclosetime{$postfix}()
 							{/section}
 						</select>
 					{elseif $table.rows[table_row_index].$column_name.element eq "checkbox"}
-						<input type="checkbox" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}"{if $table.rows[table_row_index].$column_name.checked} checked{/if} id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-text admintable-{$postfix}-control-checbox" />
+						<input type="checkbox" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}"{if $table.rows[table_row_index].$column_name.checked} checked{/if} id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-text admintable-{$postfix}-control-checkbox" />
 					{elseif $table.rows[table_row_index].$column_name.element eq "radioitem"}
 						<input type="radio" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}"{if $table.rows[table_row_index].$column_name.checked} checked{/if} id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-text admintable-{$postfix}-control-radio" />
 					{elseif $table.rows[table_row_index].$column_name.element eq "storedlabel"}

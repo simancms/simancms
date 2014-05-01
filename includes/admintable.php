@@ -302,8 +302,8 @@ if (!defined("admintable_DEFINED"))
 					}
 				function HeaderBulkCheckbox($name)
 					{
-						$this->table['columns'][$name]['html']='<input type="checkbox" id="'.$name.'-'.($this->table['postfix']).'-bulkcheckbox" onchange="'.
-							"$('.admintable-".($this->table['postfix'])."-control-checbox').attr('checked', $('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').attr('checked')?true:false);".
+						$this->table['columns'][$name]['html']='<input type="checkbox" id="'.$name.'-'.($this->table['postfix']).'-bulkcheckbox" class="at-bulk-checkbox" onchange="'.
+							"\$('.admintable-".($this->table['postfix'])."-control-checkbox').prop('checked', \$('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').prop('checked')?true:false);".
 							'" />';
 					}
 				//-----------------------------
