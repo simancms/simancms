@@ -22,15 +22,13 @@
 				{
 					$m['title'] = $lang['settings'];
 					$m["module"] = 'news';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 				}
 			if (sm_action('editctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'news';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$_getvars['ctgid']."'";
 					$result = execsql($sql);
@@ -50,8 +48,6 @@
 				}
 			if (sm_actionpost('postaddctg'))
 				{
-					$m['title'] = $lang['add_category'];
-					$m["module"] = 'news';
 					$title_category = dbescape($_postvars["p_title_category"]);
 					$filename = dbescape($_postvars["p_filename"]);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
@@ -65,22 +61,20 @@
 							$sql = "UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$ctgid;
 							$result = execsql($sql);
 						}
-					$refresh_url = 'index.php?m=news&d=listctg';
+					sm_notify($lang['add_content_category_successful']);
+					sm_redirect('index.php?m=news&d=listctg');
 					sm_event('postaddctgnews', array($ctgid));
 				}
 			if (sm_action('addctg'))
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'news';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$m['groups_list'] = get_groups_list();
 				}
 			if (sm_actionpost('posteditctg'))
 				{
-					$m['title'] = $lang['edit_category'];
-					$m["module"] = 'news';
 					$title_category = dbescape($_postvars["p_title_category"]);
 					$filename = dbescape($_postvars["p_filename"]);
 					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
@@ -111,7 +105,8 @@
 							else
 								update_filesystem($fname, 'index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
 						}
-					$refresh_url = 'index.php?m=news&d=listctg';
+					sm_notify($lang['edit_content_category_successful']);
+					sm_redirect('index.php?m=news&d=listctg');
 					sm_event('posteditctgnews', array($id_ctg));
 				}
 			if (sm_action('deletectg'))
@@ -125,8 +120,6 @@
 				}
 			if (sm_action('postdeletectg'))
 				{
-					$m['title'] = $lang['delete_category'];
-					$m["module"] = 'news';
 					$id_ctg = intval($_getvars['ctgid']);
 					$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$id_ctg."'";
 					$result = execsql($sql);
@@ -145,7 +138,8 @@
 					$q=new TQuery($sm['t'].'news');
 					$q->Add('id_category_n', 1);
 					$q->Update('id_category_n', intval($id_ctg));
-					$refresh_url = 'index.php?m=news&d=listctg';
+					sm_notify($lang['delete_content_category_successful']);
+					sm_redirect('index.php?m=news&d=listctg');
 					sm_event('postdeletectgnews', array($id_ctg));
 				}
 			if (sm_action('listctg'))
@@ -153,8 +147,7 @@
 					sm_extcore();
 					$m['title'] = $lang['list_news_categories'];
 					$m["module"] = 'news';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category";
 					$result = execsql($sql);
@@ -195,8 +188,7 @@
 				{
 					$m["module"] = 'news';
 					sm_extcore();
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$from_record = abs(intval($_getvars['from']));
 					if (empty($from_record)) $from_record = 0;

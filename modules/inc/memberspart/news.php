@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -111,9 +111,10 @@
 									sm_upload_attachment('news', $id_news, $_uplfilevars['attachment'.$i]);
 								}
 							if ($userinfo['level'] == 3)
-								$refresh_url = 'index.php?m=news&d=list&ctg='.$id_category_n;
+								sm_redirect('index.php?m=news&d=list&ctg='.$id_category_n);
 							else
-								$refresh_url = 'index.php?m=news&d=listnews&ctg='.$id_category_n;
+								sm_redirect('index.php?m=news&d=listnews&ctg='.$id_category_n);
+							sm_notify($lang['add_news_successful']);
 							sm_event('postaddnews', array($id_news));
 						}
 				}
@@ -232,16 +233,17 @@
 							delete_filesystem($fname);
 						}
 					sm_delete_attachments('news', intval($id_news));
-					if ($userinfo['level'] == 3)
-						$refresh_url = 'index.php?m=news&d=list&ctg='.$_getvars['ctg'];
-					else
-						$refresh_url = 'index.php?m=news&d=listnews&ctg='.$_getvars['ctg'];
 					if (file_exists('files/thumb/news'.$id_news.'.jpg'))
 						unlink('files/thumb/news'.$id_news.'.jpg');
 					if (file_exists('files/fullimg/news'.$id_news.'.jpg'))
 						unlink('files/fullimg/news'.$id_news.'.jpg');
 					if (file_exists('files/img/news'.$id_news.'.jpg'))
 						unlink('files/img/news'.$id_news.'.jpg');
+					sm_notify($lang['delete_news_successful']);
+					if ($userinfo['level'] == 3)
+						sm_redirect('index.php?m=news&d=list&ctg='.intval($_getvars['ctg']));
+					else
+						sm_redirect('index.php?m=news&d=listnews&ctg='.intval($_getvars['ctg']));
 				}
 		}
 
@@ -358,9 +360,10 @@
 									sm_upload_attachment('news', $id_news, $_uplfilevars['attachment'.$i]);
 								}
 							if ($userinfo['level'] == 3)
-								$refresh_url = 'index.php?m=news&d=list&ctg='.$id_category_n;
+								sm_redirect('index.php?m=news&d=list&ctg='.$id_category_n);
 							else
-								$refresh_url = 'index.php?m=news&d=listnews&ctg='.$id_category_n;
+								sm_redirect('index.php?m=news&d=listnews&ctg='.$id_category_n);
+							sm_notify($lang['edit_news_successful']);
 							sm_event('posteditnews', array($id_news));
 						}
 				}
