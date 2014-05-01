@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.6
-	//#revision 2014-03-08
+	//#ver 1.6.7
+	//#revision 2014-05-01
 	//==============================================================================
 
 
@@ -617,9 +617,17 @@
 			$refresh_url = $url;
 		}
 
-	function sm_redirect_now($url)
+	function sm_redirect_now($url, $header_http_code='')
 		{
+			global $sm;
+			if (is_numeric($header_http_code))
+				{
+					if (intval($header_http_code)==301)
+						$header_http_code='301 Moved Permanently';
+				}
 			@header('Location: '.$url);
+			if (!empty($header_http_code))
+				@header($sm['server']['SERVER_PROTOCOL']." ".$header_http_code);
 			exit;
 		}
 
