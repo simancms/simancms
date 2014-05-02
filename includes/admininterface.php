@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.4
-//#revision 2013-04-08
+//#ver 1.6.7
+//#revision 2014-05-02
 //==============================================================================
 
 if (!defined("admininterface_DEFINED"))
@@ -18,7 +18,7 @@ if (!defined("admininterface_DEFINED"))
 		class TInterface
 			{
 				var $blocks;
-				var $currneblock;
+				var $currentblock;
 				var $items;
 				var $item;
 				function TInterface($title='', $showborders=1)
@@ -129,6 +129,22 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$code='<hr '.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.' />';
 						$this->html($code);
+					}
+				function NotificationError($message)
+					{
+						$this->div($message, '', 'aui-message aui-message-error');
+					}
+				function NotificationWarning($message)
+					{
+						$this->div($message, '', 'aui-message aui-message-warning');
+					}
+				function NotificationInfo($message)
+					{
+						$this->div($message, '', 'aui-message aui-message-info');
+					}
+				function NotificationSuccess($message)
+					{
+						$this->div($message, '', 'aui-message aui-message-success');
 					}
 				function Output($replace_template=false)
 					{
