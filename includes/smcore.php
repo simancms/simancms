@@ -633,9 +633,9 @@
 
 	function sm_page_viewid($id, $rewriteanyway = false)
 		{
-			global $special, $modules_index;
+			global $sm, $modules_index;
 			if ($modules_index == 0 || $rewriteanyway)
-				$special['page']['viewid'] = $id;
+				$sm['s']['page']['viewid'] = $id;
 		}
 
 	function sm_extcore()
@@ -647,7 +647,7 @@
 		{
 			global $tableusersprefix, $userinfo, $_sessionvars;
 			$q = new TQuery($tableusersprefix."users");
-			$q->Add($fieldname, dbescape($value));
+			$q->Add(dbescape($fieldname), dbescape($value));
 			$q->Update('id_user', intval($userid));
 			if (!in_array($fieldname, Array('info', 'groups', 'id', 'login', 'level')) && $userid == $userinfo['id'])
 				{
@@ -682,8 +682,7 @@
 					unset($usrinfo['question']);
 					unset($usrinfo['answer']);
 					$_sessionvars['userinfo_allinfo'] = serialize($usrinfo);
-					$sql = "UPDATE ".$tableusersprefix."users SET id_session='".session_id()."', last_login='".time()."' WHERE id_user='".intval($usrinfo['id_user'])."'";
-					$result = execsql($sql);
+					execsql("UPDATE ".$tableusersprefix."users SET id_session='".session_id()."', last_login='".time()."' WHERE id_user='".intval($usrinfo['id_user'])."'");
 					return true;
 				}
 			else

@@ -9,22 +9,18 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.5
-	Revision: 2013-10-17
+	Version: 1.6.7
+	Revision: 2014-05-05
 	Author URI: http://simancms.org/
 	*/
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if (!defined("CONTENT_FUNCTIONS_DEFINED"))
 		{
 			function siman_getfilename_ctg_content($idctg, $filenameid)
 				{
-					global $_settings;
 					$tmpurl = get_filename($filenameid);
 					if (empty($tmpurl))
 						$tmpurl = 'index.php?m=content&d=viewctg&ctgid='.$idctg;
@@ -33,7 +29,7 @@
 
 			function siman_load_ctgs_content($id_mainctg = -1, $extsql = '')
 				{
-					global $nameDB, $lnkDB, $tableprefix, $_settings;
+					global $sm;
 					if (!empty($extsql))
 						$addsql = ' WHERE '.$extsql;
 					if ($id_mainctg >= 0)
@@ -44,22 +40,22 @@
 								$addsql .= " AND ";
 							$addsql .= " id_maincategory=".intval($id_mainctg);
 						}
-					$sql = "SELECT * FROM ".$tableprefix."categories $addsql";
+					$sql = "SELECT * FROM ".$sm['t']."categories $addsql";
 					$sql .= " ORDER BY id_maincategory, IF(id_category=1, 0, 1), title_category";
 					$result = execsql($sql);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							$ctg[$i]['id'] = $row->id_category;
-							$ctg[$i]['title'] = $row->title_category;
-							$ctg[$i]['can_view'] = $row->can_view;
-							$ctg[$i]['main_ctg'] = $row->id_maincategory;
-							$ctg[$i]['sorting_category'] = $row->sorting_category;
-							$ctg[$i]['preview_category'] = $row->preview_category;
-							$ctg[$i]['groups_view'] = $row->groups_view;
-							$ctg[$i]['groups_modify'] = $row->groups_modify;
+							$ctg[$i]['id'] = $row['id_category'];
+							$ctg[$i]['title'] = $row['title_category'];
+							$ctg[$i]['can_view'] = $row['can_view'];
+							$ctg[$i]['main_ctg'] = $row['id_maincategory'];
+							$ctg[$i]['sorting_category'] = $row['sorting_category'];
+							$ctg[$i]['preview_category'] = $row['preview_category'];
+							$ctg[$i]['groups_view'] = $row['groups_view'];
+							$ctg[$i]['groups_modify'] = $row['groups_modify'];
 							$ctg[$i]['level'] = 1;
-							$ctg[$i]['filename'] = siman_getfilename_ctg_content($row->id_category, $row->filename_category);
+							$ctg[$i]['filename'] = siman_getfilename_ctg_content($row['id_category'], $row['filename_category']);
 							$i++;
 						}
 
@@ -123,7 +119,7 @@
 	if (sm_action('view'))
 		{
 			$m["module"] = 'content';
-			if (!empty($m["bid"])) $m["cid"] = $m["bid"];
+			if (!empty($m["bid"])) $m["cid"] = intval($m["bid"]);
 			$content_id = intval($m["cid"]);
 			if (empty($content_id) && $modules_index == 0) $content_id = intval($_getvars["cid"]);
 			if (empty($content_id))

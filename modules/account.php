@@ -27,7 +27,7 @@
 	if (sm_actionpost("postregister") && ($_settings['allow_register'] || $userinfo['level']==3))
 		{
 			$m["module"] = 'account';
-			$m["title"] = $lang["register"];
+			sm_title($lang["register"]);
 			$login = dbescape($_postvars["p_login"]);
 			$password = $_postvars["p_password"];
 			$password2 = $_postvars["p_password2"];
@@ -144,12 +144,12 @@
 			if (sm_action('getpasswd'))
 				{
 					$m["module"] = 'account';
-					$m["title"] = $lang["get_password"];
+					sm_title($lang["get_password"]);
 				}
 			if (sm_action('getpasswd3'))
 				{
 					$m["module"] = 'account';
-					$m["title"] = $lang["get_password"];
+					sm_title($lang["get_password"]);
 					$usr_name = dbescape(strtolower($_getvars["login"]));
 					$usr_answer = dbescape($_postvars["p_answ"]);
 					$usr_newpwd = dbescape(md5($_postvars["p_newpwd"]));
@@ -172,7 +172,7 @@
 			if (sm_action('getpasswd2'))
 				{
 					$m["module"] = 'account';
-					$m["title"] = $lang["get_password"];
+					sm_title($lang["get_password"]);
 					$usr_name = $_getvars["login"];
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login='".dbescape($usr_name)."'";
 					$result = execsql($sql);
@@ -191,7 +191,7 @@
 			if ($_settings['allow_register'] || $userinfo['level']==3)
 				{
 					$m["module"] = 'account';
-					$m["title"] = $lang["register"];
+					sm_title($lang["register"]);
 					if ($_settings['use_protect_code'] == 1)
 						siman_generate_protect_code();
 					sm_event('onregister', array(''));
@@ -206,7 +206,7 @@
 	if (sm_action('login'))
 		{
 			$m["module"] = 'account';
-			$m["title"] = $lang["login_caption"];
+			sm_title($lang["login_caption"]);
 			if (!empty($_postvars["login_d"]))
 				{
 					sm_extcore();
@@ -268,7 +268,7 @@
 				$m['mode'] = 'cabinet';
 			else
 				{
-					$m["title"] = $lang["login_caption"];
+					sm_title($lang["login_caption"]);
 					$m["module"] = 'account';
 					$m["goto_url"] = $_servervars['REQUEST_URI'];
 					if ($modules_index == 0)
