@@ -104,6 +104,35 @@ if (!defined("admintable_DEFINED"))
 										$this->table['rows'][$this->rownumber][$key]['hide']=1;
 								}
 					}
+				function AttachEmptyCellsToLeft()
+					{
+						if (!empty($this->table['columns']))
+							{
+								$i=0;
+								$notempty='';
+								$colspan=1;
+								while ( list( $key, $val ) = each($this->table['columns']) )
+									{
+										if (strlen($this->table['rows'][$this->rownumber][$key]['data'])==0 && strlen($this->table['rows'][$this->rownumber][$key]['image'])==0  && strlen($this->table['rows'][$this->rownumber][$key]['url'])==0 && $i>0)
+											{
+												$this->Hide($key);
+												$colspan++;
+											}
+										else
+											{
+												if (!empty($notempty))
+													{
+														$this->Colspan($notempty, $colspan);
+													}
+												$notempty=$key;
+												$colspan=1;
+											}
+										$i++;
+									}
+								if ($colspan>1)
+									$this->Colspan($notempty, $colspan);
+							}
+					}
 				function Colspan($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['colspan']=$value;
