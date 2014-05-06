@@ -145,6 +145,14 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['rows'][$this->rownumber][$name]['data']=$value;
 					}
+				function CellAddClass($name, $classname)
+					{
+						$this->table['rows'][$this->rownumber][$name]['class'].=' '.$classname;
+					}
+				function CellAddStyle($name, $style)
+					{
+						$this->table['rows'][$this->rownumber][$name]['style'].=$style;
+					}
 				function Hint($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['hint']=$value;
