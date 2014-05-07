@@ -865,17 +865,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'viewimg'}
-{include file="block_begin.tpl"}
-<div align="center">
-<img src="files/img/{$modules[$index].viewed_img_name}" width="400">
-<br />
-<br />
-<a href="index.php?m=admin&d=delimg&imgn={$modules[$index].viewed_img_name}">{$lang.common.delete}</a>
-</div>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'filesystemexp'}
 {include file="block_begin.tpl"}
 <a href="index.php?m=admin">{$lang.control_panel}</a><br />

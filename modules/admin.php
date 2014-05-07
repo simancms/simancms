@@ -7,14 +7,11 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#revision 2014-05-07
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if (!defined("ADMIN_FUNCTIONS_DEFINED"))
 		{
@@ -626,12 +623,21 @@
 				}
 			if (sm_action('viewimg'))
 				{
-					$m["title"] = $lang['common']['image'];
-					$m["viewed_img_name"] = $_getvars['path'];
+					sm_title($lang['common']['image']);
+					include_once('includes/admininterface.php');
+					include_once('includes/adminbuttons.php');
+					$ui = new TInterface();
+					$ui->html('<div align="center">');
+					$ui->html('<img src="files/img/'.$_getvars['path'].'" width="400" />');
+					$b=new TButtons();
+					$b->AddMessageBox('del', $lang['common']['delete'], 'index.php?m=admin&d=postdelimg&imgn='.urlencode($_getvars['path']), $lang['module_admin']['really_want_delete_image'].'?');
+					$ui->AddButtons($b);
+					$ui->html('</div>');
+					$ui->Output(true);
 				}
 			if (sm_action('listimg'))
 				{
-					$m["title"] = $lang['module_admin']['images_list'];
+					sm_title($lang['module_admin']['images_list']);
 					require_once('includes/admintable.php');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
@@ -673,14 +679,6 @@
 					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
 					$m['pages']['records']=$i;
 					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
-				}
-			if (sm_action('delimg'))
-				{
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['module_admin']['delete_image'];
-					$_msgbox['msg'] = $lang['module_admin']['really_want_delete_image'].' "'.$_getvars["imgn"].'"';
-					$_msgbox['yes'] = 'index.php?m=admin&d=postdelimg&imgn='.$_getvars["imgn"];
-					$_msgbox['no'] = 'index.php?m=admin&d=listimg';
 				}
 			if (sm_action('postdelimg'))
 				{
