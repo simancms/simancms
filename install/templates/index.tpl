@@ -139,7 +139,7 @@ a
 				<tr>
 					<td>{$lang.settings_default_theme}:</td><td><select name="p_theme" size="1">
 					  {section name=i loop=$inst.themes}
-					  <option value="{$inst.themes[i]}"{if $inst.themes[i] eq "bootstrap"} SELECTED{/if}>{$inst.themes[i]}</option>
+					  <option value="{$inst.themes[i]}"{if $inst.themes[i] eq "bootstrap3"} SELECTED{/if}>{$inst.themes[i]}</option>
 					  {/section}
 					</select></td>
 				</tr>

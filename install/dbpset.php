@@ -279,7 +279,7 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUE
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('meta_resource_title_position', '1');
+INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('meta_resource_title_position', '2');
 ";
 execsql($sql);
 $sql="
