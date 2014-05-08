@@ -384,7 +384,7 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_alike_content&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.alike_content_count eq 1}
+	{if $modules[$index].show_settings.allow_alike_content eq 1}
 		<tr>
 			<td>{$lang.settings_alike_content_count}:</td>
 			<td><input type="text" name="p_alike_content_count" value="{$modules[$index].edit_settings.alike_content_count}"></td>
