@@ -307,11 +307,11 @@
 	$smarty->display('index.tpl');
 	if ($clean_temp)
 		{
-			$dir = dir('./files/temp/');
+			$dir = dir('../files/temp/');
 			while ($entry = $dir->read())
 				{
 					if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0)
-						unlink('files/temp/'.$entry);
+						unlink('../files/temp/'.$entry);
 				}
 			$dir->close();
 		}

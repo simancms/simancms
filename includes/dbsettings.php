@@ -14,7 +14,7 @@ $serverDB=0;
 $hostNameDB='localhost';
 
 //Database name
-$nameDB='siman_166';
+$nameDB='siman_167';
 
 //Database user name
 $userNameDB='root';
@@ -34,7 +34,7 @@ $tableprefix='sm_';
 $tableusersprefix='';
 
 //Session prefix. You need to change it for your site to prevent hacks
-$session_prefix='needchange166_';
+$session_prefix='needchange167_';
 
 //Don't change code below
 if (empty($tableusersprefix)) $tableusersprefix=$tableprefix;
