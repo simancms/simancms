@@ -290,6 +290,7 @@
 					elseif ($inst['step'] == 'finish')
 						{
 							$inst['title'] = $lang['finish_title'];
+							$clean_temp=true;
 						}
 				}
 		}
@@ -304,5 +305,15 @@
 	$smarty->assign('inst', $inst);
 	$smarty->assign('lang', $lang);
 	$smarty->display('index.tpl');
+	if ($clean_temp)
+		{
+			$dir = dir('./files/temp/');
+			while ($entry = $dir->read())
+				{
+					if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0)
+						unlink('files/temp/'.$entry);
+				}
+			$dir->close();
+		}
 
 ?>
