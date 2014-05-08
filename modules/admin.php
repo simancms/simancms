@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-07
+	//#revision 2014-05-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -39,6 +39,17 @@
 					else
 						return false;
 				}
+			function siman_clean_resource_url($url)
+				{
+					$url = trim($url);
+					if (strcmp($url, '/')==0)
+						$url = '';
+					if (substr($url, -1) != '/' && strlen($url)>0)
+						$url .= '/';
+					if (strpos($url, '://')!==false)
+						return substr($url, strpos($url, '://')+3);
+					return $url;
+				}
 
 			define("ADMIN_FUNCTIONS_DEFINED", 1);
 		}
@@ -48,165 +59,99 @@
 	if ($userinfo['level'] == 3)
 		{
 			$m["module"] = 'admin';
-			if (sm_action('postsettings') && $_postvars['marker'] == 1)
+			if (sm_actionpost('postsettings'))
 				{
 					if (!empty($_getvars['viewmode']))
 						$m['mode_settings'] = $_getvars['viewmode'];
 					else
 						$m['mode_settings'] = 'default';
-					$i = 0;
-					$set[$i]['name'] = 'cookprefix';
-					$set[$i]['value'] = dbescape($_postvars['p_cook']);
-					$i++;
-					$set[$i]['name'] = 'resource_title';
-					$set[$i]['value'] = dbescape($_postvars['p_title']);
-					$i++;
-					$_postvars['p_url'] = trim($_postvars['p_url']);
-					if (substr($_postvars['p_url'], -1) != '/')
-						$_postvars['p_url'] .= '/';
-					$set[$i]['name'] = 'resource_url';
-					$set[$i]['value'] = dbescape($_postvars['p_url']);
-					$i++;
-					$set[$i]['name'] = 'logo_text';
-					$set[$i]['value'] = dbescape($_postvars['p_logo']);
-					$i++;
-					$set[$i]['name'] = 'meta_description';
-					$set[$i]['value'] = dbescape($_postvars['p_description']);
-					$i++;
-					$set[$i]['name'] = 'meta_keywords';
-					$set[$i]['value'] = dbescape($_postvars['p_keywords']);
-					$i++;
-					$set[$i]['name'] = 'default_language';
-					$set[$i]['value'] = dbescape($_postvars['p_lang']);
-					$i++;
-					$set[$i]['name'] = 'default_theme';
-					$set[$i]['value'] = dbescape($_postvars['p_theme']);
-					$i++;
-					$set[$i]['name'] = 'default_module';
-					$set[$i]['value'] = dbescape($_postvars['p_module']);
-					$i++;
-					$set[$i]['name'] = 'copyright_text';
-					$set[$i]['value'] = dbescape($_postvars['p_copyright']);
-					$i++;
-					$set[$i]['name'] = 'max_upload_filesize';
-					$set[$i]['value'] = dbescape($_postvars['p_maxfsize']);
-					$i++;
-					$set[$i]['name'] = 'banned_ip';
-					$set[$i]['value'] = dbescape($_postvars['p_banned_ip']);
-					$i++;
-					$set[$i]['name'] = 'meta_header_text';
-					$set[$i]['value'] = dbescape($_postvars['p_meta_header_text']);
-					$i++;
-					$set[$i]['name'] = 'header_static_text';
-					$set[$i]['value'] = dbescape($_postvars['p_htext']);
-					$i++;
-					$set[$i]['name'] = 'footer_static_text';
-					$set[$i]['value'] = dbescape($_postvars['p_ftext']);
-					$i++;
-					$set[$i]['name'] = 'admin_items_by_page';
-					if (empty($_postvars['p_adminitems_per_page']))
-						$set[$i]['value'] = dbescape('10');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_adminitems_per_page']);
-					$i++;
-					$set[$i]['name'] = 'search_items_by_page';
-					if (empty($_postvars['p_searchitems_per_page']))
-						$set[$i]['value'] = dbescape('10');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_searchitems_per_page']);
-					$i++;
-					$set[$i]['name'] = 'ext_editor';
-					$set[$i]['value'] = dbescape($_postvars['p_exteditor']);
-					$i++;
-					$set[$i]['name'] = 'noflood_time';
-					$set[$i]['value'] = dbescape($_postvars['p_floodtime']);
-					$i++;
-					$set[$i]['name'] = 'blocks_use_image';
-					$set[$i]['value'] = dbescape($_postvars['p_blocks_use_image']);
-					$i++;
-					$set[$i]['name'] = 'log_type';
-					$set[$i]['value'] = intval($_postvars['p_log_type']);
-					$i++;
-					$set[$i]['name'] = 'log_store_days';
-					$set[$i]['value'] = intval($_postvars['p_log_store_days']);
-					$i++;
-					$set[$i]['name'] = 'upper_menu_id';
-					$set[$i]['value'] = dbescape($_postvars['p_uppermenu']);
-					$i++;
-					$set[$i]['name'] = 'bottom_menu_id';
-					$set[$i]['value'] = dbescape($_postvars['p_bottommenu']);
-					$i++;
-					$set[$i]['name'] = 'menus_use_image';
-					$set[$i]['value'] = dbescape($_postvars['p_menus_use_image']);
-					$i++;
-					$set[$i]['name'] = 'menuitems_use_image';
-					$set[$i]['value'] = dbescape($_postvars['p_menuitems_use_image']);
-					$i++;
-					$set[$i]['name'] = 'users_menu_id';
-					$set[$i]['value'] = dbescape($_postvars['p_usersmenu']);
-					for ($i = 0; $i < count($set); $i++)
-						{
-							$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".$set[$i]['value']."' WHERE name_settings = '".$set[$i]['name']."' AND mode='".dbescape($m['mode_settings'])."'";
-							$result = execsql($sql);
-						}
-					//-------------------------------------------------------------------------------------
+					//------- Common settings ------------------------------------------------------------------------------
+					sm_update_settings('resource_title', $_postvars['p_title'], $m['mode_settings']);
+					sm_update_settings('resource_url', siman_clean_resource_url($_postvars['p_url']), $m['mode_settings']);
+					sm_update_settings('resource_url_mobile', siman_clean_resource_url($_postvars['resource_url_mobile']), $m['mode_settings']);
+					sm_update_settings('resource_url_tablet', siman_clean_resource_url($_postvars['resource_url_tablet']), $m['mode_settings']);
+					sm_update_settings('resource_url_rewrite', intval($_postvars['resource_url_rewrite'])==1 ? '1' : '0', $m['mode_settings']);
+					sm_update_settings('logo_text', $_postvars['p_logo'], $m['mode_settings']);
+					sm_update_settings('copyright_text', $_postvars['p_copyright'], $m['mode_settings']);
+					sm_update_settings('meta_keywords', $_postvars['p_keywords'], $m['mode_settings']);
+					sm_update_settings('meta_description', $_postvars['p_description'], $m['mode_settings']);
+					sm_update_settings('default_language', $_postvars['p_lang'], $m['mode_settings']);
+					sm_update_settings('default_theme', $_postvars['p_theme'], $m['mode_settings']);
+					sm_update_settings('sidepanel_count', (intval($_postvars['p_sidepanel_count']) <= 0) ? 1 : intval($_postvars['p_sidepanel_count']), $m['mode_settings']);
+					sm_update_settings('default_module', $_postvars['p_module'], $m['mode_settings']);
+					sm_update_settings('cookprefix', $_postvars['p_cook'], $m['mode_settings']);
+					sm_update_settings('max_upload_filesize', intval($_postvars['p_maxfsize']), $m['mode_settings']);
+					sm_update_settings('admin_items_by_page', intval($_postvars['p_adminitems_per_page'])<=0 ? 10 : intval($_postvars['p_adminitems_per_page']), $m['mode_settings']);
+					sm_update_settings('search_items_by_page', intval($_postvars['p_searchitems_per_page'])<=0 ? 10 : intval($_postvars['p_searchitems_per_page']), $m['mode_settings']);
+					sm_update_settings('ext_editor', $_postvars['p_exteditor'], $m['mode_settings']);
+					sm_update_settings('noflood_time', intval($_postvars['p_floodtime'])<=0 ? 600 : intval($_postvars['p_floodtime']), $m['mode_settings']);
+					sm_update_settings('blocks_use_image', intval($_postvars['p_blocks_use_image'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('rewrite_index_title', $_postvars['p_rewrite_index_title'], $m['mode_settings']);
+					sm_update_settings('log_type', intval($_postvars['p_log_type'])<=0 ? 0 : intval($_postvars['p_log_type']), $m['mode_settings']);
+					sm_update_settings('log_store_days', intval($_postvars['p_log_store_days'])<=0 ? 0 : intval($_postvars['p_log_store_days']), $m['mode_settings']);
+					sm_update_settings('image_generation_type', ($_postvars['p_image_generation_type'] == 'static') ? 'static' : 'dynamic', $m['mode_settings']);
+					sm_update_settings('title_delimiter', $_postvars['p_title_delimiter'], $m['mode_settings']);
+					sm_update_settings('meta_resource_title_position', intval($_postvars['p_meta_resource_title_position']), $m['mode_settings']);
+					//------- Menu settings ------------------------------------------------------------------------------
+					sm_update_settings('upper_menu_id', $_postvars['p_uppermenu'], $m['mode_settings']);
+					sm_update_settings('bottom_menu_id', $_postvars['p_bottommenu'], $m['mode_settings']);
+					sm_update_settings('users_menu_id', $_postvars['p_usersmenu'], $m['mode_settings']);
+					sm_update_settings('menus_use_image', intval($_postvars['p_menus_use_image'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('menuitems_use_image', intval($_postvars['p_menuitems_use_image'])==1?1:0, $m['mode_settings']);
+					//------- Text settings ------------------------------------------------------------------------------
 					sm_update_settings('content_use_preview', intval($_postvars['p_content_use_preview'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('allow_alike_content', intval($_postvars['p_allow_alike_content'])==1?1:0, $m['mode_settings']);
-					if (sm_get_settings('allow_alike_content', $m['mode_settings']))
-						sm_update_settings('alike_content_count', intval($_postvars['alike_content_count'])<=0 ? 5 : intval($_postvars['alike_content_count']), $m['mode_settings']);
-					else
-						sm_update_settings('alike_content_count', 0, $m['mode_settings']);
 					sm_update_settings('content_per_page_multiview', intval($_postvars['content_per_page_multiview'])<=0?10:intval($_postvars['content_per_page_multiview']), $m['mode_settings']);
-					sm_update_settings('content_editor_level', intval($_postvars['content_editor_level']), $m['mode_settings']);
+					sm_update_settings('allow_alike_content', intval($_postvars['p_allow_alike_content'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('alike_content_count', intval($_postvars['alike_content_count'])<=0 ? 5 : intval($_postvars['alike_content_count']), $m['mode_settings']);
+					sm_update_settings('content_use_path', ($_postvars['p_content_use_path'] == '1') ? '1' : '0', $m['mode_settings']);
+					sm_update_settings('content_attachments_count', abs(intval($_postvars['p_content_attachments_count'])), $m['mode_settings']);
 					sm_update_settings('content_use_image', ($_postvars['p_content_use_image'] == '1') ? '1' : '0', $m['mode_settings']);
 					sm_update_settings('content_image_preview_width', $_postvars['p_content_image_preview_width'], $m['mode_settings']);
 					sm_update_settings('content_image_preview_height', $_postvars['p_content_image_preview_height'], $m['mode_settings']);
 					sm_update_settings('content_image_fulltext_width', $_postvars['p_content_image_fulltext_width'], $m['mode_settings']);
 					sm_update_settings('content_image_fulltext_height', $_postvars['p_content_image_fulltext_height'], $m['mode_settings']);
-					sm_update_settings('content_use_path', ($_postvars['p_content_use_path'] == '1') ? '1' : '0', $m['mode_settings']);
-					sm_update_settings('content_attachments_count', abs(intval($_postvars['p_content_attachments_count'])), $m['mode_settings']);
-					//-------------------------------------------------------------------------------------
+					sm_update_settings('content_editor_level', intval($_postvars['content_editor_level']), $m['mode_settings']);
+					//------- News settings ------------------------------------------------------------------------------
 					sm_update_settings('news_use_title', intval($_postvars['p_news_use_title'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('news_use_image', intval($_postvars['p_news_use_image'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('news_use_preview', intval($_postvars['p_news_use_preview'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('news_by_page', intval($_postvars['p_news_per_page'])<=0?10:intval($_postvars['p_news_per_page']), $m['mode_settings']);
-					sm_update_settings('short_news_count', intval($_postvars['news_anounce_cut'])<=0?300:intval($_postvars['news_anounce_cut']), $m['mode_settings']);
-					sm_update_settings('short_news_count', intval($_postvars['p_news_short'])<=0?3:intval($_postvars['p_news_short']), $m['mode_settings']);
-					sm_update_settings('short_news_cut', intval($_postvars['p_short_news_cut'])<=0?100:intval($_postvars['p_short_news_cut']), $m['mode_settings']);
 					sm_update_settings('news_use_time', intval($_postvars['p_news_use_time'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('allow_alike_news', intval($_postvars['p_allow_alike_news'])==1?1:0, $m['mode_settings']);
-					sm_update_settings('alike_news_count', intval($_postvars['p_alike_news_count']), $m['mode_settings']);
-					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
+					sm_update_settings('news_use_image', intval($_postvars['p_news_use_image'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('news_image_preview_width', $_postvars['p_news_image_preview_width'], $m['mode_settings']);
 					sm_update_settings('news_image_preview_height', $_postvars['p_news_image_preview_height'], $m['mode_settings']);
 					sm_update_settings('news_image_fulltext_width', $_postvars['p_news_image_fulltext_width'], $m['mode_settings']);
 					sm_update_settings('news_image_fulltext_height', $_postvars['p_news_image_fulltext_height'], $m['mode_settings']);
+					sm_update_settings('news_by_page', intval($_postvars['p_news_per_page'])<=0?10:intval($_postvars['p_news_per_page']), $m['mode_settings']);
+					sm_update_settings('news_use_preview', intval($_postvars['p_news_use_preview'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('news_anounce_cut', intval($_postvars['p_news_cut'])<=0?300:intval($_postvars['p_news_cut']), $m['mode_settings']);
+					sm_update_settings('short_news_count', intval($_postvars['p_news_short'])<=0?3:intval($_postvars['p_news_short']), $m['mode_settings']);
+					sm_update_settings('short_news_cut', intval($_postvars['p_short_news_cut'])<=0?100:intval($_postvars['p_short_news_cut']), $m['mode_settings']);
+					sm_update_settings('allow_alike_news', intval($_postvars['p_allow_alike_news'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('alike_news_count', intval($_postvars['p_alike_news_count']), $m['mode_settings']);
+					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
 					sm_update_settings('news_attachments_count', abs(intval($_postvars['p_news_attachments_count'])), $m['mode_settings']);
-					//-------------------------------------------------------------------------------------
+					//------ User settings ----------------------------------------------------------------
 					sm_update_settings('allow_register', intval($_postvars['p_allowregister'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('allow_forgot_password', intval($_postvars['p_allowforgotpass'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('user_activating_by_admin', intval($_postvars['p_adminactivating'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('return_after_login', intval($_postvars['p_return_after_login'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('allow_private_messages', intval($_postvars['p_allow_private_messages'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('use_email_as_login', ($_postvars['p_use_email_as_login'] == '1') ? '1' : '0', $m['mode_settings']);
+					sm_update_settings('signinwithloginandemail', intval($_postvars['signinwithloginandemail']), $m['mode_settings']);
 					sm_update_settings('redirect_after_login_1', $_postvars['p_redirect_after_login_1'], $m['mode_settings']);
 					sm_update_settings('redirect_after_login_2', $_postvars['p_redirect_after_login_2'], $m['mode_settings']);
 					sm_update_settings('redirect_after_login_3', $_postvars['p_redirect_after_login_3'], $m['mode_settings']);
 					sm_update_settings('redirect_after_register', $_postvars['p_redirect_after_register'], $m['mode_settings']);
 					sm_update_settings('redirect_after_logout', $_postvars['p_redirect_after_logout'], $m['mode_settings']);
 					sm_update_settings('redirect_on_success_change_usrdata', $_postvars['redirect_on_success_change_usrdata'], $m['mode_settings']);
-					sm_update_settings('signinwithloginandemail', intval($_postvars['signinwithloginandemail']), $m['mode_settings']);
-					//-------------------------------------------------------------------------------------
+					//------ Security settings ----------------------------------------------------------------
+					sm_update_settings('banned_ip', $_postvars['p_banned_ip'], $m['mode_settings']);
+					//------ Static texts settings ----------------------------------------------------------------
+					sm_update_settings('meta_header_text', $_postvars['p_meta_header_text'], $m['mode_settings']);
+					sm_update_settings('header_static_text', $_postvars['p_htext'], $m['mode_settings']);
+					sm_update_settings('footer_static_text', $_postvars['p_ftext'], $m['mode_settings']);
+					//---- Setup mail settings ------------------------------------------------------------
 					sm_update_settings('administrators_email', $_postvars['p_admemail'], $m['mode_settings']);
 					sm_update_settings('email_signature', $_postvars['p_esignature'], $m['mode_settings']);
-					sm_update_settings('rewrite_index_title', $_postvars['p_rewrite_index_title'], $m['mode_settings']);
-					sm_update_settings('sidepanel_count', (intval($_postvars['p_sidepanel_count']) <= 0) ? 1 : intval($_postvars['p_sidepanel_count']), $m['mode_settings']);
-					sm_update_settings('image_generation_type', ($_postvars['p_image_generation_type'] == 'static') ? 'static' : 'dynamic', $m['mode_settings']);
-					sm_update_settings('title_delimiter', $_postvars['p_title_delimiter'], $m['mode_settings']);
-					sm_update_settings('meta_resource_title_position', intval($_postvars['p_meta_resource_title_position']), $m['mode_settings']);
-					sm_update_settings('resource_url_rewrite', ($_postvars['resource_url_rewrite'] == '1') ? '1' : '0', $m['mode_settings']);
-					sm_update_settings('resource_url_mobile', $_postvars['resource_url_mobile'], $m['mode_settings']);
-					sm_update_settings('resource_url_tablet', $_postvars['resource_url_tablet'], $m['mode_settings']);
+					//-------------------------------------------------------------------------------------
 
 					include('includes/config.php');
 					sm_notify($lang['settings_saved_successful']);

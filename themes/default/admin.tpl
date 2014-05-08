@@ -38,7 +38,6 @@
 	{/section}
 <br /><br />
 <form action="index.php?m=admin&d=postsettings&viewmode={$modules[$index].mode_settings}" method="post">
-<input type="hidden" name="marker" value="1" />
 <table width="100%" border="0">
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.common_settings}</td>
@@ -98,20 +97,20 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_copyright_text&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.meta_description eq 1}
-		<tr>
-			<td>{$lang.settings_meta_description}:</td>
-			<td><input type="text" name="p_description" value="{$modules[$index].edit_settings.meta_description|htmlspecialchars}"></td>
-			<td>{include file='admin_settings_extctrls.tpl' name_settings='meta_description'}</td>
-			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_description&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
-		</tr>
-	{/if}
 	{if $modules[$index].show_settings.meta_keywords eq 1}
 		<tr>
 			<td>{$lang.settings_meta_keywords}:</td>
 			<td><input type="text" name="p_keywords" value="{$modules[$index].edit_settings.meta_keywords|htmlspecialchars}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='meta_keywords'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_keywords&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
+	{if $modules[$index].show_settings.meta_description eq 1}
+		<tr>
+			<td>{$lang.settings_meta_description}:</td>
+			<td><input type="text" name="p_description" value="{$modules[$index].edit_settings.meta_description|htmlspecialchars}"></td>
+			<td>{include file='admin_settings_extctrls.tpl' name_settings='meta_description'}</td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_description&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.default_language eq 1}
@@ -384,7 +383,7 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_alike_content&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.allow_alike_content eq 1}
+	{if $modules[$index].show_settings.alike_content_count eq 1}
 		<tr>
 			<td>{$lang.settings_alike_content_count}:</td>
 			<td><input type="text" name="p_alike_content_count" value="{$modules[$index].edit_settings.alike_content_count}"></td>
@@ -473,6 +472,13 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_title&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.news_use_time eq 1}
+	<tr>
+		<td colspan="2"><input type="checkbox" name="p_news_use_time" value="1" {if $modules[$index].edit_settings.news_use_time eq "1"}checked{/if}>{$lang.settings_news_use_time}</td>
+		<td></td>
+		<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=news_use_time&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+	</tr>
+	{/if}
 	{if $modules[$index].show_settings.news_use_image eq 1}
 		<tr>
 			<td colspan="2"><input type="checkbox" name="p_news_use_image" value="1" {if $modules[$index].edit_settings.news_use_image eq "1"}checked{/if}>{$lang.settings_news_use_image}</td>
@@ -512,13 +518,6 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=news_image_fulltext_height&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.news_use_preview eq 1}
-		<tr>
-			<td colspan="2"><input type="checkbox" name="p_news_use_preview" value="1" {if $modules[$index].edit_settings.news_use_preview eq "1"}checked{/if}>{$lang.settings_news_use_preview}</td>
-			<td></td>
-			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_preview&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
-		</tr>
-	{/if}
 	{if $modules[$index].show_settings.news_by_page eq 1}
 		<tr>
 			<td>{$lang.settings_news_per_page}:</td>
@@ -532,8 +531,15 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_per_page&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.news_use_preview eq 1}
+	<tr>
+		<td colspan="2"><input type="checkbox" name="p_news_use_preview" value="1" {if $modules[$index].edit_settings.news_use_preview eq "1"}checked{/if}>{$lang.settings_news_use_preview}</td>
+		<td></td>
+		<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_preview&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+	</tr>
+	{/if}
 	{if $modules[$index].show_settings.news_anounce_cut eq 1}
-		<tr>				 
+		<tr>
 			<td>{$lang.settings_news_anounce_cut}:</td>
 			<td><select name="p_news_cut" size="1">
 			  <option value="50"{if $modules[$index].edit_settings.news_anounce_cut eq 50} SELECTED{/if}>50</option>
@@ -581,13 +587,6 @@
 			</select></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='short_news_cut'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_short_news_cut&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
-		</tr>
-	{/if}
-	{if $modules[$index].show_settings.news_use_time eq 1}
-		<tr>
-			<td colspan="2"><input type="checkbox" name="p_news_use_time" value="1" {if $modules[$index].edit_settings.news_use_time eq "1"}checked{/if}>{$lang.settings_news_use_time}</td>
-			<td></td>
-			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=news_use_time&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.allow_alike_news eq 1}
