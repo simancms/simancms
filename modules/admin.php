@@ -155,85 +155,33 @@
 					$set[$i]['name'] = 'alike_content_count';
 					$set[$i]['value'] = dbescape(intval($_postvars['p_alike_content_count']));
 					$i++;
-					$set[$i]['name'] = 'news_use_title';
-					$set[$i]['value'] = dbescape($_postvars['p_news_use_title']);
-					$i++;
-					$set[$i]['name'] = 'news_use_image';
-					$set[$i]['value'] = dbescape($_postvars['p_news_use_image']);
-					$i++;
-					$set[$i]['name'] = 'news_use_preview';
-					$set[$i]['value'] = dbescape($_postvars['p_news_use_preview']);
-					$i++;
 					$set[$i]['name'] = 'content_per_page_multiview';
 					if (empty($_postvars['p_multiviewperpage']))
 						$set[$i]['value'] = dbescape('10');
 					else
 						$set[$i]['value'] = dbescape($_postvars['p_multiviewperpage']);
-					$i++;
-					$set[$i]['name'] = 'news_by_page';
-					if (empty($_postvars['p_news_per_page']))
-						$set[$i]['value'] = dbescape('10');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_news_per_page']);
-					$i++;
-					$set[$i]['name'] = 'news_anounce_cut';
-					if (empty($_postvars['p_news_cut']))
-						$set[$i]['value'] = dbescape('300');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_news_cut']);
-					$i++;
-					$set[$i]['name'] = 'short_news_count';
-					if (empty($_postvars['p_news_short']))
-						$set[$i]['value'] = dbescape('3');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_news_short']);
-					$i++;
-					$set[$i]['name'] = 'short_news_cut';
-					if (empty($_postvars['p_short_news_cut']))
-						$set[$i]['value'] = dbescape('100');
-					else
-						$set[$i]['value'] = dbescape($_postvars['p_short_news_cut']);
-					$i++;
-					$set[$i]['name'] = 'news_use_time';
-					$set[$i]['value'] = dbescape($_postvars['p_news_use_time']);
-					$i++;
-					$set[$i]['name'] = 'allow_alike_news';
-					if ($_postvars['p_allow_alike_news'] != 1) $_postvars['p_allow_alike_news'] = 0;
-					$set[$i]['value'] = $_postvars['p_allow_alike_news'];
-					$i++;
-					$set[$i]['name'] = 'alike_news_count';
-					$set[$i]['value'] = dbescape(intval($_postvars['p_alike_news_count']));
-					$i++;
-					$set[$i]['name'] = 'allow_register';
-					if ($_postvars['p_allowregister'] != 1) $_postvars['p_allowregister'] = 0;
-					$set[$i]['value'] = $_postvars['p_allowregister'];
-					$i++;
-					$set[$i]['name'] = 'allow_forgot_password';
-					if ($_postvars['p_allowforgotpass'] != 1) $_postvars['p_allowforgotpass'] = 0;
-					$set[$i]['value'] = $_postvars['p_allowforgotpass'];
-					$i++;
-					$set[$i]['name'] = 'user_activating_by_admin';
-					if ($_postvars['p_adminactivating'] != 1) $_postvars['p_adminactivating'] = 0;
-					$set[$i]['value'] = $_postvars['p_adminactivating'];
-					$i++;
-					$set[$i]['name'] = 'return_after_login';
-					if ($_postvars['p_return_after_login'] != 1) $_postvars['p_return_after_login'] = 0;
-					$set[$i]['value'] = $_postvars['p_return_after_login'];
-					$i++;
-					$set[$i]['name'] = 'allow_private_messages';
-					if ($_postvars['p_allow_private_messages'] != 1) $_postvars['p_allow_private_messages'] = 0;
-					$set[$i]['value'] = $_postvars['p_allow_private_messages'];
-					$i++;
-					$set[$i]['name'] = 'administrators_email';
-					$set[$i]['value'] = dbescape($_postvars['p_admemail']);
-					$i++;
-					$set[$i]['name'] = 'email_signature';
-					$set[$i]['value'] = dbescape($_postvars['p_esignature']);
 					for ($i = 0; $i < count($set); $i++)
 						{
 							$sql = "UPDATE ".$tableprefix."settings SET value_settings = '".$set[$i]['value']."' WHERE name_settings = '".$set[$i]['name']."' AND mode='".dbescape($m['mode_settings'])."'";
 							$result = execsql($sql);
 						}
+					sm_update_settings('news_use_title', intval($_postvars['p_news_use_title'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('news_use_image', intval($_postvars['p_news_use_image'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('news_use_preview', intval($_postvars['p_news_use_preview'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('news_by_page', intval($_postvars['p_news_per_page'])<=0?10:intval($_postvars['p_news_per_page']), $m['mode_settings']);
+					sm_update_settings('short_news_count', intval($_postvars['news_anounce_cut'])<=0?300:intval($_postvars['news_anounce_cut']), $m['mode_settings']);
+					sm_update_settings('short_news_count', intval($_postvars['p_news_short'])<=0?3:intval($_postvars['p_news_short']), $m['mode_settings']);
+					sm_update_settings('short_news_cut', intval($_postvars['p_short_news_cut'])<=0?100:intval($_postvars['p_short_news_cut']), $m['mode_settings']);
+					sm_update_settings('news_use_time', intval($_postvars['p_news_use_time'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('allow_alike_news', intval($_postvars['p_allow_alike_news'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('alike_news_count', intval($_postvars['p_alike_news_count']), $m['mode_settings']);
+					sm_update_settings('allow_register', intval($_postvars['p_allowregister'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('allow_forgot_password', intval($_postvars['p_allowforgotpass'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('user_activating_by_admin', intval($_postvars['p_adminactivating'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('return_after_login', intval($_postvars['p_return_after_login'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('allow_private_messages', intval($_postvars['p_allow_private_messages'])==1?1:0, $m['mode_settings']);
+					sm_update_settings('administrators_email', $_postvars['p_admemail'], $m['mode_settings']);
+					sm_update_settings('email_signature', $_postvars['p_esignature'], $m['mode_settings']);
 					sm_update_settings('rewrite_index_title', $_postvars['p_rewrite_index_title'], $m['mode_settings']);
 					sm_update_settings('news_image_preview_width', $_postvars['p_news_image_preview_width'], $m['mode_settings']);
 					sm_update_settings('news_image_preview_height', $_postvars['p_news_image_preview_height'], $m['mode_settings']);
