@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-08
+	//#revision 2014-05-09
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -181,11 +181,13 @@
 					$m['fd'] = $fd;
 					if (!sm_is_allowed_to_upload($fd))
 						{
-							$m['mode'] = 'errorupload';
+							$m['error_message']=$lang['error_file_upload_message'];
+							sm_set_action('uplimg');
 						}
 					elseif (!move_uploaded_file($fs, $fd))
 						{
-							$m['mode'] = 'errorupload';
+							$m['error_message']=$lang['error_file_upload_message'];
+							sm_set_action('uplimg');
 						}
 					else
 						{
@@ -216,6 +218,8 @@
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
+					if (!empty($m['error_message']))
+						$ui->NotificationError($m['error_message']);
 					$f = new TForm('index.php?m=admin&d=postuplimg');
 					$f->AddFile('userfile', $lang['file_name']);
 					$f->AddText('p_optional', $lang['optional_file_name']);
@@ -905,34 +909,8 @@
 					$ui->AddPagebar('');
 					$ui->Output(true);
 				}
-			if (sm_action('package') && $_settings['packages_upload_allowed'])
-				{
-					sm_title($lang['module_admin']['upload_package']);
-					add_path_control();
-					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
-					$ui = new TInterface();
-					$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['file'].')');
-					$f = new TForm('index.php?m=admin&d=postpackage');
-					$f->AddFile('userfile', $lang['file_name']);
-					$f->SaveButton($lang['upload']);
-					$ui->AddForm($f);
-					$ui->Output(true);
-					if (function_exists('curl_init'))
-						{
-							$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['url'].')');
-							$f = new TForm('index.php?m=admin&d=postpackage&typeupload=url');
-							$f->AddText('urlupload', $lang['common']['url']);
-							$f->SaveButton($lang['upload']);
-							$ui->AddForm($f);
-							$ui->Output(true);
-						}
-				}
 			if (sm_action('postpackage') && $_settings['packages_upload_allowed'])
 				{
-					$m['title'] = $lang['module_admin']['upload_package'];
-					$message = '';
 					if (empty($_getvars['typeupload']))
 						{
 							$fs = $_uplfilevars['userfile']['tmp_name'];
@@ -942,7 +920,8 @@
 							$m['fd'] = $fd;
 							if (!move_uploaded_file($fs, $fd))
 								{
-									$m['mode'] = 'errorupload';
+									$m['error_message'] = $lang['error_file_upload_message'];
+									sm_set_action('package');
 								}
 						}
 					elseif (function_exists('curl_init'))
@@ -960,14 +939,14 @@
 							fclose($fp);
 							if (!empty($tmperr))
 								{
-									$m['mode'] = 'errorupload';
 									$m['error_message'] = $tmperr;
+									sm_set_action('package');
 									unlink('urlupload.zip');
 								}
 							else
 								$fd = 'urlupload.zip';
 						}
-					if ($m['mode'] != 'errorupload')
+					if (sm_action('postpackage'))
 						{
 							require_once('ext/package/unarchiver.php');
 							$zip = new PclZip($fd);
@@ -984,12 +963,37 @@
 										}
 								}
 							if (empty($refresh_url))
-								sm_redirect('index.php?m=admin&d=view', $message);
+								sm_redirect('index.php?m=admin&d=view');
 						}
 				}
-			if (sm_action('errorupload'))
+			if (sm_action('package') && $_settings['packages_upload_allowed'])
 				{
-					$m["title"] = $lang['upload'];
+					sm_title($lang['module_admin']['upload_package']);
+					add_path_control();
+					add_path_current();
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					if (!empty($m['error_message']))
+						{
+							$ui->AddBlock($lang['error']);
+							$ui->NotificationError($m['error_message']);
+						}
+					$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['file'].')');
+					$f = new TForm('index.php?m=admin&d=postpackage');
+					$f->AddFile('userfile', $lang['file_name']);
+					$f->SaveButton($lang['upload']);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					if (function_exists('curl_init'))
+						{
+							$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['url'].')');
+							$f = new TForm('index.php?m=admin&d=postpackage&typeupload=url');
+							$f->AddText('urlupload', $lang['common']['url']);
+							$f->SaveButton($lang['upload']);
+							$ui->AddForm($f);
+							$ui->Output(true);
+						}
 				}
 		}
 

@@ -20,14 +20,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'errorupload'}
-{include file="block_begin.tpl"}
-{$lang.error_file_upload_message}<br />
-{$modules[$index].error_message}<br />
-<a href="index.php?m=admin">{$lang.control_panel}</a><br />
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'settings'}
 {include file="block_begin.tpl"}
 {$lang.common.profile}: 
