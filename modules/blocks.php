@@ -18,7 +18,7 @@
 
 	if ($userinfo['level'] >= 3)
 		{
-			if (empty($m["mode"])) $m["mode"] = 'view';
+			sm_default_action('view');
 
 			if (sm_action('add'))
 				{
@@ -242,27 +242,42 @@
 					$q->Select();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['center_panel'], '100%');
-					$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
-					$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
+					$t->AddCol('up', '', '16', $lang['up']);
+					$t->AddCol('down', '', '16', $lang['down']);
 					$t->AddEdit();
 					$t->AddDelete();
 					$v=Array(0);
 					$l=Array($lang['first']);
 					for ($i = 0; $i<$q->Count(); $i++)
 						{
+							if (intval(sm_settings('main_block_position'))==$i)
+								{
+									$t->Label('title', $lang['module_blocks']['main_block_position']);
+									$t->OneLine('title');
+									$t->NewRow();
+								}
 							$v[]=$i+1;
 							$l[]=$lang['after'].': '.$q->items[$i]['caption_block'];
 							$t->Label('title', $q->items[$i]['caption_block']);
 							$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
 							if ($i>0)
-								$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block']);
+								{
+									$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block']);
+									$t->Image('up', 'up.gif');
+								}
 							if ($i+1<$q->Count())
-								$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block']);
+								{
+									$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block']);
+									$t->Image('down', 'down.gif');
+								}
 							$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
 							$t->NewRow();
 						}
-					if (intval($_settings['main_block_position']) > $q->Count())
+					if (intval(sm_settings('main_block_position')) >= $q->Count())
 						{
+							$t->Label('title', $lang['module_blocks']['main_block_position']);
+							$t->OneLine('title');
+							$t->NewRow();
 							$_settings['main_block_position'] = $q->Count();
 						}
 					$f = new TForm('index.php?m=blocks&d=setmain');
@@ -277,8 +292,8 @@
 						{
 							$t=new TGrid('edit');
 							$t->AddCol('title', $lang['panel'].' '.$panel, '100%');
-							$t->AddCol('up', '', '16', $lang['up'], '', 'up.gif');
-							$t->AddCol('down', '', '16', $lang['down'], '', 'down.gif');
+							$t->AddCol('up', '', '16', $lang['up']);
+							$t->AddCol('down', '', '16', $lang['down']);
 							$t->AddEdit();
 							$t->AddDelete();
 							$q=new TQuery($sm['t']."blocks");
@@ -290,9 +305,15 @@
 									$t->Label('title', $q->items[$i]['caption_block']);
 									$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
 									if ($i>0)
-										$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+										{
+											$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+											$t->Image('up', 'up.gif');
+										}
 									if ($i+1<$q->Count())
-										$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+										{
+											$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+											$t->Image('down', 'down.gif');
+										}
 									$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
 									$t->NewRow();
 								}
