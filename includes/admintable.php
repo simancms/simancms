@@ -32,6 +32,8 @@ if (!defined("admintable_DEFINED"))
 				function AddCol($name, $title, $width='', $hint='', $replace_text='', $replace_image='', $messagebox=0, $messagebox_text='', $to_menu=0)
 					{
 						global $sm;
+						if (strlen($replace_image)>0 && strpos($replace_image, '://')===false && strpos($replace_image, '.')===false)
+							$replace_image.='.gif';
 						$this->table['columns'][$name]['caption']=$title;
 						$this->table['columns'][$name]['width']=$width;
 						$this->table['columns'][$name]['hint']=$hint;
@@ -54,6 +56,8 @@ if (!defined("admintable_DEFINED"))
 					}
 				function SetHeaderImage($name, $image)
 					{
+						if (strpos($image, '.')===false && strpos($image, '://')===false)
+							$image.='.gif';
 						if (strpos($image, '://')!==false || file_exists($image))
 							$img=$image;
 						elseif (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image))
@@ -64,20 +68,21 @@ if (!defined("admintable_DEFINED"))
 					}
 				function AddIcon($name, $image, $hint='')
 					{
-						global $lang;
+						if (strpos($image, '.')===false && strpos($image, '://')===false)
+							$image.='.gif';
 						$this->AddCol($name, '', '16', $hint, $hint, $image);
 					}
 				function AddEdit($name='edit')
 					{
 						global $lang;
-						$this->AddCol($name, '', '16', $lang['common']['edit'], $lang['common']['edit'], 'edit.gif');
+						$this->AddCol($name, '', '16', $lang['common']['edit'], $lang['common']['edit'], 'edit');
 					}
 				function AddDelete($msg='', $name='delete')
 					{
 						global $lang;
 						if (empty($msg))
 							$msg=$lang['common']['really_want_delete'];
-						$this->AddCol($name, '', '16', $lang['common']['delete'], $lang['common']['delete'], 'delete.gif', 1, addslashes($msg));
+						$this->AddCol($name, '', '16', $lang['common']['delete'], $lang['common']['delete'], 'delete', 1, addslashes($msg));
 					}
 				function SetAsMessageBox($name, $msg)
 					{
@@ -159,7 +164,8 @@ if (!defined("admintable_DEFINED"))
 					}
 				function Image($name, $replace_image)
 					{
-						global $sm;
+						if (strpos($replace_image, '.')===false && strpos($replace_image, '://')===false)
+							$replace_image.='.gif';
 						$this->table['rows'][$this->rownumber][$name]['imagepath']=false;
 						if (!empty($replace_image) && strpos($replace_image, '/')===false)
 							{
@@ -256,7 +262,6 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['dropdownitems'][$i]['title']=$title;
 						$this->table['columns'][$name]['dropdownitems'][$i]['url']=$url;
 						$this->table['columns'][$name]['dropdownitems'][$i]['confirm_message']=$confirm_message;
-						$this->table['columns'][$name]['dropdownitems'][$i]['tomenutitle']=$tomenutitle;
 					}
 				function HeaderDropDownItemSelect($name, $index=-1)
 					{
