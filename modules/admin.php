@@ -301,7 +301,8 @@
 					$t->AddCol('information', $lang['common']['information'], '25%');
 					$t->AddCol('description', $lang['common']['description'], '50%');
 					$t->AddEdit();
-					$t->AddDelete();
+					$t->AddCol('delete', '', '16');
+					$t->SetHeaderImage('delete', 'transparent.gif');
 					$sql = "SELECT * FROM ".$tableprefix."modules";
 					$result = execsql($sql);
 					$i = 0;
@@ -331,7 +332,10 @@
 							$t->Url('title', 'index.php?m='.$row->module_name.'&d=admin');
 							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row->id_module);
 							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search')))
-								$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+								{
+									$t->Image('delete', 'delete.gif');
+									$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+								}
 							$t->NewRow();
 							$i++;
 						}
