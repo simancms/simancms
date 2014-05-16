@@ -25,7 +25,7 @@
 		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].type eq "html"}
 			{$blocks[admininterfaceblockindex].items[admininterfaceitemindex].html}
 		{elseif $blocks[admininterfaceblockindex].items[admininterfaceitemindex].tpl neq ""}
-			{include file=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].tpl data=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].data}
+			{include file=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].tpl data=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].data action=$blocks[admininterfaceblockindex].items[admininterfaceitemindex].action}
 		{/if}
 		{/section}
 		{if $blocks[admininterfaceblockindex].show_borders eq 1}

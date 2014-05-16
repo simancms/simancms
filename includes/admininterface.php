@@ -46,12 +46,21 @@ if (!defined("admininterface_DEFINED"))
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']=$type;
 						$this->item['tpl']=$tpl;
-						$this->item[$type]=$object->Output();
+						if (is_object($object))
+							$this->item[$type]=$object->Output();
 						$this->SetActiveItem();
 					}
 				function AddForm($form)
 					{
 						$this->AddOutputObject('form', $form);
+					}
+				function AddTPL($tplname, $action='view')
+					{
+						$this->blocks[$this->currentblock]['itemscount']++;
+						$this->item['type']='tpl';
+						$this->item['action']=$action;
+						$this->item['tpl']=$tplname;
+						$this->SetActiveItem();
 					}
 				function AddGrid($grid)
 					{
