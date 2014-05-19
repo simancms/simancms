@@ -181,21 +181,20 @@
 		}
 	if (sm_action('logout'))
 		{
-			$m["module"] = 'account';
-			$m["title"] = $lang["logout"];
 			sm_extcore();
 			sm_logout();
+			sm_notify($lang['message_logout']);
 			include('includes/userinfo.php');
 			setcookie($_settings['cookprefix'].'simanautologin', '');
 			if (!empty($_settings['redirect_after_logout']))
-				$refresh_url = $_settings['redirect_after_logout'];
+				sm_redirect($_settings['redirect_after_logout']);
 			else
-				$refresh_url = 'http://'.$_settings['resource_url'];
+				sm_redirect('http://'.$_settings['resource_url']);
 		}
 	if (sm_action('cabinet') && !empty($userinfo['id']))
 		{
 			$m["module"] = 'account';
-			$m["title"] = $lang["my_cabinet"];
+			sm_title($lang["my_cabinet"]);
 			if (!empty($userinfo['id']))
 				{
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user='".$userinfo['id']."'";
@@ -222,25 +221,16 @@
 				}
 			sm_page_viewid('account-cabinet');
 		}
-	if (sm_action('savenbook') && !empty($userinfo['id']))
+	if (sm_actionpost('savenbook') && !empty($userinfo['id']))
 		{
-			$m["module"] = 'account';
-			$m["title"] = $lang['module_account']['notebook'];
-			if (!empty($userinfo['id']))
-				{
-					$nb_text = dbescape($_postvars['p_notebook']);
-					$nb_text = str_replace("<", '&lt;', $nb_text);
-					$nb_text = str_replace(">", '&gt;', $nb_text);
-					$nb_text = str_replace("&", '&amp;', $nb_text);
-					$sql = "UPDATE ".$tableusersprefix."users SET notebook = '$nb_text' WHERE id_user='".$userinfo['id']."'";
-					$result = execsql($sql);
-				}
-			$refresh_url = 'index.php?m=account&d=cabinet';
+			sm_set_userfield(intval($userinfo['id']), 'notebook', htmlspecialchars($_postvars['p_notebook']));
+			sm_notify($lang['module_account']['message_notebook_text_saved']);
+			sm_redirect('index.php?m=account&d=cabinet');
 		}
 	if (sm_action('postlogin'))
 		{
 			$m["module"] = 'account';
-			$m["title"] = $lang["login_caption"];
+			sm_title($lang["login_caption"]);
 		}
 	if ($userinfo['level'] == 3)
 		include('modules/inc/adminpart/account.php');

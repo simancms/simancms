@@ -12,13 +12,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "logout"}
-{include file="block_begin.tpl"}
-{$lang.message_logout}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "successregister"}
 {include file="block_begin.tpl"}
 {$lang.success_registration}.<br />
@@ -89,19 +82,6 @@
 {include file="block_begin.tpl"}
 {$lang.module_account.message_set_password_finish}
 {include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "savenbook"}
-{include file="block_begin.tpl"}
-{$lang.module_account.message_notebook_text_saved}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "addgroup" or $modules[$index].mode eq "editgroup"}
-{include file="block_begin.tpl"}
-{include file="common_adminform.tpl" form=$modules[$index].form}
 {include file="block_end.tpl"}
 {/if}
 

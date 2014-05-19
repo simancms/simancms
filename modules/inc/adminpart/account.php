@@ -128,8 +128,6 @@
 				}
 			if (sm_action('postsetpwd'))
 				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['module_account']['set_password'];
 					$password = md5($_postvars['p_newpwd']);
 					$id_user = intval($_postvars['p_iduser']);
 					$random_code = md5($id_user.microtime().rand());
@@ -170,32 +168,7 @@
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
-			if (sm_action('addgroup'))
-				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['module_account']['add_group'];
-					require_once('includes/adminform.php');
-					add_path_control();
-					add_path($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups');
-					$f = new TForm('index.php?m=account&d=postaddgroup');
-					$f->AddText('title_group', $lang['module_account']['title_group']);
-					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
-					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
-					$m['form'] = $f->Output();
-				}
-			if (sm_action('editgroup'))
-				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['common']['edit'];
-					require_once('includes/adminform.php');
-					$f = new TForm('index.php?m=account&d=posteditgroup&id='.$_getvars['id']);
-					$f->AddText('title_group', $lang['module_account']['title_group']);
-					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
-					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
-					$f->LoadValues('SELECT * FROM '.$tableusersprefix.'groups WHERE id_group='.intval($_getvars['id']));
-					$m['form'] = $f->Output();
-				}
-			if (sm_action('postaddgroup'))
+			if (sm_actionpost('postaddgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['add_group'];
@@ -207,7 +180,7 @@
 					$q->Insert();
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
-			if (sm_action('posteditgroup'))
+			if (sm_actionpost('posteditgroup'))
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['common']['edit'];
@@ -218,22 +191,43 @@
 					$q->Update('id_group', intval($_getvars['id']));
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
+			if (sm_action('addgroup', 'editgroup'))
+				{
+					if (sm_action('addgroup'))
+						sm_title($lang['module_account']['add_group']);
+					else
+						sm_title($lang['common']['edit']);
+					require_once('includes/adminform.php');
+					include_once('includes/admininterface.php');
+					$ui = new TInterface();
+					add_path_control();
+					add_path($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups');
+					add_path_current();
+					if (sm_action('addgroup'))
+						$f = new TForm('index.php?m=account&d=postaddgroup');
+					else
+						$f = new TForm('index.php?m=account&d=posteditgroup&id='.$_getvars['id']);
+					$f->AddText('title_group', $lang['module_account']['title_group']);
+					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
+					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
+					if (sm_action('editgroup'))
+						$f->LoadValues('SELECT * FROM '.$tableusersprefix.'groups WHERE id_group='.intval($_getvars['id']));
+					$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+					sm_setfocus('title_group');
+				}
 			if (sm_action('postdeletegroup'))
 				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['common']['delete'];
-					exec_sql_delete($tableusersprefix.'groups', 'id_group', $_getvars['id']);
-					$refresh_url = 'index.php?m=account&d=listgroups';
+					TQuery::ForTable($tableusersprefix.'groups')->Add('id_group', intval($_getvars['id']))->Remove();
+					sm_redirect('index.php?m=account&d=listgroups');
 				}
 			if (sm_action('postchangegrp'))
 				{
-					$m["module"] = 'account';
-					$m["title"] = $lang['change'];
-					$tmp_usrid = $_postvars['p_user_id'];
+					$tmp_usrid = intval($_postvars['p_user_id']);
 					$grps = create_groups_str($_postvars['p_groups']);
-					$sql = "UPDATE ".$tableusersprefix."users SET groups_user = '$grps' WHERE id_user='".$tmp_usrid.'\'';
-					$result = execsql($sql);
-					$refresh_url = 'index.php?m=account&d=change&usrid='.$tmp_usrid;
+					execsql("UPDATE ".$tableusersprefix."users SET groups_user = '".dbescape($grps)."' WHERE id_user=".intval($tmp_usrid));
+					sm_redirect('index.php?m=account&d=change&usrid='.$tmp_usrid);
 				}
 		}
 
