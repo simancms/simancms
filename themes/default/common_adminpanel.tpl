@@ -13,7 +13,7 @@
 		{elseif $panelblocks[adminpanelblockindex].items[adminpanelitemindex].type eq "html"}
 			{$panelblocks[adminpanelblockindex].items[adminpanelitemindex].html}
 		{elseif $panelblocks[adminpanelblockindex].items[adminpanelitemindex].tpl neq ""}
-			{include file=$panelblocks[adminpanelblockindex].items[adminpanelitemindex].tpl data=$panelblocks[adminpanelblockindex].items[adminpanelitemindex].data}
+			{include file=$panelblocks[adminpanelblockindex].items[adminpanelitemindex].tpl data=$panelblocks[adminpanelblockindex].items[adminpanelitemindex].data action=$blocks[adminpanelblockindex].items[adminpanelitemindex].action}
 		{/if}
 		{/section}
 	{/section}
