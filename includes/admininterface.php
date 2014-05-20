@@ -8,7 +8,7 @@
 
 //==============================================================================
 //#ver 1.6.7
-//#revision 2014-05-02
+//#revision 2014-05-20
 //==============================================================================
 
 if (!defined("admininterface_DEFINED"))
@@ -139,20 +139,28 @@ if (!defined("admininterface_DEFINED"))
 						$code='<hr '.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.' />';
 						$this->html($code);
 					}
-				function NotificationError($message)
+				function NotificationError($message, $url='', $open_url_in_new_window=false)
 					{
+						if (strlen($url)>0)
+							$message='<a href="'.$url.'"'.($open_url_in_new_window?' target="_blank"':'').'>'.$message.'</a>';
 						$this->div($message, '', 'aui-message aui-message-error');
 					}
-				function NotificationWarning($message)
+				function NotificationWarning($message, $url='', $open_url_in_new_window=false)
 					{
+						if (strlen($url)>0)
+							$message='<a href="'.$url.'"'.($open_url_in_new_window?' target="_blank"':'').'>'.$message.'</a>';
 						$this->div($message, '', 'aui-message aui-message-warning');
 					}
-				function NotificationInfo($message)
+				function NotificationInfo($message, $url='', $open_url_in_new_window=false)
 					{
+						if (strlen($url)>0)
+							$message='<a href="'.$url.'"'.($open_url_in_new_window?' target="_blank"':'').'>'.$message.'</a>';
 						$this->div($message, '', 'aui-message aui-message-info');
 					}
-				function NotificationSuccess($message)
+				function NotificationSuccess($message, $url='', $open_url_in_new_window=false)
 					{
+						if (strlen($url)>0)
+							$message='<a href="'.$url.'"'.($open_url_in_new_window?' target="_blank"':'').'>'.$message.'</a>';
 						$this->div($message, '', 'aui-message aui-message-success');
 					}
 				function Output($replace_template=false)
@@ -179,7 +187,7 @@ if (!defined("admininterface_DEFINED"))
 							$style.='width:'.$width.';';
 						if (!empty($height))
 							$style.='height:'.$height.';';
-						$this->html('<div class="common_adminpanel'.(empty($class)?'':' '.$class).'" style="'.$style.'"'.(empty($id)?'':' id="'.$id).'">');
+						$this->html('<div class="common_adminpanel'.(empty($class)?'':' '.$class).'" style="'.$style.'"'.(empty($id)?'':' id="'.$id.'"').'>');
 					}
 				function Output()
 					{
