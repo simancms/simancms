@@ -7,7 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#revision 2012-06-17                                                         |
+//#ver 1.6.7
+//#revision 2014-05-20
 //==============================================================================
 
 if (!defined("adminform_DEFINED"))
@@ -20,6 +21,7 @@ if (!defined("adminform_DEFINED"))
 				var $currentTab;
 				var $tabs;
 				var $firsteditor=true;
+				private $currentname;
 				function TForm($action, $prefix='', $method='POST')
 					{
 						$this->form['action']=$action;
@@ -42,6 +44,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSeparator($name, $title)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['type']='separator';
@@ -49,6 +52,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddLabel($name, $title, $labeltext)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['labeltext']=$labeltext;
@@ -57,6 +61,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddText($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -66,6 +71,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddPassword($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -75,6 +81,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddFile($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -84,6 +91,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddStatictext($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -93,6 +101,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddHidden($name, $value='')
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['type']='hidden';
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
@@ -101,6 +110,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSystemHidden($name, $value='')
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['type']='hidden';
 						$this->SetValue($name, $value);
@@ -108,6 +118,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddTextarea($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -117,6 +128,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddEditor($name, $title, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -130,6 +142,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddCheckbox($name, $title, $checkedvalue=1, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -140,6 +153,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSelectNLList($name, $title, $nllist_values, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -150,6 +164,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSelect($name, $title, $array_values, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -160,6 +175,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSelectVL($name, $title, $array_values, $array_labels, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -171,6 +187,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddSelectNLListVL($name, $title, $nllist_values, $nllist_labels, $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -206,8 +223,13 @@ if (!defined("adminform_DEFINED"))
 								$this->form['fields'][$name]['labels'][]=$label;
 							}
 					}
+				function GetTitle($name)
+					{
+						return $this->form['fields'][$name]['caption'];
+					}
 				function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel='', $required=false)
 					{
+						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['required']=$required;
@@ -260,6 +282,10 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['fields'][$name]['attrs'][$attribute]=$value;
 					}
+				function SetTitleText($name, $title)
+					{
+						$this->form['fields'][$name]['caption']=$title;
+					}
 				function SetFieldTopText($name, $text)
 					{
 						$this->form['fields'][$name]['toptext']=$text;
@@ -276,16 +302,22 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['fields'][$name]['bottomtext']=$text;
 					}
-				function MergeColumns($name)
+				function MergeColumns($name=NULL)
 					{
+						if ($name===NULL)
+							$name=$this->currentname;
 						$this->form['fields'][$name]['mergecolumns']=1;
 					}
-				function HideDefinition($name)
+				function HideDefinition($name=NULL)
 					{
+						if ($name===NULL)
+							$name=$this->currentname;
 						$this->form['fields'][$name]['hidedefinition']=1;
 					}
-				function HideEncloser($name)
+				function HideEncloser($name=NULL)
 					{
+						if ($name===NULL)
+							$name=$this->currentname;
 						$this->form['fields'][$name]['hideencloser']=1;
 					}
 				function SetImage($name, $src, $href='')
@@ -299,16 +331,26 @@ if (!defined("adminform_DEFINED"))
 						$this->AddText($name, $title, true);
 						$this->SetImage($name, 'ext/antibot/antibot.php?rand='.rand(11111,99999));
 					}
+				function LabelAfterControl($name=NULL)
+					{
+						if ($name===NULL)
+							$name=$this->currentname;
+						$this->SetFieldEndText($name, $this->GetTitle($name));
+						$this->SetTitleText($name, '');
+						$this->MergeColumns($name);
+					}
 				//-------------------------------------------------------------
 				function SaveButton($text)
 					{
 						$this->form['savetitle']=$text;
 					}
 				//-------------------------------------------------------------
-				function Calendar($name)
+				function Calendar($name=NULL)
 					{
-						global $special;
-						$special['document']['headend'].='
+						global $sm;
+						if ($name===NULL)
+							$name=$this->currentname;
+						$sm['s']['document']['headend'].='
 							<script type="text/javascript">
 							$(function()
 								{
