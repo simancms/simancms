@@ -116,6 +116,7 @@ if (!defined("admintable_DEFINED"))
 								$i=0;
 								$notempty='';
 								$colspan=1;
+								reset($this->table['columns']);
 								while ( list( $key, $val ) = each($this->table['columns']) )
 									{
 										if (strlen($this->table['rows'][$this->rownumber][$key]['data'])==0 && strlen($this->table['rows'][$this->rownumber][$key]['image'])==0  && strlen($this->table['rows'][$this->rownumber][$key]['url'])==0 && $i>0)
