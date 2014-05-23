@@ -125,37 +125,40 @@ if (!defined("adminbuttons_DEFINED"))
 					}
 				function Output()
 					{
-						foreach ($this->bar['buttons'] as $buttonname=>&$buttonparams)
+						if (is_array($this->bar['buttons']))
 							{
-								if ($buttonparams['type']=='separator')
+								foreach ($this->bar['buttons'] as $buttonname=>&$buttonparams)
 									{
-										$buttonparams['htmlelement']='span';
-										$buttonparams['class'].=(empty($buttonparams['class'])?'':' ').'ab-separator';
-									}
-								else
-									{
-										$buttonparams['htmlelement']='button';
-										$buttonparams['class'].=(empty($buttonparams['class'])?'':' ').'ab-button';
-									}
-								if ($buttonparams['bold'])
-									$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'font-weight:bold;';
-								if (!empty($buttonparams['width']))
-									$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'width:'.$buttonparams['width'].';';
-								if (!empty($buttonparams['height']))
-									$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'height:'.$buttonparams['height'].';';
-								if (!empty($buttonparams['url']) || !empty($buttonparams['javascript']))
-									{
-										if ($buttonparams['type']=='messagebox')
-											$buttonparams['onclick']="button_msgbox('".$buttonparams['url']."', '".jsescape($buttonparams['message'])."');";
-										elseif (!empty($buttonparams['javascript']))
-											$buttonparams['onclick']=$buttonparams['javascript'];
+										if ($buttonparams['type']=='separator')
+											{
+												$buttonparams['htmlelement']='span';
+												$buttonparams['class'].=(empty($buttonparams['class'])?'':' ').'ab-separator';
+											}
 										else
-											$buttonparams['onclick']="location.href='".$buttonparams['url']."'";
+											{
+												$buttonparams['htmlelement']='button';
+												$buttonparams['class'].=(empty($buttonparams['class'])?'':' ').'ab-button';
+											}
+										if ($buttonparams['bold'])
+											$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'font-weight:bold;';
+										if (!empty($buttonparams['width']))
+											$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'width:'.$buttonparams['width'].';';
+										if (!empty($buttonparams['height']))
+											$buttonparams['style'].=(empty($buttonparams['style'])?'':';').'height:'.$buttonparams['height'].';';
+										if (!empty($buttonparams['url']) || !empty($buttonparams['javascript']))
+											{
+												if ($buttonparams['type']=='messagebox')
+													$buttonparams['onclick']="button_msgbox('".$buttonparams['url']."', '".jsescape($buttonparams['message'])."');";
+												elseif (!empty($buttonparams['javascript']))
+													$buttonparams['onclick']=$buttonparams['javascript'];
+												else
+													$buttonparams['onclick']="location.href='".$buttonparams['url']."'";
+											}
+										$buttonparams['html']=$buttonparams['caption'];
+										$buttonparams['attrs']['style']=$buttonparams['style'];
+										$buttonparams['attrs']['onclick']=$buttonparams['onclick'];
+										$buttonparams['attrs']['class']=$buttonparams['class'];
 									}
-								$buttonparams['html']=$buttonparams['caption'];
-								$buttonparams['attrs']['style']=$buttonparams['style'];
-								$buttonparams['attrs']['onclick']=$buttonparams['onclick'];
-								$buttonparams['attrs']['class']=$buttonparams['class'];
 							}
 						$this->bar['count']=count($this->bar['buttons']);
 						return $this->bar;
