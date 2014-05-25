@@ -41,13 +41,15 @@ if (!defined("admininterface_DEFINED"))
 						$this->blocks[$this->currentblock]['itemscount']=0;
 						$this->SetActiveItem();
 					}
-				function AddOutputObject($type, $object, $tpl='')
+				function AddOutputObject($type, $object, $tpl='', $use_data_as_output=false)
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']=$type;
 						$this->item['tpl']=$tpl;
-						if (is_object($object))
+						if (is_object($object) && !$use_data_as_output)
 							$this->item[$type]=$object->Output();
+						else
+							$this->item['data']=$object->Output();
 						$this->SetActiveItem();
 					}
 				function AddForm($form)
@@ -94,6 +96,10 @@ if (!defined("admininterface_DEFINED"))
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']='pagebar';
 						$this->SetActiveItem();
+					}
+				function AddDashboard($dashboard)
+					{
+						$this->AddOutputObject('dashboard', $dashboard, 'common_admindashboard.tpl', true);
 					}
 				function html($html)
 					{

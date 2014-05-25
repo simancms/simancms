@@ -198,9 +198,6 @@
 				}
 			if (sm_action('view'))
 				{
-					$m["title"] = $lang['control_panel'];
-					if (is_writeable('./') && $_settings['packages_upload_allowed'])
-						$m['can_use_package'] = 1;
 					if (intval(sm_settings('ignore_update'))!=1)
 						{
 							if (file_exists('includes/update.php'))
@@ -208,6 +205,29 @@
 									sm_update_settings('install_not_erased', 1);
 								}
 						}
+					sm_title($lang['control_panel']);
+					include_once('includes/admindashboard.php');
+					include_once('includes/admininterface.php');
+					$dashboard=new TDashBoard();
+					$dashboard->AddItem($lang['modules_mamagement'], 'index.php?m=admin&d=modules', 'applications');
+					$dashboard->AddItem($lang['blocks_mamagement'], 'index.php?m=blocks', 'blocks');
+					$dashboard->AddItem($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem', 'folder');
+					//<a href="index.php?m=admin&d=filesystemexp">{$lang.module_admin.virtual_filesystem_regexp}</a><br /> [Unsupported]
+					//<a href="index.php?m=admin&d=listmodes">{$lang.module_admin.modes_management}</a><br /> [Temporary unsupported]
+					$dashboard->AddItem($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg', 'photo');
+					$dashboard->AddItem($lang['upload_image'], 'index.php?m=admin&d=uplimg', 'photoadd');
+					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=register', 'useradd');
+					$dashboard->AddItem($lang['user_list'], 'index.php?m=account&d=usrlist', 'user');
+					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
+					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
+					$dashboard->AddItem($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus', 'databasechecked');
+					$dashboard->AddItem($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog', 'log');
+					if (is_writeable('./') && $_settings['packages_upload_allowed'])
+						$dashboard->AddItem($lang['module_admin']['upload_package'], 'index.php?m=admin&d=package', 'upload');
+					$dashboard->AddItem($lang['settings'], 'index.php?m=admin&d=settings', 'settings.png');
+					$ui = new TInterface();
+					$ui->AddDashboard($dashboard);
+					$ui->Output(true);
 				}
 			if (sm_action('uplimg'))
 				{

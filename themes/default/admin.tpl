@@ -17,6 +17,15 @@
 <a href="index.php?m=admin&d=package">{$lang.module_admin.upload_package}</a><br />
 {/if}
 <a href="index.php?m=admin&d=settings">{$lang.settings}</a>
+<hr>
+{section name=i loop=10}
+<div class="adash-element">
+	<img class="adash-image" src="https://cdn2.iconfinder.com/data/icons/free-mobile-icon-kit/64/Dashboard.png" />
+	<div class="adash-title">Test BTN</div>
+</div>
+{/section}
+<div style="clear:both;"></div>
+<hr>
 {include file="block_end.tpl"}
 {/if}
 

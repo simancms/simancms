@@ -24,12 +24,15 @@
 							if (empty($name))
 								$name = md5(rand(1, 999999));
 							$this->SetActiveItem($name);
+							$this->SetTitle($title);
+							$this->SetURL($url);
+							$this->SetImage($image);
 							return $this;
 						}
 					
 					function SetActiveItem($name)
 						{
-							$this->currentitem=$this->board['items'][$name];
+							$this->currentitem=&$this->board['items'][$name];
 							$this->currentitem['name']=$name;
 							return $this;
 						}
@@ -54,6 +57,15 @@
 						{
 							if (!empty($name))
 								$this->SetActiveItem($name);
+							if (strlen($image)>0 && strpos($image, '://')===false && strpos($image, '.')===false)
+								$image.='.png';
+							if (!empty($image) && strpos($image, '/')===false)
+								{
+									if (!file_exists('themes/'.sm_current_theme().'/images/admindashboard/'.$image))
+										$image='themes/default/images/admindashboard/'.$image;
+									else
+										$image='themes/'.sm_current_theme().'/images/admindashboard/'.$image;
+								}
 							$this->currentitem['image']=$image;
 							return $this;
 						}
@@ -88,6 +100,24 @@
 					
 					function Output()
 						{
+							if (is_array($this->board['items']))
+								{
+									foreach ($this->board['items'] as $itemname=>&$itemparams)
+										{
+											$itemparams['class'].=(empty($itemparams['class'])?'':' ').'adash-element';
+											if (!empty($itemparams['url']))
+												{
+													$itemparams['htmltitle']='<a href="'.$itemparams['url'].'">'.$itemparams['title'].'</a>';
+													$itemparams['htmlimagestart']='<a href="'.$itemparams['url'].'">';
+													$itemparams['htmlimageend']='</a>';
+												}
+											else
+												$itemparams['htmltitle']=$itemparams['title'];
+											$itemparams['attrs']['style']=$itemparams['style'];
+											$itemparams['attrs']['onclick']=$itemparams['onclick'];
+											$itemparams['attrs']['class']=$itemparams['class'];
+										}
+								}
 							$this->board['count']=count($this->board['items']);
 							return $this->board;
 						}

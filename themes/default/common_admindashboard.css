@@ -1,0 +1,39 @@
+.adash-element
+{
+	width: 20%;
+	max-width:130px;
+	float: left;
+	min-height: 120px;
+	padding-left: 15px;
+	padding-right: 15px;
+	position: relative;
+	text-align: center;
+	border-radius: 5px;
+	padding-top: 5px;
+}
+
+.adash-image
+{
+	max-width:64px;
+	min-height: 1px;
+	margin-left: 15px;
+	margin-right: 15px;
+	position: relative;
+	border: 0 none;
+}
+
+.adash-title
+{
+	width: 100%;
+	text-align: center;
+}
+
+.adash-element:hover
+{
+	background-color:#eeeeee;
+}
+
+.adash-element a
+{
+	text-decoration:none;
+}
