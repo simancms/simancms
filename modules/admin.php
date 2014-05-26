@@ -221,8 +221,9 @@
 					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
 					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
 					$dashboard->AddItem($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus', 'databasechecked');
-					$dashboard->AddItem($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog', 'log');
-					if (is_writeable('./') && $_settings['packages_upload_allowed'])
+					if (intval(sm_settings('log_type'))>0)
+						$dashboard->AddItem($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog', 'log');
+					if (is_writeable('./') && sm_settings('packages_upload_allowed'))
 						$dashboard->AddItem($lang['module_admin']['upload_package'], 'index.php?m=admin&d=package', 'upload');
 					$dashboard->AddItem($lang['settings'], 'index.php?m=admin&d=settings', 'settings.png');
 					$ui = new TInterface();

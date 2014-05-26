@@ -1,34 +1,3 @@
-{if $modules[$index].mode eq 'view'}
-{include file="block_begin.tpl"}
-<a href="index.php?m=admin&d=modules">{$lang.modules_mamagement}</a><br />
-<a href="index.php?m=blocks">{$lang.blocks_mamagement}</a><br />
-<a href="index.php?m=admin&d=filesystem">{$lang.module_admin.virtual_filesystem}</a><br />
-{* <a href="index.php?m=admin&d=filesystemexp">{$lang.module_admin.virtual_filesystem_regexp}</a><br /> [U	nsupported]  *}
-{* <a href="index.php?m=admin&d=listmodes">{$lang.module_admin.modes_management}</a><br /> [Temporary unsupported]  *}
-<a href="index.php?m=admin&d=listimg">{$lang.module_admin.images_list}</a><br />
-<a href="index.php?m=admin&d=uplimg">{$lang.upload_image}</a><br />
-<a href="index.php?m=account&d=register">{$lang.register_user}</a><br />
-<a href="index.php?m=account&d=usrlist">{$lang.user_list}</a><br />
-<a href="index.php?m=account&d=listgroups">{$lang.module_account.groups_management}</a><br />
-<a href="index.php?m=admin&d=massemail">{$lang.module_admin.mass_email}</a><br />
-<a href="index.php?m=admin&d=tstatus">{$lang.module_admin.optimize_database}</a><br />
-{if $_settings.log_type gt 0}<a href="index.php?m=admin&d=viewlog">{$lang.module_admin.view_log}</a><br />{/if}
-{if $modules[$index].can_use_package eq 1}
-<a href="index.php?m=admin&d=package">{$lang.module_admin.upload_package}</a><br />
-{/if}
-<a href="index.php?m=admin&d=settings">{$lang.settings}</a>
-<hr>
-{section name=i loop=10}
-<div class="adash-element">
-	<img class="adash-image" src="https://cdn2.iconfinder.com/data/icons/free-mobile-icon-kit/64/Dashboard.png" />
-	<div class="adash-title">Test BTN</div>
-</div>
-{/section}
-<div style="clear:both;"></div>
-<hr>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'settings'}
 {include file="block_begin.tpl"}
 {$lang.common.profile}: 

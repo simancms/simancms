@@ -11,10 +11,7 @@
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if ($userinfo['level'] == 3)
 		{

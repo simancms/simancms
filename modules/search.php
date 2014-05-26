@@ -10,14 +10,14 @@
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
 	Version: 1.6.7
-	Revision: 2014-05-01
+	Revision: 2014-05-26
 	Author URI: http://simancms.org/
 	*/
 
+	if (!defined("SIMAN_DEFINED"))
+		exit('Hacking attempt!');
 
-	if (empty($m["mode"])) $m["mode"] = 'search';
-
-	$m["module"] = 'search';
+	sm_default_action('search');
 
 	if (sm_action('search'))
 		{
@@ -27,6 +27,7 @@
 				}
 			else
 				{
+					$m["module"] = 'search';
 					sm_event('beforesearch', array($_getvars['q']));
 					$_getvars['q'] = trim($_getvars['q']);
 					while (strpos($_getvars['q'], '  '))
@@ -113,15 +114,11 @@
 
 	if (sm_action('shortview'))
 		{
+			$m["module"] = 'search';
 			$m['title'] = $lang['module_search']['search'];
 		}
 
-	if ($userinfo['level'] == 3)
-		{
-			if (sm_action('admin'))
-				{
-					$m['title'] = $lang['settings'];
-				}
-		}
+	if ($userinfo['level']==3)
+		include('modules/inc/adminpart/search.php');
 
 ?>

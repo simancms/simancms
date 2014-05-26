@@ -32,16 +32,4 @@
 </div>
 </form>
 {include file="block_end.tpl"}
-{/if}		   
-
-{if $modules[$index].mode eq "admin"}
-{include file="block_begin.tpl"}
-<a href="index.php?m=blocks&d=add&b=search&id=1&c={$lang.search}">{$lang.set_as_block} "{$lang.search}"</a>
-<br />
-<form action="index.php?m=menu&d=addouter" method="post">
-<input type="hidden" name="p_url" value="index.php?m=search">
-<input type="hidden" name="p_caption" value="{$lang.search}">
-<input type="submit" value="{$lang.add_to_menu} - {$lang.search}">
-</form>
-{include file="block_end.tpl"}
-{/if}
+{/if}   
