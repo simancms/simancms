@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#revision 2014-05-29
 	//==============================================================================
 
 
@@ -710,6 +710,8 @@
 			$sm['s']['theme'] = $themename;
 			if ($sm['_s']['sm_changetheme_default_theme'] == 1)
 				$sm['_s']['default_theme'] = $themename;
+			if (file_exists('themes/'.$themename.'/themeinit.php'))
+				include('themes/'.$themename.'/themeinit.php');
 		}
 
 	//Return true  if current action is in set $action1, $action2... or false otherwice
