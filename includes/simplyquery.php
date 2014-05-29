@@ -18,6 +18,7 @@ if (!defined("simplyquery_DEFINED"))
 				var $groupby;
 				var $leftjoin;
 				var $sqlgenerationmode;
+				var $having;
 				public $items;
 				public $row;
 				public $sql;
@@ -322,26 +323,33 @@ if (!defined("simplyquery_DEFINED"))
 						$this->selectfields=$list;
 						return $this;
 					}
+				function Having($sql)
+					{
+						$this->having=$sql;
+						return $this;
+					}
 				private function SelectStqtement($addsql='')
 					{
 						if (empty($this->selectfields))
 							$this->SelectFields();
 						$sql=$this->GetPairs(' AND ');
 						$this->sql="SELECT ".$this->selectfields." FROM ".$this->tableprefix.$this->tablename;
-						if (!empty($sql))
-							$this->sql.=" WHERE (".$sql.")";
 						if (!empty($this->leftjoin))
 							$this->sql.=" LEFT JOIN ".$this->leftjoin;
+						if (!empty($sql))
+							$this->sql.=" WHERE (".$sql.")";
 						if (!empty($addsql))
 							{
 								if (empty($sql))
 									$this->sql.=" WHERE ";
 								$this->sql.=' '.$addsql;
 							}
-						if (!empty($this->orderby))
-							$this->sql.=' ORDER BY '.$this->orderby;
 						if (!empty($this->groupby))
 							$this->sql.=' GROUP BY '.$this->groupby;
+						if (!empty($this->having))
+							$this->sql.=' HAVING '.$this->having;
+						if (!empty($this->orderby))
+							$this->sql.=' ORDER BY '.$this->orderby;
 						if (!empty($this->limit))
 							$this->sql.=' LIMIT '.$this->limit;
 						if (!empty($this->offset))
