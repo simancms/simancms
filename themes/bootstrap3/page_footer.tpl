@@ -1,4 +1,3 @@
-
 {if $_settings.footer_static_text neq ""}{$_settings.footer_static_text}{/if}
 
 {if $_settings.show_script_info eq "on"}<br><br>
@@ -17,13 +16,6 @@
 	</tr>
 </table>
 </center>
-{/if}
-
-{if $special.autofocus neq ""}
-<script type="text/javascript">
-var sm_focuselem=document.getElementById('{$special.autofocus}');
-if (sm_focuselem) sm_focuselem.focus();
-</script>
 {/if}
 
 {$special.document.bodyend}</body>

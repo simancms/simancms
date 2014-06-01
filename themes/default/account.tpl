@@ -35,7 +35,7 @@
 {include file="block_end.tpl"}
 {/if}
 {else}
-  {* side panels *}								   
+  {* side panels *}
 {include file="block_begin.tpl"}
 {if $userinfo.id eq ""}
 <form action="index.php?m=account&d=login" method="POST" class="loginForm">

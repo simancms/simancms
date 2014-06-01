@@ -61,6 +61,8 @@
 		$sm['s']['document']['headend'].='<link href="themes/'.sm_current_theme().'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
 	for ($i = 0; $i < count($sm['s']['customcss']); $i++)
 		$sm['s']['document']['headend'].='<link href="'.$sm['s']['customcss'][$i].'" type="text/css" rel="stylesheet" />';
+	if (!empty($sm['s']['autofocus']))
+		$sm['s']['document']['headend'].='<script type="text/javascript">$( document ).ready(function() {$("'.$sm['s']['autofocus'].'").focus()});</script>';
 	//Head section generation end
 
 	unset($sm['cache']);

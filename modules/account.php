@@ -246,7 +246,7 @@
 						{
 							$m['mode'] = "wronglogin";
 							log_write(LOG_DANGER, $lang['module_account']['log']['user_not_logged'].': '.$usr_name);
-							$special['autofocus'] = 'login_d';
+							sm_setfocus('login_d');
 							sm_extcore();
 							$autoban_time = sm_get_settings('autoban_time', 'general');
 							sm_tempdata_addint('wronglogin', $_servervars['REMOTE_ADDR'], time(), $autoban_time);
@@ -272,7 +272,7 @@
 					$m["module"] = 'account';
 					$m["goto_url"] = $_servervars['REQUEST_URI'];
 					if ($modules_index == 0)
-						$special['autofocus'] = 'login_d';
+						sm_setfocus('login_d');
 					sm_event('onshowloginpage', array(''));
 					sm_page_viewid('account-show');
 				}

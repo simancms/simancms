@@ -19,12 +19,5 @@
 </center>
 {/if}
 
-{if $special.autofocus neq ""}
-<script type="text/javascript">
-var sm_focuselem=document.getElementById('{$special.autofocus}');
-if (sm_focuselem) sm_focuselem.focus();
-</script>
-{/if}
-
 {$special.document.bodyend}</body>
 </html>

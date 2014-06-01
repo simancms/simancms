@@ -861,10 +861,18 @@
 				include_once('includes/'.$libname.'.php');
 		}
 
-	function sm_setfocus($dom_id)
+	function sm_setfocus($dom_element, $noservicesymbol_as_id=true)
 		{
 			global $sm;
-			$sm['s']['autofocus'] = $dom_id;
+			if (!$noservicesymbol_as_id)
+				$sm['s']['autofocus'] = $dom_element;
+			else
+				{
+					if (!in_array(substr($dom_element, 0, 1), Array('.', '#')))
+						$sm['s']['autofocus'] = '#'.$dom_element;
+					else
+						$sm['s']['autofocus'] = $dom_element;
+				}
 		}
 
 	function sm_thumburl($filename, $maxwidth = 0, $maxheight = 0, $format = '', $quality = '', $path = 'files/img/')
