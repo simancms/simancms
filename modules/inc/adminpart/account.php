@@ -131,8 +131,8 @@
 					$password = md5($_postvars['p_newpwd']);
 					$id_user = intval($_postvars['p_iduser']);
 					$random_code = md5($id_user.microtime().rand());
-					$sql = "UPDATE ".$tableusersprefix."users SET password = '$password', random_code='".$random_code."' WHERE id_user='$id_user' AND id_user>1";
-					$result = execsql($sql);
+					execsql("UPDATE ".$tableusersprefix."users SET password = '".dbescape($password).", random_code='".dbescape($random_code)."' WHERE id_user=".intval($id_user)." AND id_user>1");
+					sm_redirect($lang['module_account']['message_set_password_finish']);
 					sm_redirect($_getvars['returnto']);
 				}
 			if (sm_action('listgroups'))

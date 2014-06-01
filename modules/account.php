@@ -213,7 +213,7 @@
 					if ($uid=sm_check_user($_postvars["login_d"], $_postvars["passwd_d"]))
 						{
 							sm_process_login($uid);
-							$m['mode'] = "successlogin";
+							sm_notify($lang['message_success_login']);
 							//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
 							//$result=execsql($sql);
 							if ($_postvars['autologin_d'] == 1 || $_settings['alwaysautologin'] == 1)

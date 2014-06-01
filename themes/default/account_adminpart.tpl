@@ -1,17 +1,3 @@
-{if $modules[$index].mode eq "successlogin"}
-{include file="block_begin.tpl"}
-{$lang.message_success_login}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "successchange"}
-{include file="block_begin.tpl"}
-{$lang.message_success_change}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "successregister"}
 {include file="block_begin.tpl"}
 {$lang.success_registration}.<br />
@@ -75,13 +61,6 @@
 <input type="text" name="p_newpwd"><br />
 <input type="submit" value="{$lang.set_password}">
 </form>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postsetpwd"}
-{include file="block_begin.tpl"}
-{$lang.module_account.message_set_password_finish}
-{include file="refresh.tpl"}
 {include file="block_end.tpl"}
 {/if}
 
@@ -152,12 +131,6 @@
 <input type="hidden" name="p_body" value="{$modules[$index].message.rebody}" style="width:100%">
 <input type="submit" value="{$lang.module_account.reply}">
 </form>
-{include file="block_end.tpl"}
-{/if}
-
-{if $modules[$index].mode eq "postsendprivmsg" or $modules[$index].mode eq "postdeleteprivmsg"}
-{include file="block_begin.tpl"}
-{include file="refresh.tpl"}
 {include file="block_end.tpl"}
 {/if}
 

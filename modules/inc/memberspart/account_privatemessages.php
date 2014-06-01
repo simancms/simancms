@@ -142,7 +142,7 @@
 							$sql = "INSERT INTO ".$tableusersprefix."privmsg (`id_sender_privmsg`, `id_recipient_privmsg`, `folder_privmsg`, `unread_privmsg`, `theme_privmsg`, `body_privmsg`, `time_privmsg`) VALUES('$id_sender_privmsg', '$id_recipient_privmsg', '$folder_privmsg', '$unread_privmsg', '$theme_privmsg', '$body_privmsg', '$time_privmsg')";
 							$result = execsql($sql);
 							log_write(LOG_USEREVENT, $lang['module_account']['log']['user_send_privmsg']);
-							$refresh_url = 'index.php?m=account&d=viewprivmsg&folder=inbox';
+							sm_redirect('index.php?m=account&d=viewprivmsg&folder=inbox');
 						}
 				}
 			if (sm_action('sendprivmsg'))
@@ -190,13 +190,8 @@
 				}
 			if (sm_action('postdeleteprivmsg'))
 				{
-					$m["module"] = 'account';
-					$m["title"] = $lang['common']['delete'];
-					$id = intval($_getvars['id']);
-					$user = intval($userinfo['id']);
-					$sql = "DELETE FROM ".$tableusersprefix."privmsg WHERE id_privmsg=$id and (folder_privmsg=1 and id_sender_privmsg=$user or folder_privmsg=0 and id_recipient_privmsg=$user)";
-					$result = execsql($sql);
-					$refresh_url = 'index.php?m=account&d=viewprivmsg&folder='.$_getvars['folder'];
+					execsql("DELETE FROM ".$tableusersprefix."privmsg WHERE id_privmsg=".intval($_getvars['id'])." and (folder_privmsg=1 and id_sender_privmsg=".intval($userinfo['id'])." or folder_privmsg=0 and id_recipient_privmsg=".intval($userinfo['id']).")");
+					sm_redirect('index.php?m=account&d=viewprivmsg&folder='.$_getvars['folder']);
 				}
 		}
 

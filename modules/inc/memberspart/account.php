@@ -133,7 +133,7 @@
 								}
 							else
 								{
-									$m['mode'] = 'successchange';
+									sm_notify($lang['message_success_change']);
 									if (!empty($special['redirect_on_success_change_usrdata']))
 										sm_redirect($special['redirect_on_success_change_usrdata']);
 									elseif (!empty($_settings['redirect_on_success_change_usrdata']))
