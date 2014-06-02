@@ -6,15 +6,12 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.7
+	//#revision 2014-06-02
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if ($userinfo['level'] > 0)
 		{
@@ -53,8 +50,6 @@
 					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
 					if (count($m['ctgid']) > 0)
 						{
-							$m['title'] = $lang['add_content'];
-							$m["module"] = 'content';
 							$id_category_c = $_postvars["p_id_category_c"];
 							$title_content = dbescape($_postvars["p_title_content"]);
 							$preview_content = dbescape($_postvars["p_preview_content"]);
@@ -78,10 +73,6 @@
 								{
 									sm_upload_attachment('content', $cid, $_uplfilevars['attachment'.$i]);
 								}
-							if ($userinfo['level'] < 3)
-								$refresh_url = 'index.php?m=content&d=viewctg&ctgid='.$id_category_c;
-							else
-								$refresh_url = 'index.php?m=content&d=list&ctg='.$id_category_c;
 							if ($_settings['content_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -107,6 +98,11 @@
 											siman_upload_image($cid, 'content');
 										}
 								}
+							sm_notify($lang['add_content_successful']);
+							if ($userinfo['level'] < 3)
+								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$id_category_c);
+							else
+								sm_redirect('index.php?m=content&d=list&ctg='.$id_category_c);
 							sm_event('postaddcontent', array($cid));
 						}
 				}
@@ -133,8 +129,6 @@
 						}
 					if ($canedit == 1)
 						{
-							$m['title'] = $lang['edit_content'];
-							$m["module"] = 'content';
 							$id_category_c = $_postvars["p_id_category_c"];
 							$title_content = dbescape($_postvars["p_title_content"]);
 							$preview_content = dbescape($_postvars["p_preview_content"]);
@@ -202,10 +196,11 @@
 								{
 									sm_upload_attachment('content', intval($_getvars["cid"]), $_uplfilevars['attachment'.$i]);
 								}
+							sm_notify($lang['edit_content_successful']);
 							if ($userinfo['level'] < 3)
-								$refresh_url = 'index.php?m=content&d=viewctg&ctgid='.$id_category_c;
+								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$id_category_c);
 							else
-								$refresh_url = 'index.php?m=content&d=list&ctg='.$id_category_c;
+								sm_redirect('index.php?m=content&d=list&ctg='.$id_category_c);
 							sm_event('posteditcontent', array(intval($_getvars["cid"])));
 						}
 				}
@@ -350,16 +345,17 @@
 									delete_filesystem($fname);
 								}
 							sm_delete_attachments('content', intval($_getvars["cid"]));
-							if ($userinfo['level'] < 3)
-								$refresh_url = 'index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg'];
-							else
-								$refresh_url = 'index.php?m=content&d=list&ctg='.$_getvars['ctg'];
 							if (file_exists('files/thumb/content'.intval($_getvars["cid"]).'.jpg'))
 								unlink('files/thumb/content'.intval($_getvars["cid"]).'.jpg');
 							if (file_exists('files/fullimg/content'.intval($_getvars["cid"]).'.jpg'))
 								unlink('files/fullimg/content'.intval($_getvars["cid"]).'.jpg');
 							if (file_exists('files/img/content'.intval($_getvars["cid"]).'.jpg'))
 								unlink('files/img/content'.intval($_getvars["cid"]).'.jpg');
+							sm_notify($lang['delete_content_successful']);
+							if ($userinfo['level'] < 3)
+								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg']);
+							else
+								sm_redirect('index.php?m=content&d=list&ctg='.$_getvars['ctg']);
 							sm_event('postdeletecontent', array(intval($_getvars["cid"])));
 						}
 				}

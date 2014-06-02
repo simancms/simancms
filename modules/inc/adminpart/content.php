@@ -7,14 +7,11 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#revision 2014-06-02
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if ($userinfo['level'] > 2)
 		{
@@ -87,7 +84,8 @@
 							$sql = "UPDATE ".$tableprefix."categories SET filename_category=".intval($urlid)." WHERE id_category=".intval($ctgid);
 							$result = execsql($sql);
 						}
-					$refresh_url = 'index.php?m=content&d=listctg';
+					sm_notify($lang['add_content_category_successful']);
+					sm_redirect('index.php?m=content&d=listctg');
 					sm_event('postaddctgcontent', array($ctgid));
 				}
 			if (sm_action('addctg'))
@@ -144,7 +142,8 @@
 							else
 								update_filesystem($fname, 'index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
 						}
-					$refresh_url = 'index.php?m=content&d=listctg';
+					sm_notify($lang['edit_content_category_successful']);
+					sm_redirect('index.php?m=content&d=listctg');
 					sm_event('posteditctgcontent', array($id_ctg));
 				}
 			if (sm_action('postdeletectg'))
@@ -169,7 +168,8 @@
 					$q=new TQuery($sm['t'].'content');
 					$q->Add('id_category_c', 1);
 					$q->Update('id_category_c', intval($id_ctg));
-					$refresh_url = 'index.php?m=content&d=listctg';
+					sm_notify($lang['delete_content_category_successful']);
+					sm_redirect('index.php?m=content&d=listctg');
 					sm_event('postdeletectgcontent', array($id_ctg));
 				}
 			if (sm_action('listctg'))
@@ -340,7 +340,7 @@
 							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr2' WHERE id_content='$id1'";
 							$result = execsql($sql);
 						}
-					$refresh_url = 'index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall']));
+					sm_redirect('index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall'])));
 				}
 		}
 
