@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2013-04-26
+	//#revision 2014-06-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -161,7 +161,8 @@
 							$result = execsql($sql);
 							log_write(LOG_LOGIN, $lang['get_password'].' - '.$lang['common']['ok']);
 							sm_event('onchangepassword', Array('login' => $_getvars["login"], 'newpassword' => $_postvars["p_newpwd"]));
-							$refresh_url = 'index.php?m=account';
+							sm_notify($lang['message_forgot_password_finish']);
+							sm_redirect('index.php?m=account');
 						}
 					else
 						{

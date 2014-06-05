@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-09
+	//#revision 2014-06-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -849,7 +849,7 @@
 					$m['title'] = $lang['common']['delete'];
 					$sql = "DELETE FROM ".$tableprefix."filesystem_regexp WHERE id_fsr='".intval($_getvars["id"])."'";
 					$result = execsql($sql);
-					$refresh_url = 'index.php?m=admin&d=filesystemexp';
+					sm_redirect('index.php?m=admin&d=filesystemexp');
 				}
 			if (sm_action('addfilesystemexp'))
 				{
