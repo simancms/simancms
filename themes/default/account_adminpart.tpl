@@ -45,14 +45,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq "getpasswd3"}
-{include file="block_begin.tpl"}
-{$lang.message_forgot_password_finish}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-{/if}
-
 {if $modules[$index].mode eq "setpwd"}
 {include file="block_begin.tpl"}
 <form action="index.php?m=account&d=postsetpwd&returnto={$sm.g.returnto|urlencode}" method="post">

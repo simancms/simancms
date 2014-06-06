@@ -1,12 +1,3 @@
-{if $modules[$index].mode eq "install" or $modules[$index].mode eq "uninstall" or $modules[$index].mode eq "redirect"}
-{include file="block_begin.tpl"}
-{if $modules[$index].message neq ""}
-{$modules[$index].message}
-{/if}
-{include file="refresh.tpl"}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "admin"}
 {include file="block_begin.tpl"}
 [[time][]] - {$lang.module_simpleshortcodes.time}<br />

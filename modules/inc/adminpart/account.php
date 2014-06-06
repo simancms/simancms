@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#revision 2014-06-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -172,7 +172,6 @@
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['add_group'];
-					$refresh_url = 'index.php?m=account&d=listgroups';
 					$q = new TQuery($tableusersprefix.'groups');
 					$q->AddPost('title_group');
 					$q->AddPost('description_group');
