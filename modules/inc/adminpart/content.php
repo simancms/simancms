@@ -19,16 +19,14 @@
 				{
 					$m['title'] = $lang['settings'];
 					$m["module"] = 'content';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 				}
 			if (sm_action('editctg'))
 				{
 					$m['title'] = $lang['edit_category'];
 					$m["module"] = 'content';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='".intval($_getvars['ctgid'])."'";
 					;
@@ -92,8 +90,7 @@
 				{
 					$m['title'] = $lang['add_category'];
 					$m["module"] = 'content';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					$m['ctg'] = siman_load_ctgs_content();
 					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
@@ -104,8 +101,6 @@
 				}
 			if (sm_actionpost('posteditctg'))
 				{
-					$m['title'] = $lang['edit_category'];
-					$m["module"] = 'content';
 					$title_category = dbescape($_postvars["p_title_category"]);
 					$id_maincategory = $_postvars["p_mainctg"];
 					$can_view = $_postvars["p_can_view"];
@@ -146,25 +141,13 @@
 					sm_redirect('index.php?m=content&d=listctg');
 					sm_event('posteditctgcontent', array($id_ctg));
 				}
-			if (sm_action('postdeletectg'))
+			if (sm_action('postdeletectg') && intval($_getvars['ctgid'])!=1)
 				{
-					$m['title'] = $lang['delete_category'];
-					$m["module"] = 'content';
 					$id_ctg = intval($_getvars['ctgid']);
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".$id_ctg."";
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$fname = $row->filename_category;
-						}
+					delete_filesystem(getsqlfield("SELECT filename_category FROM ".$tableprefix."categories WHERE id_category=".intval($id_ctg)));
 					sm_extcore();
-					sm_saferemove('index.php?m=content&d=viewctg&ctgid='.$id_ctg);
-					if ($fname != 0)
-						{
-							delete_filesystem($fname);
-						}
-					$sql = "DELETE FROM ".$tableprefix."categories WHERE id_category=$id_ctg AND id_category<>1";
-					$result = execsql($sql);
+					sm_saferemove('index.php?m=content&d=viewctg&ctgid='.intval($id_ctg));
+					execsql("DELETE FROM ".$tableprefix."categories WHERE id_category=".intval($id_ctg)." AND id_category<>1");
 					$q=new TQuery($sm['t'].'content');
 					$q->Add('id_category_c', 1);
 					$q->Update('id_category_c', intval($id_ctg));
@@ -175,11 +158,10 @@
 			if (sm_action('listctg'))
 				{
 					sm_extcore();
-					$m['title'] = $lang['list_content_categories'];
-					$m["module"] = 'content';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					sm_title($lang['list_content_categories']);
+					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
+					add_path_current();
 					$m['ctg'] = siman_load_ctgs_content();
 					require_once('includes/admintable.php');
 					include_once('includes/admininterface.php');
@@ -239,8 +221,7 @@
 					$m['ctg'] = siman_load_ctgs_content();
 					$m['title'] = $lang['list_content'];
 					$m["module"] = 'content';
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					add_path($lang['list_content'], "index.php?m=content&d=list");
 					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs";
@@ -317,8 +298,6 @@
 				}
 			if (sm_action('exchange'))
 				{
-					$m['title'] = $lang['operation_complete'];
-					$m["module"] = 'content';
 					$id1 = intval($_getvars['id1']);
 					$id2 = intval($_getvars['id2']);
 					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='$id1'";
