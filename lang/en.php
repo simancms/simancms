@@ -98,6 +98,7 @@ $lang['common']['are_you_sure']='Are you sure';
 $lang['common']['information']='Information';
 $lang['common']['thumbnail']='Thumbnail';
 $lang['common']['list']='List';
+$lang['common']['public']='Public';
 $lang['register'] = 'Register';
 $lang['email'] = 'E-mail';
 $lang['upload'] = 'Upload';

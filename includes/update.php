@@ -20,5 +20,19 @@
 			sm_add_settings('show_help', 'on');
 			sm_update_settings('database_date', '20140315');
 		}
+	if (intval(sm_settings('database_date'))<20140701)//1.6.7
+		{
+			sm_add_settings('gallery_thumb_width', '150');
+			sm_add_settings('gallery_thumb_height', '150');
+			sm_add_settings('gallery_view_items_per_row', '0');
+			sm_add_settings('galleries_sort', 'created_desc');
+			sm_add_settings('media_thumb_width', '150');
+			sm_add_settings('media_thumb_height', '150');
+			sm_add_settings('media_medium_width', '600');
+			sm_add_settings('media_meduim_height', '300');
+			sm_add_settings('media_allowed_extensions', "jpg\njpeg\ngif\npng\nmp4\nmp3\nwav");
+			
+			sm_update_settings('database_date', '20140701');
+		}
 
 ?>

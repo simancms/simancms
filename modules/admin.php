@@ -352,7 +352,7 @@
 							$t->Label('title', $row->module_title);
 							$t->Url('title', 'index.php?m='.$row->module_name.'&d=admin');
 							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row->id_module);
-							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search')))
+							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search', 'media')))
 								{
 									$t->Image('delete', 'delete.gif');
 									$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
