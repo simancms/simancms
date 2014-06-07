@@ -3,7 +3,7 @@
 {$lang.success_registration}.<br />
 <a href="index.php?m=account&d=show">{$lang.you_can_enter}
 {include file="block_end.tpl"}
-{/if}	   
+{/if}   
 
 {if $_settings.allow_forgot_password eq "1"}
 {if $modules[$index].mode eq "getpasswd"}
@@ -43,6 +43,7 @@
 </form>
 </table>
 {include file="block_end.tpl"}
+{/if}
 {/if}
 
 {if $modules[$index].mode eq "setpwd"}
