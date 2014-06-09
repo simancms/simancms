@@ -126,7 +126,8 @@
 	$lang['common']['general']='Загальний';
 	$lang['common']['profile']='Профіль';
 	$lang['common']['all']='Всі';
-	$lang['common']['id']='Ідентифікатор';
+	$lang['common']['id']='ID';
+	$lang['common']['identifier']='Ідентифікатор';
 	$lang['common']['seo_keywords']='Ключові слова (META keywords)';
 	$lang['common']['seo_description']='Опис (META description)';
 	$lang['common']['auto_login']='Автоматичний вхід';
@@ -144,6 +145,7 @@
 	$lang['common']['thumbnail']='Піктограма';
 	$lang['common']['list']='Список';
 	$lang['common']['public']='Загальнодоступний';
+	$lang['common']['uncategorized']='Без категорії';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
