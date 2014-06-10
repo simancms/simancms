@@ -248,7 +248,7 @@
 					else
 						$sql .= " ORDER BY title_content ASC";
 					if ($showall != 1)
-						$sql .= " LIMIT ".intval($_settings['admin_items_by_page'])." OFFSET $from_record";
+						$sql .= " LIMIT ".intval($_settings['admin_items_by_page'])." OFFSET ".intval($from_record);
 					require_once('includes/admintable.php');
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -291,7 +291,7 @@
 					if ($showall != 1)
 						{
 							$sql = "SELECT count(*) FROM ".$tableprefix."content";
-							if (!empty($ctg_id)) $sql .= " WHERE id_category_c = '$ctg_id'";
+							if (!empty($ctg_id)) $sql .= " WHERE id_category_c = ".intval($ctg_id);
 							$m['pages']['records'] = intval(getsqlfield($sql));
 							$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
 						}
@@ -300,13 +300,13 @@
 				{
 					$id1 = intval($_getvars['id1']);
 					$id2 = intval($_getvars['id2']);
-					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='$id1'";
+					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($id1);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$pr1 = $row->priority_content;
 						}
-					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content='$id2'";
+					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($id2);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
@@ -314,10 +314,8 @@
 						}
 					if (!empty($pr1) || !empty($pr2))
 						{
-							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr1' WHERE id_content='$id2'";
-							$result = execsql($sql);
-							$sql = "UPDATE ".$tableprefix."content SET priority_content='$pr2' WHERE id_content='$id1'";
-							$result = execsql($sql);
+							execsql("UPDATE ".$tableprefix."content SET priority_content=".intval($pr1)." WHERE id_content=".intval($id2));
+							execsql("UPDATE ".$tableprefix."content SET priority_content=".intval($pr2)." WHERE id_content=".intval($id1));
 						}
 					sm_redirect('index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall'])));
 				}
