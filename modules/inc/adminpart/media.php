@@ -18,7 +18,7 @@
 
 			if (sm_action('postdelete'))
 				{
-					$q = new TQuery('sm_media');
+					$q = new TQuery($sm['t'].'media');
 					$q->Add('id', intval($_getvars['id']));
 					$q->Remove();
 					sm_extcore();
@@ -32,8 +32,8 @@
 					if (sm_upload_file('userfile', $filename)!==false)
 						{
 							$extension=pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION);
-							$ctg=TQuery::ForTable('sm_categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
-							$q = new TQuery('sm_media');
+							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+							$q = new TQuery($sm['t'].'media');
 							$q->Add('id_ctg', intval($ctg['id_ctg']));
 							$q->Add('type', dbescape($_uplfilevars['userfile']['type']));
 							$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION)));
@@ -41,7 +41,7 @@
 							$q->Add('alt_text', dbescape($_postvars['alt_text']));
 							$q->Add('description', dbescape($_postvars['description']));
 							$id=$q->Insert();
-							$q = new TQuery('sm_media');
+							$q = new TQuery($sm['t'].'media');
 							$q->Add('filepath', dbescape($filename));
 							$q->Update('id', intval($id));
 							sm_redirect($_getvars['returnto']);
@@ -54,7 +54,7 @@
 
 			if (sm_action('postedit'))
 				{
-					$q = new TQuery('sm_media');
+					$q = new TQuery($sm['t'].'media');
 					$q->Add('id_ctg', dbescape($_postvars['id_ctg']));
 					$q->Add('type', dbescape($_postvars['type']));
 					$q->Add('title', dbescape($_postvars['title']));
@@ -89,7 +89,7 @@
 					$f->AddTextarea('description', 'description');
 					if (sm_action('edit'))
 						{
-							$q = new TQuery('sm_media');
+							$q = new TQuery($sm['t'].'media');
 							$q->Add('id', intval($_getvars['id']));
 							$f->LoadValuesArray($q->Get());
 							unset($q);
@@ -105,7 +105,7 @@
 				{
 					add_path_modules();
 					add_path('Media', 'index.php?m=media&d=list');
-					$ctg=TQuery::ForTable('sm_categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+					$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
@@ -147,7 +147,7 @@
 					$t->AddCol('description', 'description');
 					$t->AddEdit();
 					$t->AddDelete();
-					$q = new TQuery('sm_media');
+					$q = new TQuery($sm['t'].'media');
 					$q->Limit($limit);
 					$q->Offset($offset);
 					$q->Select();
@@ -173,7 +173,7 @@
 
 			if (sm_action('postdeletectg'))
 				{
-					$q=new TQuery('sm_categories_media');
+					$q=new TQuery($sm['t'].'categories_media');
 					$q->Add('id_ctg', intval($_getvars['id']));
 					$q->Remove();
 					sm_extcore();
@@ -185,7 +185,7 @@
 
 			if (sm_action('postaddctg', 'posteditctg'))
 				{
-					$q=new TQuery('sm_categories_media');
+					$q=new TQuery($sm['t'].'categories_media');
 					$q->Add('title', dbescape($_postvars['title']));
 					$q->Add('public', intval($_postvars['public']));
 					$q->Add('keywords', dbescape($_postvars['keywords']));
@@ -236,7 +236,7 @@
 					$f->AddText('description', $lang['common']['seo_description']);
 					if (sm_action('editctg'))
 						{
-							$q=new TQuery('sm_categories_media');
+							$q=new TQuery($sm['t'].'categories_media');
 							$q->Add('id_ctg', intval($_getvars['id']));
 							$f->LoadValuesArray($q->Get());
 							unset($q);
@@ -271,7 +271,7 @@
 					$t->AddCol('items_count', $lang['count']);
 					$t->AddEdit();
 					$t->AddDelete();
-					$q=new TQuery('sm_categories_media');
+					$q=new TQuery($sm['t'].'categories_media');
 					$q->OrderBy('lastupdate DESC');
 					$q->Limit($limit);
 					$q->Offset($offset);
@@ -279,8 +279,12 @@
 					for ($i = 0; $i<count($q->items); $i++)
 						{
 							$t->Label('id_ctg', $q->items[$i]['id_ctg']);
-							$t->Image('image', 'files/img/mediagallery'.$q->items[$i]['id_ctg'].'.jpg');
-							$t->Image('image', sm_thumburl('mediagallery'.$q->items[$i]['id_ctg'], 50, 50));
+							if (file_exists('files/img/mediagallery'.$q->items[$i]['id_ctg'].'.jpg'))
+								{
+									$t->Image('image', 'files/img/mediagallery'.$q->items[$i]['id_ctg'].'.jpg');
+									$t->Image('image', sm_thumburl('mediagallery'.$q->items[$i]['id_ctg'], 50, 50));
+									$t->Url('image', 'index.php?m=media&d=list&ctg='.$q->items[$i]['id_ctg']);
+								}
 							$t->Label('title', $q->items[$i]['title']);
 							$t->Url('title', 'index.php?m=media&d=list&ctg='.$q->items[$i]['id_ctg']);
 							$t->Label('public', $q->items[$i]['public']);
