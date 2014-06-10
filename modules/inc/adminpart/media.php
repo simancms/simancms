@@ -28,23 +28,29 @@
 
 			if (sm_action('postadd'))
 				{
-					$filename='files/img/mediaimage'.$id.'.'.pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION);
-					if (sm_upload_file('userfile', $filename)!==false)
+					if ($tmpfile=sm_upload_file('userfile'))
 						{
-							$extension=pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION);
+							$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION));
 							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
 							$q = new TQuery($sm['t'].'media');
 							$q->Add('id_ctg', intval($ctg['id_ctg']));
 							$q->Add('type', dbescape($_uplfilevars['userfile']['type']));
-							$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION)));
+							$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_FILENAME)));
 							$q->Add('originalname', dbescape($_uplfilevars['userfile']['name']));
 							$q->Add('alt_text', dbescape($_postvars['alt_text']));
 							$q->Add('description', dbescape($_postvars['description']));
 							$id=$q->Insert();
+							$filename='files/img/mediaimage'.$id.'.'.$extension;
+							$filename_medium='files/img/mediaimage'.$id.'-medium.'.$extension;
+							$filename_small='files/img/mediaimage'.$id.'-small.'.$extension;
 							$q = new TQuery($sm['t'].'media');
 							$q->Add('filepath', dbescape($filename));
 							$q->Update('id', intval($id));
-							sm_redirect($_getvars['returnto']);
+							rename($tmpfile, $filename);
+							sm_extcore();
+							sm_resizeimage($filename, $filename_small, sm_settings('media_thumb_width'), sm_settings('media_thumb_height'), 0, 100, 1);
+							sm_resizeimage($filename, $filename_medium, sm_settings('media_medium_width'), sm_settings('media_meduim_height'));
+							sm_redirect('index.php?m=media&d=edit&id='.intval($id).'&returnto='.urlencode($_getvars['returnto']));
 						}
 					else
 						{
@@ -138,13 +144,9 @@
 					$ui->AddButtons($b);
 					$t = new TGrid();
 					$t->AddCol('id', 'id');
-					$t->AddCol('id_ctg', 'id_ctg');
+					$t->AddCol('image', 'image');
 					$t->AddCol('type', 'type');
 					$t->AddCol('title', 'title');
-					$t->AddCol('originalname', 'originalname');
-					$t->AddCol('filepath', 'filepath');
-					$t->AddCol('alt_text', 'alt_text');
-					$t->AddCol('description', 'description');
 					$t->AddEdit();
 					$t->AddDelete();
 					$q = new TQuery($sm['t'].'media');
