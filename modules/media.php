@@ -17,10 +17,10 @@
 	if (!defined("SIMAN_DEFINED"))
 		exit('Hacking attempt!');
 
-	if (!defined("CONTENT_FUNCTIONS_DEFINED"))
+	if (!defined("MEDIA_FUNCTIONS_DEFINED"))
 		{
-
-			define("CONTENT_FUNCTIONS_DEFINED", 1);
+			
+			define("MEDIA_FUNCTIONS_DEFINED", 1);
 		}
 	
 	sm_default_action('galleries');

@@ -33,7 +33,7 @@
 	</tr>
 	<tr>
 		<td>
-			{$lang.category_content}:
+			{$lang.common.category}:
 		</td>
 		<td>
 			<select name="p_id_category_c">
@@ -269,7 +269,7 @@
 <br />
 <a href="index.php?m=content&d=addctg">{$lang.add_category}</a> (<a href="index.php?m=content&d=addctg&exteditor=off">{$lang.common.html}</a>)<br />
 <br />
-<a href="index.php?m=blocks&d=add&b=content&id=1&db=blockctgview&c={$lang.list_content} - {$lang.category_content}">{$lang.set_as_block} "{$lang.list_content} - {$lang.category_content}"</a>
+<a href="index.php?m=blocks&d=add&b=content&id=1&db=blockctgview&c={$lang.list_content} - {$lang.common.category}">{$lang.set_as_block} "{$lang.list_content} - {$lang.common.category}"</a>
 <br>
 {include file="block_end.tpl"}
 {/if}

@@ -96,7 +96,7 @@
     <td>{$modules[$index].menuline.url}</td>
 </tr>
 <tr>
-    <td width="50%">{$lang.module_menu.alt_text}</td>
+    <td width="50%">{$lang.common.alt_text}</td>
     <td><input type="text" name="p_alt" id="alt" value="" /></td>
 </tr>
 <tr>
@@ -146,7 +146,7 @@
 	</td>
 </tr>
 <tr>
-    <td width="50%">{$lang.module_menu.alt_text}</td>
+    <td width="50%">{$lang.common.alt_text}</td>
     <td><input type="text" name="p_alt" value="{$modules[$index].alt_ml}" /></td>
 </tr>
 <tr>

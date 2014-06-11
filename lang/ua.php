@@ -145,6 +145,8 @@
 	$lang['common']['list']='Список';
 	$lang['common']['public']='Загальнодоступний';
 	$lang['common']['uncategorized']='Без категорії';
+	$lang['common']['category']='Категорія';
+	$lang['common']['alt_text']='Альтернативний текст';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
@@ -236,7 +238,6 @@
 	$lang["delete_content"]='Видалити текст';
 	$lang["caption_content"]='Назва';
 	$lang["text_content"]='Текст';
-	$lang["category_content"]='Категорія';
 	$lang["type_content"]='Тип тексту';
 	$lang["type_content_HTML"]='HTML текст';
 	$lang["type_content_simple_text"]='Звичайний текст';
@@ -268,7 +269,6 @@
 	$lang["delete_news"]='Видалити новину';
 	$lang["date_news"]='Дата';
 	$lang["text_news"]='Текст';
-	$lang["category_news"]='Категорія';
 	$lang["type_news"]='Тип тексту';
 	$lang["type_news_HTML"]='HTML текст';
 	$lang["type_news_simple_text"]='Звичайний текст';
@@ -306,7 +306,6 @@
 	$lang['module_menu']['add_menu_line']='Додати рядок меню';
 	$lang['module_menu']['position']='Позиція';
 	$lang['module_menu']['select_on_partial_match']='Виділяти при частковому співпаданні';
-	$lang['module_menu']['alt_text']='Альтернативний текст';
 	$lang['module_menu']['open_in_new_page']='Відкривати в новій сторінці';
 	$lang['module_menu']['tag_a_attr']='Додаткові атрибути тегу &lt;A&gt;';
 

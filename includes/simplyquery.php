@@ -400,6 +400,15 @@ if (!defined("simplyquery_DEFINED"))
 					{
 						return $this->Count()==0;
 					}
+				function ColumnValues($column_name)
+					{
+						$result=Array();
+						for ($i = 0; $i < $this->Count(); $i++)
+							{
+								$result[]=$this->items[$i][$column_name];
+							}
+						return $result;
+					}
 			}
 		
 		function CheckForNonEmpty($nllist)

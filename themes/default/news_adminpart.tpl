@@ -91,7 +91,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td width="30%">{$lang.category_news}:</td>
+		<td width="30%">{$lang.common.category}:</td>
 		<td width="70%">
 			<select name="p_id_category_n">
 				{section name=i loop=$modules[$index].ctgid}
