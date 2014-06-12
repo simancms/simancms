@@ -23,15 +23,6 @@
 					else
 						return $filepath;
 				}
-			function siman_medium_for_media($filepath)
-				{
-					$info=pathinfo($filepath);
-					$filename=$info['dirname'].'/'.$info['filename'].'-medium.'.$info['extension'];
-					if (file_exists($filename))
-						return $filename;
-					else
-						return $filepath;
-				}
 			function siman_update_media_category_count($id_ctg)
 				{
 					global $sm;
@@ -68,9 +59,15 @@
 
 			if (sm_action('postadd'))
 				{
-					if ($tmpfile=sm_upload_file('userfile'))
+					sm_extcore();
+					$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION));
+					if (!sm_is_allowed_to_upload($_uplfilevars['userfile']['name']) || !in_array($extension, nllistToArray(sm_settings('media_allowed_extensions'), true)))
 						{
-							$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION));
+							$error=$lang['module_admin']['message_wrong_file_name'];
+							sm_set_action('add');
+						}
+					elseif ($tmpfile=sm_upload_file('userfile'))
+						{
 							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
 							$q = new TQuery($sm['t'].'media');
 							$q->Add('id_ctg', intval($ctg['id_ctg']));
@@ -88,13 +85,17 @@
 							$q->Update('id', intval($id));
 							rename($tmpfile, $filename);
 							sm_extcore();
-							sm_resizeimage($filename, $filename_medium, sm_settings('media_thumb_width'), sm_settings('media_thumb_height'), 0, 100, 1);
-							sm_resizeimage($filename, $filename_small, sm_settings('media_medium_width'), sm_settings('media_meduim_height'));
+							sm_resizeimage($filename, $filename_small, sm_settings('media_thumb_width'), sm_settings('media_thumb_height'), 0, 100, 1);
+							sm_resizeimage($filename, $filename_medium, sm_settings('media_medium_width'), sm_settings('media_meduim_height'));
 							siman_update_media_category_count(intval($ctg['id_ctg']));
-							sm_redirect('index.php?m=media&d=edit&id='.intval($id).'&returnto='.urlencode($_getvars['returnto']));
+							if (intval(sm_get_settings('media_edit_after_upload', 'media'))==1)
+								sm_redirect('index.php?m=media&d=edit&id='.intval($id).'&returnto='.urlencode($_getvars['returnto']));
+							else
+								sm_redirect($_getvars['returnto']);
 						}
 					else
 						{
+							$error=$lang['error_file_upload_message'];
 							sm_set_action('add');
 						}
 				}
@@ -128,7 +129,7 @@
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'error alert-error');
+						$ui->NotificationError($error);
 					sm_title($lang['common']['edit']);
 					$q=new TQuery($sm['t'].'categories_media');
 					$q->OrderBy('title');
@@ -136,6 +137,7 @@
 					$f = new TForm('index.php?m=media&d=postedit&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
 					$f->AddStatictext('filepath', $lang['file_name']);
 					$f->AddSelectVL('id_ctg', $lang['common']['category'], $q->ColumnValues('id_ctg'), $q->ColumnValues('title'));
+					$f->SelectAddBeginVL('id_ctg', 0, $lang['common']['uncategorized']);
 					$f->AddText('title', $lang['common']['title']);
 					$f->AddText('alt_text', $lang['common']['alt_text']);
 					$f->AddTextarea('description', $lang['common']['description']);
@@ -162,9 +164,9 @@
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'error alert-error');
+						$ui->NotificationError($error);
 					sm_title($lang['common']['add']);
-					$f = new TForm('index.php?m=media&d=postadd&returnto='.urlencode($_getvars['returnto']));
+					$f = new TForm('index.php?m=media&d=postadd&ctg='.intval($ctg['id_ctg']).'&returnto='.urlencode($_getvars['returnto']));
 					$f->AddFile('userfile', $lang['common']['file']);
 					if (is_array($_postvars))
 						$f->LoadValuesArray($_postvars);
@@ -242,28 +244,40 @@
 
 			if (sm_action('postaddctg', 'posteditctg'))
 				{
-					$q=new TQuery($sm['t'].'categories_media');
-					$q->Add('title', dbescape($_postvars['title']));
-					$q->Add('public', intval($_postvars['public']));
-					$q->Add('keywords', dbescape($_postvars['keywords']));
-					$q->Add('description', dbescape($_postvars['description']));
-					$q->Add('items_count', dbescape($_postvars['items_count']));
-					$q->Add('lastupdate', time());
-					if (sm_action('postaddctg'))
-						$id=$q->Insert();
+					if (empty($_postvars['title']))
+						{
+							$error=	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
+							if (sm_action('postaddctg'))
+								sm_set_action('addctg');
+							else
+								sm_set_action('editctg');
+						}
 					else
 						{
-							$id=intval($_getvars['id']);
-							$q->Update('id_ctg', $id);
+							$q=new TQuery($sm['t'].'categories_media');
+							$q->Add('title', dbescape($_postvars['title']));
+							$q->Add('public', intval($_postvars['public']));
+							$q->Add('keywords', dbescape($_postvars['keywords']));
+							$q->Add('description', dbescape($_postvars['description']));
+							$q->Add('items_count', dbescape($_postvars['items_count']));
+							$q->Add('lastupdate', time());
+							if (sm_action('postaddctg'))
+								$id=$q->Insert();
+							else
+								{
+									$id=intval($_getvars['id']);
+									$q->Update('id_ctg', $id);
+								}
+							if (sm_action('postaddctg'))
+								sm_fs_update($lang['module_galleies']['gallery'].' - '.$_postvars['title'], 'index.php?m=media&d=gallery&id='.$id, 'media/galleries/'.$id.'-'.sm_getnicename($_postvars['title']).'.html');
+							if ($file=sm_upload_file('userfile'))
+								{
+									sm_extcore();
+									sm_resizeimage($file, 'files/img/mediagallery'.$id.'.jpg', sm_settings('gallery_thumb_width'), sm_settings('gallery_thumb_height'), 0, 100, 1);
+									unlink($file);
+								}
+							sm_redirect($_getvars['returnto']);
 						}
-					if ($file=sm_upload_file('userfile'))
-						{
-							sm_extcore();
-							sm_resizeimage($file, 'files/img/mediagallery'.$id.'.jpg', sm_settings('gallery_thumb_width'), sm_settings('gallery_thumb_height'), 0, 100, 1);
-							unlink($file);
-							var_dump($file);
-						}
-					sm_redirect($_getvars['returnto']);
 				}
 
 			if (sm_action('addctg', 'editctg'))
@@ -274,7 +288,7 @@
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'error alert-error');
+						$ui->NotificationError($error);
 					if (sm_action('editctg'))
 						{
 							sm_title($lang['common']['edit']);
@@ -297,8 +311,11 @@
 							$f->LoadValuesArray($q->Get());
 							unset($q);
 						}
-					if (is_array($_postvars))
-						$f->LoadValuesArray($_postvars);
+					else
+						{
+							$f->SetValue('public', 1);
+						}
+					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);
 					sm_setfocus('title');
