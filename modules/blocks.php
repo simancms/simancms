@@ -6,15 +6,12 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-30
+	//#ver 1.6.7
+	//#revision 2014-06-13
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if ($userinfo['level'] >= 3)
 		{
@@ -126,7 +123,7 @@
 					$show_on_viewids = $_postvars['show_on_viewids'];
 					if ($panel_block != $old_panel)
 						{
-							$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='$panel_block'";
+							$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='".dbescape($panel_block)."'";
 							$result = execsql($sql);
 							$pos_block = 0;
 							while ($row = database_fetch_row($result))
@@ -325,7 +322,7 @@
 				}
 			if (sm_action('setmain'))
 				{
-					execsql("UPDATE ".$tableprefix."settings SET value_settings='".intval($_postvars['p_mainpos'])."' WHERE name_settings='main_block_position' AND mode='default'");
+					sm_update_settings('main_block_position', intval($_postvars['p_mainpos']));
 					sm_redirect('index.php?m=blocks');
 				}
 		}
