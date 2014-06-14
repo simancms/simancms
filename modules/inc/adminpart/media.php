@@ -60,43 +60,52 @@
 			if (sm_action('postadd'))
 				{
 					sm_extcore();
-					$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_EXTENSION));
-					if (!sm_is_allowed_to_upload($_uplfilevars['userfile']['name']) || !in_array($extension, nllistToArray(sm_settings('media_allowed_extensions'), true)))
+					$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+					unset($error);
+					for ($i = 0; $i < count($_uplfilevars['userfile']['name']); $i++)
 						{
-							$error=$lang['module_admin']['message_wrong_file_name'];
-							sm_set_action('add');
+							if (empty($_uplfilevars['userfile']['name'][$i]))
+								continue;
+							$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'][$i], PATHINFO_EXTENSION));
+							if (!sm_is_allowed_to_upload($_uplfilevars['userfile']['name'][$i]) || !in_array($extension, nllistToArray(sm_settings('media_allowed_extensions'), true)))
+								{
+									$error[]=$lang['module_admin']['message_wrong_file_name'];
+								}
+							elseif ($tmpfile=sm_upload_file('userfile', '', $i))
+								{
+									$q = new TQuery($sm['t'].'media');
+									$q->Add('id_ctg', intval($ctg['id_ctg']));
+									$q->Add('type', dbescape($_uplfilevars['userfile'][$i]['type']));
+									$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'][$i], PATHINFO_FILENAME)));
+									$q->Add('originalname', dbescape($_uplfilevars['userfile']['name'][$i]));
+									$q->Add('alt_text', dbescape($_postvars['alt_text']));
+									$q->Add('description', dbescape($_postvars['description']));
+									$id=$q->Insert();
+									$filename='files/img/mediaimage'.$id.'.'.$extension;
+									$filename_medium='files/img/mediaimage'.$id.'-medium.'.$extension;
+									$filename_small='files/img/mediaimage'.$id.'-small.'.$extension;
+									$q = new TQuery($sm['t'].'media');
+									$q->Add('filepath', dbescape($filename));
+									$q->Update('id', intval($id));
+									rename($tmpfile, $filename);
+									sm_extcore();
+									sm_resizeimage($filename, $filename_small, sm_settings('media_thumb_width'), sm_settings('media_thumb_height'), 0, 100, 1);
+									sm_resizeimage($filename, $filename_medium, sm_settings('media_medium_width'), sm_settings('media_meduim_height'));
+									siman_update_media_category_count(intval($ctg['id_ctg']));
+								}
+							else
+								{
+									$error[]=$lang['error_file_upload_message'];
+								}
 						}
-					elseif ($tmpfile=sm_upload_file('userfile'))
+					if (is_array($error))
+						sm_set_action('add');
+					else
 						{
-							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
-							$q = new TQuery($sm['t'].'media');
-							$q->Add('id_ctg', intval($ctg['id_ctg']));
-							$q->Add('type', dbescape($_uplfilevars['userfile']['type']));
-							$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'], PATHINFO_FILENAME)));
-							$q->Add('originalname', dbescape($_uplfilevars['userfile']['name']));
-							$q->Add('alt_text', dbescape($_postvars['alt_text']));
-							$q->Add('description', dbescape($_postvars['description']));
-							$id=$q->Insert();
-							$filename='files/img/mediaimage'.$id.'.'.$extension;
-							$filename_medium='files/img/mediaimage'.$id.'-medium.'.$extension;
-							$filename_small='files/img/mediaimage'.$id.'-small.'.$extension;
-							$q = new TQuery($sm['t'].'media');
-							$q->Add('filepath', dbescape($filename));
-							$q->Update('id', intval($id));
-							rename($tmpfile, $filename);
-							sm_extcore();
-							sm_resizeimage($filename, $filename_small, sm_settings('media_thumb_width'), sm_settings('media_thumb_height'), 0, 100, 1);
-							sm_resizeimage($filename, $filename_medium, sm_settings('media_medium_width'), sm_settings('media_meduim_height'));
-							siman_update_media_category_count(intval($ctg['id_ctg']));
 							if (intval(sm_get_settings('media_edit_after_upload', 'media'))==1)
 								sm_redirect('index.php?m=media&d=edit&id='.intval($id).'&returnto='.urlencode($_getvars['returnto']));
 							else
 								sm_redirect($_getvars['returnto']);
-						}
-					else
-						{
-							$error=$lang['error_file_upload_message'];
-							sm_set_action('add');
 						}
 				}
 
@@ -163,11 +172,15 @@
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
-					if (!empty($error))
-						$ui->NotificationError($error);
+					if (is_array($error))
+						for ($i = 0; $i < count($error); $i++)
+							$ui->NotificationError($error);
 					sm_title($lang['common']['add']);
 					$f = new TForm('index.php?m=media&d=postadd&ctg='.intval($ctg['id_ctg']).'&returnto='.urlencode($_getvars['returnto']));
-					$f->AddFile('userfile', $lang['common']['file']);
+					for ($i = 0; $i < 10; $i++)
+						{
+							$f->AddFile('userfile['.$i.']', $lang['common']['file']);
+						}
 					if (is_array($_postvars))
 						$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);

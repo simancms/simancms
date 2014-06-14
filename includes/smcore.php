@@ -497,10 +497,13 @@
 			deletesql($tableprefix.'downloads', 'id_download', intval($id));
 		}
 
-	function sm_upload_file($upload_var = 'userfile', $upload_path = '')
+	function sm_upload_file($upload_var = 'userfile', $upload_path = '', $secondary_index=NULL)
 		{
 			global $_uplfilevars;
-			$fs = $_uplfilevars[$upload_var]['tmp_name'];
+			if ($secondary_index===NULL)
+				$fs = $_uplfilevars[$upload_var]['tmp_name'];
+			else
+				$fs = $_uplfilevars[$upload_var]['tmp_name'][$secondary_index];
 			if (empty($upload_path))
 				$upload_path = 'files/temp/'.md5(microtime(true));
 			if (!empty($fs))
