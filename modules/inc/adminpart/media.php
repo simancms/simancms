@@ -69,7 +69,7 @@
 							$extension=strtolower(pathinfo($_uplfilevars['userfile']['name'][$i], PATHINFO_EXTENSION));
 							if (!sm_is_allowed_to_upload($_uplfilevars['userfile']['name'][$i]) || !in_array($extension, nllistToArray(sm_settings('media_allowed_extensions'), true)))
 								{
-									$error[]=$lang['module_admin']['message_wrong_file_name'];
+									$error[]=$lang['module_admin']['message_wrong_file_name'].' '.$_uplfilevars['userfile']['name'][$i];
 								}
 							elseif ($tmpfile=sm_upload_file('userfile', '', $i))
 								{
@@ -95,7 +95,7 @@
 								}
 							else
 								{
-									$error[]=$lang['error_file_upload_message'];
+									$error[]=$lang['error_file_upload_message'].' '.$_uplfilevars['userfile']['name'][$i];
 								}
 						}
 					if (is_array($error))
@@ -174,7 +174,7 @@
 					$ui = new TInterface();
 					if (is_array($error))
 						for ($i = 0; $i < count($error); $i++)
-							$ui->NotificationError($error);
+							$ui->NotificationError($error[$i]);
 					sm_title($lang['common']['add']);
 					$f = new TForm('index.php?m=media&d=postadd&ctg='.intval($ctg['id_ctg']).'&returnto='.urlencode($_getvars['returnto']));
 					for ($i = 0; $i < 10; $i++)
