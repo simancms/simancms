@@ -399,9 +399,24 @@ INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode
 execsql($sql);
 
 
+//version 1.6.7
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_width', '150', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_height', '150', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_default_view', 'all', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_view_items_per_row', '0', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_view_items_per_row', '0', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_sort', 'lastupdate_desc', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_width', '150', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_height', '150', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_medium_width', '600', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_meduim_height', '600', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_allowed_extensions', 'jpg\njpeg\ngif\npng\nmp4\nmp3\nwav', 'default');");
+execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_edit_after_upload', '1', 'media');");
+
+
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20140315');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20140701');
 ";
 execsql($sql);
 
