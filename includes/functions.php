@@ -214,6 +214,7 @@
 		{
 			$res = explode(';', $gr);
 			$j = 0;
+			$res2=Array();
 			for ($i = 0; $i<count($res); $i++)
 				{
 					if (!empty($res[$i]))

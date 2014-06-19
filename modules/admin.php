@@ -208,6 +208,7 @@
 					sm_title($lang['control_panel']);
 					include_once('includes/admindashboard.php');
 					include_once('includes/admininterface.php');
+					$ui = new TInterface();
 					$dashboard=new TDashBoard();
 					$dashboard->AddItem($lang['modules_mamagement'], 'index.php?m=admin&d=modules', 'applications');
 					$dashboard->AddItem($lang['blocks_mamagement'], 'index.php?m=blocks', 'blocks');
@@ -216,18 +217,22 @@
 					//<a href="index.php?m=admin&d=listmodes">{$lang.module_admin.modes_management}</a><br /> [Temporary unsupported]
 					$dashboard->AddItem($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg', 'photo');
 					$dashboard->AddItem($lang['upload_image'], 'index.php?m=admin&d=uplimg', 'photoadd');
-					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=register', 'useradd');
-					$dashboard->AddItem($lang['user_list'], 'index.php?m=account&d=usrlist', 'user');
-					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
-					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
 					$dashboard->AddItem($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus', 'databasechecked');
 					if (intval(sm_settings('log_type'))>0)
 						$dashboard->AddItem($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog', 'log');
 					if (is_writeable('./') && sm_settings('packages_upload_allowed'))
 						$dashboard->AddItem($lang['module_admin']['upload_package'], 'index.php?m=admin&d=package', 'upload');
 					$dashboard->AddItem($lang['settings'], 'index.php?m=admin&d=settings', 'settings.png');
-					$ui = new TInterface();
 					$ui->AddDashboard($dashboard);
+					$ui->AddBlock($lang['user_settings']);
+					unset($dashboard);
+					$dashboard=new TDashBoard();
+					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=register', 'useradd');
+					$dashboard->AddItem($lang['user_list'], 'index.php?m=account&d=usrlist', 'user');
+					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
+					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
+					$ui->AddDashboard($dashboard);
+					unset($dashboard);
 					$ui->Output(true);
 				}
 			if (sm_action('uplimg'))
@@ -501,24 +506,42 @@
 			if (sm_action('tstatus'))
 				{
 					add_path_control();
-					add_path($lang['module_admin']['optimize_database'], 'index.php?m=admin&d=tstatus');
-					$m["title"] = $lang['module_admin']['optimize_database'];
-					$m["table_count"] = 0;
+					add_path_current();
+					sm_title($lang['module_admin']['optimize_database']);
+					include_once('includes/admininterface.php');
+					include_once('includes/admintable.php');
+					$ui = new TInterface();
 					if ($serverDB == 0)
 						{
+							$t = new TGrid();
+							$t->AddCol('table_name', $lang['module_admin']['table_name'], '25%');
+							$t->AddCol('table_rows', $lang['module_admin']['table_rows'], '25%');
+							$t->AddCol('table_size', $lang['module_admin']['table_size'], '25%');
+							$t->AddCol('table_not_optimized', $lang['module_admin']['table_not_optimized'], '20%');
+							$t->AddCol('table_optimize', $lang['module_admin']['table_optimize'], '5%');
 							$sql = "SHOW TABLE STATUS FROM ".$nameDB;
 							$result = execsql($sql);
 							$i = 0;
 							while ($row = database_fetch_object($result))
 								{
-									$m['tables'][$i]['name'] = $row->Name;
-									$m['tables'][$i]['rows'] = $row->Rows;
-									$m['tables'][$i]['need_opt'] = $row->Data_free;
-									$m['tables'][$i]['data_length'] = $row->Data_length + $row->Index_length;
+									$t->Label('table_name', $row->Name);
+									$t->Label('table_rows', $row->Rows);
+									$t->Label('table_not_optimized', $row->Data_free);
+									$t->Label('table_size', $row->Data_length + $row->Index_length);
+									$t->Checkbox('table_optimize', 'p_opt_'.$i, $row->Name, $row->Data_free>0);
+									$t->NewRow();
 									$i++;
 								}
-							$m["table_count"] = $i;
+							$ui->html('<form action="index.php?m=admin&d=optimize" method="post">');
+							$ui->html('<input type="hidden" name="p_table_count" value="'.$i.'" />');
+							$ui->AddGrid($t);
+							$ui->div('<input type="submit" value="'.$lang['module_admin']['optimize_tables'].'" />', '', '', 'text-align:right;');
 						}
+					else
+						{
+							$ui->NotificationWarning($lang['module_admin']['message_no_tables_in_DB']);
+						}
+					$ui->Output(true);
 				}
 			if (sm_action('optimize'))
 				{

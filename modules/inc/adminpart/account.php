@@ -42,6 +42,81 @@
 					$result = execsql($sql);
 					sm_redirect($_getvars['returnto']);
 				}
+			if (sm_actionpost('postedituser'))
+				{
+					$info=TQuery::ForTable($sm['tu'].'users')->Add('id_user', intval($_getvars['id']))->Get();
+					if (!is_email($_postvars['email']))
+						{
+							$error=$lang['messages']['wrong_email'];
+							sm_set_action('edituser');
+						}
+					elseif (!empty($info['id_user']) && intval($info['id_user'])!=1)
+						{
+							if (strlen($_postvars['pwd'])>0)
+								{
+									sm_set_userfield($info['id_user'], 'password', md5($_postvars['pwd']));
+								}
+							sm_set_userfield($info['id_user'], 'email', $_postvars['email']);
+							sm_set_userfield($info['id_user'], 'get_mail', intval($_postvars['get_mail']));
+							sm_extcore();
+							$q=new TQuery($sm['t'].'groups');
+							$q->OrderBy('title_group');
+							$q->Select();
+							for ($i = 0; $i<$q->Count(); $i++)
+								{
+									if (intval($_postvars['group_'.$q->items[$i]['id_group']])==1)
+										sm_set_group($q->items[$i]['id_group'], Array($info['id_user']));
+									else
+										sm_unset_group($q->items[$i]['id_group'], Array($info['id_user']));
+								}
+							sm_event('onchangeuserbyadmin', array($info['id_user']));
+							if (!empty($_getvars['returnto']))
+								sm_redirect($_getvars['returnto']);
+							else
+								sm_redirect('index.php?m=account&d=edituser&id='.$info['id_user']);
+						}
+				}
+			if (sm_action('edituser'))
+				{
+					add_path_control();
+					add_path($lang['user_list'], 'index.php?m=account&d=usrlist');
+					add_path_current();
+					sm_title($lang['change']);
+					$info=TQuery::ForTable($sm['tu'].'users')->Add('id_user', intval($_getvars['id']))->Get();
+					if (!empty($info['id_user']) && intval($info['id_user'])!=1)
+						{
+							include_once('includes/admininterface.php');
+							include_once('includes/adminform.php');
+							$ui = new TInterface();
+							if (!empty($error))
+								$ui->NotificationError($lang['messages']['wrong_email']);
+							$f = new TForm('index.php?m=account&d=postedituser&id='.$info['id_user'].'&returnto='.urlencode($_getvars['returnto']));
+							$f->AddStatictext('login', $lang['login_str']);
+							$f->AddText('pwd', $lang['password']);
+							$f->SetFieldBottomText('pwd', $lang['set_passwords_if_want_to_change']);
+							$f->AddText('email', $lang['email']);
+							$f->AddCheckbox('get_mail', $lang['module_account']['get_mail_from_admin']);
+							$f->LabelAfterControl();
+							$q=new TQuery($sm['t'].'groups');
+							$q->OrderBy('title_group');
+							$q->Select();
+							if ($q->Count()>0)
+								{
+									$f->AddSeparator('groups', $lang['module_account']['groups']);
+									for ($i = 0; $i<$q->Count(); $i++)
+										{
+											$f->AddCheckbox('group_'.$q->items[$i]['id_group'], $q->items[$i]['title_group'].(empty($q->items[$i]['description_group'])?'':' ('.$q->items[$i]['description_group'].')'));
+											$f->LabelAfterControl();
+											if (sm_isuseringroup($info['id_user'], $q->items[$i]['id_group']))
+												$f->SetValue('group_'.$q->items[$i]['id_group'], 1);
+										}
+								}
+							$f->LoadValuesArray($info);
+							$f->LoadValuesArray($_postvars);
+							$ui->AddForm($f);
+							$ui->Output(true);
+						}
+				}
 			if (sm_action('usrlist'))
 				{
 					add_path_control();
@@ -96,7 +171,7 @@
 								$t->DropDownItem('status', $lang['super_user'], 'index.php?m=account&d=setstatus&uid='.$row->id_user.'&status=3&returnto='.urlencode(sm_this_url()));
 							$t->Label('action', $lang['details']);
 							$t->DropDownItem('action', $lang['module_account']['set_password'], 'index.php?m=account&d=setpwd&uid='.$row->id_user.'&returnto='.urlencode(sm_this_url()));
-							$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=change&usrid='.$row->id_user.'&returnto='.urlencode(sm_this_url()));
+							$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=edituser&id='.$row->id_user.'&returnto='.urlencode(sm_this_url()));
 							$t->DropDownItem('action', $lang['delete'], 'index.php?m=account&d=postdelete&uid='.$row->id_user.'&returnto='.urlencode(sm_this_url()), $lang['really_want_delete_user']);
 							$t->NewRow();
 							$i++;
@@ -220,13 +295,6 @@
 				{
 					TQuery::ForTable($tableusersprefix.'groups')->Add('id_group', intval($_getvars['id']))->Remove();
 					sm_redirect('index.php?m=account&d=listgroups');
-				}
-			if (sm_action('postchangegrp'))
-				{
-					$tmp_usrid = intval($_postvars['p_user_id']);
-					$grps = create_groups_str($_postvars['p_groups']);
-					execsql("UPDATE ".$tableusersprefix."users SET groups_user = '".dbescape($grps)."' WHERE id_user=".intval($tmp_usrid));
-					sm_redirect('index.php?m=account&d=change&usrid='.$tmp_usrid);
 				}
 		}
 
