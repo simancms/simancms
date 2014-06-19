@@ -775,39 +775,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'tstatus'}
-{include file="block_begin.tpl"}
-{if $modules[$index].table_count gt "0"}
-<form action="index.php?m=admin&d=optimize" method="post">
-<input type="hidden" name="p_table_count" value="{$modules[$index].table_count}">
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
-<tr>
-    <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_name}</td>
-    <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_rows}</td>
-    <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_size}</td>
-    <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_not_optimized}</td>
-    <td bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.table_optimize}</td>
-</tr>
-{section name=i loop=$modules[$index].tables}
-<tr>
-    <td>{$modules[$index].tables[i].name}</td>
-    <td>{$modules[$index].tables[i].rows}</td>
-    <td>{$modules[$index].tables[i].data_length}</td>
-    <td>{$modules[$index].tables[i].need_opt}</td>
-    <td><input type="checkbox" name="p_opt_{$smarty.section.i.index}" value="{$modules[$index].tables[i].name}"{if $modules[$index].tables[i].need_opt gt "0"} checked{/if}></td>
-</tr>
-{/section}
-</table>
-{$modules[$index].formadditionalhtml}
-<div align="center"><input type="submit" value="{$lang.module_admin.optimize_tables}"></div>
-</form>
-{if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_optimize_database&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
-{else}
-{$lang.module_admin.message_no_tables_in_DB}
-{/if}
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'listimg'}
 {include file="block_begin.tpl"}
 <table width="100%">

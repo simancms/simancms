@@ -39,14 +39,8 @@
 					$m['user_answer'] = $answer;
 					$m['user_get_mail'] = $get_mail;
 				}
-			if ($userinfo['level'] == 3 && !empty($_postvars['p_user_id']))
-				{
-					$password = md5($password);
-					$sqlpasswd = ", password = '$password' ";
-				}
-			else
-				$sqlpasswd = '';
-			if (!empty($password) && empty($sqlpasswd))
+			$sqlpasswd = '';
+			if (!empty($password))
 				{
 					if (strcmp($password, $password2) != 0)
 						{
@@ -75,19 +69,10 @@
 				}
 			if (strcmp($m['mode'], 'change') != 0)
 				{
-					if ($userinfo['level'] == 3 && !empty($_postvars['p_user_id']))
+					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($userinfo['id'])."'";
+					if (!empty($old_password))
 						{
-							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($_postvars['p_user_id'])."'";
-							if ($userinfo['id']!=1)
-								 $sql.=' AND id_user<>1';
-						}
-					else
-						{
-							$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($userinfo['id'])."'";
-							if (!empty($old_password))
-								{
-									$sql .= " AND password = '".md5($old_password)."'";
-								}
+							$sql .= " AND password = '".md5($old_password)."'";
 						}
 					$result = execsql($sql);
 					$u = 0;
@@ -107,40 +92,19 @@
 					else
 						{
 							$sql = "UPDATE ".$tableusersprefix."users SET email = '$email', question = '$question', answer = '$answer', get_mail = '$get_mail' $sqlpasswd ";
-							if ($userinfo['level'] == 3 && !empty($_postvars['p_user_id']))
-								{
-									$sql .= " WHERE  id_user = '".intval($_postvars['p_user_id'])."'";
-									$id_newuser = intval($_postvars['p_user_id']);
-								}
-							else
-								{
-									$sql .= " WHERE  id_user = '".intval($userinfo['id'])."'";
-									$id_newuser = intval($userinfo['id']);
-								}
+							$sql .= " WHERE  id_user = '".intval($userinfo['id'])."'";
+							$id_newuser = intval($userinfo['id']);
 							$result = execsql($sql);
 							sm_event('userdetailschanged', array($id_newuser));
-							if ($id_newuser == $userinfo['id'])
-								{
-									sm_login($id_newuser);
-									include('includes/userinfo.php');
-								}
-							if ($userinfo['level'] == 3 && !empty($_postvars['p_user_id']))
-								{
-									if (!empty($_getvars['returnto']))
-										sm_redirect($_getvars['returnto']);
-									else
-										sm_redirect('index.php?m=account&d=usrlist');
-								}
+							sm_login($id_newuser);
+							include('includes/userinfo.php');
+							sm_notify($lang['message_success_change']);
+							if (!empty($special['redirect_on_success_change_usrdata']))
+								sm_redirect($special['redirect_on_success_change_usrdata']);
+							elseif (!empty($_settings['redirect_on_success_change_usrdata']))
+								sm_redirect($_settings['redirect_on_success_change_usrdata']);
 							else
-								{
-									sm_notify($lang['message_success_change']);
-									if (!empty($special['redirect_on_success_change_usrdata']))
-										sm_redirect($special['redirect_on_success_change_usrdata']);
-									elseif (!empty($_settings['redirect_on_success_change_usrdata']))
-										sm_redirect($_settings['redirect_on_success_change_usrdata']);
-									else
-										sm_redirect('index.php?m=account&d=cabinet');
-								}
+								sm_redirect('index.php?m=account&d=cabinet');
 						}
 				}
 		}
@@ -149,17 +113,7 @@
 		{
 			$m["module"] = 'account';
 			$m["title"] = $lang['change'];
-			if ($userinfo['level'] == 3 && !empty($_getvars['usrid']))
-				{
-					if (strcmp($_getvars['usrid'], $userinfo['id']) != 0)
-						$m['change_to_other'] = 1;
-					$m["extended_groups"] = 1;
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($_getvars['usrid']);
-				}
-			else
-				{
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($userinfo['id']);
-				}
+			$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($userinfo['id']);
 			$result = execsql($sql);
 			$u = 0;
 			while ($row = database_fetch_object($result))

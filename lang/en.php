@@ -104,6 +104,7 @@ $lang['common']['uncategorized']='Uncategorized';
 $lang['common']['category']='Category';
 $lang['common']['alt_text'] = 'Alternative text';
 $lang['messages']['fill_requied_fields']='Fill required fields';
+$lang['messages']['wrong_email']='Wrong email';
 $lang['register'] = 'Register';
 $lang['email'] = 'E-mail';
 $lang['upload'] = 'Upload';
