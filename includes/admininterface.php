@@ -101,6 +101,10 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->AddOutputObject('dashboard', $dashboard, 'common_admindashboard.tpl', true);
 					}
+				function AddNavigation($navigation)
+					{
+						$this->AddOutputObject('navigation', $navigation, 'common_adminnavigation.tpl', true);
+					}
 				function html($html)
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
