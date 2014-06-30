@@ -328,7 +328,7 @@ if (!defined("simplyquery_DEFINED"))
 						$this->having=$sql;
 						return $this;
 					}
-				private function SelectStqtement($addsql='')
+				private function SelectStatement($addsql='')
 					{
 						if (empty($this->selectfields))
 							$this->SelectFields();
@@ -357,7 +357,7 @@ if (!defined("simplyquery_DEFINED"))
 					}
 				function Select($addsql='', $type='a')
 					{
-						$this->SelectStqtement($addsql);
+						$this->SelectStatement($addsql);
 						if (!$this->sqlgenerationmode)
 							{
 								$this->items=getsqlarray($this->sql, $type);
@@ -366,7 +366,7 @@ if (!defined("simplyquery_DEFINED"))
 					}
 				function Open($addsql='')
 					{
-						$this->SelectStqtement($addsql);
+						$this->SelectStatement($addsql);
 						$this->result=execsql($this->sql);
 					}
 				function Fetch($type='a')
