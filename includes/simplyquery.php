@@ -76,6 +76,40 @@ if (!defined("simplyquery_DEFINED"))
 						$this->iswhere[count($this->fields)-1]=true;
 						return $this;
 					}
+				function INStrings($fieldname, $values_array, $trim=false)
+					{
+						if(is_array($values_array) AND count($values_array)>0)
+							{
+								$sql='`'.$fieldname.'` IN (';
+								for ($i = 0; $i<count($values_array); $i++)
+									{
+										if ($trim)
+											$values_array[$i]=trim($values_array[$i]);
+										$sql.=($i>0?',':'')."'".dbescape($values_array[$i])."'";
+									}
+								$sql.=")";
+								$this->AddWhere($sql);
+							}
+						else
+							$this->AddWhere('1=2');
+						return $this;
+					}
+				function INIntegers($fieldname, $values_array)
+					{
+						if(is_array($values_array) AND count($values_array)>0)
+							{
+								$sql='`'.$fieldname.'` IN (';
+								for ($i = 0; $i<count($values_array); $i++)
+									{
+										$sql.=($i>0?',':'').intval($values_array[$i]);
+									}
+								$sql.=")";
+								$this->AddWhere($sql);
+							}
+						else
+							$this->AddWhere('1=2');
+						return $this;
+					}
 				function AddNotEmpty($fieldname, $value)
 					{
 						if(!empty($value))
@@ -361,8 +395,8 @@ if (!defined("simplyquery_DEFINED"))
 						if (!$this->sqlgenerationmode)
 							{
 								$this->items=getsqlarray($this->sql, $type);
-								return $this->items[0];
 							}
+						return $this;
 					}
 				function Open($addsql='')
 					{
@@ -384,7 +418,8 @@ if (!defined("simplyquery_DEFINED"))
 				function Get($addsql='', $type='a')
 					{
 						$this->Limit(1);
-						return $this->Select($addsql, $type);
+						$this->Select($addsql, $type);
+						return $this->items[0];
 					}
 				function GetField($field)
 					{
