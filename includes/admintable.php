@@ -235,6 +235,10 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['columns'][$name]['onclick'].=$code;
 					}
+				function DropDownItemsCount($name)
+					{
+						return count($this->table['rows'][$this->rownumber][$name]['dropdownitems']);
+					}
 				function DropDownItem($name, $title, $url, $confirm_message='', $tomenutitle='')
 					{
 						$this->table['rows'][$this->rownumber][$name]['dropdown']=1;
