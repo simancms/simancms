@@ -112,14 +112,35 @@ if (!defined("admininterface_DEFINED"))
 						$this->item['html']=$html;
 						$this->SetActiveItem();
 					}
-				function div($html, $id='', $class='', $style='', $additionaltagattrs='')
+				function div($html, $id='', $class='', $style='', $additionaltagattrs='', $writeclosetag=true)
 					{
-						$code='<div'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.'</div>';
+						$code='<div'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.($writeclosetag?'</div>':'');
 						$this->html($code);
 					}
-				function p($html, $id='', $class='', $style='', $additionaltagattrs='')
+				function div_open($id='', $class='', $style='', $additionaltagattrs='')
 					{
-						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.'</p>';
+						$this->div('', $id, $class, $style, $additionaltagattrs, false);
+					}
+				function div_close()
+					{
+						$this->html('</div>');
+					}
+				function p($html, $id='', $class='', $style='', $additionaltagattrs='', $writeclosetag=true)
+					{
+						$code='<p'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.'>'.$html.($writeclosetag?'</p>':'');
+						$this->html($code);
+					}
+				function p_open($id='', $class='', $style='', $additionaltagattrs='')
+					{
+						$this->p('', $id, $class, $style, $additionaltagattrs, false);
+					}
+				function p_close()
+					{
+						$this->html('</p>');
+					}
+				function img($src, $id='', $class='', $style='', $additionaltagattrs='')
+					{
+						$code='<img src="'.$src.'"'.(empty($id)?'':' id="'.$id.'"').''.(empty($class)?'':' class="'.$class.'"').''.(empty($style)?'':' style="'.$style.'"').$additionaltagattrs.' />';
 						$this->html($code);
 					}
 				function h($type=1, $html, $id='', $class='', $style='', $additionaltagattrs='')
