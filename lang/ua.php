@@ -147,6 +147,8 @@
 	$lang['common']['uncategorized']='Без категорії';
 	$lang['common']['category']='Категорія';
 	$lang['common']['alt_text']='Альтернативний текст';
+	$lang['common']['auto']='Автоматично';
+	$lang['common']['last_update']='Останнє оновлення';
 
 	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';

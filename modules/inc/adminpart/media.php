@@ -31,10 +31,16 @@
 					$count=TQuery::ForTable($sm['t'].'media')->Add('id_ctg', intval($id_ctg))->Find();
 					TQuery::ForTable($sm['t'].'categories_media')->Add('items_count', intval($count))->Update('id_ctg', intval($id_ctg));
 				}
+			function siman_notemptyuintwithdefault($int, $default)
+				{
+					if (intval($int)<=0)
+						return intval($default);
+					return $int;
+				}
 
 			define("MEDIAADMIN_FUNCTIONS_DEFINED", 1);
 		}
-
+	
 	if ($userinfo['level']==3)
 		{
 			sm_include_lang('media');
@@ -133,7 +139,9 @@
 			if (sm_action('edit'))
 				{
 					add_path_modules();
-					add_path('Media', 'index.php?m=media&d=list');
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
+					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
+					add_path_current();
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
@@ -164,11 +172,42 @@
 					sm_setfocus('id_ctg');
 				}
 
+			if (sm_action('detailinfo'))
+				{
+					$image=TQuery::ForTable($sm['t'].'media')->Add('id', intval($_getvars['id']))->Get();
+					if (!empty($image['id']))
+						{
+							add_path_modules();
+							add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
+							add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
+							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+							if (!empty($ctg['id_ctg']))
+								add_path($ctg['title'], 'index.php?m=media&d=list&ctg='.$ctg['id_ctg']);
+							else
+								add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
+							add_path_current();
+							sm_title($lang['common']['image'].' - '.$image['title']);
+							include_once('includes/admininterface.php');
+							include_once('includes/adminform.php');
+							$ui = new TInterface();
+							$ui->div_open('image-detail-'.$image['id'], 'image-detail');
+							$ui->img($image['filepath']);
+							$ui->div_close();
+							$ui->Output(true);
+						}
+				}
+
 			if (sm_action('add'))
 				{
 					add_path_modules();
-					add_path('Media', 'index.php?m=media&d=list');
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
+					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
 					$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+					if (!empty($ctg['id_ctg']))
+						add_path($ctg['title'], 'index.php?m=media&d=list&ctg='.$ctg['id_ctg']);
+					else
+						add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
+					add_path_current();
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
@@ -195,6 +234,7 @@
 					include_once('includes/admintable.php');
 					include_once('includes/adminbuttons.php');
 					add_path_modules();
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
 					add_path_current();
 					$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
@@ -225,6 +265,7 @@
 						{
 							$t->Label('id', $q->items[$i]['id']);
 							$t->Image('image', siman_thumb_for_media($q->items[$i]['filepath']));
+							$t->URL('image', 'index.php?m=media&d=detailinfo&id='.$q->items[$i]['id']);
 							$t->Label('type', $q->items[$i]['type']);
 							$t->Label('title', $q->items[$i]['title']);
 							$t->Label('description', $q->items[$i]['description']);
@@ -296,7 +337,8 @@
 			if (sm_action('addctg', 'editctg'))
 				{
 					add_path_modules();
-					add_path('Media', 'index.php?m=media&d=list');
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
+					add_path_current();
 					include_once('includes/admininterface.php');
 					include_once('includes/adminform.php');
 					$ui = new TInterface();
@@ -304,19 +346,19 @@
 						$ui->NotificationError($error);
 					if (sm_action('editctg'))
 						{
-							sm_title($lang['common']['edit']);
+							sm_title($lang['module_galleies']['gallery'].' - '.$lang['common']['edit']);
 							$f=new TForm('index.php?m=media&d=posteditctg&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
 						}
 					else
 						{
-							sm_title($lang['common']['add']);
+							sm_title($lang['module_galleies']['gallery'].' - '.$lang['common']['add']);
 							$f=new TForm('index.php?m=media&d=postaddctg&returnto='.urlencode($_getvars['returnto']));
 						}
 					$f->AddText('title', $lang["title"], true);
 					$f->AddFile('userfile', $lang['common']['thumbnail']);
 					$f->AddCheckbox('public', $lang['common']['public']);
 					$f->AddText('keywords', $lang['common']['seo_keywords']);
-					$f->AddText('description', $lang['common']['seo_description']);
+					$f->AddTextarea('description', $lang['common']['seo_description']);
 					if (sm_action('editctg'))
 						{
 							$q=new TQuery($sm['t'].'categories_media');
@@ -341,6 +383,7 @@
 					include_once('includes/admintable.php');
 					include_once('includes/adminbuttons.php');
 					add_path_modules();
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					sm_title($lang['module_galleies']['galleries']);
 					add_path_current();
 					$offset=abs(intval($_getvars['from']));
@@ -385,13 +428,66 @@
 					$ui->Output(true);
 				}
 
+			if (sm_actionpost('postsettings'))
+				{
+					sm_update_settings('gallery_thumb_width', siman_notemptyuintwithdefault($_postvars['gallery_thumb_width'], 150));
+					sm_update_settings('gallery_thumb_height', siman_notemptyuintwithdefault($_postvars['gallery_thumb_height'], 150));
+					sm_update_settings('gallery_default_view', $_postvars['gallery_default_view']);
+					sm_update_settings('gallery_view_items_per_row', abs(intval($_postvars['gallery_view_items_per_row'])));
+					sm_update_settings('galleries_view_items_per_row', abs(intval($_postvars['galleries_view_items_per_row'])));
+					sm_update_settings('galleries_sort', $_postvars['galleries_sort']);
+					sm_update_settings('media_thumb_width', siman_notemptyuintwithdefault($_postvars['media_thumb_width'], 150));
+					sm_update_settings('media_thumb_height', siman_notemptyuintwithdefault($_postvars['media_thumb_height'], 150));
+					sm_update_settings('media_medium_width', siman_notemptyuintwithdefault($_postvars['media_medium_width'], 600));
+					sm_update_settings('media_meduim_height', siman_notemptyuintwithdefault($_postvars['media_meduim_height'], 600));
+					sm_update_settings('media_allowed_extensions', $_postvars['media_allowed_extensions']);
+					sm_update_settings('media_edit_after_upload', intval($_postvars['media_edit_after_upload']), 'media');
+					sm_notify($lang['settings_saved_successful']);
+					sm_redirect('index.php?m=media&d=settings');
+				}
+
+			if (sm_action('settings'))
+				{
+					add_path_modules();
+					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
+					add_path_current();
+					sm_title($lang['settings']);
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f=new TForm('index.php?m=media&d=postsettings');
+					$f->AddText('gallery_thumb_width', $lang['module_galleies']['gallery_thumb_width']);
+					$f->AddText('gallery_thumb_height', $lang['module_galleies']['gallery_thumb_height']);
+					$f->AddSelectVL('gallery_default_view', $lang['module_galleies']['gallery_default_view'], Array('all'), Array($lang['module_galleies']['all_images_in_one_page']));
+					$f->AddText('gallery_view_items_per_row', $lang['module_galleies']['gallery_view_items_per_row']);
+					$f->SetFieldBottomText('gallery_view_items_per_row', '0 - '.$lang['common']['auto']);
+					$f->AddText('galleries_view_items_per_row', $lang['module_galleies']['galleries_view_items_per_row']);
+					$f->SetFieldBottomText('galleries_view_items_per_row', '0 - '.$lang['common']['auto']);
+					$f->AddSelectVL('galleries_sort', $lang['module_galleies']['galleries_sort'], Array('lastupdate_desc'), Array($lang['common']['last_update']));
+					$f->AddText('media_thumb_width', $lang['module_galleies']['media_thumb_width']);
+					$f->AddText('media_thumb_height', $lang['module_galleies']['media_thumb_height']);
+					$f->AddText('media_medium_width', $lang['module_galleies']['media_medium_width']);
+					$f->AddText('media_meduim_height', $lang['module_galleies']['media_meduim_height']);
+					$f->AddTextarea('media_allowed_extensions', $lang['module_galleies']['media_allowed_extensions']);
+					$f->AddCheckbox('media_edit_after_upload', $lang['module_galleies']['media_edit_after_upload']);
+					$f->LoadValuesArray($_settings);
+					$f->SetValue('media_edit_after_upload', sm_get_settings('media_edit_after_upload', 'media'));
+					$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					$ui->Output(true);
+				}
 			if (sm_action('admin'))
 				{
 					add_path_modules();
-					$m['title'] = 'Media';
+					sm_title($lang['module_galleies']['media_files']);
+					add_path_current();
 					include_once('includes/admininterface.php');
+					include_once('includes/admindashboard.php');
 					$ui = new TInterface();
-					$ui->a('index.php?m=media&d=libraries', $lang['common']['list']);
+					$dash=new TDashBoard();
+					$dash->AddItem($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries', 'photo');
+					$dash->AddItem($lang['settings'], 'index.php?m=media&d=settings', 'settings');
+					$ui->AddDashboard($dash);
 					$ui->Output(true);
 				}
 		}
