@@ -339,6 +339,10 @@ if (!defined("adminform_DEFINED"))
 						$this->SetTitleText($name, '');
 						$this->MergeColumns($name);
 					}
+				function Disable($name)
+					{
+						$this->form['fields'][$name]['attrs']['disabled']='disabled';
+					}
 				//-------------------------------------------------------------
 				function SaveButton($text)
 					{
@@ -355,7 +359,6 @@ if (!defined("adminform_DEFINED"))
 							$(function()
 								{
 									$( "#'.$this->form['prefix'].$name.'" ).datepicker();
-									alert("aaa");
 								});
 							</script>';
 					}
