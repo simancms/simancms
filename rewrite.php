@@ -25,7 +25,7 @@
 			if (substr($_GET['rewrittenquery'], -1) == '/')
 				$_GET['rewrittenquery'] = substr($_GET['rewrittenquery'], 0, -1);
 			$tmp=dbescape($_GET['rewrittenquery']);
-			$url = getsqlfield("SELECT url_fs FROM `".$tableprefix."filesystem` WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/' LIMIT 1");
+			$url = getsqlfield("SELECT url_fs FROM ".$tableprefix."filesystem WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/' LIMIT 1");
 		}
 
 	if (empty($url))
