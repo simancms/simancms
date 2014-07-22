@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-04-28
+	//#revision 2014-07-22
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -63,7 +63,7 @@
 			sm_add_settings($fieldname.'_show_as', $show_as, 'custom_user_fields');
 			sm_add_settings($fieldname.'_allowed_values', $allowed_values, 'custom_user_fields');
 			if (!empty($replaceforallvalue))
-				execsql("UPDATE `".$tableusersprefix."users` SET `".$fieldname."`='".$replaceforallvalue."'");
+				execsql("UPDATE ".$tableusersprefix."users SET `".$fieldname."`='".$replaceforallvalue."'");
 		}
 
 	function sm_delete_userfield($fieldname)
@@ -74,7 +74,7 @@
 			sm_delete_settings($fieldname.'_show_as', 'custom_user_fields');
 			sm_delete_settings($fieldname.'_allowed_values', 'custom_user_fields');
 			if (!empty($replaceforallvalue))
-				execsql("UPDATE `".$tableusersprefix."users` SET `".$fieldname."`='".$replaceforallvalue."'");
+				execsql("UPDATE ".$tableusersprefix."users SET `".$fieldname."`='".$replaceforallvalue."'");
 		}
 
 	function sm_get_offsetforpage($pagenumber, $limitcount)

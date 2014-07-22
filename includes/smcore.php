@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-05-29
+	//#revision 2014-07-22
 	//==============================================================================
 
 
@@ -173,7 +173,7 @@
 						$addsql .= " AND ";
 					$addsql .= " `".dbescape($field_root)."`='".dbescape($load_only_branches_of_this)."'";
 				}
-			$sql = "SELECT * FROM `".$tableprefix.$tablename."`";
+			$sql = "SELECT * FROM ".$tableprefix.$tablename."";
 			$sql .= $addsql;
 			$sql .= " ORDER BY `".dbescape($field_root)."`";
 			if (!empty($sortfield))

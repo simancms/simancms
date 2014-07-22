@@ -110,7 +110,7 @@
 				{
 					sm_register_module('replacers', 'Replacers');
 					sm_register_autoload('replacers');
-					execsql("CREATE TABLE `".$sm['t']."replacers` (
+					execsql("CREATE TABLE ".$sm['t']."replacers (
 								`id_r` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 								`key_r` VARCHAR( 255 ) NOT NULL ,
 								`value_r` TEXT NOT NULL
@@ -121,7 +121,7 @@
 				{
 					sm_unregister_module('replacers');
 					sm_unregister_autoload('replacers');
-					execsql("DROP TABLE `".$sm['t']."replacers`");
+					execsql("DROP TABLE ".$sm['t']."replacers");
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}

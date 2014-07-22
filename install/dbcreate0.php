@@ -4,7 +4,7 @@ if ($serverDB==0)
 {
 
 $sql="
-CREATE TABLE `".$tableprefix."blocks` (
+CREATE TABLE ".$tableprefix."blocks (
   `id_block` int(11) unsigned NOT NULL auto_increment,
   `panel_block` char(1) default NULL,
   `position_block` int(11) default NULL,
@@ -35,7 +35,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][0]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."categories` (
+CREATE TABLE ".$tableprefix."categories (
   `id_category` int(11) unsigned NOT NULL auto_increment,
   `id_maincategory` int(11) unsigned NOT NULL default '0',
   `title_category` varchar(255) default NULL,
@@ -55,7 +55,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][1]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."content` (
+CREATE TABLE ".$tableprefix."content (
   `id_content` int(11) unsigned NOT NULL auto_increment,
   `id_category_c` int(11) unsigned default '1',
   `title_content` varchar(255) default NULL,
@@ -74,7 +74,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][2]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."menu_lines` (
+CREATE TABLE ".$tableprefix."menu_lines (
   `id_ml` int(11) unsigned NOT NULL auto_increment,
   `id_menu_ml` int(11) unsigned default NULL,
   `submenu_from` INT( 11 ) UNSIGNED NULL DEFAULT '0',
@@ -93,7 +93,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][3]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."menus` (
+CREATE TABLE ".$tableprefix."menus (
   `id_menu_m` int(10) unsigned NOT NULL auto_increment,
   `caption_m` varchar(255) default NULL,
   PRIMARY KEY  (`id_menu_m`)
@@ -103,7 +103,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][4]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."modules` (
+CREATE TABLE ".$tableprefix."modules (
   `id_module` int(1) unsigned NOT NULL auto_increment,
   `module_name` varchar(100) default NULL,
   `module_title` varchar(100) default NULL,
@@ -121,7 +121,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][5]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableusersprefix."users` (
+CREATE TABLE ".$tableusersprefix."users (
   `id_user` int(11) NOT NULL auto_increment,
   `login` varchar(150) NOT NULL default '',
   `password` varchar(150) NOT NULL default '',
@@ -143,7 +143,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][6]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."categories_news` (
+CREATE TABLE ".$tableprefix."categories_news (
   `id_category` int(1) unsigned NOT NULL auto_increment,
   `title_category` varchar(255) default NULL,
   `filename_category` int(11) NULL DEFAULT 0,
@@ -156,7 +156,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][7]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."settings` (
+CREATE TABLE ".$tableprefix."settings (
   `name_settings` varchar(150) NOT NULL default '',
   `value_settings` text,
   `mode` VARCHAR( 50 ) NULL DEFAULT 'default'
@@ -166,7 +166,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][8]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."news` (
+CREATE TABLE ".$tableprefix."news (
   `id_news` int(1) unsigned NOT NULL auto_increment,
   `id_category_n` int(11) unsigned default NULL,
   `id_author_news` INT UNSIGNED NULL DEFAULT 1,
@@ -186,7 +186,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][9]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."downloads` (
+CREATE TABLE ".$tableprefix."downloads (
   `id_download` int(11) unsigned NOT NULL auto_increment,
   `file_download` varchar(255) default NULL,
   `description_download` text,
@@ -201,19 +201,19 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][10]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."filesystem` ( `id_fs` int(11) unsigned NOT NULL auto_increment,   `filename_fs` varchar(255) NULL,   `url_fs` varchar(255) NULL,   `comment_fs` varchar(255) NULL,   PRIMARY KEY (`id_fs`))
+CREATE TABLE ".$tableprefix."filesystem ( `id_fs` int(11) unsigned NOT NULL auto_increment,   `filename_fs` varchar(255) NULL,   `url_fs` varchar(255) NULL,   `comment_fs` varchar(255) NULL,   PRIMARY KEY (`id_fs`))
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][11]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableusersprefix."groups` (`id_group` int(10) unsigned NOT NULL auto_increment, `title_group` varchar(255) NULL, `description_group` text NULL, `autoaddtousers_group` TINYINT NOT NULL DEFAULT '0',  PRIMARY KEY (`id_group`));
+CREATE TABLE ".$tableusersprefix."groups (`id_group` int(10) unsigned NOT NULL auto_increment, `title_group` varchar(255) NULL, `description_group` text NULL, `autoaddtousers_group` TINYINT NOT NULL DEFAULT '0',  PRIMARY KEY (`id_group`));
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][12]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."filesystem_regexp` (
+CREATE TABLE ".$tableprefix."filesystem_regexp (
   `id_fsr` int(10) unsigned NOT NULL auto_increment,
   `regexpr` text NULL,
   `url` text NULL,
@@ -224,7 +224,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][13]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableusersprefix."privmsg` (
+CREATE TABLE ".$tableusersprefix."privmsg (
   `id_privmsg` int(11) unsigned NOT NULL auto_increment,
   `id_sender_privmsg` int(11) NULL DEFAULT 0,
   `id_recipient_privmsg` int(11) NULL DEFAULT 0,
@@ -240,7 +240,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][14]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableusersprefix."log` (
+CREATE TABLE ".$tableusersprefix."log (
   `id_log` int(10) unsigned NOT NULL auto_increment,
   `type` tinyint(4) NULL DEFAULT 0,
   `description` text NULL,
@@ -254,7 +254,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][15]['result']=$result;
 
 $sql="
-CREATE TABLE `".$tableprefix."tempdata` (
+CREATE TABLE ".$tableprefix."tempdata (
  `type_td` varchar(100) NOT NULL,
  `identifier_td` varchar(200) NOT NULL,
  `data_td_text` text NULL,
@@ -265,7 +265,7 @@ CREATE TABLE `".$tableprefix."tempdata` (
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][16]['result']=$result;
-$sql="ALTER  TABLE `".$tableprefix."tempdata` ADD INDEX ( `deleteafter_td` ) ;";
+$sql="ALTER  TABLE ".$tableprefix."tempdata ADD INDEX ( `deleteafter_td` ) ;";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
 }

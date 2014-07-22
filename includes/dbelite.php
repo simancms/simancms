@@ -25,7 +25,7 @@
 
 	function deletesql($tablename, $idname, $idval)
 		{
-			execsql("DELETE FROM `$tablename` WHERE `$idname` = '".dbescape($idval)."'");
+			execsql("DELETE FROM $tablename WHERE `$idname` = '".dbescape($idval)."'");
 		}
 
 	function getsql($sql, $type = 'a')

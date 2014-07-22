@@ -267,151 +267,151 @@ execsql($sql);
 
 //version 1.6
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('image_generation_type', 'dynamic');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('image_generation_type', 'dynamic');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('use_email_as_login', '0');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('use_email_as_login', '0');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('title_delimiter', ' :: ');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('title_delimiter', ' :: ');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('meta_resource_title_position', '2');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('meta_resource_title_position', '2');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('content_use_image', '0');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('content_use_image', '0');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('content_image_preview_width', '150');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('content_image_preview_width', '150');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('content_image_preview_height', '100');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('content_image_preview_height', '100');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('content_image_fulltext_width', '250');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('content_image_fulltext_width', '250');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('content_image_fulltext_height', '200');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('content_image_fulltext_height', '200');
 ";
 execsql($sql);
 
 //version 1.6.1
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('redirect_after_logout', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('redirect_after_logout', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('redirect_after_login_1', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('redirect_after_login_1', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('redirect_after_login_2', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('redirect_after_login_2', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('redirect_after_login_3', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('redirect_after_login_3', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('redirect_after_register', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('redirect_after_register', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('resource_url_rewrite', '1');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('resource_url_rewrite', '1');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('resource_url_mobile', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('resource_url_mobile', '');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`) VALUES ('resource_url_tablet', '');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`) VALUES ('resource_url_tablet', '');
 ";
 execsql($sql);
 
 
 //version 1.6.2
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_time', '3600', 'general');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_time', '3600', 'general');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_attempts', '5', 'general');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_attempts', '5', 'general');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_ips', '', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autoban_ips', '', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('clean_temptable_interval', '600', 'general');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('clean_temptable_interval', '600', 'general');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('next_clean_temptable', '0', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('next_clean_temptable', '0', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('next_system_cleanup', '0', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('next_system_cleanup', '0', 'default');
 ";
 execsql($sql);
 
 //version 1.6.4
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('redirect_on_success_change_usrdata', '', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('redirect_on_success_change_usrdata', '', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('signinwithloginandemail', '0', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('signinwithloginandemail', '0', 'default');
 ";
 execsql($sql);
 
 //version 1.6.5
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('news_editor_level', '2', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('news_editor_level', '2', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('content_editor_level', '2', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('content_editor_level', '2', 'default');
 ";
 execsql($sql);
 
 //version 1.6.6
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('content_multiview', 'on', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('content_multiview', 'on', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('default_news_text_style', '0', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('default_news_text_style', '0', 'default');
 ";
 execsql($sql);
 $sql="
-INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('show_help', 'on', 'default');
+INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('show_help', 'on', 'default');
 ";
 execsql($sql);
 
 
 //version 1.6.7
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_width', '150', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_height', '150', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_default_view', 'all', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_view_items_per_row', '0', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_view_items_per_row', '0', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_sort', 'lastupdate_desc', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_width', '150', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_height', '150', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_medium_width', '600', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_meduim_height', '600', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_allowed_extensions', 'jpg\njpeg\ngif\npng\nmp4\nmp3\nwav', 'default');");
-execsql("INSERT INTO `".$tableprefix."settings` (`name_settings`, `value_settings`, `mode`) VALUES ('media_edit_after_upload', '1', 'media');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_width', '150', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_thumb_height', '150', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_default_view', 'all', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('gallery_view_items_per_row', '0', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_view_items_per_row', '0', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('galleries_sort', 'lastupdate_desc', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_width', '150', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_thumb_height', '150', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_medium_width', '600', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_meduim_height', '600', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_allowed_extensions', 'jpg\njpeg\ngif\npng\nmp4\nmp3\nwav', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_edit_after_upload', '1', 'media');");
 
 
 //---------[DATABASE DATE]------------------------------------
