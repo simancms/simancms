@@ -65,6 +65,7 @@
 	$_GET = parseCLIArgs($argv);
 	$_GET['ajax'] = 1;
 	$special['cli']=true;
+	$special['nosmarty']=true;
 	include('index.php');
 
 ?>

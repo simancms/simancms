@@ -705,11 +705,14 @@
 	function sm_change_theme($themename)
 		{
 			global $smarty, $sm;
-			$smarty->template_dir = 'themes/'.$themename.'/';
-			$smarty->compile_dir = 'files/themes/'.$themename.'/';
-			$smarty->config_dir = 'themes/'.$themename.'/';
-			$smarty->cache_dir = 'files/temp/';
-			$smarty->template_dir_default = 'themes/default/';
+			if (!$sm['s']['nosmarty'])
+				{
+					$smarty->template_dir = 'themes/'.$themename.'/';
+					$smarty->compile_dir = 'files/themes/'.$themename.'/';
+					$smarty->config_dir = 'themes/'.$themename.'/';
+					$smarty->cache_dir = 'files/temp/';
+					$smarty->template_dir_default = 'themes/default/';
+				}
 			$sm['s']['theme'] = $themename;
 			if ($sm['_s']['sm_changetheme_default_theme'] == 1)
 				$sm['_s']['default_theme'] = $themename;

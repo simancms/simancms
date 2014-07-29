@@ -53,7 +53,8 @@
 	else
 		$special['dberror'] = true;
 	
-	$smarty = new Smarty;
+	if (!$sm['s']['nosmarty'])
+		$smarty = new Smarty;
 
 	if (!$special['dberror'])
 		{
@@ -118,8 +119,11 @@
 						{
 							if (strcmp($banip[$i], $_servervars['REMOTE_ADDR']) == 0)
 								{
-									$smarty->assign('errorname', 'banerror');
-									$smarty->display('error.tpl');
+									if (!$sm['s']['nosmarty'])
+										{
+											$smarty->assign('errorname', 'banerror');
+											$smarty->display('error.tpl');
+										}
 									exit;
 								}
 						}
@@ -134,8 +138,11 @@
 									sm_extcore();
 									if (intval(sm_tempdata_aggregate('bannedip', $_servervars['REMOTE_ADDR'], SM_AGGREGATE_COUNT)) > 0)
 										{
-											$smarty->assign('errorname', 'banerror');
-											$smarty->display('error.tpl');
+											if (!$sm['s']['nosmarty'])
+												{
+													$smarty->assign('errorname', 'banerror');
+													$smarty->display('error.tpl');
+												}
 											exit;
 										}
 									else
@@ -151,9 +158,12 @@
 				{
 					if (file_exists('./install') || file_exists('./upgrade') || file_exists('./includes/update.php'))
 						{
-							$smarty->assign('errorname', 'noterasedinstall');
-							$smarty->assign('lang', $_settings['default_language']);
-							$smarty->display('error.tpl');
+							if (!$sm['s']['nosmarty'])
+								{
+									$smarty->assign('errorname', 'noterasedinstall');
+									$smarty->assign('lang', $_settings['default_language']);
+									$smarty->display('error.tpl');
+								}
 							exit;
 						}
 					else
@@ -197,10 +207,13 @@
 					$sm['index'] =& $modules_index;
 					$m =& $modules[$modules_index];
 					include('modules/'.$module.'.php');
-					$smarty->assign('_settings', $_settings);
-					$smarty->assign('lang', $lang);
-					$smarty->assign('special', $special);
-					$smarty->display($special['main_tpl'].'.tpl');
+					if (!$sm['s']['nosmarty'])
+						{
+							$smarty->assign('_settings', $_settings);
+							$smarty->assign('lang', $lang);
+							$smarty->assign('special', $special);
+							$smarty->display($special['main_tpl'].'.tpl');
+						}
 				}
 			else
 				{
@@ -374,17 +387,21 @@
 					//Final initialization
 					sm_event('beforetplgenerate');
 					$special['pathcount'] = count($special['path']);
-					$smarty->assign_by_ref('userinfo', $userinfo);
-					$smarty->assign_by_ref('modules', $modules);
-					$smarty->assign_by_ref('refresh_url', $refresh_url);
-					$smarty->assign_by_ref('lang', $lang);
-					$smarty->assign_by_ref('_settings', $_settings);
-					$smarty->assign_by_ref('sm', $sm);
+					if (!$sm['s']['nosmarty'])
+						{
+							$smarty->assign_by_ref('userinfo', $userinfo);
+							$smarty->assign_by_ref('modules', $modules);
+							$smarty->assign_by_ref('refresh_url', $refresh_url);
+							$smarty->assign_by_ref('lang', $lang);
+							$smarty->assign_by_ref('_settings', $_settings);
+							$smarty->assign_by_ref('sm', $sm);
+						}
 					$special['time']['generation_end'] = microtime();
 					$special['time']['generation_end'] = explode(' ', $special['time']['generation_end']);
 					$special['time']['generation_end'] = $special['time']['generation_end'][0] + $special['time']['generation_end'][1];
 					$special['time']['generation_time'] = round($special['time']['generation_end'] - $special['time']['generation_begin'], 4);
-					$smarty->assign_by_ref('special', $special);
+					if (!$sm['s']['nosmarty'])
+						$smarty->assign_by_ref('special', $special);
 
 					if (!empty($_sessionvars))
 						while (list($key, $val) = each($_sessionvars))
@@ -407,11 +424,12 @@
 
 					//Output page
 					if (!empty($special['main_tpl']))
-						$smarty->display($special['main_tpl'].'.tpl');
+						if (!$sm['s']['nosmarty'])
+							$smarty->display($special['main_tpl'].'.tpl');
 					sm_event('aftertplgenerate');
 				}
 		}
-	else
+	elseif (!$sm['s']['nosmarty'])
 		{
 			$smarty->template_dir = 'themes/default/';
 			$smarty->compile_dir = 'files/temp/';

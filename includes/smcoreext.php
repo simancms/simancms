@@ -303,7 +303,7 @@
 	
 	function sm_process_login($user_id)
 		{
-			global $userinfo, $smarty, $_sessionvars;
+			global $userinfo, $_sessionvars;
 			if (sm_login($user_id))
 				{
 					include('includes/userinfo.php');
