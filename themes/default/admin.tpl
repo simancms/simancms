@@ -15,7 +15,7 @@
 	{if $modules[$index].show_settings.resource_title eq 1}
 		<tr>
 		    <td width="50%">{$lang.settings_resource_title}:</td>
-			<td><input type="text" name="p_title" value="{$modules[$index].edit_settings.resource_title|htmlspecialchars}"></td>
+			<td><input type="text" name="p_title" value="{$modules[$index].edit_settings.resource_title|htmlescape}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='resource_title'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_resource_title&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -54,7 +54,7 @@
 	{if $modules[$index].show_settings.logo_text eq 1}
 		<tr>
 			<td>{$lang.settings_logo_text}:</td>
-			<td><input type="text" name="p_logo" value="{$modules[$index].edit_settings.logo_text|htmlspecialchars}"></td>
+			<td><input type="text" name="p_logo" value="{$modules[$index].edit_settings.logo_text|htmlescape}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='logo_text'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_logo_text&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -62,7 +62,7 @@
 	{if $modules[$index].show_settings.copyright_text eq 1}
 		<tr>
 			<td>{$lang.settings_copyright_text}:</td>
-			<td><input type="text" name="p_copyright" value="{$modules[$index].edit_settings.copyright_text|htmlspecialchars}"></td>
+			<td><input type="text" name="p_copyright" value="{$modules[$index].edit_settings.copyright_text|htmlescape}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='copyright_text'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_copyright_text&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -70,7 +70,7 @@
 	{if $modules[$index].show_settings.meta_keywords eq 1}
 		<tr>
 			<td>{$lang.settings_meta_keywords}:</td>
-			<td><input type="text" name="p_keywords" value="{$modules[$index].edit_settings.meta_keywords|htmlspecialchars}"></td>
+			<td><input type="text" name="p_keywords" value="{$modules[$index].edit_settings.meta_keywords|htmlescape}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='meta_keywords'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_keywords&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -78,7 +78,7 @@
 	{if $modules[$index].show_settings.meta_description eq 1}
 		<tr>
 			<td>{$lang.settings_meta_description}:</td>
-			<td><input type="text" name="p_description" value="{$modules[$index].edit_settings.meta_description|htmlspecialchars}"></td>
+			<td><input type="text" name="p_description" value="{$modules[$index].edit_settings.meta_description|htmlescape}"></td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='meta_description'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_description&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>

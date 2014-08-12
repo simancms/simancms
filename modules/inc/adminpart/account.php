@@ -177,7 +177,7 @@
 							$i++;
 						}
 					$ui->AddGrid($t);
-					$ui->div('<form action="index.php"><input type="hidden" name="m" value="account"><input type="hidden" name="d" value="usrlist">'.$lang['search'].': <input type="text" name="sellogin" value="'.htmlspecialchars($sm['g']['sellogin']).'"></form>');
+					$ui->div('<form action="index.php"><input type="hidden" name="m" value="account"><input type="hidden" name="d" value="usrlist">'.$lang['search'].': <input type="text" name="sellogin" value="'.htmlescape($sm['g']['sellogin']).'"></form>');
 					$ui->AddButtons($b);
 					$m['pages']['url'] = sm_this_url('from', '');
 					$m['pages']['selected'] = ceil(($offset + 1) / $limit);
@@ -230,7 +230,7 @@
 					while ($row = database_fetch_object($result))
 						{
 							$t->Label('title', $row->title_group);
-							$t->Hint('title', htmlspecialchars($row->description_group));
+							$t->Hint('title', htmlescape($row->description_group));
 							$t->URL('edit', 'index.php?m=account&d=editgroup&id='.$row->id_group);
 							$t->URL('delete', 'index.php?m=account&d=postdeletegroup&id='.$row->id_group);
 							$t->NewRow();

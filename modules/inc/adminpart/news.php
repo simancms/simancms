@@ -229,9 +229,9 @@
 							$t->Label('title', $q->items[$i]['title_news']);
 							$t->Hint('title', $q->items[$i]['title_news']);
 							if (empty($q->items[$i]['preview_news']))
-								$t->Hint('title', htmlspecialchars(cut_str_by_word(nl2br(strip_tags($q->items[$i]['text_news'])), 100, '...')));
+								$t->Hint('title', htmlescape(cut_str_by_word(nl2br(strip_tags($q->items[$i]['text_news'])), 100, '...')));
 							else
-								$t->Hint('title', htmlspecialchars(cut_str_by_word(nl2br(strip_tags($q->items[$i]['preview_news'])), 100, '...')));
+								$t->Hint('title', htmlescape(cut_str_by_word(nl2br(strip_tags($q->items[$i]['preview_news'])), 100, '...')));
 							$url=sm_fs_url('index.php?m=news&d=view&nid='.$q->items[$i]['id_news']);
 							$t->URL('title', $url, true);
 							$t->URL('date', $url, true);

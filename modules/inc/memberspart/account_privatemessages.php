@@ -108,9 +108,9 @@
 				{
 					$m["module"] = 'account';
 					$m["title"] = $lang['module_account']['send_message'];
-					$m['data']['recipient'] = htmlspecialchars($_postvars['p_recipient']);
-					$m['data']['theme'] = htmlspecialchars($_postvars['p_theme']);
-					$m['data']['text'] = htmlspecialchars($_postvars['p_text']);
+					$m['data']['recipient'] = htmlescape($_postvars['p_recipient']);
+					$m['data']['theme'] = htmlescape($_postvars['p_theme']);
+					$m['data']['text'] = htmlescape($_postvars['p_text']);
 					if (empty($_postvars['p_recipient']))
 						{
 							$m['mode'] = 'sendprivmsg';
@@ -150,9 +150,9 @@
 					sm_page_viewid('account-sendprivmsg');
 					$m["module"] = 'account';
 					$m["title"] = $lang['module_account']['send_message'];
-					$m['data']['recipient'] = htmlspecialchars($_postvars['p_recipient']);
-					$m['data']['theme'] = htmlspecialchars($_postvars['p_theme']);
-					$m['data']['text'] = htmlspecialchars($_postvars['p_body']);
+					$m['data']['recipient'] = htmlescape($_postvars['p_recipient']);
+					$m['data']['theme'] = htmlescape($_postvars['p_theme']);
+					$m['data']['text'] = htmlescape($_postvars['p_body']);
 				}
 			if (sm_action('readprivmsg'))
 				{

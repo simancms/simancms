@@ -13,5 +13,15 @@
 	$_settings['packages_upload_allowed']=true;
 
 	$_settings['show_script_info'] = 'off';
+	
+	if (empty($_settings['htmlescapecharset']))
+		{
+			if (strpos($initialStatementDB, '1251'))
+				$_settings['htmlescapecharset']='cp1251';
+			elseif (strpos($initialStatementDB, '1252'))
+				$_settings['htmlescapecharset']='cp1252';
+			else
+				$_settings['htmlescapecharset']='UTF-8';
+		}
 
 ?>

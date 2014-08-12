@@ -229,14 +229,14 @@
 									$m["type_content"] = $row->type_content;
 									if ($m["type_content"] != 1)
 										$special['ext_editor_on'] = 0;
-									$m["title_content"] = htmlspecialchars($row->title_content);
-									$m["keywords_content"] = htmlspecialchars($row->keywords_content);
-									$m["description_content"] = htmlspecialchars($row->description_content);
+									$m["title_content"] = htmlescape($row->title_content);
+									$m["keywords_content"] = htmlescape($row->keywords_content);
+									$m["description_content"] = htmlescape($row->description_content);
 									$m["ctgidselected"] = $row->id_category_c;
 									if ($special['ext_editor_on'] != 1)
 										{
-											$m["preview_content"] = htmlspecialchars($row->preview_content);
-											$m["text_content"] = htmlspecialchars($row->text_content);
+											$m["preview_content"] = htmlescape($row->preview_content);
+											$m["text_content"] = htmlescape($row->text_content);
 										}
 									else
 										{

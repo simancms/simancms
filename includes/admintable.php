@@ -247,7 +247,7 @@ if (!defined("admintable_DEFINED"))
 						$i=count($this->table['rows'][$this->rownumber][$name]['dropdownitems']);
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['title']=$title;
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['url']=$url;
-						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['confirm_message']=htmlspecialchars($confirm_message);
+						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['confirm_message']=htmlescape($confirm_message);
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['tomenutitle']=$tomenutitle;
 					}
 				function DropDownItemSelect($name, $index=-1)

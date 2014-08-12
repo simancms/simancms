@@ -420,7 +420,7 @@
 							$m["ctgidselected"] = $row['id_category_n'];
 							$m["date_news"] = $row['date_news'];
 							$m['date'] = getdate($m['date_news']);
-							$m["title_news"] = htmlspecialchars($row['title_news']);
+							$m["title_news"] = htmlescape($row['title_news']);
 							$m["preview_news"] = $row['preview_news'];
 							$m["text_news"] = $row['text_news'];
 							$m["filename_news"] = get_filename($row['filename_news']);

@@ -177,7 +177,7 @@
 		}
 	if (sm_actionpost('savenbook') && !empty($userinfo['id']))
 		{
-			sm_set_userfield(intval($userinfo['id']), 'notebook', htmlspecialchars($_postvars['p_notebook']));
+			sm_set_userfield(intval($userinfo['id']), 'notebook', htmlescape($_postvars['p_notebook']));
 			sm_notify($lang['module_account']['message_notebook_text_saved']);
 			sm_redirect('index.php?m=account&d=cabinet');
 		}

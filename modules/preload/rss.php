@@ -56,7 +56,7 @@
 			$tmpnewsctgs = getsqlarray("SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category");
 			for ($tmpirss = 0; $tmpirss < count($tmpnewsctgs); $tmpirss++)
 				{
-					sm_html_headend('<link rel="alternate" type="application/rss+xml" title="'.htmlspecialchars($tmpnewsctgs[$tmpirss]['title_category']).'" href="http://'.sm_settings('resource_url').'index.php?m=rss&ctg='.$tmpnewsctgs[$tmpirss]['id_category'].'">');
+					sm_html_headend('<link rel="alternate" type="application/rss+xml" title="'.htmlescape($tmpnewsctgs[$tmpirss]['title_category']).'" href="http://'.sm_settings('resource_url').'index.php?m=rss&ctg='.$tmpnewsctgs[$tmpirss]['id_category'].'">');
 				}
 			unset($tmpnewsctgs);
 		}

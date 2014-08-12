@@ -12,12 +12,6 @@
 
 	session_start();
 
-	function is_email($string)
-		{
-			$s = trim(strtolower($string));
-			return preg_match("/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i", $s);
-		}
-
 	if (!is_writeable('../files'))
 		{
 			print('<html><head><title>Siman CMS Installation</title></head><body>');
@@ -39,6 +33,7 @@
 	require("../includes/dbsettings.php");
 	require("../includes/dbengine".$serverDB.".php");
 	require("../includes/dbelite.php");
+	require("../includes/functions.php");
 
 	$smarty = new Smarty;
 

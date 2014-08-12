@@ -462,7 +462,7 @@
 	//Escape for using in javascripts assignment operator x='text'
 	function jsescape($text)
 		{
-			return addslashes(str_replace("\n", ' ', str_replace("\n", ' ', $text)));
+			return addslashes(str_replace("\n", ' ', str_replace("\r", ' ', $text)));
 		}
 
 ?>
