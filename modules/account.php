@@ -28,114 +28,76 @@
 		{
 			$m["module"] = 'account';
 			sm_title($lang["register"]);
-			$login = dbescape($_postvars["p_login"]);
+			$login = $_postvars["p_login"];
 			$password = $_postvars["p_password"];
 			$password2 = $_postvars["p_password2"];
-			if ($_settings['use_email_as_login'] != 1)
-				$email = dbescape($_postvars["p_email"]);
-			else
+			if ($_settings['use_email_as_login'] == 1)
 				$email = $login;
-			$question = dbescape($_postvars["p_question"]);
-			$answer = dbescape($_postvars["p_answer"]);
+			else
+				$email = $_postvars["p_email"];
+			$question = $_postvars["p_question"];
+			$answer = $_postvars["p_answer"];
 			sm_event('postregistercheckdata', array(0));
-			if (empty($login) || empty($password) || empty($password2) || empty($email) || empty($question) || empty($answer) || !empty($special['postregistercheckdataerror']))
+			if (empty($login) || empty($password) || empty($password2) || empty($email) || (intval(sm_settings('account_disable_secret_question')!=1) && (empty($question) || empty($answer))) || !empty($special['postregistercheckdataerror']))
 				{
-					$m['message'] = $lang["message_set_all_fields"].(empty($special['postregistercheckdataerror'])?'':'. '.$special['postregistercheckdataerror']);
+					$m['message'] = $lang["message_set_all_fields"].(empty($special['postregistercheckdataerror']) ? '' : '. '.$special['postregistercheckdataerror']);
 					$m['mode'] = 'register';
-					$m['user_login'] = $login;
-					$m['user_email'] = $email;
-					$m['user_question'] = $question;
-					$m['user_answer'] = $answer;
 				}
 			elseif (!is_email($email))
 				{
 					$m['message'] = $lang["message_bad_email"];
 					$m['mode'] = 'register';
-					$m['user_login'] = $login;
-					$m['user_email'] = $email;
-					$m['user_question'] = $question;
-					$m['user_answer'] = $answer;
 				}
 			elseif (strcmp($password, $password2) != 0)
 				{
 					$m['message'] = $lang["message_passwords_not_equal"];
 					$m['mode'] = 'register';
-					$m['user_login'] = $login;
-					$m['user_email'] = $email;
-					$m['user_question'] = $question;
-					$m['user_answer'] = $answer;
 				}
 			elseif ($_settings['use_protect_code'] == 1 && (strcmp($_sessionvars['protect_code'], $_postvars['p_protect_code']) != 0 || empty($_postvars['p_protect_code'])))
 				{
 					$m['message'] = $lang['module_account']['wrong_protect_code'];
 					$m['mode'] = 'register';
-					$m['user_login'] = $login;
-					$m['user_email'] = $email;
-					$m['user_question'] = $question;
-					$m['user_answer'] = $answer;
+				}
+			elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('login', dbescape($login))->GetField('id_user'))>0)
+				{
+					$m['message'] = $lang["message_this_login_present_try_another"];
+					$m['mode'] = 'register';
+				}
+			elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('email', dbescape($email))->GetField('id_user'))>0)
+				{
+					$m['message'] = $lang["message_bad_email"];
+					$m['mode'] = 'register';
 				}
 			else
 				{
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login = '$login'";
-					$result = execsql($sql);
-					$u = 0;
-					while ($row = database_fetch_object($result))
-						{
-							if (strcmp($row->login, $login) == 0)
-								{
-									$u = 1;
-								}
-						}
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE email = '$email'";
-					$result = execsql($sql);
-					$u = 0;
-					while ($row = database_fetch_object($result))
-						{
-							if (strcmp($row->email, $email) == 0)
-								{
-									$u = 2;
-								}
-						}
-					if ($u == 1)
-						{
-							$m['message'] = $lang["message_this_login_present_try_another"];
-							$m['mode'] = 'register';
-							$m['user_login'] = '';
-							$m['user_email'] = $email;
-							$m['user_question'] = $question;
-							$m['user_answer'] = $answer;
-						}
-					elseif ($u == 2)
-						{
-							$m['message'] = $lang["message_bad_email"];
-							$m['mode'] = 'register';
-							$m['user_login'] = $login;
-							$m['user_email'] = $email;
-							$m['user_question'] = $question;
-							$m['user_answer'] = $answer;
-						}
+					//$password=md5($password);
+					include('includes/smcoreext.php');
+					if ($_settings['user_activating_by_admin'] == 1)
+						$user_status = '0';
 					else
+						$user_status = '1';
+					$id_newuser = sm_add_user($login, $password, $email, $question, $answer, $user_status);
+					sm_event('successregister', array($id_newuser));
+					if (!empty($_settings['redirect_after_register']))
 						{
-							//$password=md5($password);
-							include('includes/smcoreext.php');
-							if ($_settings['user_activating_by_admin'] == 1)
-								$user_status = '0';
-							else
-								$user_status = '1';
-							$id_newuser = sm_add_user($login, $password, $email, $question, $answer, $user_status);
-							sm_event('successregister', array($id_newuser));
-							if (!empty($_settings['redirect_after_register']))
-								{
-									sm_redirect($_settings['redirect_after_register']);
-								}
-							elseif ($userinfo['level']>0)
-								{
-									sm_redirect('index.php?m=account&d=usrlist');
-								}
-							$m['mode'] = 'successregister';
-							log_write(LOG_LOGIN, $lang['module_account']['log']['user_registered'].': '.$login.'. '.$lang['email'].': '.$email);
+							sm_redirect($_settings['redirect_after_register']);
 						}
+					elseif ($userinfo['level']>0)
+						{
+							sm_redirect('index.php?m=account&d=usrlist');
+						}
+					$m['mode'] = 'successregister';
+					log_write(LOG_LOGIN, $lang['module_account']['log']['user_registered'].': '.$login.'. '.$lang['email'].': '.$email);
 				}
+		}
+	if (sm_action('successregister'))
+		{
+			sm_title($lang["register"]);
+			include_once('includes/admininterface.php');
+			$ui = new TInterface();
+			$ui->p($lang['success_registration'].'.');
+			$ui->a('index.php?m=account&d=show', $lang['you_can_enter']);
+			$ui->Output(true);
 		}
 
 

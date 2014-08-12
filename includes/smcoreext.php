@@ -16,11 +16,11 @@
 			global $tableusersprefix;
 			$password = md5($password);
 			$q = new TQuery($tableusersprefix.'users');
-			$q->Add('login', $login);
-			$q->Add('password', $password);
-			$q->Add('email', $email);
-			$q->Add('question', $question);
-			$q->Add('answer', $answer);
+			$q->Add('login', dbescape($login));
+			$q->Add('password', dbescape($password));
+			$q->Add('email', dbescape($email));
+			$q->Add('question', dbescape($question));
+			$q->Add('answer', dbescape($answer));
 			$q->Add('user_status', intval($user_status));
 			$q->Add('random_code', md5(time().rand()));
 			$groups = get_groups_list();
