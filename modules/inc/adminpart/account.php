@@ -150,29 +150,29 @@
 					$sql .= " OFFSET ".$offset;
 					$result = execsql($sql);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							$t->Label('user', $row->login.'<br />'.$row->email);
-							if ($row->user_status == 0)
+							$t->Label('user', $row['login'].'<br />'.$row['email']);
+							if ($row['user_status'] == 0)
 								$t->Label('status', $lang['module_account']['unactivated_user']);
-							elseif ($row->user_status == 1)
+							elseif ($row['user_status'] == 1)
 								$t->Label('status', $lang['normal_user']);
-							elseif ($row->user_status == 2)
+							elseif ($row['user_status'] == 2)
 								$t->Label('status', $lang['privileged_user']);
-							elseif ($row->user_status == 3)
+							elseif ($row['user_status'] == 3)
 								$t->Label('status', $lang['super_user']);
-							if ($row->user_status != 0)
-								$t->DropDownItem('status', $lang['module_account']['unactivated_user'], 'index.php?m=account&d=setstatus&uid='.$row->id_user.'&status=0&returnto='.urlencode(sm_this_url()));
-							if ($row->user_status != 1)
-								$t->DropDownItem('status', $lang['normal_user'], 'index.php?m=account&d=setstatus&uid='.$row->id_user.'&status=1&returnto='.urlencode(sm_this_url()));
-							if ($row->user_status != 2)
-								$t->DropDownItem('status', $lang['privileged_user'], 'index.php?m=account&d=setstatus&uid='.$row->id_user.'&status=2&returnto='.urlencode(sm_this_url()));
-							if ($row->user_status != 3)
-								$t->DropDownItem('status', $lang['super_user'], 'index.php?m=account&d=setstatus&uid='.$row->id_user.'&status=3&returnto='.urlencode(sm_this_url()));
+							if ($row['user_status'] != 0 && $row['id_user']!=1)
+								$t->DropDownItem('status', $lang['module_account']['unactivated_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=0&returnto='.urlencode(sm_this_url()));
+							if ($row['user_status'] != 1 && $row['id_user']!=1)
+								$t->DropDownItem('status', $lang['normal_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=1&returnto='.urlencode(sm_this_url()));
+							if ($row['user_status'] != 2 && $row['id_user']!=1)
+								$t->DropDownItem('status', $lang['privileged_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=2&returnto='.urlencode(sm_this_url()));
+							if ($row['user_status'] != 3 && $row['id_user']!=1)
+								$t->DropDownItem('status', $lang['super_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=3&returnto='.urlencode(sm_this_url()));
 							$t->Label('action', $lang['details']);
-							$t->DropDownItem('action', $lang['module_account']['set_password'], 'index.php?m=account&d=setpwd&uid='.$row->id_user.'&returnto='.urlencode(sm_this_url()));
-							$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=edituser&id='.$row->id_user.'&returnto='.urlencode(sm_this_url()));
-							$t->DropDownItem('action', $lang['delete'], 'index.php?m=account&d=postdelete&uid='.$row->id_user.'&returnto='.urlencode(sm_this_url()), $lang['really_want_delete_user']);
+							$t->DropDownItem('action', $lang['module_account']['set_password'], 'index.php?m=account&d=setpwd&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
+							$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=edituser&id='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
+							$t->DropDownItem('action', $lang['delete'], 'index.php?m=account&d=postdelete&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()), $lang['really_want_delete_user']);
 							$t->NewRow();
 							$i++;
 						}
