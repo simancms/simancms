@@ -1025,5 +1025,38 @@
 			global $sm;
 			return $sm['s']['theme'];
 		}
+	
+	function sm_set_metadata($object_name, $object_id, $key_name, $val)
+		{
+			global $sm;
+			$q=new TQuery($sm['tu'].'metadata');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			$q->Add('key_name', dbescape($key_name));
+			$info=$q->Get();
+			$q->Add('val', dbescape($val));
+			if (empty($info['id']))
+				{
+					$q->Insert();
+				}
+			else
+				{
+					$q->Update('id', intval($info['id']));
+				}
+			$sm['cache']['metadata'][$object_name][$object_id][$key_name]=$val;
+		}
+
+	function sm_metadata($object_name, $object_id, $key_name, $dont_use_cache=false)
+		{
+			global $sm;
+			if (isset($sm['cache']['metadata'][$object_name][$object_id][$key_name]) && !$dont_use_cache)
+				return $sm['cache']['metadata'][$object_name][$object_id][$key_name];
+			$q=new TQuery($sm['tu'].'metadata');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			$q->Add('key_name', dbescape($key_name));
+			$sm['cache']['metadata'][$object_name][$object_id][$key_name]=$q->GetField('val');
+			return $sm['cache']['metadata'][$object_name][$object_id][$key_name];
+		}
 
 ?>

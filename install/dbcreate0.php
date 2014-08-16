@@ -268,6 +268,19 @@ $inst['tables'][16]['result']=$result;
 $sql="ALTER  TABLE ".$tableprefix."tempdata ADD INDEX ( `deleteafter_td` ) ;";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
+$sql="CREATE TABLE `".$sm['tu']."metadata` (
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`object_name` varchar(255) NOT NULL DEFAULT '',
+	`object_id` varchar(255) NOT NULL DEFAULT '',
+	`key_name` varchar(255) NOT NULL DEFAULT '',
+	`val` text,
+	PRIMARY KEY (`id`),
+	KEY `object_name` (`object_name`,`object_id`,`key_name`,`val`(50))
+)";
+$result=database_db_query($nameDB, $sql, $lnkDB);
+$inst['tables'][17]['result']=$result;
+$result=database_db_query($nameDB, $sql, $lnkDB);
+
 }
 
 ?>
