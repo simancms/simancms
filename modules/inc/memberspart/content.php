@@ -61,6 +61,7 @@
 							$refuse_direct_show = intval($_postvars["p_refuse_direct_show"]);
 							$sql = "INSERT INTO ".$tableprefix."content (id_category_c, title_content, preview_content, text_content, type_content, keywords_content, refuse_direct_show, description_content) VALUES ('$id_category_c', '$title_content', '$preview_content', '$text_content', '$type_content', '$keywords_content', '$refuse_direct_show', '$description_content')";
 							$cid = insertsql($sql);
+							sm_set_metadata('content', $cid, 'author_id', $sm['u']['id']);
 							if (!empty($filename))
 								{
 									$urlid = register_filesystem('index.php?m=content&d=view&cid='.$cid, $filename, $title_content);

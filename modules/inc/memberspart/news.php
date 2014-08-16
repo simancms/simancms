@@ -73,6 +73,7 @@
 							$date_news = mktime($m['date']['hours'], $m['date']['minutes'], $m['date']['seconds'], $_postvars['p_date_month'], $_postvars['p_date_day'], $_postvars['p_date_year']);
 							$sql = "INSERT INTO ".$tableprefix."news (id_category_n, date_news, title_news, preview_news, text_news, type_news, keywords_news, description_news, id_author_news, img_copyright_news) VALUES ('$id_category_n', '$date_news', '$title_news', '$preview_news', '$text_news', '$type_news', '$keywords_news', '$description_news', '".intval($userinfo['id'])."', '$img_copyright_news')";
 							$id_news = insertsql($sql);
+							sm_set_metadata('news', $id_news, 'author_id', $sm['u']['id']);
 							if ($_settings['news_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
