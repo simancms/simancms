@@ -18,28 +18,17 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			if (sm_action('delete'))
+			if (sm_action('postdelete') && intval($_getvars['uid'])>1)
 				{
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['delete'];
-					$_msgbox['msg'] = $lang['really_want_delete_user'];
-					$_msgbox['yes'] = 'index.php?m=account&d=postdelete&uid='.$_getvars["uid"];
-					$_msgbox['no'] = 'index.php?m=account&d=usrlist';
-				}
-			if (sm_action('postdelete'))
-				{
-					$id_user = intval($_getvars['uid']);
-					$sql = "DELETE FROM ".$tableusersprefix."users WHERE id_user=$id_user AND id_user>1";
-					$result = execsql($sql);
-					sm_event('deleteuser', array($id_user));
+					TQuery::ForTable($tableusersprefix."users")->Add('id_user', intval($_getvars['uid']))->Remove();
+					sm_event('deleteuser', array(intval($_getvars['uid'])));
 					sm_redirect($_getvars['returnto']);
 				}
-			if (sm_action('setstatus'))
+			if (sm_action('setstatus') && intval($_getvars['uid'])>1)
 				{
-					$status = $_getvars['status'];
-					$id_user = $_getvars['uid'];
-					$sql = "UPDATE ".$tableusersprefix."users SET user_status = '$status' WHERE id_user='$id_user' AND id_user>1";
-					$result = execsql($sql);
+					$q=new TQuery($tableusersprefix."users");
+					$q->Add('user_status', intval($_getvars['status']));
+					$q->Update('id_user', intval($_getvars['uid']));
 					sm_redirect($_getvars['returnto']);
 				}
 			if (sm_actionpost('postedituser'))
@@ -133,24 +122,26 @@
 					$b->AddButton('add', $lang['register_user'], 'index.php?m=account&d=register');
 					$ui->AddButtons($b);
 					$t = new TGrid();
-					$limit = $_settings['admin_items_by_page'];
+					$limit = sm_settings('admin_items_by_page');
 					$offset = abs(intval($_getvars['from']));
 					$t->AddCol('user', $lang['user'], '60%');
 					$t->AddCol('status', $lang['status'], '20%');
 					$t->AddCol('action', $lang['action'], '20%');
-					$sql = "SELECT * FROM ".$tableusersprefix."users";
-					$sql2 = "SELECT count(*) FROM ".$tableusersprefix."users";
+					$q=new TQuery($tableusersprefix."users");
 					if (!empty($_getvars['sellogin']))
+						$q->Add("login LIKE '".dbescape($_getvars['sellogin'])."%'");
+					if (!empty($_getvars['group']))
 						{
-							$sql .= " WHERE login LIKE '".dbescape($_getvars['sellogin'])."%'";
-							$sql2 .= " WHERE login LIKE '".dbescape($_getvars['sellogin'])."%'";
+							$groupinfo=TQuery::ForTable($sm['tu'].'groups')->Add('id_group', intval($_getvars['group']))->Get();
+							add_path($groupinfo['title_group'], 'index.php?m=account&d=usrlist&group='.$groupinfo['id_group']);
+							$q->Add("groups_user LIKE '%;".intval($_getvars['group']).";%'");
 						}
-					$sql .= " ORDER BY login";
-					$sql .= " LIMIT ".$limit;
-					$sql .= " OFFSET ".$offset;
-					$result = execsql($sql);
+					$q->OrderBy("login");
+					$q->Limit($limit);
+					$q->Offset($offset);
+					$q->Open();
 					$i = 0;
-					while ($row = database_fetch_assoc($result))
+					while ($row = $q->Fetch($result))
 						{
 							$t->Label('user', $row['login'].'<br />'.$row['email']);
 							if ($row['user_status'] == 0)
@@ -170,21 +161,19 @@
 							if ($row['user_status'] != 3 && $row['id_user']!=1)
 								$t->DropDownItem('status', $lang['super_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=3&returnto='.urlencode(sm_this_url()));
 							$t->Label('action', $lang['details']);
-							$t->DropDownItem('action', $lang['module_account']['set_password'], 'index.php?m=account&d=setpwd&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
-							$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=edituser&id='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
-							$t->DropDownItem('action', $lang['delete'], 'index.php?m=account&d=postdelete&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()), $lang['really_want_delete_user']);
+							if ($row['id_user']!=1)
+								{
+									$t->DropDownItem('action', $lang['module_account']['set_password'], 'index.php?m=account&d=setpwd&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
+									$t->DropDownItem('action', $lang['common']['edit'], 'index.php?m=account&d=edituser&id='.$row['id_user'].'&returnto='.urlencode(sm_this_url()));
+									$t->DropDownItem('action', $lang['delete'], 'index.php?m=account&d=postdelete&uid='.$row['id_user'].'&returnto='.urlencode(sm_this_url()), $lang['really_want_delete_user']);
+								}
 							$t->NewRow();
 							$i++;
 						}
 					$ui->AddGrid($t);
 					$ui->div('<form action="index.php"><input type="hidden" name="m" value="account"><input type="hidden" name="d" value="usrlist">'.$lang['search'].': <input type="text" name="sellogin" value="'.htmlescape($sm['g']['sellogin']).'"></form>');
+					$ui->AddPagebarParams($q->Find(), $limit, $offset);
 					$ui->AddButtons($b);
-					$m['pages']['url'] = sm_this_url('from', '');
-					$m['pages']['selected'] = ceil(($offset + 1) / $limit);
-					$m['pages']['interval'] = $limit;
-					$m['pages']['records'] = intval(getsqlfield($sql2));
-					$m['pages']['pages'] = ceil($m['pages']['records'] / $limit);
-					$ui->AddPagebar('');
 					$ui->Output(true);
 				}
 			if (sm_action('setpwd'))
@@ -222,17 +211,20 @@
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddCol('search', '', '16', $lang['search'], '', 'search.gif');
 					$t->AddEdit();
 					$t->AddDelete();
-					$sql = 'SELECT * FROM '.$tableusersprefix.'groups ORDER BY title_group';
-					$result = execsql($sql);
+					$q=new TQuery($tableusersprefix.'groups');
+					$q->OrderBy('title_group');
+					$q->Open();
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = $q->Fetch())
 						{
-							$t->Label('title', $row->title_group);
-							$t->Hint('title', htmlescape($row->description_group));
-							$t->URL('edit', 'index.php?m=account&d=editgroup&id='.$row->id_group);
-							$t->URL('delete', 'index.php?m=account&d=postdeletegroup&id='.$row->id_group);
+							$t->Label('title', $row['title_group']);
+							$t->Hint('title', htmlescape($row['description_group']));
+							$t->URL('search', 'index.php?m=account&d=usrlist&group='.$row['id_group']);
+							$t->URL('edit', 'index.php?m=account&d=editgroup&id='.$row['id_group']);
+							$t->URL('delete', 'index.php?m=account&d=postdeletegroup&id='.$row['id_group']);
 							$t->NewRow();
 							$i++;
 						}
