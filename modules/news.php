@@ -340,7 +340,7 @@
 											$tmpsql = "SELECT * FROM ".$tableprefix."news WHERE id_category_n=".intval($m["id_category"])." AND id_news<>".intval($news_id)." ORDER BY date_news DESC LIMIT ".intval($_settings['alike_news_count']);
 											$tmpresult = execsql($tmpsql);
 											$j = 0;
-											while ($tmprow = database_fetch_object($tmpresult))
+											while ($tmprow = database_fetch_assoc($tmpresult))
 												{
 													$m['alike_news'][$j]['id'] = $tmprow['id_news'];
 													$m['alike_news'][$j]['title'] = $tmprow['title_news'];

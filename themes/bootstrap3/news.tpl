@@ -17,7 +17,7 @@
 {if $modules[$index].alike_news_present gt 0}
 {include file="block_begin.tpl" panel_title=$lang.common.see_also}
 {section name=i loop=$modules[$index].alike_news}
-<strong class="label">{$modules[$index].alike_news[i].date}</strong> <a href="{$modules[$index].alike_news[i].fullink}">{$modules[$index].alike_news[i].title}</a><br />
+<strong class="label label-default">{$modules[$index].alike_news[i].date}</strong> <a href="{$modules[$index].alike_news[i].fullink}">{$modules[$index].alike_news[i].title}</a><br />
 {/section}
 {include file="block_end.tpl"}
 {/if}		   
