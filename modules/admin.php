@@ -205,10 +205,12 @@
 									sm_update_settings('install_not_erased', 1);
 								}
 						}
+					sm_event('beforeadmindashboard');
 					sm_title($lang['control_panel']);
 					include_once('includes/admindashboard.php');
 					include_once('includes/admininterface.php');
 					$ui = new TInterface();
+					sm_event('onadmindashboardstart');
 					$dashboard=new TDashBoard();
 					$dashboard->AddItem($lang['modules_mamagement'], 'index.php?m=admin&d=modules', 'applications');
 					$dashboard->AddItem($lang['blocks_mamagement'], 'index.php?m=blocks', 'blocks');
@@ -233,7 +235,9 @@
 					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
 					$ui->AddDashboard($dashboard);
 					unset($dashboard);
+					sm_event('onadmindashboardend');
 					$ui->Output(true);
+					sm_event('afteradmindashboard');
 				}
 			if (sm_action('uplimg'))
 				{
