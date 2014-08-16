@@ -200,3 +200,14 @@ select[size] {
 	font-size: 14px;
 	line-height: 1.42857;
 }
+
+textarea[name=show_on_viewids]
+{
+	width:98%;
+}
+
+.common-groupselector
+{
+	height:75px !important;
+	width:98%;
+}
