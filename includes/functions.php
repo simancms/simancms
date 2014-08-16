@@ -178,20 +178,6 @@
 			return $res;
 		}
 
-
-	function exec_sql_delete($table, $idname, $id)
-		{
-			$sql = "DELETE FROM $table WHERE $idname=".intval($id);
-			execsql($sql);
-		}
-
-	function get_sql_data($table, $idname, $id)
-		{
-			$sql = "SELECT * FROM $table WHERE $idname=".intval($id);
-			$result = execsql($sql);
-			return database_fetch_array($result);
-		}
-
 	function get_groups_list()
 		{
 			global $tableusersprefix;
@@ -378,7 +364,6 @@
 			global $sm;
 			add_path($sm['modules'][0]['title'], sm_this_url(), 'currentpage');
 		}
-
 
 	//nllist - sting with items separated by new line character (s)
 	function nllistToArray($nllist, $clean_empty_values = false)
