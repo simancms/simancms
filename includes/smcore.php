@@ -1059,4 +1059,16 @@
 			return $sm['cache']['metadata'][$object_name][$object_id][$key_name];
 		}
 
+	function sm_load_metadata($object_name, $object_id)
+		{
+			global $sm;
+			$q=new TQuery($sm['tu'].'metadata');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			$q->Open();
+			while ($row=$q->Fetch())
+				$sm['cache']['metadata'][$object_name][$object_id][$row['key_name']]=$row['val'];
+			return $sm['cache']['metadata'][$object_name][$object_id];
+		}
+
 ?>
