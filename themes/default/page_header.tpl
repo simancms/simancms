@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>{$special.document.headstart}{$special.document.headdef}
+	<link href="themes/{$special.theme}/stylesheets.css" rel="stylesheet">
 	<script type="text/javascript" src="themes/{$special.theme}/script.js"></script>
 {$_settings.meta_header_text}
 {$special.document.headend}</head>
