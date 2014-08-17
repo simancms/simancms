@@ -24,8 +24,12 @@
 	$postloadmodules = nllistToArray($_settings['postload_modules']);
 	for ($postloadmodulesindex = 0; $postloadmodulesindex < count($postloadmodules); $postloadmodulesindex++)
 		{
-			if (!strpos($postloadmodules[$postloadmodulesindex], ':') && !strpos($postloadmodules[$postloadmodulesindex], '.') && !strpos($postloadmodules[$postloadmodulesindex], '/') && !strpos($postloadmodules[$postloadmodulesindex], '\\') && !empty($postloadmodules[$postloadmodulesindex]))
+			if (strpos($postloadmodules[$postloadmodulesindex], ':')!==false || strpos($postloadmodules[$postloadmodulesindex], '.')!==false || strpos($postloadmodules[$postloadmodulesindex], '/')!==false || strpos($postloadmodules[$postloadmodulesindex], '\\')!==false || empty($postloadmodules[$postloadmodulesindex]))
+				continue;
+			if (file_exists('modules/postload/'.$postloadmodules[$postloadmodulesindex].'.php'))
 				include_once('modules/postload/'.$postloadmodules[$postloadmodulesindex].'.php');
+			if (file_exists('modules/postload/level'.$userinfo['level'].'/'.$postloadmodules[$postloadmodulesindex].'.php'))
+				include_once('modules/postload/level'.$userinfo['level'].'/'.$postloadmodules[$postloadmodulesindex].'.php');
 		}
 	sm_event('afterpostload', Array());
 	//Postload modules end
