@@ -72,11 +72,11 @@
 							$tmp_view_ctg_first = $tmp_view_ctg_first[0];
 							$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category=".intval($tmp_view_ctg_first);
 							$result = execsql($sql);
-							while ($row = database_fetch_object($result))
+							while ($row = database_fetch_assoc($result))
 								{
-									$m['title'] = $row->title_category;
+									$m['title'] = $row['title_category'];
 									if ($special['categories']['getctg'] == 1)
-										$special['categories']['id'] = $row->id_category;
+										$special['categories']['id'] = $row['id_category'];
 								}
 						}
 					$ctg_id = $tmp_view_ctg;
@@ -257,29 +257,23 @@
 
 			if (sm_action('view'))
 				{
-					$m["module"] = 'news';
-					if (!empty($m["bid"])) $m["nid"] = $m["bid"];
-					$news_id = intval($m["nid"]);
+					$news_id = intval($m["bid"]);
 					if ($_settings['allow_alike_news'] == 1)
 						$tmp_no_alike_news = 0;
 					else
 						$tmp_no_alike_news = 1;
 					if (empty($news_id) && $modules_index == 0) $news_id = intval($_getvars["nid"]);
-					if (empty($news_id))
-						{
-							$m["title"] = $lang["error"];
-							$m["text"] = $lang["error_cannot_found"];
-						}
-					else
+					if (!empty($news_id))
 						{
 							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news=".intval($news_id);
 							$result = execsql($sql);
 							while ($row = database_fetch_assoc($result))
 								{
+									$m["module"] = 'news';
 									sm_event('onbeforenewsprocessing', 0);
 									sm_page_viewid('news-'.$m["mode"].'-'.$row['id_news']);
 									$m['row'] = $row;
-									$m["id"] = $row['id_news'];
+									$m['id'] = $row['id_news'];
 									if ($_settings['news_use_title'])
 										{
 											if (empty($row['title_news']))
@@ -348,7 +342,7 @@
 													if (!empty($tmprow['filename_news']))
 														$m['alike_news'][$j]["fullink"] = get_filename($tmprow['filename_news']);
 													else
-														$m['alike_news'][$j]["fullink"] = 'index.php?m=news&d=view&nid='.$tmprow['id_news'];
+														$m['alike_news'][$j]["fullink"] = sm_fs_url('index.php?m=news&d=view&nid='.$tmprow['id_news']);
 													$m['alike_news'][$j]['preview'] = $tmprow['preview_news'];
 													if (empty($m['alike_news'][$j]['preview']))
 														$m['alike_news'][$j]['preview'] = cut_str_by_word($tmprow['text_news'], $_settings['news_anounce_cut'], '...');
