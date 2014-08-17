@@ -26,30 +26,30 @@
 {if $modules[$index].mode eq "listnews"}
 {if $modules[$index].short_news eq "1"}{* SHORT LIST NEWS *}
 {include file="block_begin.tpl"}
-{section name=i loop=$modules[$index].newsid}
+{section name=i loop=$modules[$index].list}
 <div>
-<span class=" label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}</span>
-<a class="shortnews" href="{$modules[$index].newsid[i][7]}">{if $modules[$index].newsid[i][5] neq ""}{$modules[$index].newsid[i][5]}{else}{$modules[$index].newsid[i][3]|strip_tags}{/if}</a>
+<span class=" label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span>
+<a class="shortnews" href="{$modules[$index].list[i].url}">{if $modules[$index].list[i].title neq ""}{$modules[$index].list[i].title}{else}{$modules[$index].list[i].preview|strip_tags}{/if}</a>
 </div>
 {/section}
 <div class="shortnews_allnews pull-right"><a href="index.php?m=news&d=listnews{if $modules[$index].id_category_n neq ""}&ctg={$modules[$index].id_category_n}{/if}">{$lang.all_news}</a></div>
 {include file="block_end.tpl"}
 {else}{* FULL LIST NEWS *}
-{section name=i loop=$modules[$index].newsid}
-		{if $_settings.news_use_title eq "1" and $modules[$index].newsid[i][5] neq ""}
-			<h3 class="news-title"><span class="news_datetime_list pull-right label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}</span> <a href="{$modules[$index].newsid[i][7]}">{$modules[$index].newsid[i][5]}</a></h3>
+{section name=i loop=$modules[$index].list}
+		{if $_settings.news_use_title eq "1" and $modules[$index].list[i].title neq ""}
+			<h3 class="news-title"><span class="news_datetime_list pull-right label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> <a href="{$modules[$index].list[i].url}">{$modules[$index].list[i].title}</a></h3>
 		{else}
-			<h3 class="news-title"><a href="{$modules[$index].newsid[i][7]}">{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}</a></h3>
+			<h3 class="news-title"><a href="{$modules[$index].list[i].url}">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</a></h3>
 		{/if}
-		{if $modules[$index].newsid[i][6] neq ""}
+		{if $modules[$index].list[i].image neq ""}
 		<div class="news_image_list thumbnail">
-		<a href="{$modules[$index].newsid[i][7]}"><img src="{$modules[$index].newsid[i][6]}" border="0"></a>
+		<a href="{$modules[$index].list[i].url}"><img src="{$modules[$index].list[i].image}" border="0"></a>
 		</div>
 		{/if}
 		{if $_settings.news_full_list_longformat eq 1}
-			{$modules[$index].newsid[i][2]}
+			{$modules[$index].list[i].text}
 		{else}
-			{$modules[$index].newsid[i][3]} <a href="{$modules[$index].newsid[i][7]}">&raquo;</a>
+			{$modules[$index].list[i].preview} <a href="{$modules[$index].list[i].url}">&raquo;</a>
 		{/if}
 		<p></p>
 {/section}

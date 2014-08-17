@@ -171,34 +171,32 @@
 					while ($row = database_fetch_assoc($result))
 						{
 							sm_event('onbeforelistnewsprocessing', $i);
-							$m["newsid"][$i][0] = $row['id_news'];
-							$m["newsid"][$i][1] = $row['date_news'];
-							$m["newsid"][$i][1] = strftime($lang["datemask"], $m["newsid"][$i][1]);
-							$m["newsid"][$i][8] = strftime($lang["timemask"], $row['date_news']);
-							$m["newsid"][$i][2] = $row['text_news'];
-							$m["newsid"][$i][3] = $row['text_news'];
-							$m["newsid"][$i][5] = $row['title_news'];
+							$m["list"][$i]['id'] = $row['id_news'];
+							$m["list"][$i]['date'] = strftime($lang["datemask"], $row['date_news']);
+							$m["list"][$i]['time'] = strftime($lang["timemask"], $row['date_news']);
+							$m["list"][$i]['text'] = $row['text_news'];
+							$m["list"][$i]['title'] = $row['title_news'];
 							if ($row['filename_news'] != 0)
 								{
-									$m["newsid"][$i][7] = $row['filename_fs'];
+									$m["list"][$i]['url'] = $row['filename_fs'];
 								}
 							else
 								{
-									$m["newsid"][$i][7] = 'index.php?m=news&d=view&nid='.$row['id_news'];
+									$m["list"][$i]['url'] = sm_fs_url('index.php?m=news&d=view&nid='.$row['id_news']);
 								}
 							if ($_settings['news_use_image'] == 1)
 								{
-									if (file_exists('files/thumb/news'.$m["newsid"][$i][0].'.jpg'))
+									if (file_exists('files/thumb/news'.$row['id_news'].'.jpg'))
 										{
-											$m["newsid"][$i][6] = 'files/thumb/news'.$m["newsid"][$i][0].'.jpg';
+											$m["list"][$i]['image'] = 'files/thumb/news'.$row['id_news'].'.jpg';
 										}
-									elseif (file_exists('files/img/news'.$m["newsid"][$i][0].'.jpg'))
+									elseif (file_exists('files/img/news'.$row['id_news'].'.jpg'))
 										{
-											$m["newsid"][$i][6] = 'ext/showimage.php?img=news'.$m["newsid"][$i][0];
+											$m["list"][$i]['image'] = 'ext/showimage.php?img=news'.$row['id_news'];
 											if (!empty($_settings['news_image_preview_width']))
-												$m["newsid"][$i][6] .= '&width='.$_settings['news_image_preview_width'];
+												$m["list"][$i]['image'] .= '&width='.$_settings['news_image_preview_width'];
 											if (!empty($_settings['news_image_preview_height']))
-												$m["newsid"][$i][6] .= '&height='.$_settings['news_image_preview_height'];
+												$m["list"][$i]['image'] .= '&height='.$_settings['news_image_preview_height'];
 										}
 								}
 							if ($tmp_short_news == 0)
@@ -209,43 +207,38 @@
 								{
 									$tmp_cut_news = $_settings['short_news_cut'];
 								}
-							$u = 0;
 							if ($_settings['news_use_preview'] == 1 && !empty($row['preview_news']))
 								{
-									$m["newsid"][$i][3] = $row['preview_news'];
-									$m["newsid"][$i][4] = 1;
+									$m["list"][$i]['preview'] = $row['preview_news'];
+									$m["list"][$i][4] = 1;
 									$u = 1;
 								}
-							if (strlen($row['text_news'])>$tmp_cut_news && $u != 1)
+							else
 								{
-									$m["newsid"][$i][3] = cut_str_by_word($row['text_news'], $tmp_cut_news, '...');
-									if ($tmp_short_news == 0)
-										$m["newsid"][$i][4] = 1;
+									if (strlen($row['text_news'])>$tmp_cut_news && $u != 1)
+										$m["list"][$i]['preview'] = cut_str_by_word($row['text_news'], $tmp_cut_news, '...');
 									else
-										$m["newsid"][$i][4] = 0;
+										$m["list"][$i]['preview'] = $row['text_news'];
+									$u = 0;
 								}
 							if ($row['type_news'] == 0)
 								{
-									$m["newsid"][$i][2] = nl2br($m["newsid"][$i][2]);
-									$m["newsid"][$i][3] = nl2br($m["newsid"][$i][3]);
+									$m["list"][$i]['text'] = nl2br($m["list"][$i]['text']);
+									$m["list"][$i]['preview'] = nl2br($m["list"][$i]['preview']);
 								}
 							sm_event('onlistnewsprocessed', $i);
-							sm_add_title_modifier($m["newsid"][$i][5]);
-							sm_add_content_modifier($m["newsid"][$i][2]);
-							sm_add_content_modifier($m["newsid"][$i][3]);
+							sm_add_title_modifier($m["list"][$i]['title']);
+							sm_add_content_modifier($m["list"][$i]['text']);
+							sm_add_content_modifier($m["list"][$i]['preview']);
 							$i++;
 						}
 					if ($tmp_short_news == 0)
 						{
-							$sql = "SELECT count(*) FROM ".$tableprefix."news".$sql2;
-							$result = execsql($sql);
-							$m['pages']['records'] = 0;
-							while ($row = database_fetch_row($result))
-								{
-									$m['pages']['records'] = $row[0];
-								}
+							$m['pages']['records']=intval(getsqlfield("SELECT count(*) FROM ".$tableprefix."news".$sql2));
 							$m['pages']['pages'] = ceil($m['pages']['records']/$_settings['news_by_page']);
 							$m['short_news'] = 0;
+							if ($i==0 && intval($_getvars['from'])>0)
+								$m['module']='404';
 						}
 					else
 						{

@@ -27,17 +27,17 @@
 {include file="block_begin.tpl"}
 {if $modules[$index].short_news eq "1"}{* SHORT LIST NEWS *}
 <table width="100%">
-{section name=i loop=$modules[$index].newsid}
+{section name=i loop=$modules[$index].list}
 <tr>
 <td valign="top" width="100%">
-<a class="shortnews" href="{$modules[$index].newsid[i][7]}">
-{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}{if $_settings.news_use_title eq "1"} {$modules[$index].newsid[i][5]}<br />{/if}</a>
+<a class="shortnews" href="{$modules[$index].list[i].url}">
+{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}{if $_settings.news_use_title eq "1"} {$modules[$index].list[i].title}<br />{/if}</a>
 </td>
 </tr>
 <tr>
 <td>
-<a class="shortnews" href="{$modules[$index].newsid[i][7]}">
-{$modules[$index].newsid[i][3]|strip_tags}
+<a class="shortnews" href="{$modules[$index].list[i].url}">
+{$modules[$index].list[i].preview|strip_tags}
 </a>
 </td>
 </tr>
@@ -46,25 +46,29 @@
 <div class="shortnews_allnews"><a href="index.php?m=news&d=listnews{if $modules[$index].id_category_n neq ""}&ctg={$modules[$index].id_category_n}{/if}">{$lang.all_news}</a></div>
 {else}{* FULL LIST NEWS *}
 <table width="100%">
-{section name=i loop=$modules[$index].newsid}
+{section name=i loop=$modules[$index].list}
 <tr>
 	<td valign="top" class="news_title">
-		{if $_settings.news_use_title eq "1" and $modules[$index].newsid[i][5] neq ""}
-			<span class="news_datetime_list">{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}</span> {$modules[$index].newsid[i][5]}
+		{if $_settings.news_use_title eq "1" and $modules[$index].list[i].title neq ""}
+			<span class="news_datetime_list">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> {$modules[$index].list[i].title}
 		{else}
-			{if $_settings.news_use_time eq "1"}{$modules[$index].newsid[i][8]} {/if}{$modules[$index].newsid[i][1]}
+			{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}
 		{/if}
 	</td>
 </tr>
 <tr>
 	<td valign="top">
-		{if $modules[$index].newsid[i][6] neq ""}
+		{if $modules[$index].list[i].image neq ""}
 		<div class="news_image_list">
-		<a href="{$modules[$index].newsid[i][7]}"><img src="{$modules[$index].newsid[i][6]}" border="0"></a>
+		<a href="{$modules[$index].list[i].url}"><img src="{$modules[$index].list[i].image}" border="0"></a>
 		</div>
 		{/if}
-		{$modules[$index].newsid[i][3]}
-		<div class="news_detail"><a href="{$modules[$index].newsid[i][7]}">{$lang.details}</a></div>
+		{if $_settings.news_full_list_longformat eq 1}
+			{$modules[$index].list[i].text}
+		{else}
+			{$modules[$index].list[i].preview}
+			<div class="news_detail"><a href="{$modules[$index].list[i].url}">{$lang.details}</a></div>
+		{/if}
 	</td>
 </tr>
 {/section}
