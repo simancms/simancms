@@ -412,6 +412,7 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_meduim_height', '600', 'default');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_allowed_extensions', 'jpg\njpeg\ngif\npng\nmp4\nmp3\nwav', 'default');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_edit_after_upload', '1', 'media');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('news_full_list_longformat', '0', 'default');");
 
 
 //---------[DATABASE DATE]------------------------------------

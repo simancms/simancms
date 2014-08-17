@@ -587,6 +587,17 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_attachments_count&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.news_full_list_longformat eq 1}
+		<tr>
+			<td>{$lang.list_news}: </td>
+			<td><select name="news_full_list_longformat" size="1">
+				<option value="0"{if 0 eq $modules[$index].edit_settings.news_full_list_longformat} SELECTED{/if}>{$lang.common.preview}</option>
+				<option value="1"{if 1 eq $modules[$index].edit_settings.news_full_list_longformat} SELECTED{/if}>{$lang.common.full_text}</option>
+			</select></td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=news_full_list_longformat&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 	{if $modules[$index].show_settings.news_editor_level eq 1}
 		<tr>
 			<td>{$lang.settings_editor_level}: </td>

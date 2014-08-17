@@ -126,8 +126,9 @@
 					sm_update_settings('short_news_cut', intval($_postvars['p_short_news_cut'])<=0?100:intval($_postvars['p_short_news_cut']), $m['mode_settings']);
 					sm_update_settings('allow_alike_news', intval($_postvars['p_allow_alike_news'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('alike_news_count', intval($_postvars['p_alike_news_count']), $m['mode_settings']);
-					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
 					sm_update_settings('news_attachments_count', abs(intval($_postvars['p_news_attachments_count'])), $m['mode_settings']);
+					sm_update_settings('news_full_list_longformat', intval($_postvars['news_full_list_longformat']), $m['mode_settings']);
+					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
 					//------ User settings ----------------------------------------------------------------
 					sm_update_settings('allow_register', intval($_postvars['p_allowregister'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('allow_forgot_password', intval($_postvars['p_allowforgotpass'])==1?1:0, $m['mode_settings']);
