@@ -1025,7 +1025,7 @@
 			global $sm;
 			return $sm['s']['theme'];
 		}
-	
+
 	function sm_set_metadata($object_name, $object_id, $key_name, $val)
 		{
 			global $sm;
@@ -1034,16 +1034,24 @@
 			$q->Add('object_id', dbescape($object_id));
 			$q->Add('key_name', dbescape($key_name));
 			$info=$q->Get();
-			$q->Add('val', dbescape($val));
-			if (empty($info['id']))
+			if ($val===NULL)
 				{
-					$q->Insert();
+					$q->Remove();
+					unset($sm['cache']['metadata'][$object_name][$object_id][$key_name]);
 				}
 			else
 				{
-					$q->Update('id', intval($info['id']));
+					$q->Add('val', dbescape($val));
+					if (empty($info['id']))
+						{
+							$q->Insert();
+						}
+					else
+						{
+							$q->Update('id', intval($info['id']));
+						}
+					$sm['cache']['metadata'][$object_name][$object_id][$key_name]=$val;
 				}
-			$sm['cache']['metadata'][$object_name][$object_id][$key_name]=$val;
 		}
 
 	function sm_metadata($object_name, $object_id, $key_name, $dont_use_cache=false)
@@ -1069,6 +1077,25 @@
 			while ($row=$q->Fetch())
 				$sm['cache']['metadata'][$object_name][$object_id][$row['key_name']]=$row['val'];
 			return $sm['cache']['metadata'][$object_name][$object_id];
+		}
+	function sm_relative_url($url=NULL)
+		{
+			if ($url==NULL)
+				$url=sm_this_url();
+			$parsed=@parse_url($url);
+			$parsed_src=@parse_url('http://'.sm_settings('resource_url'));
+			if (empty($parsed['path']))
+				$parsed['path']='/';
+			if (empty($parsed_src['path']))
+				$parsed_src['path']='/';
+			if (strpos($parsed['path'], $parsed_src['path'])===false)
+				return false;
+			if (strpos($parsed['path'], $parsed_src['path'])!=0)
+				return false;
+			$r=substr($parsed['path'], strlen($parsed_src['path']));
+			if (!empty($parsed['query']))
+				$r.='?'.$parsed['query'];
+			return $r;
 		}
 
 ?>
