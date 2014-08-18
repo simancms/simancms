@@ -50,6 +50,7 @@
 					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
 					if (count($m['ctgid']) > 0)
 						{
+							sm_event('startpostaddcontent', array(0));
 							$id_category_c = $_postvars["p_id_category_c"];
 							$title_content = dbescape($_postvars["p_title_content"]);
 							$preview_content = dbescape($_postvars["p_preview_content"]);
@@ -130,18 +131,19 @@
 						}
 					if ($canedit == 1)
 						{
+							sm_event('startposteditcontent', array(intval($_getvars["cid"])));
 							$id_category_c = $_postvars["p_id_category_c"];
 							$title_content = dbescape($_postvars["p_title_content"]);
 							$preview_content = dbescape($_postvars["p_preview_content"]);
 							$text_content = dbescape($_postvars["p_text_content"]);
-							$type_content = $_postvars["p_type_content"];
+							$type_content = dbescape($_postvars["p_type_content"]);
 							$keywords_content = dbescape($_postvars["p_keywords_content"]);
 							$description_content = dbescape($_postvars["p_description_content"]);
 							$filename = dbescape($_postvars["p_filename"]);
 							$refuse_direct_show = intval($_postvars["p_refuse_direct_show"]);
 							if ($_settings['content_use_preview'] == 1)
 								$tmp_preview_sql = "preview_content='$preview_content',";
-							$sql = "UPDATE ".$tableprefix."content SET id_category_c='$id_category_c', title_content='$title_content', $tmp_preview_sql text_content='$text_content', type_content='$type_content', keywords_content = '$keywords_content', refuse_direct_show = '$refuse_direct_show', description_content='$description_content' WHERE id_content='".intval($_getvars["cid"])."'";
+							$sql = "UPDATE ".$tableprefix."content SET id_category_c='".intval($id_category_c)."', title_content='$title_content', $tmp_preview_sql text_content='$text_content', type_content='$type_content', keywords_content = '$keywords_content', refuse_direct_show = '$refuse_direct_show', description_content='$description_content' WHERE id_content='".intval($_getvars["cid"])."'";
 							$result = execsql($sql);
 							if ($_settings['content_use_image'] == 1)
 								{

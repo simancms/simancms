@@ -53,6 +53,7 @@
 						}
 					else
 						{
+							sm_event('startpostaddnews', array(0));
 							$m["module"] = 'news';
 							$m['title'] = $lang['add_news'];
 							$id_category_n = $_postvars["p_id_category_n"];
@@ -219,13 +220,13 @@
 					$m['title'] = $lang['delete_news'];
 					$m["module"] = 'news';
 					$id_news = intval($_getvars["nid"]);
-					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news=".$id_news;
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$fname = $row->filename_news;
 						}
-					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
+					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news=".$id_news;
 					$result = execsql($sql);
 					sm_extcore();
 					sm_saferemove('index.php?m=news&d=view&nid='.$id_news);
@@ -241,6 +242,7 @@
 					if (file_exists('files/img/news'.$id_news.'.jpg'))
 						unlink('files/img/news'.$id_news.'.jpg');
 					sm_notify($lang['delete_news_successful']);
+					sm_event('onnewsdeleted', array($id_news));
 					if ($userinfo['level'] == 3)
 						sm_redirect('index.php?m=news&d=list&ctg='.intval($_getvars['ctg']));
 					else
@@ -287,6 +289,8 @@
 						}
 					else
 						{
+							$id_news = intval($_getvars["nid"]);
+							sm_event('startposteditnews', array($id_news));
 							$m['title'] = $lang['edit_news'];
 							$m["module"] = 'news';
 							$id_category_n = $_postvars["p_id_category_n"];
@@ -300,8 +304,7 @@
 							$title_news = dbescape($_postvars['p_title_news']);
 							$preview_news = dbescape($_postvars['p_preview_news']);
 							$text_news = dbescape($_postvars["p_text_news"]);
-							$type_news = $_postvars["p_type_news"];
-							$id_news = intval($_getvars["nid"]);
+							$type_news = dbescape($_postvars["p_type_news"]);
 							$filename = dbescape($_postvars["p_filename"]);
 							$keywords_news = dbescape($_postvars["keywords_news"]);
 							$description_news = dbescape($_postvars["description_news"]);
