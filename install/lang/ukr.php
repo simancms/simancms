@@ -34,7 +34,7 @@ $lang['finish_title']='Систему встановлено!';
 
 $lang['p_blocks']['main_menu']='Головне меню';
 $lang['p_blocks']['admin_menu']='Меню адміністратора';
-$lang['p_menu']['login']='Вхід';
+$lang['p_blocks']['login']='Вхід';
 
 $lang['p_welcome_page']['title']='Вітаємо';
 $lang['p_welcome_page']['text']='Вітаємо Вас в системі SiMan CMS. <br /><br /> Ця сторінка буде виводитись по замовчуванню.<br /><br />Для того, щоб змінити її вміст, <a href="index.php?m=account">увійдіть</a> в систему як адміністратор та натисніть на посилання внизу або <a href="index.php?m=content&d=edit&cid=1">сюди</a>.<br /><br />Для детального ознайомлення з системою ласкаво просимо на офіційний сайт <a href="http://siman.org.ua">siman.org.ua</a><br /><br /><strong>Приємної та плідної роботи!</strong>';

@@ -268,7 +268,7 @@ $inst['tables'][16]['result']=$result;
 $sql="ALTER  TABLE ".$tableprefix."tempdata ADD INDEX ( `deleteafter_td` ) ;";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
-$sql="CREATE TABLE `".$sm['tu']."metadata` (
+$sql="CREATE TABLE ".$tableusersprefix."metadata (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`object_name` varchar(50) NOT NULL DEFAULT '',
 	`object_id` varchar(50) NOT NULL DEFAULT '',
