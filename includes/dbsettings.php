@@ -36,6 +36,9 @@ $tableusersprefix='';
 //Session prefix. You need to change it for your site to prevent hacks
 $session_prefix='needchange167_';
 
+//Caching of pages; 0 - disabled; positive integer - min time for caching in seconds
+$siman_cache=0;
+
 //Don't change code below
 if (empty($tableusersprefix)) $tableusersprefix=$tableprefix;
 

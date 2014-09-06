@@ -425,7 +425,21 @@
 					//Output page
 					if (!empty($special['main_tpl']))
 						if (!$sm['s']['nosmarty'])
-							$smarty->display($special['main_tpl'].'.tpl');
+							{
+								if (!empty($siman_cache) && $sm['cacheit'] && $sm['u']['level']==0)
+									{
+										$output = $smarty->fetch($special['main_tpl'].'.tpl');
+										$fname='files/temp/cache_'.md5($_SERVER['REQUEST_URI']);
+										$fh=fopen($fname, 'w');
+										fwrite($fh, $output);
+										fclose($fh);
+										if (intval($sm['cacheittime'])>0)
+											touch($fname, time()+intval($sm['cacheittime']));
+										print($output);
+									}
+								else
+									$smarty->display($special['main_tpl'].'.tpl');
+							}
 					sm_event('aftertplgenerate');
 				}
 		}

@@ -10,6 +10,18 @@
 	//#revision 2014-07-16
 	//==============================================================================
 
+	if (!empty($siman_cache) && file_exists('files/temp/cache_'.md5($_SERVER['REQUEST_URI'])))
+		{
+			if (filectime('files/temp/cache_'.md5($_SERVER['REQUEST_URI']))+$siman_cache<time())
+				unlink('files/temp/cache_'.md5($_SERVER['REQUEST_URI']));
+			else
+				{
+					$fh = fopen('files/temp/cache_'.md5($_SERVER['REQUEST_URI']), 'rb');
+					fpassthru($fh);
+					exit;
+				}
+		}
+
 	if (!$sm['disable_session'])
 		session_start();
 
