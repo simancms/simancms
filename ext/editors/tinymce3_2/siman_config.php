@@ -1,29 +1,19 @@
 <?php
 
-//------------------------------------------------------------------------------
-//|                                                                            |
-//|         Система керування вмістом сайту SiMan CMS                          |
-//|            Content Management System SiMan CMS                             |
-//|                                                                            |
-//|               (c) Aged Programmer's Group                                  |
-//|                http://www.apserver.org.ua                                  |
-//|                                                                            |
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	//|            Content Management System SiMan CMS                             |
+	//|                http://www.simancms.org                                     |
+	//------------------------------------------------------------------------------
 
-//==============================================================================
-//#ver 1.4.0.1                                                                 |
-//==============================================================================
+	if (!defined("EXTEDITOR_FUNCTIONS_DEFINED"))
+		{
+			function siman_prepare_to_exteditor($str)
+				{
+					return $str;
+				}
 
-
-if (!defined("EXTEDITOR_FUNCTIONS_DEFINED"))
-	{
-		function siman_prepare_to_exteditor($str)
-			{
-				return $str;
-			}
-		
-		$_settings['ext_editor_toolbar']='Siman';	//Basic,Default,Siman
-		define("EXTEDITOR_FUNCTIONS_DEFINED", 1);
-	}
+			$_settings['ext_editor_toolbar'] = 'Siman'; //Basic,Default,Siman
+			define("EXTEDITOR_FUNCTIONS_DEFINED", 1);
+		}
 
 ?>
