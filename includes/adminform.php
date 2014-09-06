@@ -24,6 +24,7 @@ if (!defined("adminform_DEFINED"))
 				private $currentname;
 				function TForm($action, $prefix='', $method='POST')
 					{
+						global $sm;
 						$this->form['action']=$action;
 						if ($action===false)
 							$this->form['dont_use_form_tag']=1;
@@ -35,6 +36,8 @@ if (!defined("adminform_DEFINED"))
 						$this->form['tabs'][0]['title']='';
 						$this->form['postfix']=mt_rand(1000, 9999);
 						$this->form['tooltip_present']=false;
+						if ($sm['adminform']['nohighlight']===true)
+							$this->NoHighlight();
 					}
 				function AddTab($title)
 					{

@@ -6,7 +6,12 @@
 
 .adminform_table td input
 {
-	width:80%;
+	width:98%;
+}
+
+.adminform_table td textarea
+{
+	width:98%;
 }
 
 .adminform_table td input[type=checkbox]
@@ -15,3 +20,4 @@
 }
 
 .admintable_row td img {max-width:280px;}
+

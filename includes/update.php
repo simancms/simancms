@@ -45,6 +45,7 @@
 				)");
 			if (!array_key_exists('news_full_list_longformat', $_settings))
 				sm_add_settings('news_full_list_longformat', '0');
+			sm_add_settings('robots_txt', '', 'seo');
 			
 			sm_update_settings('database_date', '20140701');
 		}

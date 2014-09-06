@@ -854,6 +854,11 @@
 				$special['meta']['description'] = $description;
 		}
 
+	function sm_meta_tag($name, $content, $property='')
+		{
+			sm_html_headend('<meta'.(strlen($property)==0?'':' property="'.htmlescape($property).'"').''.(strlen($name)==0?'':' name="'.htmlescape($name).'"').' content="'.htmlescape($content).'"/>');
+		}
+
 	function sm_homepage()
 		{
 			global $special, $_settings;
@@ -1096,6 +1101,11 @@
 			if (!empty($parsed['query']))
 				$r.='?'.$parsed['query'];
 			return $r;
+		}
+	
+	function sm_use_template($tpl_filename)
+		{
+			$special['main_tpl'] = $tpl_filename;
 		}
 
 ?>

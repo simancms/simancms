@@ -225,6 +225,7 @@
 						$dashboard->AddItem($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog', 'log');
 					if (is_writeable('./') && sm_settings('packages_upload_allowed'))
 						$dashboard->AddItem($lang['module_admin']['upload_package'], 'index.php?m=admin&d=package', 'upload');
+					$dashboard->AddItem('robots.txt', 'index.php?m=admin&d=robotstxt', 'directions.png');
 					$dashboard->AddItem($lang['settings'], 'index.php?m=admin&d=settings', 'settings.png');
 					$ui->AddDashboard($dashboard);
 					$ui->AddBlock($lang['user_settings']);
@@ -1047,6 +1048,26 @@
 							$ui->AddForm($f);
 							$ui->Output(true);
 						}
+				}
+			if (sm_actionpost('saverobotstxt'))
+				{
+					sm_update_settings('robots_txt', $_postvars['robotstxtcontent'], 'seo');
+					sm_redirect('index.php?m=admin');
+				}
+			if (sm_action('robotstxt'))
+				{
+					add_path_control();
+					add_path_current();
+					sm_title('robots.txt');
+					include_once('includes/admininterface.php');
+					include_once('includes/adminform.php');
+					$ui = new TInterface();
+					$f = new TForm('index.php?m=admin&d=saverobotstxt');
+					$f->AddTextarea('robotstxtcontent', '');
+					$f->MergeColumns();
+					$f->SetValue('robotstxtcontent', sm_get_settings('robots_txt', 'seo'));
+					$ui->AddForm($f);
+					$ui->Output(true);
 				}
 		}
 

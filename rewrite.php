@@ -22,6 +22,12 @@
 			if (!empty($initialStatementDB))
 				$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
 			$replaced = 0;
+			if (strcmp($_GET['rewrittenquery'], 'robots.txt') == 0)
+				{
+					@header('Content-type: text/plain; charset=utf-8');
+					print(getsqlfield("SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings='robots_txt' AND `mode`='seo'"));
+					exit();
+				}
 			if (substr($_GET['rewrittenquery'], -1) == '/')
 				$_GET['rewrittenquery'] = substr($_GET['rewrittenquery'], 0, -1);
 			$tmp=dbescape($_GET['rewrittenquery']);
