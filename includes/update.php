@@ -46,6 +46,8 @@
 			if (!array_key_exists('news_full_list_longformat', $_settings))
 				sm_add_settings('news_full_list_longformat', '0');
 			sm_add_settings('robots_txt', '', 'seo');
+			sm_add_settings('notifications_time', '5');
+			sm_add_settings('notifierlib', 'alertify');
 			
 			sm_update_settings('database_date', '20140701');
 		}

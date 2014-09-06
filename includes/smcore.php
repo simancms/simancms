@@ -1007,7 +1007,8 @@
 	//Dummy function for further implementation
 	function sm_notify($message, $title='')
 		{
-			return;
+			global $sm;
+			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time());
 		}
 	
 	function sm_change_language($langname)
