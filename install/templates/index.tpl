@@ -183,12 +183,6 @@ a
 				<tr>
 				<td>{$lang.addadm.email}<sup>*</sup></td><td><input type="text" name="p_email" value="{$inst.addadmin.user_email}"><td>
 				</tr>
-				<tr>
-				<td>{$lang.addadm.secret_question}</td><td><input type="text" name="p_question" value="{$inst.addadmin.user_question}"></td>
-				</tr>
-				<tr>
-				<td>{$lang.addadm.secret_answer_question}</td><td><input type="text" name="p_answer" value="{$inst.addadmin.user_answer}"></td>
-				</tr>
 				</table>
 				
 				
@@ -215,9 +209,8 @@ a
 				{$lang.finished.gratulations}
 				<br>
 				<br>
-				{$lang.finished.apserver_message}:<br>
+				{$lang.finished.message_documentation}:<br>
 				{$lang.finished.official_site} <a href="http://simancms.org">simancms.org</a><br>
-				{$lang.finished.developers_portal} <a href="http://dev.simancms.org">dev.simancms.org</a><br>
 				<br>
 				<font color="#FF0000">{$lang.finished.dont_forget_erase}</font>
 				<br>

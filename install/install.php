@@ -250,8 +250,6 @@
 							$login = dbescape($_postvars["p_login"]);
 							$password = $_postvars["p_password"];
 							$email = dbescape($_postvars["p_email"]);
-							$question = dbescape($_postvars["p_question"]);
-							$answer = dbescape($_postvars["p_answer"]);
 							if (empty($login) || empty($password) || empty($email))
 								{
 									$inst['step'] = 6;
@@ -259,8 +257,6 @@
 									$inst['errors'][count($inst['errors'])]['text'] = $lang['addadm']["message_set_all_fields"];
 									$inst['addadmin']['user_login'] = $login;
 									$inst['addadmin']['user_email'] = $email;
-									$inst['addadmin']['user_question'] = $question;
-									$inst['addadmin']['user_answer'] = $answer;
 								}
 							elseif (!is_email($email))
 								{
@@ -269,13 +265,11 @@
 									$inst['errors'][count($inst['errors'])]['text'] = $lang['addadm']["message_bad_email"];
 									$inst['addadmin']['user_login'] = $login;
 									$inst['addadmin']['user_email'] = $email;
-									$inst['addadmin']['user_question'] = $question;
-									$inst['addadmin']['user_answer'] = $answer;
 								}
 							else
 								{
 									$password = md5($password);
-									$sql = "INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '$question', '$answer', 3)";
+									$sql = "INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '', '', 3)";
 									$result = database_db_query($nameDB, $sql, $lnkDB);
 									$inst['messages'][0]['text'] = $lang['create_administrator'].'. </b> <font color="#00FF00">'.$lang['OK'].'</font>';
 									$sql = "UPDATE ".$tableprefix."settings SET value_settings='".$email."' WHERE name_settings='administrators_email'";

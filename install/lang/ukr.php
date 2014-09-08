@@ -37,7 +37,7 @@ $lang['p_blocks']['admin_menu']='Меню адміністратора';
 $lang['p_blocks']['login']='Вхід';
 
 $lang['p_welcome_page']['title']='Вітаємо';
-$lang['p_welcome_page']['text']='Вітаємо Вас в системі SiMan CMS. <br /><br /> Ця сторінка буде виводитись по замовчуванню.<br /><br />Для того, щоб змінити її вміст, <a href="index.php?m=account">увійдіть</a> в систему як адміністратор та натисніть на посилання внизу або <a href="index.php?m=content&d=edit&cid=1">сюди</a>.<br /><br />Для детального ознайомлення з системою ласкаво просимо на офіційний сайт <a href="http://siman.org.ua">siman.org.ua</a><br /><br /><strong>Приємної та плідної роботи!</strong>';
+$lang['p_welcome_page']['text']='Вітаємо Вас в системі SiMan CMS. <br /><br /> Ця сторінка буде виводитись по замовчуванню.<br /><br />Для того, щоб змінити її вміст, <a href="index.php?m=account">увійдіть</a> в систему як адміністратор та натисніть на посилання внизу або <a href="index.php?m=content&d=edit&cid=1">сюди</a>.<br /><br />Для детального ознайомлення з системою ласкаво просимо на офіційний сайт <a href="http://siman.org.ua">siman.org.ua</a> та  <a href="http://simancms.org">simancms.org</a><br /><br /><strong>Приємної та плідної роботи!</strong>';
 
 $lang['p_menu']['main_menu']='Меню';
 $lang['p_menu']['admin_menu']='Адміністрування';
@@ -80,17 +80,14 @@ $lang['addadm']['login_str']='Логін';
 $lang['addadm']['password']='Пароль';
 $lang['addadm']['email']='Електронна пошта';
 $lang['addadm']['message_wrong_login']='Ви ввели невірне ім\'я користувача чи пароль.';
-$lang['addadm']['secret_question']='Запитання (якщо забули пароль)';
-$lang['addadm']['secret_answer_question']='Відповідь на запитання';
 $lang['addadm']['message_set_all_fields']='Одне з обов\'язкових полів не заповнене';
 $lang['addadm']['message_bad_email']='Неправильна адреса електронної пошти';
 $lang['addadm']['add_settings_admin_email']='Встановлення е-пошти адміністратора';
 
 $lang['finished']['gratulations']='<strong>Поздоровляємо!</strong><br /><br />Ви успішно встановили SiMan CMS!';
 $lang['finished']['dont_forget_erase']='Перед початком роботи з системою обов\'язково видаліть теку <strong>install</strong>.';
-$lang['finished']['apserver_message']='Документацію, додаткові модулі, оновлення для SiMan CMS Ви можете знайти на наступних ресурсах';
+$lang['finished']['message_documentation']='Документацію, додаткові модулі, оновлення для SiMan CMS Ви можете знайти на наступних ресурсах';
 $lang['finished']['official_site']='Офіційний сайт';
-$lang['finished']['developers_portal']='Портал розробників';
 $lang['finished']['begin_work']='Перейти до роботи з системою';
 
 ?>

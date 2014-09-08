@@ -80,17 +80,14 @@ $lang['addadm']['login_str']='Login';
 $lang['addadm']['password']='Password';
 $lang['addadm']['email']='E-mail';
 $lang['addadm']['message_wrong_login']='Wrong login or password';
-$lang['addadm']['secret_question']='Security question (to reset forgotten password)';
-$lang['addadm']['secret_answer_question']='Answer to the question';
 $lang['addadm']['message_set_all_fields']='One or more required fields are empty';
 $lang['addadm']['message_bad_email']='Wrong e-mail';
 $lang['addadm']['add_settings_admin_email']='Setting administrator\'s e-mail';
 
 $lang['finished']['gratulations']='<strong>Congratulations!</strong><br /><br />SiMan CMS installed successfully!';
 $lang['finished']['dont_forget_erase']='Delete the directory <strong>install</strong> before beginning.';
-$lang['finished']['apserver_message']='Please visit next resources to find documentation, additional modules, upgrates of SiMan CMS';
+$lang['finished']['message_documentation']='Please visit next resources to find documentation, additional modules, upgrates of SiMan CMS';
 $lang['finished']['official_site']='Official site';
-$lang['finished']['developers_portal']='Developer\'s portal';
 $lang['finished']['begin_work']='Begin';
 
 ?>
