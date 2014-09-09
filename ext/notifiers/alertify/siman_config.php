@@ -14,7 +14,14 @@
 					sm_add_jsfile('ext/notifiers/alertify/lib/alertify.min.js', 1);
 					sm_html_bodyend('<script>(function() {alertify.set({ delay: 7000 });');
 					foreach ($sm['s']['notifications'] as $key=>$val)
-						sm_html_bodyend('alertify.success("'.(empty($val['title'])?'':'<b>'.jsescape($val['title']).'<b><br />').jsescape($val['message']).'");');
+						{
+							if (strcmp($val['type'], 'error')==0)
+								sm_html_bodyend('alertify.error("'.(empty($val['title'])?'':'<b>'.jsescape($val['title']).'<b><br />').jsescape($val['message']).'");');
+							elseif (strcmp($val['type'], 'info')==0)
+								sm_html_bodyend('alertify.log("'.(empty($val['title'])?'':'<b>'.jsescape($val['title']).'<b><br />').jsescape($val['message']).'");');
+							else
+								sm_html_bodyend('alertify.success("'.(empty($val['title'])?'':'<b>'.jsescape($val['title']).'<b><br />').jsescape($val['message']).'");');
+						}
 					sm_html_bodyend('})();</script>');
 				}
 		}

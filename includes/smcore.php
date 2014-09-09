@@ -1005,10 +1005,10 @@
 		}
 
 	//Dummy function for further implementation
-	function sm_notify($message, $title='')
+	function sm_notify($message, $title='', $type='success')
 		{
 			global $sm;
-			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time());
+			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time(), 'type'=>$type);
 		}
 	
 	function sm_change_language($langname)
