@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-07-16
+	//#ver 1.6.7
+	//#revision 2014-09-12
 	//==============================================================================
 
 	function is_email($string)
@@ -20,15 +20,7 @@
 	//Deprecated
 	function addslashesJ($string)
 		{
-			if (get_magic_quotes_gpc() == 1)
-				{
-					$s = dbescape(stripslashes($string));
-				}
-			else
-				{
-					$s = dbescape($string);
-				}
-			return $s;
+			return dbescape($string);
 		}
 
 	function siman_upload_image($id, $prefix, $postfix = '', $extention = '.jpg')
@@ -93,7 +85,6 @@
 		{
 			$extall = explode('|', $ext);
 			$dir = dir($path);
-			$i = 0;
 			while ($entry = $dir->read())
 				{
 					if (empty($ext))
@@ -103,7 +94,7 @@
 							$u = 0;
 							for ($j = 0; $j<count($extall); $j++)
 								{
-									if (strpos(strtolower($entry), '.'.strtolower($extall[$j])))
+									if (strcmp(strtolower(pathinfo($entry, PATHINFO_EXTENSION)), strtolower($extall[$j]))==0)
 										{
 											$u = 1;
 											break;
@@ -111,10 +102,7 @@
 								}
 						}
 					if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && $u == 1)
-						{
-							$result[$i] = $entry;
-							$i++;
-						}
+						$result[] = $entry;
 				}
 			$dir->close();
 			if (is_array($result))
@@ -125,29 +113,25 @@
 	function register_filesystem($url, $filename, $comment)
 		{
 			global $tableprefix;
-			$sql = "INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".dbescape($filename)."', '".dbescape($url)."', '".dbescape($comment)."')";
-			return insertsql($sql);
+			return insertsql("INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".dbescape($filename)."', '".dbescape($url)."', '".dbescape($comment)."')");
 		}
 
 	function update_filesystem($id, $url, $filename, $comment)
 		{
 			global $tableprefix;
-			$sql = "UPDATE ".$tableprefix."filesystem SET filename_fs='".dbescape($filename)."', url_fs='".dbescape($url)."', comment_fs='".dbescape($comment)."' WHERE id_fs=".intval($id)." ";
-			execsql($sql);
+			execsql("UPDATE ".$tableprefix."filesystem SET filename_fs='".dbescape($filename)."', url_fs='".dbescape($url)."', comment_fs='".dbescape($comment)."' WHERE id_fs=".intval($id)." ");
 		}
 
 	function delete_filesystem($id)
 		{
 			global $tableprefix;
-			$sql = "DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
-			execsql($sql);
+			execsql("DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id));
 		}
 
 	function get_filesystem($id)
 		{
 			global $tableprefix;
-			$sql = "SELECT * FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id);
-			$result = execsql($sql);
+			$result = execsql("SELECT * FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id));
 			while ($row = database_fetch_object($result))
 				{
 					$res['id'] = $row->id_fs;
@@ -181,8 +165,7 @@
 	function get_groups_list()
 		{
 			global $tableusersprefix;
-			$sql = "SELECT * FROM ".$tableusersprefix."groups ORDER BY title_group ASC";
-			$result = execsql($sql);
+			$result = execsql("SELECT * FROM ".$tableusersprefix."groups ORDER BY title_group ASC");
 			$i = 0;
 			while ($row = database_fetch_object($result))
 				{
@@ -331,7 +314,7 @@
 			global $special;
 			$max = count($special['path']);
 			if ($max>0)
-				for ($i = max-1; $i>=0; $i++)
+				for ($i = $max-1; $i>=0; $i++)
 					{
 						$special['path'][$i]['title'] = $special['path'][$i-1]['title'];
 						$special['path'][$i]['url'] = $special['path'][$i-1]['url'];
