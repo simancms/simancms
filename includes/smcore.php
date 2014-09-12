@@ -606,7 +606,7 @@
 
 	function sm_redirect($url, $message = '', $dontsendredirectheaders = false)
 		{
-			global $modules, $modules_index, $refresh_url, $lang, $special;
+			global $modules, $modules_index, $refresh_url, $lang, $sm;
 			if (empty($modules[$modules_index]['title']))
 				$modules[$modules_index]['title'] = $lang['common']['redirect'];
 			$modules[$modules_index]['module'] = 'refresh';
@@ -616,8 +616,11 @@
 					$dontsendredirectheaders = true;
 				}
 			$modules[$modules_index]['message'] = $message;
-			$special['dontsendredirectheaders'] = $dontsendredirectheaders;
+			$sm['s']['dontsendredirectheaders'] = $dontsendredirectheaders;
 			$refresh_url = $url;
+			for ($i = 0; $i < count($sm['session']['notifications']); $i++)
+				if (!empty($sm['session']['notifications'][$i]['frompage']) && strcmp(sm_relative_url($sm['session']['notifications'][$i]['frompage']), sm_relative_url(sm_this_url()))==0 && empty($sm['session']['notifications'][$i]['onpage']))
+					$sm['session']['notifications'][$i]['onpage']=sm_relative_url($refresh_url);
 		}
 
 	function sm_redirect_now($url, $header_http_code='')
@@ -1008,7 +1011,7 @@
 	function sm_notify($message, $title='', $type='success')
 		{
 			global $sm;
-			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time(), 'type'=>$type);
+			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time(), 'type'=>$type, 'frompage'=>sm_relative_url(sm_this_url()));
 		}
 	
 	function sm_change_language($langname)
@@ -1088,6 +1091,8 @@
 		{
 			if ($url==NULL)
 				$url=sm_this_url();
+			if (strpos($url, '//')===false)
+				return $url;
 			$parsed=@parse_url($url);
 			$parsed_src=@parse_url('http://'.sm_settings('resource_url'));
 			if (empty($parsed['path']))
