@@ -424,4 +424,18 @@
 			sm_tempdata_addint('bannedip', $ip, time(), intval($bantime));
 		}
 	
+	//Return array of ids or empty array
+	function sm_metadata_objectids_for($object_name, $key_name, $val=NULL)
+		{
+			global $sm;
+			$q=new TQuery($sm['tu'].'metadata');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('key_name', dbescape($key_name));
+			if ($val!==NULL)
+				$q->Add('val', dbescape($val));
+			$q->SelectFields('DISTINCT object_id as oid');
+			$q->Select();
+			return $q->ColumnValues('oid');
+		}
+	
 ?>
