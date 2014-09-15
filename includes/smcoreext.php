@@ -116,42 +116,18 @@
 
 	function sm_set_group($id_group, $user_ids = Array())
 		{
-			global $tableprefix, $tableusersprefix;
-			if (count($user_ids) > 0)
+			for ($i = 0; $i < count($user_ids); $i++)
 				{
-					for ($i = 0; $i < count($user_ids); $i++)
-						{
-							$addsql .= ((empty($addsql)) ? '' : ' OR ').' id_user='.intval($user_ids[$i]);
-						}
+					sm_set_taxonomy('usergroups', $user_ids[$i], $id_group);
 				}
-			$sql = "UPDATE ".$tableusersprefix."users SET groups_user=';".intval($id_group).";' WHERE groups_user IS NULL";
-			if (!empty($addsql))
-				$sql .= ' AND ('.$addsql.')';
-			execsql($sql);
-			$sql = "UPDATE ".$tableusersprefix."users SET groups_user=CONCAT(groups_user, '".intval($id_group).";') WHERE groups_user NOT LIKE '%;".intval($id_group).";%'";
-			if (!empty($addsql))
-				$sql .= ' AND ('.$addsql.')';
-			execsql($sql);
 		}
 
 	function sm_unset_group($id_group, $user_ids = Array())
 		{
-			global $tableprefix, $tableusersprefix;
-			if (count($user_ids) > 0)
+			for ($i = 0; $i < count($user_ids); $i++)
 				{
-					for ($i = 0; $i < count($user_ids); $i++)
-						{
-							$addsql .= ((empty($addsql)) ? '' : ' OR ').' id_user='.intval($user_ids[$i]);
-						}
+					sm_unset_taxonomy('usergroups', $user_ids[$i], $id_group);
 				}
-			$sql = "UPDATE ".$tableusersprefix."users SET groups_user=REPLACE(groups_user, ';".intval($id_group).";', ';') WHERE groups_user LIKE '%;".intval($id_group).";%'";
-			if (!empty($addsql))
-				$sql .= ' AND ('.$addsql.')';
-			execsql($sql);
-			$sql = "UPDATE ".$tableusersprefix."users SET groups_user=NULL WHERE groups_user=';'";
-			if (!empty($addsql))
-				$sql .= ' AND ('.$addsql.')';
-			execsql($sql);
 		}
 
 	function sm_delete_group($id_group)
@@ -161,6 +137,7 @@
 			$q->Add('id_group', intval($id_group));
 			$q->Remove();
 			sm_unset_group($id_group);
+			//TODO: Clean taxonomy
 		}
 
 	function sm_tempdata_addtext($type, $identifier, $data, $timetolive = 3600)

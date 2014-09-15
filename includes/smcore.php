@@ -912,9 +912,9 @@
 
 	function sm_isuseringroup($userid_or_userinfo, $groupid)
 		{
-			if (!is_array($userid_or_userinfo))
-				$userid_or_userinfo = sm_userinfo(intval($userid_or_userinfo));
-			$groups = get_array_groups($userid_or_userinfo['groups']);
+			if (is_array($userid_or_userinfo))
+				$userid_or_userinfo = intval($userid_or_userinfo['id']);
+			$groups = sm_get_taxonomy('usergroups', $userid_or_userinfo);
 			return in_array($groupid, $groups);
 		}
 
@@ -1115,13 +1115,17 @@
 			$special['main_tpl'] = $tpl_filename;
 		}
 	
-	function sm_get_taxonomy($object_name, $object_id)
+	function sm_get_taxonomy($object_name, $object_id, $use_object_id_as_rel_id=false)
 		{
 			global $sm;
 			$q=new TQuery($sm['t'].'taxonomy');
 			$q->Add('object_name', dbescape($object_name));
-			$q->Add('object_id', dbescape($object_id));
+			if ($use_object_id_as_rel_id)
+				$q->Add('rel_id', dbescape($object_id));
+			else
+				$q->Add('object_id', dbescape($object_id));
 			$q->SelectFields('rel_id');
+			$q->Select();
 			return $q->ColumnValues('rel_id');
 		}
 
