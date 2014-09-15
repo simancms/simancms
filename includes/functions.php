@@ -351,16 +351,19 @@
 	//nllist - sting with items separated by new line character (s)
 	function nllistToArray($nllist, $clean_empty_values = false)
 		{
+			$list = explode("\n", str_replace("\r", "", $nllist));
 			if ($clean_empty_values)
 				{
-					while (strpos($nllist, "\r\n\r\n"))
-						$nllist = str_replace("\r\n\r\n", "\r\n", $nllist);
-					while (strpos($nllist, "\n\n"))
-						$nllist = str_replace("\n\n", "\n", $nllist);
+					$r=Array();
+					for ($i = 0; $i<count($list); $i++)
+						{
+							if (strlen($list[$i])>0)
+								$r[]=$list[$i];
+						}
+					return $r;
 				}
-			$r = explode("\n", str_replace("\r", '', $nllist));
-			if (count($r) == 1 && $r[0] == '') return Array();
-			return $r;
+			else
+				return $list;
 		}
 
 	function arrayToNllist($array)
@@ -370,7 +373,6 @@
 
 	function addto_nllist($nllist, $item)
 		{
-			//$nllist.=(strlen($nllist)==0?'':"\r\n").$item;
 			$nllist = nllistToArray($nllist, false);
 			$nllist[] = $item;
 			return arrayToNllist($nllist);
@@ -390,7 +392,6 @@
 
 	function removefrom_nllist_index($nllist, $index)
 		{
-			$list = '';
 			$a = nllistToArray($nllist, false);
 			$b = Array();
 			for ($i = 0; $i<count($a); $i++)
@@ -404,12 +405,7 @@
 	function present_nllist($nllist, $item)
 		{
 			$a = nllistToArray($nllist, false);
-			for ($i = 0; $i<count($a); $i++)
-				{
-					if ($a[$i] == $item)
-						return true;
-				}
-			return false;
+			return in_array($item, $a);
 		}
 
 	function out($txt)

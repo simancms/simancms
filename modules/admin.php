@@ -213,6 +213,7 @@
 					$ui = new TInterface();
 					sm_event('onadmindashboardstart');
 					$dashboard=new TDashBoard();
+					sm_event('onadmindashboardcommonstart');
 					$dashboard->AddItem($lang['modules_mamagement'], 'index.php?m=admin&d=modules', 'applications');
 					$dashboard->AddItem($lang['blocks_mamagement'], 'index.php?m=blocks', 'blocks');
 					$dashboard->AddItem($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem', 'folder');
@@ -227,14 +228,17 @@
 						$dashboard->AddItem($lang['module_admin']['upload_package'], 'index.php?m=admin&d=package', 'upload');
 					$dashboard->AddItem('robots.txt', 'index.php?m=admin&d=robotstxt', 'directions.png');
 					$dashboard->AddItem($lang['settings'], 'index.php?m=admin&d=settings', 'settings.png');
+					sm_event('onadmindashboardcommonend');
 					$ui->AddDashboard($dashboard);
-					$ui->AddBlock($lang['user_settings']);
 					unset($dashboard);
+					$ui->AddBlock($lang['user_settings']);
 					$dashboard=new TDashBoard();
+					sm_event('onadmindashboardusersstart');
 					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=register', 'useradd');
 					$dashboard->AddItem($lang['user_list'], 'index.php?m=account&d=usrlist', 'user');
 					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
 					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
+					sm_event('onadmindashboardusersend');
 					$ui->AddDashboard($dashboard);
 					unset($dashboard);
 					sm_event('onadmindashboardend');
