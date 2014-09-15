@@ -1087,6 +1087,7 @@
 				$sm['cache']['metadata'][$object_name][$object_id][$row['key_name']]=$row['val'];
 			return $sm['cache']['metadata'][$object_name][$object_id];
 		}
+	
 	function sm_relative_url($url=NULL)
 		{
 			if ($url==NULL)
@@ -1112,6 +1113,16 @@
 	function sm_use_template($tpl_filename)
 		{
 			$special['main_tpl'] = $tpl_filename;
+		}
+	
+	function sm_get_taxonomy($object_name, $object_id)
+		{
+			global $sm;
+			$q=new TQuery($sm['t'].'taxonomy');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			$q->SelectFields('rel_id');
+			return $q->ColumnValues('rel_id');
 		}
 
 ?>

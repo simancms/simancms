@@ -48,6 +48,12 @@
 			sm_add_settings('robots_txt', '', 'seo');
 			sm_add_settings('notifications_time', '5');
 			sm_add_settings('notifierlib', 'alertify');
+			execsql("CREATE TABLE `".$sm['t']."taxonomy` (
+					`object_name` varchar(50) NOT NULL DEFAULT '',
+					`object_id` int(11) unsigned NOT NULL DEFAULT '0',
+					`rel_id` int(11) unsigned NOT NULL DEFAULT '0',
+					PRIMARY KEY (`object_name`,`object_id`,`rel_id`)
+				)");
 			
 			sm_update_settings('database_date', '20140701');
 		}

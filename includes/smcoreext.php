@@ -437,5 +437,43 @@
 			$q->Select();
 			return $q->ColumnValues('oid');
 		}
-	
+
+	function sm_unset_taxonomy($object_name, $object_id, $rel_id)
+		{
+			global $sm;
+			if (is_array($rel_id))
+				{
+					for ($i = 0; $i<count($rel_id); $i++)
+						{
+							sm_unset_taxonomy($object_name, $object_id, $rel_id[$i]);
+							return;
+						}
+				}
+			$q=new TQuery($sm['tu'].'taxonomy');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', intval($object_id));
+			$q->Add('rel_id', intval($rel_id));
+			$q->Remove();
+		}
+
+	function sm_set_taxonomy($object_name, $object_id, $rel_id)
+		{
+			global $sm;
+			if (is_array($rel_id))
+				{
+					for ($i = 0; $i<count($rel_id); $i++)
+						{
+							sm_set_taxonomy($object_name, $object_id, $rel_id[$i]);
+							return;
+						}
+				}
+			if (in_array($rel_id, sm_get_taxonomy($object_name, $object_id)))
+				return;
+			$q=new TQuery($sm['tu'].'taxonomy');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', intval($object_id));
+			$q->Add('rel_id', intval($rel_id));
+			$q->Insert();
+		}
+
 ?>
