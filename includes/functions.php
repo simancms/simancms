@@ -203,12 +203,12 @@
 		}
 
 	//return 1 if both groups ;X;Y;Z; ;X;R;T; has the same group in list 
-	function compare_groups($grp1, $grp2)
+	function compare_groups($gr1, $gr2)
 		{
-			if (!is_array($grp1))
-				$gr1 = get_array_groups($grp1);
+			if (!is_array($gr1))
+				$gr1 = get_array_groups($gr1);
 			if (!is_array($gr2))
-				$gr2 = get_array_groups($grp2);
+				$gr2 = get_array_groups($gr2);
 			for ($i = 0; $i<count($gr1); $i++)
 				{
 					for ($j = 0; $j<count($gr2); $j++)
