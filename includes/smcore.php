@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-07-22
+	//#revision 2014-09-16
 	//==============================================================================
 
 
@@ -683,7 +683,7 @@
 					$_sessionvars['userinfo_login'] = $usrinfo['login'];
 					$_sessionvars['userinfo_email'] = $usrinfo['email'];
 					$_sessionvars['userinfo_level'] = $usrinfo['user_status'];
-					$_sessionvars['userinfo_groups'] = $usrinfo['groups_user'];
+					$_sessionvars['userinfo_groups'] = sm_get_taxonomy('usergroups', $usrinfo['id_user']);
 					unset($usrinfo['password']);
 					unset($usrinfo['question']);
 					unset($usrinfo['answer']);

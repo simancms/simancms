@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
 	Version: 1.6.7
-	Revision: 2014-05-05
+	Revision: 2014-09-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -284,7 +284,7 @@
 								{
 									if (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_view']))
 												$m['content'][$i]["can_view"] = 1;
 											else
 												$m['content'][$i]["can_view"] = 0;
@@ -307,7 +307,7 @@
 								}
 							elseif (!empty($userinfo['groups']))
 								{
-									if (compare_groups($userinfo['groups'], $row['groups_modify']) == 1)
+									if (compare_groups($userinfo['groups'], $row['groups_modify']))
 										{
 											$m['content'][$i]["can_edit"] = 1;
 											$m['content'][$i]["can_delete"] = 1;
@@ -423,7 +423,7 @@
 						{
 							if (!empty($userinfo['groups']))
 								{
-									if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
+									if (compare_groups($userinfo['groups'], $row['groups_view']))
 										$m['category']['can_view'] = 1;
 									else
 										$m['category']['can_view'] = 0;
@@ -508,7 +508,7 @@
 								{
 									if (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row['groups_view']) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_view']))
 												$m['category']['can_view'] = 1;
 											else
 												$m['category']['can_view'] = 0;

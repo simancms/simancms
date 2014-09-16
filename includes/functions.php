@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-09-12
+	//#revision 2014-09-16
 	//==============================================================================
 
 	function is_email($string)
@@ -151,15 +151,13 @@
 	function cut_str_by_word($str, $count, $end_str)
 		{
 			$str = strip_tags($str);
-			if (strlen($str)>=$count)
+			if (strlen($str)>$count)
 				{
-					while (substr($str, $count, 1) != ' ' && substr($str, $count, 1) != '.' && substr($str, $count, 1) != ',' && substr($str, $count, 1) != '!' && substr($str, $count, 1) != ':' && substr($str, $count, 1) != ';' && $count>20)
-						$count--;
-					$res = substr($str, 0, $count).$end_str;
+					$res = explode('<br />', wordwrap($str, $count, '<br />'));
+					return $res[0].$end_str;
 				}
 			else
-				$res = $str;
-			return $res;
+				return $str;
 		}
 
 	function get_groups_list()
@@ -167,12 +165,13 @@
 			global $tableusersprefix;
 			$result = execsql("SELECT * FROM ".$tableusersprefix."groups ORDER BY title_group ASC");
 			$i = 0;
-			while ($row = database_fetch_object($result))
+			$res=Array();
+			while ($row = database_fetch_assoc($result))
 				{
-					$res[$i]['id'] = $row->id_group;
-					$res[$i]['title'] = $row->title_group;
-					$res[$i]['description'] = $row->description_group;
-					$res[$i]['auto'] = $row->autoaddtousers_group;
+					$res[$i]['id'] = $row['id_group'];
+					$res[$i]['title'] = $row['title_group'];
+					$res[$i]['description'] = $row['description_group'];
+					$res[$i]['auto'] = $row['autoaddtousers_group'];
 					$i++;
 				}
 			return $res;
@@ -182,15 +181,11 @@
 	function get_array_groups($gr)
 		{
 			$res = explode(';', $gr);
-			$j = 0;
 			$res2=Array();
 			for ($i = 0; $i<count($res); $i++)
 				{
 					if (!empty($res[$i]))
-						{
-							$res2[$j] = $res[$i];
-							$j++;
-						}
+						$res2[] = $res[$i];
 				}
 			return $res2;
 		}
@@ -210,24 +205,27 @@
 	//return 1 if both groups ;X;Y;Z; ;X;R;T; has the same group in list 
 	function compare_groups($grp1, $grp2)
 		{
-			$gr1 = get_array_groups($grp1);
-			$gr2 = get_array_groups($grp2);
+			if (!is_array($grp1))
+				$gr1 = get_array_groups($grp1);
+			if (!is_array($gr2))
+				$gr2 = get_array_groups($grp2);
 			for ($i = 0; $i<count($gr1); $i++)
 				{
 					for ($j = 0; $j<count($gr2); $j++)
 						{
 							if ($gr1[$i] == $gr2[$j])
-								return 1;
+								return true;
 						}
 				}
-			return 0;
+			return false;
 		}
 
-	//Convert group string ;X;Y;Z; to SQL
-	function convert_groups_to_sql($str, $fieldname)
+	//Convert group string ;X;Y;Z; or array to SQL
+	function convert_groups_to_sql($gr, $fieldname)
 		{
 			$sql = '';
-			$gr = get_array_groups($str);
+			if (!is_array($gr))
+				$gr = get_array_groups($str);
 			for ($i = 0; $i<count($gr); $i++)
 				{
 					if (!empty($sql))

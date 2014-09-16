@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-04-26
+	//#revision 2014-09-16
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -260,9 +260,9 @@
 							while ($pnlrow = database_fetch_object($pnlresult))
 								{
 									$dont_show_high_priority = 0;
-									if ((intval($userinfo['level']) < intval($pnlrow->level) && $pnlrow->thislevelonly == 0) && compare_groups($userinfo['groups'], $pnlrow->groups_view) != 1)
+									if ((intval($userinfo['level']) < intval($pnlrow->level) && $pnlrow->thislevelonly == 0) && !compare_groups($userinfo['groups'], $pnlrow->groups_view))
 										$dont_show_high_priority = 1;
-									elseif ((intval($userinfo['level']) > intval($pnlrow->level) && $pnlrow->thislevelonly == -1) && compare_groups($userinfo['groups'], $pnlrow->groups_view) != 1)
+									elseif ((intval($userinfo['level']) > intval($pnlrow->level) && $pnlrow->thislevelonly == -1) && !compare_groups($userinfo['groups'], $pnlrow->groups_view))
 										$dont_show_high_priority = 1;
 									elseif (intval($userinfo['level']) != intval($pnlrow->level) && $pnlrow->thislevelonly == 1)
 										$dont_show_high_priority = 1;

@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
 	Version: 1.6.7
-	Revision: 2014-05-01
+	Revision: 2014-09-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -316,7 +316,7 @@
 										}
 									elseif (!empty($userinfo['groups']))
 										{
-											if (compare_groups($userinfo['groups'], $row['groups_modify']) == 1)
+											if (compare_groups($userinfo['groups'], $row['groups_modify']))
 												{
 													$m["can_edit"] = 1;
 													$m["can_delete"] = 1;
