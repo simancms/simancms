@@ -1121,12 +1121,17 @@
 			$q=new TQuery($sm['t'].'taxonomy');
 			$q->Add('object_name', dbescape($object_name));
 			if ($use_object_id_as_rel_id)
-				$q->Add('rel_id', dbescape($object_id));
+				{
+					$q->Add('rel_id', dbescape($object_id));
+					$q->SelectFields('object_id as taxonomyid');
+				}
 			else
-				$q->Add('object_id', dbescape($object_id));
-			$q->SelectFields('rel_id');
+				{
+					$q->Add('object_id', dbescape($object_id));
+					$q->SelectFields('rel_id as taxonomyid');
+				}
 			$q->Select();
-			return $q->ColumnValues('rel_id');
+			return $q->ColumnValues('taxonomyid');
 		}
 
 ?>

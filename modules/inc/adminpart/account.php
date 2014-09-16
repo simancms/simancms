@@ -285,7 +285,8 @@
 				}
 			if (sm_action('postdeletegroup'))
 				{
-					TQuery::ForTable($tableusersprefix.'groups')->Add('id_group', intval($_getvars['id']))->Remove();
+					sm_extcore();
+					sm_delete_group(intval($_getvars['id']));
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
 		}

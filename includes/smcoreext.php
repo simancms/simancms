@@ -136,8 +136,7 @@
 			$q = new TQuery($tableusersprefix.'groups');
 			$q->Add('id_group', intval($id_group));
 			$q->Remove();
-			sm_unset_group($id_group);
-			//TODO: Clean taxonomy
+			sm_unset_group($id_group, sm_get_taxonomy('usergroups', $id_group, true));
 		}
 
 	function sm_tempdata_addtext($type, $identifier, $data, $timetolive = 3600)
