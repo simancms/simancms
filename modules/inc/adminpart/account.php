@@ -134,7 +134,7 @@
 						{
 							$groupinfo=TQuery::ForTable($sm['tu'].'groups')->Add('id_group', intval($_getvars['group']))->Get();
 							add_path($groupinfo['title_group'], 'index.php?m=account&d=usrlist&group='.$groupinfo['id_group']);
-							$q->Add("groups_user LIKE '%;".intval($_getvars['group']).";%'");
+							$q->Add("id_user IN (SELECT object_id FROM ".$sm['t']."taxonomy WHERE object_name='usergroups' AND rel_id=".intval($groupinfo['id_group']).")");
 						}
 					$q->OrderBy("login");
 					$q->Limit($limit);
