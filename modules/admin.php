@@ -946,6 +946,7 @@
 					$t->AddCol('ip', 'IP', '10%');
 					$t->AddCol('user', $lang['user'], '10%');
 					$q=new TQuery($tableusersprefix."log");
+					$q->Add('object_name', dbescape('system'));
 					$q->OrderBy('id_log DESC');
 					$q->Limit($limit);
 					$q->Offset($offset);

@@ -1038,7 +1038,7 @@
 	function sm_set_metadata($object_name, $object_id, $key_name, $val)
 		{
 			global $sm;
-			$q=new TQuery($sm['tu'].'metadata');
+			$q=new TQuery($sm['t'].'metadata');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', dbescape($object_id));
 			$q->Add('key_name', dbescape($key_name));
@@ -1068,7 +1068,7 @@
 			global $sm;
 			if (isset($sm['cache']['metadata'][$object_name][$object_id][$key_name]) && !$dont_use_cache)
 				return $sm['cache']['metadata'][$object_name][$object_id][$key_name];
-			$q=new TQuery($sm['tu'].'metadata');
+			$q=new TQuery($sm['t'].'metadata');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', dbescape($object_id));
 			$q->Add('key_name', dbescape($key_name));
@@ -1079,7 +1079,7 @@
 	function sm_load_metadata($object_name, $object_id)
 		{
 			global $sm;
-			$q=new TQuery($sm['tu'].'metadata');
+			$q=new TQuery($sm['t'].'metadata');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', dbescape($object_id));
 			$q->Open();
@@ -1132,6 +1132,19 @@
 				}
 			$q->Select();
 			return $q->ColumnValues('taxonomyid');
+		}
+
+	function sm_log($object_name, $object_id, $description)
+		{
+			global $sm;
+			$q=new TQuery($sm['t'].'log');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			$q->Add('description', dbescape($description));
+			$q->Add('ip', dbescape(inet_pton($sm['server']['REMOTE_ADDR'])));
+			$q->Add('time', time());
+			$q->Add('user', $sm['u']['login']);
+			$q->Insert();
 		}
 
 ?>

@@ -157,6 +157,7 @@
 							$inst['tables'][15]['name'] = 'log';
 							$inst['tables'][16]['name'] = 'tempdata';
 							$inst['tables'][17]['name'] = 'metadata';
+							$inst['tables'][18]['name'] = 'taxonomy';
 							include('dbcreate'.$serverDB.'.php');
 							for ($i = 0; $i < count($inst['tables']); $i++)
 								{

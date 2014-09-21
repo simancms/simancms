@@ -404,7 +404,7 @@
 	function sm_metadata_objectids_for($object_name, $key_name, $val=NULL)
 		{
 			global $sm;
-			$q=new TQuery($sm['tu'].'metadata');
+			$q=new TQuery($sm['t'].'metadata');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('key_name', dbescape($key_name));
 			if ($val!==NULL)
@@ -425,7 +425,7 @@
 							return;
 						}
 				}
-			$q=new TQuery($sm['tu'].'taxonomy');
+			$q=new TQuery($sm['t'].'taxonomy');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', intval($object_id));
 			$q->Add('rel_id', intval($rel_id));
@@ -445,11 +445,35 @@
 				}
 			if (in_array($rel_id, sm_get_taxonomy($object_name, $object_id)))
 				return;
-			$q=new TQuery($sm['tu'].'taxonomy');
+			$q=new TQuery($sm['t'].'taxonomy');
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', intval($object_id));
 			$q->Add('rel_id', intval($rel_id));
 			$q->Insert();
+		}
+	
+	function sm_get_log($object_name, $object_id, $sort_desc=true, $limit=0, $offset=0)
+		{
+			global $sm;
+			$q=new TQuery($sm['t'].'log');
+			$q->Add('object_name', dbescape($object_name));
+			$q->Add('object_id', dbescape($object_id));
+			if ($sort_desc)
+				$q->OrderBy('id_log DESC');
+			else
+				$q->OrderBy('id_log ASC');
+			if ($limit!==0)
+				{
+					$q->Limit($limit);
+					if ($offset!==0)
+						$q->Offset($offset);
+				}
+			$q->Select();
+			for ($i = 0; $i < $q->Count(); $i++)
+				{
+					$q->items[$i]['ip']=inet_ntop($q->items[$i]['ip']);
+				}
+			return $q->items;
 		}
 
 ?>

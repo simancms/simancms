@@ -242,9 +242,11 @@ $inst['tables'][14]['result']=$result;
 $sql="
 CREATE TABLE ".$tableusersprefix."log (
   `id_log` int(10) unsigned NOT NULL auto_increment,
+  `object_name` VARCHAR(255)  NOT NULL  DEFAULT 'system',
+  `object_id` VARCHAR(255)  NOT NULL  DEFAULT '0',
   `type` tinyint(4) NULL DEFAULT 0,
   `description` text NULL,
-  `ip` BINARY(16) NULL DEFAULT NULL,
+  `ip` VARBINARY(255) NULL DEFAULT NULL,
   `time` int(11) NULL,
   `user` varchar(255) NULL,
   PRIMARY KEY (`id_log`)
@@ -268,7 +270,7 @@ $inst['tables'][16]['result']=$result;
 $sql="ALTER  TABLE ".$tableprefix."tempdata ADD INDEX ( `deleteafter_td` ) ;";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
-$sql="CREATE TABLE ".$tableusersprefix."metadata (
+$sql="CREATE TABLE ".$tableprefix."metadata (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`object_name` varchar(50) NOT NULL DEFAULT '',
 	`object_id` varchar(50) NOT NULL DEFAULT '',
@@ -279,7 +281,15 @@ $sql="CREATE TABLE ".$tableusersprefix."metadata (
 )";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][17]['result']=$result;
+
+$sql="CREATE TABLE `".$tableprefix."taxonomy` (
+					`object_name` varchar(50) NOT NULL DEFAULT '',
+					`object_id` int(11) unsigned NOT NULL DEFAULT '0',
+					`rel_id` int(11) unsigned NOT NULL DEFAULT '0',
+					PRIMARY KEY (`object_name`,`object_id`,`rel_id`)
+				)";
 $result=database_db_query($nameDB, $sql, $lnkDB);
+$inst['tables'][18]['result']=$result;
 
 }
 
