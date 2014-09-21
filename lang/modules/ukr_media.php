@@ -5,7 +5,7 @@
 	$lang['module_galleies']['gallery']='Галерея';
 	$lang['module_galleies']['gallery_thumb_width']='Ширина мініатюри галереї';
 	$lang['module_galleies']['gallery_thumb_height']='Висота мініатюри галереї';
-	$lang['module_galleies']['gallery_default_view']='Вигляд галераї по замовчуванню';
+	$lang['module_galleies']['gallery_default_view']='Вигляд галерeї по замовчуванню';
 	$lang['module_galleies']['gallery_view_items_per_row']='Кількість елементів в рядку при перегляді галереї';
 	$lang['module_galleies']['galleries_view_items_per_row']='Кількість елементів в рядку при перегляді галерей';
 	$lang['module_galleies']['galleries_sort']='Сортування галерей';
