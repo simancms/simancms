@@ -931,7 +931,7 @@
 					add_path($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog');
 					if (intval($_settings['log_store_days'])>0)
 						{
-							$sql = "DELETE FROM ".$tableusersprefix."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
+							$sql = "DELETE FROM ".$sm['t']."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
 							$result = execsql($sql);
 						}
 					$m["title"] = $lang['module_admin']['view_log'];
@@ -945,7 +945,7 @@
 					$t->AddCol('description', $lang['description']['description'], '60%');
 					$t->AddCol('ip', 'IP', '10%');
 					$t->AddCol('user', $lang['user'], '10%');
-					$q=new TQuery($tableusersprefix."log");
+					$q=new TQuery($sm['t']."log");
 					$q->Add('object_name', dbescape('system'));
 					$q->OrderBy('id_log DESC');
 					$q->Limit($limit);

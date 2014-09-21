@@ -106,8 +106,8 @@
 
 	function sm_add_group($title_group, $description_group, $autoaddtousers_group = 0)
 		{
-			global $tableusersprefix;
-			$q = new TQuery($tableusersprefix.'groups');
+			global $sm;
+			$q = new TQuery($sm['t'].'groups');
 			$q->Add('title_group', addslashes($title_group));
 			$q->Add('description_group', addslashes($description_group));
 			$q->Add('autoaddtousers_group', intval($autoaddtousers_group));
@@ -132,8 +132,8 @@
 
 	function sm_delete_group($id_group)
 		{
-			global $tableusersprefix;
-			$q = new TQuery($tableusersprefix.'groups');
+			global $sm;
+			$q = new TQuery($sm['t'].'groups');
 			$q->Add('id_group', intval($id_group));
 			$q->Remove();
 			sm_unset_group($id_group, sm_get_taxonomy('usergroups', $id_group, true));

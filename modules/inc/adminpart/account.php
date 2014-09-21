@@ -132,7 +132,7 @@
 						$q->Add("login LIKE '".dbescape($_getvars['sellogin'])."%'");
 					if (!empty($_getvars['group']))
 						{
-							$groupinfo=TQuery::ForTable($sm['tu'].'groups')->Add('id_group', intval($_getvars['group']))->Get();
+							$groupinfo=TQuery::ForTable($sm['t'].'groups')->Add('id_group', intval($_getvars['group']))->Get();
 							add_path($groupinfo['title_group'], 'index.php?m=account&d=usrlist&group='.$groupinfo['id_group']);
 							$q->Add("id_user IN (SELECT object_id FROM ".$sm['t']."taxonomy WHERE object_name='usergroups' AND rel_id=".intval($groupinfo['id_group']).")");
 						}
@@ -214,7 +214,7 @@
 					$t->AddCol('search', '', '16', $lang['search'], '', 'search.gif');
 					$t->AddEdit();
 					$t->AddDelete();
-					$q=new TQuery($tableusersprefix.'groups');
+					$q=new TQuery($sm['t'].'groups');
 					$q->OrderBy('title_group');
 					$q->Open();
 					$i = 0;
@@ -239,7 +239,7 @@
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['add_group'];
-					$q = new TQuery($tableusersprefix.'groups');
+					$q = new TQuery($sm['t'].'groups');
 					$q->AddPost('title_group');
 					$q->AddPost('description_group');
 					$q->Add('autoaddtousers_group', intval($_postvars['autoaddtousers_group']));
@@ -250,7 +250,7 @@
 				{
 					$m['module'] = 'account';
 					$m['title'] = $lang['common']['edit'];
-					$q = new TQuery($tableusersprefix.'groups');
+					$q = new TQuery($sm['t'].'groups');
 					$q->AddPost('title_group');
 					$q->AddPost('description_group');
 					$q->Add('autoaddtousers_group', intval($_postvars['autoaddtousers_group']));
@@ -277,7 +277,7 @@
 					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
 					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
 					if (sm_action('editgroup'))
-						$f->LoadValues('SELECT * FROM '.$tableusersprefix.'groups WHERE id_group='.intval($_getvars['id']));
+						$f->LoadValues('SELECT * FROM '.$sm['t'].'groups WHERE id_group='.intval($_getvars['id']));
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);

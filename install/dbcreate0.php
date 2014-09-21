@@ -207,7 +207,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][11]['result']=$result;
 
 $sql="
-CREATE TABLE ".$tableusersprefix."groups (`id_group` int(10) unsigned NOT NULL auto_increment, `title_group` varchar(255) NULL, `description_group` text NULL, `autoaddtousers_group` TINYINT NOT NULL DEFAULT '0',  PRIMARY KEY (`id_group`));
+CREATE TABLE ".$tableprefix."groups (`id_group` int(10) unsigned NOT NULL auto_increment, `title_group` varchar(255) NULL, `description_group` text NULL, `autoaddtousers_group` TINYINT NOT NULL DEFAULT '0',  PRIMARY KEY (`id_group`));
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][12]['result']=$result;
@@ -240,7 +240,7 @@ $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][14]['result']=$result;
 
 $sql="
-CREATE TABLE ".$tableusersprefix."log (
+CREATE TABLE ".$tableprefix."log (
   `id_log` int(10) unsigned NOT NULL auto_increment,
   `object_name` VARCHAR(255)  NOT NULL  DEFAULT 'system',
   `object_id` VARCHAR(255)  NOT NULL  DEFAULT '0',

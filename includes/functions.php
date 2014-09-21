@@ -162,8 +162,8 @@
 
 	function get_groups_list()
 		{
-			global $tableusersprefix;
-			$result = execsql("SELECT * FROM ".$tableusersprefix."groups ORDER BY title_group ASC");
+			global $sm;
+			$result = execsql("SELECT * FROM ".$sm['t']."groups ORDER BY title_group ASC");
 			$i = 0;
 			$res=Array();
 			while ($row = database_fetch_assoc($result))
@@ -244,11 +244,11 @@
 	define("LOG_ALL", 120);
 	function log_write($type, $description)
 		{
-			global $tableusersprefix, $_servervars, $_settings, $userinfo;
+			global $sm, $_servervars, $_settings, $userinfo;
 			if ($_settings['log_type']>=$type)
 				{
 					$ip = $_servervars['REMOTE_ADDR'];
-					$sql = "INSERT INTO ".$tableusersprefix."log (type, description, ip, time, user) VALUES (".intval($type).", '".dbescape($description)."', '".inet_pton($ip)."', ".time().", '".dbescape($userinfo['login'])."')";
+					$sql = "INSERT INTO ".$sm['t']."log (type, description, ip, time, user) VALUES (".intval($type).", '".dbescape($description)."', '".inet_pton($ip)."', ".time().", '".dbescape($userinfo['login'])."')";
 					execsql($sql);
 				}
 		}

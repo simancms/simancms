@@ -159,7 +159,7 @@
 						}
 					if (!empty($_settings['users_menu_id']))
 						{
-							$sql = "SELECT * FROM ".$tableusersprefix."menu_lines WHERE id_menu_ml='".$_settings['users_menu_id']."' ORDER BY position";
+							$sql = "SELECT * FROM ".$sm['t']."menu_lines WHERE id_menu_ml='".$_settings['users_menu_id']."' ORDER BY position";
 							$result = execsql($sql);
 							$i = 0;
 							while ($row = database_fetch_object($result))
