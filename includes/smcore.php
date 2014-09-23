@@ -86,11 +86,11 @@
 			sm_update_settings('postload_modules', $_settings['postload_modules']);
 		}
 
-	function sm_add_cssfile($fname, $includeAsIs = 0)
+	function sm_add_cssfile($fname, $includeAsIs = false)
 		{
 			global $special, $sm;
 			if (empty($fname)) return false;
-			if ($includeAsIs == 1)
+			if ($includeAsIs === 1 || $includeAsIs === true)
 				$special['customcss'][count($special['customcss'])] = $fname;
 			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
 				$special['customcss'][count($special['customcss'])] = 'themes/'.sm_current_theme().'/'.$fname;
@@ -99,11 +99,11 @@
 			return $special['customcss'][count($special['customcss'])-1];
 		}
 
-	function sm_add_jsfile($fname, $includeAsIs = 0)
+	function sm_add_jsfile($fname, $includeAsIs = false)
 		{
 			global $special, $sm;
 			if (empty($fname)) return false;
-			if ($includeAsIs == 1)
+			if ($includeAsIs === 1 || $includeAsIs === true)
 				$special['customjs'][count($special['customjs'])] = $fname;
 			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
 				$special['customjs'][count($special['customjs'])] = 'themes/'.sm_current_theme().'/'.$fname;
@@ -873,6 +873,8 @@
 			global $sm;
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
+			elseif (strcmp($libname, 'autocomplete')==0)
+				include_once('ext/autocomplete/siman_config.php');
 		}
 
 	function sm_setfocus($dom_element, $noservicesymbol_as_id=true)
@@ -1145,6 +1147,13 @@
 			$q->Add('time', time());
 			$q->Add('user', $sm['u']['login']);
 			$q->Insert();
+		}
+
+	function sm_nocache()
+		{
+			@header('Cache-Control: no-cache, no-store, must-revalidate');
+			@header('Pragma: no-cache');
+			@header('Expires: 0');
 		}
 
 ?>

@@ -2,6 +2,7 @@
 <html>
 <head>{$special.document.headstart}{$special.document.headdef}
 	<link href="themes/{$special.theme}/stylesheets.css" rel="stylesheet">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="themes/{$special.theme}/script.js"></script>
 {$_settings.meta_header_text}
 {$special.document.headend}</head>

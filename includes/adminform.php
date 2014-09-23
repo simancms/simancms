@@ -385,6 +385,15 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['send_fields_info']=true;
 					}
+				function Autocomplete($ajax_url, $name=NULL)
+					{
+						global $sm;
+						sm_use('autocomplete');
+						sm_autocomplete_init_controls();
+						if ($name===NULL)
+							$name=$this->currentname;
+						sm_autocomplete_for('#'.$this->form['prefix'].$name, $ajax_url);
+					}
 			}
 
 		define("adminform_DEFINED", 1);
