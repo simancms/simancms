@@ -48,8 +48,8 @@
 				}
 			if (sm_action('add', 'edit'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					add_path_modules();
 					add_path('Replacers', 'index.php?m=replacers&d=admin');
 					add_path_current();
@@ -74,9 +74,9 @@
 				}
 			if (sm_action('admin'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					add_path_modules();
 					add_path('Replacers', 'index.php?m=replacers&d=admin');
 					$ui = new TInterface();

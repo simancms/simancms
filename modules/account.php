@@ -93,7 +93,7 @@
 	if (sm_action('successregister'))
 		{
 			sm_title($lang["register"]);
-			include_once('includes/admininterface.php');
+			sm_use('admininterface');
 			$ui = new TInterface();
 			$ui->p($lang['success_registration'].'.');
 			$ui->a('index.php?m=account&d=show', $lang['you_can_enter']);

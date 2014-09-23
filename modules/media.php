@@ -69,7 +69,7 @@
 				{
 					sm_title($ctg['title']);
 					sm_add_cssfile('media.css');
-					include_once('includes/admininterface.php');
+					sm_use('admininterface');
 					$ui = new TInterface();
 					$q=new TQuery($sm['t'].'media');
 					$q->Add('id_ctg', intval($ctg['id_ctg']));

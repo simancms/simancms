@@ -163,9 +163,9 @@
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					add_path_current();
 					$m['ctg'] = siman_load_ctgs_content();
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -249,7 +249,7 @@
 						$sql .= " ORDER BY title_content ASC";
 					if ($showall != 1)
 						$sql .= " LIMIT ".intval($_settings['admin_items_by_page'])." OFFSET ".intval($from_record);
-					require_once('includes/admintable.php');
+					sm_use('admintable');
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
 					$t->AddEdit();

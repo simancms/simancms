@@ -20,8 +20,8 @@
 					add_path_modules();
 					add_path_current();
 					sm_title($lang['settings']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$b=new TButtons();
 					$b->Button($lang['set_as_block'].' "'.$lang['search'].'"', 'index.php?m=blocks&d=add&b=search&id=1&c='.urlencode($lang['search']));

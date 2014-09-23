@@ -161,8 +161,8 @@
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
 					add_path($lang['common']['list'], 'index.php?m=download&d=list');
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->div($error, '', 'errormessage error-message');
@@ -223,8 +223,8 @@
 							add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
 							add_path($lang['common']['list'], 'index.php?m=download&d=list');
 							add_path_current();
-							include_once('includes/admininterface.php');
-							include_once('includes/adminform.php');
+							sm_use('admininterface');
+							sm_use('adminform');
 							$ui = new TInterface();
 							if (!empty($error))
 								$ui->div($error, '', 'errormessage error-message');
@@ -246,8 +246,8 @@
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
 					add_path($lang['common']['list'], 'index.php?m=download&d=list');
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->div($error, '', 'errormessage error-message');
@@ -264,10 +264,10 @@
 				}
 			if (sm_action('list'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('adminform');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					add_path_modules();
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
 					add_path($lang['common']['list'], 'index.php?m=download&d=list');
@@ -321,7 +321,7 @@
 					add_path_current();
 					sm_extcore();
 					sm_title($lang['control_panel'].' :: '.$lang['module_download']['downloads']);
-					include_once('includes/admininterface.php');
+					sm_use('admininterface');
 					$ui = new TInterface();
 					$ui->a('index.php?m=download&d=list', $lang['module_download']['downloads']);
 					$ui->br();

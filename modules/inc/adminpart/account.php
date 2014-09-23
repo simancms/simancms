@@ -74,8 +74,8 @@
 					$info=TQuery::ForTable($sm['tu'].'users')->Add('id_user', intval($_getvars['id']))->Get();
 					if (!empty($info['id_user']) && intval($info['id_user'])!=1)
 						{
-							include_once('includes/admininterface.php');
-							include_once('includes/adminform.php');
+							sm_use('admininterface');
+							sm_use('adminform');
 							$ui = new TInterface();
 							if (!empty($error))
 								$ui->NotificationError($lang['messages']['wrong_email']);
@@ -114,9 +114,9 @@
 					$m["title"] = $lang["user_list"];
 					if (empty($_getvars['sellogin']))
 						$_getvars['sellogin'] = $_postvars['sellogin'];
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$b = new TButtons();
 					$b->AddButton('add', $lang['register_user'], 'index.php?m=account&d=register');
@@ -205,9 +205,9 @@
 					add_path($lang['module_account']['groups'], 'index.php?m=account&d=listgroups');
 					$m['module'] = 'account';
 					$m['title'] = $lang['module_account']['groups'];
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -263,8 +263,8 @@
 						sm_title($lang['module_account']['add_group']);
 					else
 						sm_title($lang['common']['edit']);
-					require_once('includes/adminform.php');
-					include_once('includes/admininterface.php');
+					sm_use('adminform');
+					sm_use('admininterface');
 					$ui = new TInterface();
 					add_path_control();
 					add_path($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups');

@@ -229,9 +229,9 @@
 					sm_title($lang['static_blocks']);
 					add_path_control();
 					add_path($lang['static_blocks'], "index.php?m=blocks");
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$q=new TQuery($sm['t']."blocks");
 					$q->Add('panel_block', 'c');

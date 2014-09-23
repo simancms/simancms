@@ -79,7 +79,7 @@
 						$sql .= " WHERE ".$tableusersprefix."privmsg.id_recipient_privmsg=".$tableusersprefix."users.id_user";
 					$sql .= ' AND '.$tmp_filter;
 					$sql .= ' ORDER BY time_privmsg DESC ';
-					require_once('includes/admintable.php');
+					sm_use('admintable');
 					$t = new TGrid('edit');
 					$t->AddCol('ico', '', '16');
 					$t->AddCol('title', $lang['common']['title'], '80%');

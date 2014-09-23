@@ -48,7 +48,7 @@
 					sm_title($lang['module_menu']['module_menu_name'].': '.$lang["settings"]);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
-					include_once('includes/admininterface.php');
+					sm_use('admininterface');
 					$ui = new TInterface();
 					$ui->a('index.php?m=menu&d=listmenu', $lang['list_menus']);
 					$ui->br();
@@ -60,8 +60,8 @@
 				{
 					$m["module"] = 'menu';
 					$m["title"] = $lang['module_menu']['add_menu_line'];
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=menu&d=prepareaddline&returnto='.urlencode($_getvars['returnto']));
 					$f->AddText('p_caption', $lang['caption']);
@@ -289,9 +289,9 @@
 					add_path($lang['list_menus'], "index.php?m=menu&d=listmenu");
 					add_path($menuinfo['caption_m'], "index.php?m=menu&d=listlines&mid=".$menu_id);
 					$m['menu'] = siman_load_menu($menu_id);
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -376,9 +376,9 @@
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');

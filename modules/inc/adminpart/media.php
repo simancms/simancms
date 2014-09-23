@@ -142,8 +142,8 @@
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->NotificationError($error);
@@ -187,8 +187,8 @@
 								add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
 							add_path_current();
 							sm_title($lang['common']['image'].' - '.$image['title']);
-							include_once('includes/admininterface.php');
-							include_once('includes/adminform.php');
+							sm_use('admininterface');
+							sm_use('adminform');
 							$ui = new TInterface();
 							$ui->div_open('image-detail-'.$image['id'], 'image-detail');
 							$ui->img($image['filepath']);
@@ -208,8 +208,8 @@
 					else
 						add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (is_array($error))
 						for ($i = 0; $i < count($error); $i++)
@@ -229,10 +229,10 @@
 
 			if (sm_action('list'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('adminform');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
@@ -339,8 +339,8 @@
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->NotificationError($error);
@@ -378,10 +378,10 @@
 
 			if (sm_action('libraries'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('adminform');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					sm_title($lang['module_galleies']['galleries']);
@@ -452,8 +452,8 @@
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path_current();
 					sm_title($lang['settings']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$f=new TForm('index.php?m=media&d=postsettings');
 					$f->AddText('gallery_thumb_width', $lang['module_galleies']['gallery_thumb_width']);
@@ -481,7 +481,7 @@
 					add_path_modules();
 					sm_title($lang['module_galleies']['media_files']);
 					add_path_current();
-					include_once('includes/admininterface.php');
+					sm_use('admininterface');
 					include_once('includes/admindashboard.php');
 					$ui = new TInterface();
 					$dash=new TDashBoard();

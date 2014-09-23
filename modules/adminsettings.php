@@ -34,8 +34,8 @@
 						sm_title($lang['common']['add']);
 					else
 						sm_title($lang['common']['edit']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (sm_action('addeditor', 'addhtml'))
 						$f = new TForm('index.php?m=adminsettings&d=postadd');
@@ -67,9 +67,9 @@
 				{
 					add_path_modules();
 					add_path($lang['module_adminsettings']['module_adminsettings'], 'index.php?m=adminsettings&d=admin');
-					require_once('includes/admintable.php');
-					require_once('includes/adminbuttons.php');
-					require_once('includes/admininterface.php');
+					sm_use('admintable');
+					sm_use('adminbuttons');
+					sm_use('admininterface');
 					sm_title($lang['settings']);
 					$ui = new TInterface();
 					$b=new TButtons();

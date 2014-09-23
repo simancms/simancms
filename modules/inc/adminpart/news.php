@@ -148,9 +148,9 @@
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category";
 					$result = execsql($sql);
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -212,7 +212,7 @@
 					$q->Limit($_settings['admin_items_by_page']);
 					$q->Offset($from_record);
 					$q->Select();
-					require_once('includes/admintable.php');
+					sm_use('admintable');
 					$t=new TGrid('edit');
 					$t->AddCol('date', $lang['date_news'], '10%');
 					$t->AddCol('title', $lang['common']['title'], '90%');

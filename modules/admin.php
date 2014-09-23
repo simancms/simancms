@@ -209,7 +209,7 @@
 					sm_event('beforeadmindashboard');
 					sm_title($lang['control_panel']);
 					include_once('includes/admindashboard.php');
-					include_once('includes/admininterface.php');
+					sm_use('admininterface');
 					$ui = new TInterface();
 					sm_event('onadmindashboardstart');
 					$dashboard=new TDashBoard();
@@ -251,8 +251,8 @@
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($m['error_message']))
 						$ui->NotificationError($m['error_message']);
@@ -267,8 +267,8 @@
 				{
 					add_path_modules();
 					$m['title'] = $lang['module_admin']['add_module'];
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
+					sm_use('admininterface');
+					sm_use('admintable');
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('title', $lang['module'], '20%');
@@ -325,9 +325,9 @@
 				{
 					add_path_modules();
 					$m["title"] = $lang['modules_mamagement'];
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('admintable');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$b = new TButtons();
 					$b->AddButton('add', $lang['module_admin']['add_module'], 'index.php?m=admin&d=addmodule');
@@ -384,8 +384,8 @@
 					add_path_control();
 					add_path_current();
 					sm_title($lang['change_title']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=admin&d=postchgttl&mid='.intval($_getvars['mid']));
 					$f->AddText('module_title', $lang['title']);
@@ -518,8 +518,8 @@
 					add_path_control();
 					add_path_current();
 					sm_title($lang['module_admin']['optimize_database']);
-					include_once('includes/admininterface.php');
-					include_once('includes/admintable.php');
+					sm_use('admininterface');
+					sm_use('admintable');
 					$ui = new TInterface();
 					if ($serverDB == 0)
 						{
@@ -574,8 +574,8 @@
 			if (sm_action('viewimg'))
 				{
 					sm_title($lang['common']['image']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$ui->html('<div align="center">');
 					$ui->html('<img src="files/img/'.$_getvars['path'].'" width="400" />');
@@ -588,7 +588,7 @@
 			if (sm_action('listimg'))
 				{
 					sm_title($lang['module_admin']['images_list']);
-					require_once('includes/admintable.php');
+					sm_use('admintable');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					$t=new TGrid();
@@ -670,8 +670,8 @@
 					$m['image']['old_name'] = $_getvars["imgn"];
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], "index.php?m=admin&d=listimg");
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($m['error_message']))
 						$ui->div($m['error_message'], '', 'errormessage');
@@ -711,8 +711,8 @@
 					add_path_control();
 					add_path_current();
 					sm_title($lang['module_admin']['mass_email']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->div($error, '', 'errormessage error-message');
@@ -731,9 +731,9 @@
 					add_path_control();
 					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
 					$m["title"] = $lang['module_admin']['virtual_filesystem'];
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminbuttons.php');
+					sm_use('admintable');
+					sm_use('admininterface');
+					sm_use('adminbuttons');
 					$offset=abs(intval($_getvars['from']));
 					$limit=intval($_settings['admin_items_by_page']);
 					$ui = new TInterface();
@@ -813,8 +813,8 @@
 				{
 					add_path_control();
 					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->div($error, '', 'error alert-error');
@@ -847,7 +847,7 @@
 			if (sm_action('filesystemexp'))
 				{
 					$m["title"] = $lang['module_admin']['virtual_filesystem_regexp'];
-					require_once('includes/admintable.php');
+					sm_use('admintable');
 					$m['table']['columns']['regexp']['caption'] = $lang['module_admin']['regexp'];
 					$m['table']['columns']['regexp']['width'] = '50%';
 					$m['table']['columns']['replace']['caption'] = $lang['module_admin']['regexp_replace'];
@@ -889,7 +889,7 @@
 					$m['title'] = $lang['common']['add'];
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['module_admin']['virtual_filesystem_regexp'], "index.php?m=admin&d=filesystemexp");
-					require_once('includes/adminform.php');
+					sm_use('adminform');
 					$f = new TForm('index.php?m=admin&d=postaddfilesystemexp');
 					$f->AddText('regexpr', $lang['module_admin']['regexp']);
 					$f->AddText('url', $lang['module_admin']['regexp_replace']);
@@ -900,7 +900,7 @@
 					$m['title'] = $lang['common']['edit'];
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['module_admin']['virtual_filesystem_regexp'], "index.php?m=admin&d=filesystemexp");
-					require_once('includes/adminform.php');
+					sm_use('adminform');
 					$f = new TForm('index.php?m=admin&d=posteditfilesystemexp&id='.$_getvars['id']);
 					$f->AddText('regexpr', $lang['module_admin']['regexp']);
 					$f->AddText('url', $lang['module_admin']['regexp_replace']);
@@ -935,8 +935,8 @@
 							$result = execsql($sql);
 						}
 					$m["title"] = $lang['module_admin']['view_log'];
-					require_once('includes/admintable.php');
-					include_once('includes/admininterface.php');
+					sm_use('admintable');
+					sm_use('admininterface');
 					$limit=100;
 					$offset=abs(intval($_getvars['from']));
 					$ui = new TInterface();
@@ -1030,8 +1030,8 @@
 					sm_title($lang['module_admin']['upload_package']);
 					add_path_control();
 					add_path_current();
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($m['error_message']))
 						{
@@ -1064,8 +1064,8 @@
 					add_path_control();
 					add_path_current();
 					sm_title('robots.txt');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=admin&d=saverobotstxt');
 					$f->AddTextarea('robotstxtcontent', '');

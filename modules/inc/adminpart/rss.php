@@ -31,8 +31,8 @@
 					add_path_modules();
 					add_path($lang['module_rss']['module_rss'], 'index.php?m=rss&d=admin');
 					sm_title($lang['settings']);
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('admininterface');
+					sm_use('adminform');
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=rss&d=postsettings');
 					$f->AddText('rss_itemscount', $lang['module_rss']['settings']['rss_itemscount']);
