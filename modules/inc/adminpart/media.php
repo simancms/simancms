@@ -482,7 +482,7 @@
 					sm_title($lang['module_galleies']['media_files']);
 					add_path_current();
 					sm_use('admininterface');
-					include_once('includes/admindashboard.php');
+					sm_use('admindashboard');
 					$ui = new TInterface();
 					$dash=new TDashBoard();
 					$dash->AddItem($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries', 'photo');

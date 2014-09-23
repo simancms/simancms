@@ -812,6 +812,7 @@
 {include file="block_end.tpl"}
 {/if}
 
+{*
 {if $modules[$index].mode eq 'filesystemexp'}
 {include file="block_begin.tpl"}
 <a href="index.php?m=admin">{$lang.control_panel}</a><br />
@@ -828,3 +829,4 @@
 {include file="common_adminform.tpl" form=$modules[$index].form}
 {include file="block_end.tpl"}
 {/if}
+*}

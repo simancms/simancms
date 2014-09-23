@@ -208,7 +208,7 @@
 						}
 					sm_event('beforeadmindashboard');
 					sm_title($lang['control_panel']);
-					include_once('includes/admindashboard.php');
+					sm_use('admindashboard');
 					sm_use('admininterface');
 					$ui = new TInterface();
 					sm_event('onadmindashboardstart');
@@ -844,6 +844,7 @@
 					$ui->Output(true);
 					sm_setfocus('filename_fs');
 				}
+			/*
 			if (sm_action('filesystemexp'))
 				{
 					$m["title"] = $lang['module_admin']['virtual_filesystem_regexp'];
@@ -925,6 +926,7 @@
 					$q->Insert();
 					sm_redirect('index.php?m=admin&d=filesystemexp');
 				}
+			*/
 			if (sm_action('viewlog'))
 				{
 					add_path_control();
