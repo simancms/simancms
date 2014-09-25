@@ -2,3 +2,8 @@ table.adminform_table td textarea
 {
 	width:98%;
 }
+
+.adminform_savebutton
+{
+	text-align:right;
+}

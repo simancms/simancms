@@ -118,6 +118,13 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->bar['buttons'][$buttonname]['class']=(empty($this->bar['buttons'][$buttonname]['class'])?'':' ').$classname;
 						return $this;
 					}
+				function OnClick($javascript, $buttonname=NULL)
+					{
+						if ($buttonname==NULL)
+							$buttonname=$this->currentbuttonname;
+						$this->bar['buttons'][$buttonname]['javascript']=$javascript;
+						return $this;
+					}
 				function SetStyleGlobal($style)
 					{
 						$this->bar['style']=$style;

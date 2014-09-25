@@ -21,3 +21,8 @@
 
 .admintable_row td img {max-width:280px;}
 
+.adminform_savebutton
+{
+	text-align:right;
+	padding: 6px 14px;
+}

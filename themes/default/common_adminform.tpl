@@ -131,7 +131,7 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 <div class="clear"></div>
 {/if}
 {if $form.dont_use_form_tag neq 1}
-<div align="right"><input type="submit" value="{if $form.savetitle neq ""}{$form.savetitle}{else}{$lang.save}{/if}"></div>
+<div class="adminform_savebutton adminform_savebutton_{$form.postfix}"><input type="submit" value="{if $form.savetitle neq ""}{$form.savetitle}{else}{$lang.save}{/if}"></div>
 </form>
 {/if}
 
