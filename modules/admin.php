@@ -111,6 +111,10 @@
 					sm_update_settings('content_image_fulltext_width', $_postvars['p_content_image_fulltext_width'], $m['mode_settings']);
 					sm_update_settings('content_image_fulltext_height', $_postvars['p_content_image_fulltext_height'], $m['mode_settings']);
 					sm_update_settings('content_editor_level', intval($_postvars['content_editor_level']), $m['mode_settings']);
+					if ($m['mode_settings'] == 'default')
+						{
+							sm_update_settings('autogenerate_content_filesystem', intval($_postvars['autogenerate_content_filesystem']), 'content');
+						}
 					//------- News settings ------------------------------------------------------------------------------
 					sm_update_settings('news_use_title', intval($_postvars['p_news_use_title'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('news_use_time', intval($_postvars['p_news_use_time'])==1?1:0, $m['mode_settings']);
@@ -512,6 +516,11 @@
 							'id' => $q->row['id_menu_m']
 						);
 					unset($q);
+					if ($m['mode_settings'] == 'default')
+						{
+							$m['edit_settings']['autogenerate_content_filesystem'] = sm_get_settings('autogenerate_content_filesystem', 'content');
+							$m['show_settings']['autogenerate_content_filesystem'] = 1;
+						}
 				}
 			if (sm_action('tstatus'))
 				{

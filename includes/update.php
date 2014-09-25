@@ -56,7 +56,8 @@
 				)");
 			execsql("ALTER TABLE `".$sm['t']."log` ADD `object_name` VARCHAR(255)  NOT NULL  DEFAULT 'system'  AFTER `id_log`;");
 			execsql("ALTER TABLE `".$sm['t']."log` ADD `object_id` VARCHAR(255)  NOT NULL  DEFAULT '0'  AFTER `object_name`;");
-			
+			sm_add_settings('autogenerate_conent_filesystem', '1', 'content');
+
 			sm_update_settings('database_date', '20140701');
 		}
 

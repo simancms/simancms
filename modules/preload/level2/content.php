@@ -17,21 +17,21 @@
 			exit();
 		}
 
-	function siman_block_items_news($blockinfo)
+	function siman_contnet_nicename_generation($id)
 		{
-			global $nameDB, $tableprefix, $lnkDB, $lang;
-			$sql = "SELECT * FROM ".$tableprefix."categories_news";
-			$result = execsql($sql);
-			$i = 0;
-			while ($row = database_fetch_object($result))
+			global $sm;
+			if (intval(sm_get_settings('autogenerate_content_filesystem', 'content'))==0)
+				return;
+			sm_extcore();
+			$info=TQuery::ForTable($sm['t'].'content')->Add('id_content', intval($id))->Get();
+			if (empty($info['filename_content']))
 				{
-					$res[$i]['caption'] = ' - '.$lang['show_on_category'].': '.$row->title_category;
-					$res[$i]['value'] = 'news|'.$row->id_category;
-					if (strcmp($blockinfo["show_on_module_block"], 'news') == 0 && $blockinfo["show_on_ctg_block"] == $row->id_category)
-						$res[$i]['selected'] = 1;
-					$i++;
+					$urlid = register_filesystem('index.php?m=content&d=view&cid='.$id, sm_fs_autogenerate($info['title_content'], '.html'), $info['title_content']);
+					TQuery::ForTable($sm['t'].'content')->Add('filename_content', intval($urlid))->Update('id_content', intval($id));
 				}
-			return $res;
 		}
+	
+	sm_event_handler('postaddcontent', 'siman_contnet_nicename_generation');
+
 
 ?>

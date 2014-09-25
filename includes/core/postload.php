@@ -28,8 +28,12 @@
 				continue;
 			if (file_exists('modules/postload/'.$postloadmodules[$postloadmodulesindex].'.php'))
 				include_once('modules/postload/'.$postloadmodules[$postloadmodulesindex].'.php');
-			if (file_exists('modules/postload/level'.$userinfo['level'].'/'.$postloadmodules[$postloadmodulesindex].'.php'))
-				include_once('modules/postload/level'.$userinfo['level'].'/'.$postloadmodules[$postloadmodulesindex].'.php');
+			if ($userinfo['level']>=1 && file_exists('modules/postload/level1/'.$postloadmodules[$postloadmodulesindex].'.php'))
+				include_once('modules/postload/level1/'.$postloadmodules[$postloadmodulesindex].'.php');
+			if ($userinfo['level']>=2 && file_exists('modules/postload/level2/'.$postloadmodules[$postloadmodulesindex].'.php'))
+				include_once('modules/postload/level2/'.$postloadmodules[$postloadmodulesindex].'.php');
+			if ($userinfo['level']>=3 && file_exists('modules/postload/level3/'.$postloadmodules[$postloadmodulesindex].'.php'))
+				include_once('modules/postload/level3/'.$postloadmodules[$postloadmodulesindex].'.php');
 		}
 	sm_event('afterpostload', Array());
 	//Postload modules end

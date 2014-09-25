@@ -381,7 +381,30 @@
 					sm_saferemove($items[$i]);
 				}
 		}
-	
+
+	function sm_fs_exists($fs_url)
+		{
+			global $sm;
+			$q = new TQuery($sm['t'].'filesystem');
+			$q->Add('filename_fs', dbescape($fs_url));
+			return intval($q->GetField('id_fs'))>0;
+		}
+
+	function sm_fs_autogenerate($name, $extension='.html')
+		{
+			$name=sm_getnicename($name);
+			if (!sm_fs_exists($name.$extension))
+				return $name.$extension;
+			$i=2;
+			while (true)
+				{
+					$tmp=$name.'-'.$i.$extension;
+					if (!sm_fs_exists($tmp))
+						return $tmp;
+					$i++;
+				}
+		}
+
 	function sm_is_allowed_to_upload($filename)
 		{
 			$ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));

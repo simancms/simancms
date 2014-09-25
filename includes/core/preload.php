@@ -19,8 +19,12 @@
 				continue;
 			if (file_exists('modules/preload/'.$autoloadmodules[$autoloadmodulesindex].'.php'))
 				include_once('modules/preload/'.$autoloadmodules[$autoloadmodulesindex].'.php');
-			if (file_exists('modules/preload/level'.$userinfo['level'].'/'.$autoloadmodules[$autoloadmodulesindex].'.php'))
-				include_once('modules/preload/level'.$userinfo['level'].'/'.$autoloadmodules[$autoloadmodulesindex].'.php');
+			if ($userinfo['level']>=1 && file_exists('modules/preload/level1/'.$autoloadmodules[$autoloadmodulesindex].'.php'))
+					include_once('modules/preload/level1/'.$autoloadmodules[$autoloadmodulesindex].'.php');
+			if ($userinfo['level']>=2 && file_exists('modules/preload/level2/'.$autoloadmodules[$autoloadmodulesindex].'.php'))
+					include_once('modules/preload/level2/'.$autoloadmodules[$autoloadmodulesindex].'.php');
+			if ($userinfo['level']>=3 && file_exists('modules/preload/level3/'.$autoloadmodules[$autoloadmodulesindex].'.php'))
+					include_once('modules/preload/level3/'.$autoloadmodules[$autoloadmodulesindex].'.php');
 		}
 	sm_event('afterpreload', Array());
 	//Preload modules end

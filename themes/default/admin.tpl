@@ -432,6 +432,17 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.autogenerate_content_filesystem eq 1}
+		<tr>
+			<td>{$lang.common.autogeneration} - {$lang.common.url}: </td>
+			<td><select name="autogenerate_content_filesystem" size="1">
+				<option value=""{if "" eq $modules[$index].edit_settings.autogenerate_content_filesystem} SELECTED{/if}>{$lang.common.none}</option>
+				<option value="1"{if 1 eq $modules[$index].edit_settings.autogenerate_content_filesystem} SELECTED{/if}>content-title.html</option>
+			</select></td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.news_settings}</td>
 </tr>

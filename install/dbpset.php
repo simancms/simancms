@@ -413,6 +413,10 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_allowed_extensions', 'jpg\njpeg\ngif\npng\nmp4\nmp3\nwav', 'default');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('media_edit_after_upload', '1', 'media');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('news_full_list_longformat', '0', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('robots_txt', '', 'seo');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('notifications_time', '5', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('notifierlib', 'alertify', 'default');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_conent_filesystem', '1', 'content');");
 
 
 //---------[DATABASE DATE]------------------------------------
