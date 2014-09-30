@@ -499,4 +499,28 @@
 			return $q->items;
 		}
 
+	function sm_search_query_sql($query, $fields)
+		{
+			if (!is_array($fields))
+				$fields=explode(' ', $fields);
+			$keywords = explode(' ', preg_replace('/\s+/', ' ', $query));
+			if (count($fields)==0 || count($keywords)==0)
+				return '(1=2)';
+			$r='';
+			for ($i = 0; $i<count($keywords); $i++)
+				{
+					if ($i>0)
+						$r.=' AND ';
+					$sql='(';
+					for ($j = 0; $j<count($fields); $j++)
+						{
+							if ($j>0)
+								$sql.=' OR ';
+							$sql.="`".$fields[$j]."` LIKE '%".dbescape($keywords[$i])."%'";
+						}
+					$r.=$sql.')';
+				}
+			return '('.$r.')';
+		}
+
 ?>
