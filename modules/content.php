@@ -242,6 +242,8 @@
 									exit();
 								}
 							sm_event('onbeforecontentprocessing', $i);
+							if ($modules_index==0 && $i==0 && !empty($content_id))
+								sm_meta_canonical(sm_fs_url('index.php?m=content&d=view&cid='.$content_id));
 							$m['content'][$i]["title"] = $row['title_content'];
 							sm_add_title_modifier($m['content'][$i]["title"]);
 							if ($tmp_dont_set_title != 1)
