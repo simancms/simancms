@@ -862,6 +862,21 @@
 			sm_html_headend('<meta'.(strlen($property)==0?'':' property="'.htmlescape($property).'"').''.(strlen($name)==0?'':' name="'.htmlescape($name).'"').' content="'.htmlescape($content).'"/>');
 		}
 
+	function sm_meta_canonical($canonical_url, $show_on_canonical_page=false)
+		{
+			global $sm;
+			if (intval($sm['s']['is_index_page'])==1)
+				return;
+			if (strpos($canonical_url, '://')===false)
+				{
+					if (strcmp(substr($canonical_url, 0, 1), '/')==0)
+						$canonical_url=substr($canonical_url, 1);
+					$canonical_url='http://'.sm_settings('resource_url').$canonical_url;
+				}
+			if ($show_on_canonical_page || strcmp(sm_this_url(), $canonical_url)!==0)
+				sm_html_headend('<link rel="canonical" href="'.$canonical_url.'" />');
+		}
+
 	function sm_homepage()
 		{
 			global $special, $_settings;
