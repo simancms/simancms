@@ -621,6 +621,21 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.autogenerate_news_filesystem eq 1}
+	<tr>
+		<td>{$lang.common.autogeneration} - {$lang.common.url}: </td>
+		<td><select name="autogenerate_news_filesystem" size="1">
+			<option value=""{if "" eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>{$lang.common.none}</option>
+			<option value="1"{if 1 eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>news-title.html</option>
+			<option value="2"{if 2 eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>news/news-title.html</option>
+			<option value="4"{if 2 eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>news/yyyy/mm/dd/news-title.html</option>
+			<option value="3"{if 3 eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>blog/news-title.html</option>
+			<option value="5"{if 5 eq $modules[$index].edit_settings.autogenerate_news_filesystem} SELECTED{/if}>blog/yyyy/mm/dd/news-title.html</option>
+		</select></td>
+		<td></td>
+		<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_editor_level&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+	</tr>
+	{/if}
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.user_settings}</td>
 </tr>

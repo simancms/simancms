@@ -17,6 +17,7 @@
 			exit();
 		}
 
+
 	function siman_block_items_content($blockinfo)
 		{
 			global $nameDB, $tableprefix, $lnkDB, $lang;
@@ -33,6 +34,9 @@
 				}
 			return $res;
 		}
+	
+	if ($userinfo['level']>=intval(sm_settings('content_editor_level')))
+		include_once('modules/preload/level_inc/content.php');
 
 
 ?>

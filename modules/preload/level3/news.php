@@ -17,6 +17,7 @@
 			exit();
 		}
 
+
 	function siman_block_items_news($blockinfo)
 		{
 			global $nameDB, $tableprefix, $lnkDB, $lang;
@@ -33,5 +34,8 @@
 				}
 			return $res;
 		}
+	
+	if ($userinfo['level']>=intval(sm_settings('news_editor_level')))
+		include_once('modules/preload/level_inc/news.php');
 
 ?>

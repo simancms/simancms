@@ -390,9 +390,9 @@
 			return intval($q->GetField('id_fs'))>0;
 		}
 
-	function sm_fs_autogenerate($name, $extension='.html')
+	function sm_fs_autogenerate($name, $extension='.html', $prefix_path='')
 		{
-			$name=sm_getnicename($name);
+			$name=$prefix_path.sm_getnicename($name);
 			if (!sm_fs_exists($name.$extension))
 				return $name.$extension;
 			$i=2;

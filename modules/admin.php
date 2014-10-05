@@ -133,6 +133,10 @@
 					sm_update_settings('news_attachments_count', abs(intval($_postvars['p_news_attachments_count'])), $m['mode_settings']);
 					sm_update_settings('news_full_list_longformat', intval($_postvars['news_full_list_longformat']), $m['mode_settings']);
 					sm_update_settings('news_editor_level', intval($_postvars['news_editor_level']), $m['mode_settings']);
+					if ($m['mode_settings'] == 'default')
+						{
+							sm_update_settings('autogenerate_news_filesystem', intval($_postvars['autogenerate_news_filesystem']), 'news');
+						}
 					//------ User settings ----------------------------------------------------------------
 					sm_update_settings('allow_register', intval($_postvars['p_allowregister'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('allow_forgot_password', intval($_postvars['p_allowforgotpass'])==1?1:0, $m['mode_settings']);
@@ -520,6 +524,8 @@
 						{
 							$m['edit_settings']['autogenerate_content_filesystem'] = sm_get_settings('autogenerate_content_filesystem', 'content');
 							$m['show_settings']['autogenerate_content_filesystem'] = 1;
+							$m['edit_settings']['autogenerate_news_filesystem'] = sm_get_settings('autogenerate_news_filesystem', 'news');
+							$m['show_settings']['autogenerate_news_filesystem'] = 1;
 						}
 				}
 			if (sm_action('tstatus'))

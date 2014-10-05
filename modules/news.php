@@ -20,6 +20,16 @@
 			exit();
 		}
 
+	if (!defined("NEWS_FUNCTIONS_DEFINED"))
+		{
+			function sm_news_url($id, $timestamp)
+				{
+					return 'news/'.strftime('%Y/%m/%d/', $timestamp).$id.'.html';
+				}
+			
+			define("NEWS_FUNCTIONS_DEFINED", 1);
+		}
+
 	if ($userinfo['level']>=(isset($_settings['news_view_level']) ? $_settings['news_view_level'] : 0))
 		{ // user level view restrictions start
 			$tmp_view_ctg = '';
@@ -182,7 +192,7 @@
 								}
 							else
 								{
-									$m["list"][$i]['url'] = sm_fs_url('index.php?m=news&d=view&nid='.$row['id_news']);
+									$m["list"][$i]['url'] = sm_fs_url('index.php?m=news&d=view&nid='.$row['id_news'], false, sm_news_url($row['id_news'], $row['date_news']));
 								}
 							if ($_settings['news_use_image'] == 1)
 								{
@@ -264,6 +274,8 @@
 								{
 									$m["module"] = 'news';
 									sm_event('onbeforenewsprocessing', 0);
+									if ($modules_index==0 && $i==0)
+										sm_meta_canonical(sm_fs_url('index.php?m=news&d=view&nid='.$row['id_news'], false, sm_news_url($row['id_news'], $row['date_news'])));
 									sm_page_viewid('news-'.$m["mode"].'-'.$row['id_news']);
 									$m['row'] = $row;
 									$m['id'] = $row['id_news'];
@@ -335,7 +347,7 @@
 													if (!empty($tmprow['filename_news']))
 														$m['alike_news'][$j]["fullink"] = get_filename($tmprow['filename_news']);
 													else
-														$m['alike_news'][$j]["fullink"] = sm_fs_url('index.php?m=news&d=view&nid='.$tmprow['id_news']);
+														$m['alike_news'][$j]["fullink"] = sm_fs_url('index.php?m=news&d=view&nid='.$tmprow['id_news'], false, sm_news_url($tmprow['id_news'], $tmprow['date_news']));
 													$m['alike_news'][$j]['preview'] = $tmprow['preview_news'];
 													if (empty($m['alike_news'][$j]['preview']))
 														$m['alike_news'][$j]['preview'] = cut_str_by_word($tmprow['text_news'], $_settings['news_anounce_cut'], '...');

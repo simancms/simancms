@@ -959,7 +959,7 @@
 			$q->Remove();
 		}
 
-	function sm_fs_url($system_url, $return_false_on_nonexists=false)
+	function sm_fs_url($system_url, $return_false_on_nonexists=false, $return_cutom_url_on_nonexists='')
 		{
 			global $sm;
 			$q = new TQuery($sm['t'].'filesystem');
@@ -969,6 +969,8 @@
 				{
 					if ($return_false_on_nonexists)
 						return false;
+					elseif (!empty($return_cutom_url_on_nonexists))
+						return $return_cutom_url_on_nonexists;
 					else
 						return $system_url;
 				}

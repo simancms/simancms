@@ -17,7 +17,7 @@
 			exit();
 		}
 
-	if ($userinfo['level']>=intval(sm_settings('content_editor_level')))
-		include_once('modules/preload/level_inc/content.php');
+	if ($userinfo['level']>=intval(sm_settings('news_editor_level')))
+		include_once('modules/preload/level_inc/news.php');
 
 ?>
