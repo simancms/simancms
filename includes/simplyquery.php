@@ -210,7 +210,10 @@ if (!defined("simplyquery_DEFINED"))
 				function Remove($addsql='', $execute=true)
 					{
 						$sql=$this->GetPairs();
-						$this->sql="DELETE FROM ".$this->tableprefix.$this->tablename." WHERE (".$sql.")";
+						if (!empty($sql))
+							$this->sql="DELETE FROM ".$this->tableprefix.$this->tablename." WHERE (".$sql.")";
+						else
+							$this->sql="DELETE FROM ".$this->tableprefix.$this->tablename;
 						if (!empty($addsql))
 							$this->sql.=' '.$addsql;
 						if ($execute || !$this->sqlgenerationmode)
