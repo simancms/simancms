@@ -297,6 +297,9 @@
 									$m["news_date"] = strftime($lang["datemask"], $row['date_news']);
 									$m["date"] = strftime($lang["datemask"], $m["date"]);
 									$m["text"] = $row['text_news'];
+									$m["preview"] = $row['preview_news'];
+									if (empty($m["preview"]))
+										$m["preview"] = cut_str_by_word($row['text_news'], sm_settings('news_anounce_cut'), '...');
 									$m["id_category"] = intval($row['id_category_n']);
 									if ($special['categories']['getctg'] == 1)
 										$special['categories']['id'] = $row['id_category_n'];

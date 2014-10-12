@@ -379,6 +379,7 @@
 								{
 									$t->Image('delete', 'delete.gif');
 									$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+									$t->CustomMessageBox('delete', $lang['common']['are_you_sure']);
 								}
 							$t->NewRow();
 							$i++;

@@ -416,7 +416,7 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('robots_txt', '', 'seo');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('notifications_time', '5', 'default');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('notifierlib', 'alertify', 'default');");
-execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_conent_filesystem', '1', 'content');");
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_content_filesystem', '1', 'content');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_news_filesystem', '1', 'news');");
 
 

@@ -169,7 +169,7 @@
 							if ($row['id_category'] != 1)
 								$t->URL('delete', 'index.php?m=news&d=postdeletectg&ctgid='.$row['id_category']);
 							$t->URL('edit', 'index.php?m=news&d=editctg&ctgid='.$row['id_category']);
-							$t->URL('tomenu', sm_tomenuurl($row['title'], $url, sm_this_url()));
+							$t->URL('tomenu', sm_tomenuurl($row['title_category'], $url, sm_this_url()));
 							$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$row['id_category'].'&db=shortnews&c='.$row['title_category']);
 							$t->NewRow();
 							$i++;
