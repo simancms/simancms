@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.7
-	//#revision 2014-06-02
+	//#revision 2014-10-14
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -25,7 +25,7 @@
 					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
 					if (count($m['ctgid']) > 0)
 						{
-							$m['title'] = $lang['add_content'];
+							sm_title($lang['add_content']);
 							$m["module"] = 'content';
 							add_path($lang['control_panel'], "index.php?m=admin");
 							add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
@@ -261,7 +261,7 @@
 									$m['attachments'] = sm_get_attachments('content', $row->id_content);
 									$i++;
 								}
-							$m['title'] = $lang['edit_content'];
+							sm_title($lang['edit_content']);
 							add_path($lang['control_panel'], "index.php?m=admin");
 							add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 							add_path($lang['module_content_name'], "index.php?m=content&d=admin");
@@ -330,7 +330,7 @@
 						}
 					if ($candelete == 1)
 						{
-							$m['title'] = $lang['delete_content'];
+							sm_title($lang['delete_content']);
 							$m["module"] = 'content';
 							$fname=0;
 							$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($_getvars["cid"]);

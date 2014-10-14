@@ -55,7 +55,7 @@
 						{
 							sm_event('startpostaddnews', array(0));
 							$m["module"] = 'news';
-							$m['title'] = $lang['add_news'];
+							sm_title($lang['add_news']);
 							$id_category_n = $_postvars["p_id_category_n"];
 							$preview_news = dbescape($_postvars['p_preview_news']);
 							$text_news = dbescape($_postvars["p_text_news"]);
@@ -152,7 +152,7 @@
 						{
 							$m['type_news'] = $_settings['default_news_text_style'];
 						}
-					$m['title'] = $lang['add_news'];
+					sm_title($lang['add_news']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
@@ -217,16 +217,16 @@
 				}
 			if ($candelete == 1)
 				{
-					$m['title'] = $lang['delete_news'];
+					sm_title($lang['delete_news']);
 					$m["module"] = 'news';
 					$id_news = intval($_getvars["nid"]);
-					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news=".$id_news;
+					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news=".intval($id_news);
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
 							$fname = $row->filename_news;
 						}
-					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news=".$id_news;
+					$sql = "DELETE FROM ".$tableprefix."news WHERE id_news=".intval($id_news);
 					$result = execsql($sql);
 					sm_extcore();
 					sm_saferemove('index.php?m=news&d=view&nid='.$id_news);
@@ -291,7 +291,7 @@
 						{
 							$id_news = intval($_getvars["nid"]);
 							sm_event('startposteditnews', array($id_news));
-							$m['title'] = $lang['edit_news'];
+							sm_title($lang['edit_news']);
 							$m["module"] = 'news';
 							$id_category_n = $_postvars["p_id_category_n"];
 							$m['date'] = getdate($_postvars["p_date_prev"]);
@@ -399,7 +399,7 @@
 							$special['ext_editor_on'] = 1;
 							require_once('ext/editors/'.$_settings['ext_editor'].'/siman_config.php');
 						}
-					$m['title'] = $lang['edit_news'];
+					sm_title($lang['edit_news']);
 					$m["module"] = 'news';
 					$sql = "SELECT * FROM ".$tableprefix."categories_news";
 					if (!empty($extsql))
