@@ -7,3 +7,18 @@ table.adminform_table td textarea
 {
 	text-align:right;
 }
+
+.adminform-row-odd
+{
+	background-color:#efefef;
+}
+
+.adminform-row-pair
+{
+	background-color:#fafafa;
+}
+
+tr.adminform-row-odd:hover td, tr.adminform-row-pair:hover td
+{
+	background-color:#e0e0e0;
+}

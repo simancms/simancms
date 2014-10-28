@@ -52,6 +52,19 @@ if (!defined("adminform_DEFINED"))
 						$this->form['fields'][$name]['caption']=$title;
 						$this->form['fields'][$name]['type']='separator';
 						$this->form['fields'][$name]['tab']=$this->currentTab;
+						$this->SetRowClass('adminform-separator');
+					}
+				function SetRowClass($class, $name=NULL)
+					{
+						if ($name===NULL)
+							$name=$this->currentname;
+						$this->form['fields'][$name]['rowclassname']=$class;
+					}
+				function AppendRowClass($class, $name=NULL)
+					{
+						if ($name===NULL)
+							$name=$this->currentname;
+						$this->form['fields'][$name]['rowclassname'].=(strlen($this->form['fields'][$name]['rowclassname'])==0?'':' ').$class;
 					}
 				function AddLabel($name, $title, $labeltext)
 					{
@@ -259,6 +272,20 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['tabscount']=count($this->form['tabs']);
 						$this->form['method']=strtolower($this->form['method']);
+						if ($this->form['no_highlight']!=1)
+							{
+								$class='';
+								foreach ($this->form['fields'] as $name=>$value)
+									{
+										if ($this->form['fields'][$name]['hidedefinition']==1 || $this->form['fields'][$name]['type']=='separator')
+											continue;
+										if ($class!='adminform-row-odd')
+											$class='adminform-row-odd';
+										else
+											$class='adminform-row-pair';
+										$this->AppendRowClass($class, $name);
+									}
+							}
 						return $this->form;
 					}
 				//-------------------------------------------------------------

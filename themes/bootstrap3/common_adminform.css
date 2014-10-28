@@ -26,3 +26,19 @@
 	text-align:right;
 	padding: 6px 14px;
 }
+
+
+.adminform-row-odd
+{
+	background-color:#efefef;
+}
+
+.adminform-row-pair
+{
+	background-color:#fafafa;
+}
+
+tr.adminform-row-odd:hover td, tr.adminform-row-pair:hover td
+{
+	background-color:#d9edf7;
+}

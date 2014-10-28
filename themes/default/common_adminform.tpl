@@ -3,39 +3,6 @@
 {/if}
 <script type="text/javascript">
 {literal}
-function set_adminform_style{/literal}{$postfix}{literal}(element, r1, r1h, r2, r2h)
-{
- while (element && element.nodeName != "TR")
-  element = element.childNodes.length ? element.childNodes[0] : element.nextSibling;
- var n = 0;
- while (element)
- {
-  if (element.nodeName == "TR" && element.className!='adminform-separator')
-  {
-//   if (element.id!="admintable_header{/literal}{$postfix}{literal}")
-   if (n % 2)
-   {
-    element.style.background = r1;
-    if (r1h)
-    {
-     element.onmouseover = function() { this.style.background = r1h; }
-     element.onmouseout = function() { this.style.background = r1; }
-    }
-   } else
-   {
-    element.style.background = r2;
-    if (r2h)
-    {
-     element.onmouseover = function() { this.style.background = r2h; }
-     element.onmouseout = function() { this.style.background = r2; }
-    }
-   }
-   n++;
-  }
-  element = element.nextSibling;
- }
-} 
-
 function show_admintable_tab{/literal}{$postfix}{literal}(num)
 	{
 		{/literal}
@@ -70,15 +37,15 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 	{foreach name=form_field_index from=$form.fields item=field key=field_name}
 	{if $field.tab eq $smarty.section.tabsectionindex.index}
 		{if $field.type neq "hidden" and  $field.type neq "separator" and $field.mergecolumns neq 1 and $field.hidedefinition neq 1}
-		<tr>
+		<tr{if $field.rowclassname neq ""} class="{$field.rowclassname}"{/if} id="admintablerow-{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}">
 		<td width="{if $form.options.width1 neq ""}{$form.options.width1}{else}30%{/if}">{$field.caption}{$field.column[0]}{if $field.required}<sup class="adminform-required">*</sup>{/if}</td>
 		<td width="{if $form.options.width2 neq ""}{$form.options.width2}{else}{if $form.tooltip_present}67%{else}70%{/if}{/if}">
 		{elseif $field.mergecolumns eq 1}
-		<tr>
+		<tr{if $field.rowclassname neq ""} class="{$field.rowclassname}"{/if} id="admintablerow-{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}">
 		<td colspan="2">
 			{$field.caption}
 		{elseif $field.type eq "separator"}
-		<tr class="adminform-separator">
+		<tr{if $field.rowclassname neq ""} class="{$field.rowclassname}"{/if} id="admintablerow-{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}">
 		<td colspan="{if $form.tooltip_present}3{else}2{/if}"><strong>{$field.caption}</strong>
 		{/if}
 		{assign var=field_db value=$field.name}
@@ -136,11 +103,6 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 {/if}
 
 <script type="text/javascript">
-{if $form.no_highlight neq 1}
-{section name=tabsectionindex2 loop=$form.tabs}{* tab titles *}
-	set_adminform_style{$postfix}(document.getElementById('adminform_table{$postfix}-{$smarty.section.tabsectionindex2.index}'), '#efefef', '#e5e5e5', '#dbdbdb', '#e5e5e5');
-{/section}
-{/if}
 {if $form.tabscount gt 1}
 	show_admintable_tab{$postfix}(1);
 {/if}
