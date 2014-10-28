@@ -87,14 +87,14 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 		{if $field.type eq "label"}
 			{$field.labeltext}
 		{elseif $field.type eq "statictext"}
-			<input type="hidden" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} /> {$form.data.$field_db}
+			<input type="hidden" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach} /> {$form.data.$field_db}
 		{elseif $field.type eq "text" or $field.type eq "password" or $field.type eq "hidden"}
-			<input type="{$field.type}" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach} />
+			<input type="{$field.type}" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach} />
 		{elseif $field.type eq "file"}
 			<input type="hidden" name="MAX_FILE_SIZE" value="{$_settings.max_upload_filesize}" />
-			<input type="file" name="{$form.prefix}{$field.name}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach}  />
+			<input type="file" name="{$form.prefix}{$field.name}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}  />
 		{elseif $field.type eq "textarea"}
-			<textarea name="{$form.prefix}{$field.name}" cols="30" rows="5" name="1" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrname key=attrval} {$attrname}="{$attrval}"{/foreach}>{$form.data.$field_db}</textarea>
+			<textarea name="{$form.prefix}{$field.name}" cols="30" rows="5" name="1" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>{$form.data.$field_db}</textarea>
 		{elseif $field.type eq "select"}
 			<select name="{$form.prefix}{$field.name}" size="1" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>
 				{section name=form_vaule_index loop=$field.values}
