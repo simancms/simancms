@@ -845,21 +845,8 @@
 							$f=new TForm('index.php?m=admin&d=postaddfilesystem&returnto='.urlencode($_getvars['returnto']));
 						}
 					$f->AddText('filename_fs', $lang['common']['url']);
-					$f->AddSeparator('aaa', $lang['module_admin']['true_url']);
 					$f->AddText('url_fs', $lang['module_admin']['true_url']);
 					$f->AddText('comment_fs', $lang['common']['comment']);
-					$f->AddText('comment_fs1', $lang['common']['comment']);
-					$f->HideEncloser();
-					$f->AddText('comment_fs12', $lang['common']['comment']);
-					$f->HideDefinition();
-					$f->HideEncloser();
-					$f->AddText('comment_fs123', $lang['common']['comment']);
-					$f->HideDefinition();
-					$f->HideEncloser();
-					$f->AddText('comment_fs1234', $lang['common']['comment']);
-					$f->HideDefinition();
-					$f->AddText('comment_fs12345', $lang['common']['comment']);
-					$f->AddText('comment_fs123456', $lang['common']['comment']);
 					if (sm_action('editfilesystem'))
 						{
 							$q=new TQuery($sm['t'].'filesystem');
