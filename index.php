@@ -178,7 +178,7 @@
 			if ($userinfo['level'] < 1 && !empty($_cookievars[$_settings['cookprefix'].'simanautologin']))
 				{
 					$tmpusrinfo = getsql("SELECT * FROM ".$tableusersprefix."users WHERE md5(concat('".$session_prefix."', random_code, id_user))='".dbescape($_cookievars[$_settings['cookprefix'].'simanautologin'])."' AND user_status>0 LIMIT 1");
-					if (!empty($tmpusrinfo['id_user']))
+					if (!empty($tmpusrinfo['id_user']) && ($tmpusrinfo['user_status']<3 || $tmpusrinfo['user_status']==3 && $tmpusrinfo['id_user']!=1 && intval(sm_settings('disable_level3_autologin'))!=1 || $tmpusrinfo['id_user']==1 && intval(sm_settings('superuser_autologin_enabled'))==1))
 						{
 							sm_login($tmpusrinfo['id_user'], $tmpusrinfo);
 							require("includes/userinfo.php");
