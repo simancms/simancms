@@ -49,9 +49,13 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->bar['buttons'][$name]['type']='separator';
 						return $this;
 					}
-				function AddToggle($name, $title, $toggle_id, $style='')
+				function AddToggle($name, $title, $toggle_id_focus, $style='')
 					{
-						$javascript="tmp=document.getElementById('".$toggle_id."');tmp.style.display=(tmp.style.display=='none')?'':'none';";
+						if (!is_array($toggle_id_focus))
+							$toggle_id_focus=Array($toggle_id_focus);
+						$javascript="tmp=document.getElementById('".$toggle_id_focus[0]."');tmp.style.display=(tmp.style.display=='none')?'':'none';";
+						if (!empty($toggle_id_focus[1]))
+							$javascript.="tmp1=document.getElementById('".$toggle_id_focus[1]."');if(tmp.style.display=='')tmp1.focus();";
 						$this->AddButton($name, $title, '', 'button', $style, '', $javascript);
 						return $this;
 					}
