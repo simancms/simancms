@@ -1131,7 +1131,8 @@
 	
 	function sm_use_template($tpl_filename)
 		{
-			$special['main_tpl'] = $tpl_filename;
+			global $sm;
+			$sm['s']['main_tpl'] = $tpl_filename;
 		}
 	
 	function sm_get_taxonomy($object_name, $object_id, $use_object_id_as_rel_id=false)

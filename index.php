@@ -452,6 +452,8 @@
 			$smarty->template_dir_default = 'themes/default/';
 			$smarty->assign('errorname', 'dberror');
 			$smarty->display('error.tpl');
+			@header("HTTP/1.0 503 Service Unavailable");
+			//TODO: Recheck
 		}
 
 	//print(memory_get_peak_usage(true));
