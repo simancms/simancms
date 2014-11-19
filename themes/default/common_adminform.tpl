@@ -69,7 +69,7 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 				{/section}
 			</select>
 		{elseif $field.type eq "editor"}
-			{include file="editors_`$_settings.ext_editor`.tpl" editor_doing="common" var=`$form.prefix``$field.name` value=$form.data.$field_db noninit=$field.noinit}
+			{include file="editors_`$_settings.ext_editor`.tpl" editor_doing="common" var=`$form.prefix``$field.name` value=$form.data.$field_db noninit=$field.noinit style=$field.attrs.style}
 		{elseif $field.type eq "checkbox"}
 			<input type="checkbox" name="{$form.prefix}{$field.name}" value="{$field.checkedvalue}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{if $form.data.$field_db eq $field.checkedvalue} checked{/if} />
 		{/if}

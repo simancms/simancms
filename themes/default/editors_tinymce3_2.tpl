@@ -22,7 +22,6 @@
 		theme_advanced_statusbar_location : "none",
 		theme_advanced_resizing : true
 	});
-</script>
 {/literal}
 </script>
 {/if}
@@ -116,7 +115,7 @@ tinyMCE.execCommand("mceAddControl", true, "p_preview_ctg");
 
 {if $editor_doing eq "common"}
 <br>
-<textarea name="{$var}" id="{$var}" style="width: 98%; height:400px;">{$value}</textarea>
+<textarea name="{$var}" id="{$var}" style="{if $style eq ""}width: 98%; height:400px;{else}{$style}{/if}">{$value}</textarea>
 <script type="text/javascript">
 tinyMCE.execCommand("mceAddControl", true, "{$var}");
 </script>
