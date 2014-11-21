@@ -886,6 +886,13 @@
 	function sm_use($libname)
 		{
 			global $sm;
+			if ($libname=='ui') $libname='admininterface';
+			if ($libname=='ui.grid') $libname='admintable';
+			if ($libname=='ui.buttons') $libname='adminbuttons';
+			if ($libname=='ui.form') $libname='adminform';
+			if ($libname=='ui.navigation') $libname='adminnavigation';
+			if ($libname=='ui.boardmessages') $libname='boardmessages';
+			if ($libname=='ui.dashboard') $libname='admindashboard';
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
 			elseif (strcmp($libname, 'autocomplete')==0)

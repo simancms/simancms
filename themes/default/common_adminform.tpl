@@ -53,6 +53,14 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 		{$field.begintext}
 		{if $field.type eq "label"}
 			{$field.labeltext}
+		{elseif $field.type eq "html"}
+			{$field.html}
+		{elseif $field.type eq "bar"}
+			{include file="common_adminbuttons.tpl" bar=$field.data}
+		{elseif $field.type eq "table"}
+			{include file="common_admintable.tpl" table=$field.data}
+		{elseif $field.type eq "tpl"}
+			{include file=$field.tpl data=$field.data action=$field.action}
 		{elseif $field.type eq "statictext"}
 			<input type="hidden" name="{$form.prefix}{$field.name}" value="{$form.data.$field_db}" id="{if $field.id neq ""}{$field.id}{else}{$form.prefix}{$field.name}{/if}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach} /> {$form.data.$field_db}
 		{elseif $field.type eq "text" or $field.type eq "password" or $field.type eq "hidden"}

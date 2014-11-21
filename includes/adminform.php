@@ -142,6 +142,53 @@ if (!defined("adminform_DEFINED"))
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
 					}
+				function AddOutputObject($type, $object, $tpl='')
+					{
+						$this->form['fields'][$this->currentname]['type']=$type;
+						$this->form['fields'][$this->currentname]['tpl']=$tpl;
+						$this->form['fields'][$this->currentname]['data']=$object->Output();
+					}
+				function InsertButtons($buttons, $title=NULL, $name=NULL)
+					{
+						if ($name==NULL)
+							$name='buttons_'.count($this->form['fields']).'_'.rand(1, 999999);
+						$this->currentname=$name;
+						$buttons->AddClassnameGlobal('adminformbuttons');
+						$this->AddOutputObject('bar', $buttons);
+						if ($title==NULL)
+							$this->MergeColumns();
+					}
+				function InsertGrid($grid, $title=NULL, $name=NULL)
+					{
+						if ($name==NULL)
+							$name='table_'.count($this->form['fields']).'_'.rand(1, 999999);
+						$this->currentname=$name;
+						$this->AddOutputObject('table', $grid);
+						if ($title==NULL)
+							$this->MergeColumns();
+					}
+				function InsertHTML($html, $title=NULL, $name=NULL)
+					{
+						if ($name==NULL)
+							$name='buttons_'.count($this->form['fields']).'_'.rand(1, 999999);
+						$this->currentname=$name;
+						$this->form['fields'][$this->currentname]['type']='html';
+						$this->form['fields'][$this->currentname]['html']=$html;
+						if ($title==NULL)
+							$this->MergeColumns();
+					}
+				function InsertTPL($tpl, $data=Array(), $action='', $title=NULL, $name=NULL)
+					{
+						if ($name==NULL)
+							$name='buttons_'.count($this->form['fields']).'_'.rand(1, 999999);
+						$this->currentname=$name;
+						$this->form['fields'][$this->currentname]['type']='tpl';
+						$this->form['fields'][$this->currentname]['tpl']=$tpl;
+						$this->form['fields'][$this->currentname]['data']=$data;
+						$this->form['fields'][$this->currentname]['action']=$action;
+						if ($title==NULL)
+							$this->MergeColumns();
+					}
 				function AddEditor($name, $title, $required=false)
 					{
 						$this->currentname=$name;

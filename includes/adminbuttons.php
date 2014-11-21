@@ -36,6 +36,7 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->bar['buttons'][$name]['javascript']=$javascript;
 						$this->bar['buttons'][$name]['style']=$style;
 						$this->bar['buttons'][$name]['message']=addslashes($messagebox_message);
+						$this->SetAttr('type', 'button');
 						return $this;
 					}
 				function AddSeparator($name, $title=' | ', $style='')
@@ -59,13 +60,16 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->AddButton($name, $title, '', 'button', $style, '', $javascript);
 						return $this;
 					}
-				function MessageBox($title, $url, $messagebox_message)
+				function MessageBox($title, $url, $messagebox_message=NULL)
 					{
 						$this->AddMessageBox('', $title, $url, $messagebox_message);
 						return $this;
 					}
-				function AddMessageBox($name, $title, $url, $messagebox_message, $style='')
+				function AddMessageBox($name, $title, $url, $messagebox_message=NULL, $style='')
 					{
+						global $lang;
+						if ($messagebox_message===NULL)
+							$messagebox_message=$lang['common']['are_you_sure'].(substr($lang['common']['are_you_sure'], -1)=='?'?'':'?');
 						$this->AddButton($name, $title, $url, 'messagebox', $style, $messagebox_message);
 						return $this;
 					}
@@ -120,6 +124,13 @@ if (!defined("adminbuttons_DEFINED"))
 						if ($buttonname==NULL)
 							$buttonname=$this->currentbuttonname;
 						$this->bar['buttons'][$buttonname]['class']=(empty($this->bar['buttons'][$buttonname]['class'])?'':' ').$classname;
+						return $this;
+					}
+				function SetAttr($attrname, $attrvalue, $buttonname=NULL)
+					{
+						if ($buttonname==NULL)
+							$buttonname=$this->currentbuttonname;
+						$this->bar['buttons'][$buttonname]['attrs'][$attrname]=$attrvalue;
 						return $this;
 					}
 				function OnClick($javascript, $buttonname=NULL)
