@@ -268,7 +268,7 @@
 					if (empty($news_id) && $modules_index == 0) $news_id = intval($_getvars["nid"]);
 					if (!empty($news_id))
 						{
-							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news=".intval($news_id);
+							$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."categories_news.* FROM ".$tableprefix."news, ".$tableprefix."categories_news WHERE ".$tableprefix."news.id_category_n=".$tableprefix."categories_news.id_category AND id_news=".intval($news_id)." LIMIT 1";
 							$result = execsql($sql);
 							while ($row = database_fetch_assoc($result))
 								{
@@ -279,6 +279,9 @@
 									sm_page_viewid('news-'.$m["mode"].'-'.$row['id_news']);
 									$m['row'] = $row;
 									$m['id'] = $row['id_news'];
+									$tmp=sm_load_metadata('news', $row['id_news']);
+									if (!empty($tmp['news_template']))
+										$m['module']=$tmp['news_template'];
 									if ($_settings['news_use_title'])
 										{
 											if (empty($row['title_news']))

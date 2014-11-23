@@ -147,6 +147,20 @@
 		</td>
 	</tr>
 	{/section}
+	{if $modules[$index].alttpl.news[0].name neq ""}
+		<tr>
+			<td>
+				{$lang.common.template} ({$lang.common.page}):
+			</td>
+			<td>
+				<select name="tplnews" size="1">
+					{section name=i loop=$modules[$index].alttpl.news}
+						<option value="{$modules[$index].alttpl.news[i].tpl|htmlescape}"{if $modules[$index].alttpl.news[i].tpl eq $sm.p.tplnews} selected{/if}>{$modules[$index].alttpl.news[i].name}</option>
+					{/section}
+				</select>
+			</td>
+		</tr>
+	{/if}
 	{$modules[$index].formadditionalhtml}
 	<tr>
 		<td colspan="2">

@@ -75,6 +75,7 @@
 							$sql = "INSERT INTO ".$tableprefix."news (id_category_n, date_news, title_news, preview_news, text_news, type_news, keywords_news, description_news, id_author_news, img_copyright_news) VALUES ('$id_category_n', '$date_news', '$title_news', '$preview_news', '$text_news', '$type_news', '$keywords_news', '$description_news', '".intval($userinfo['id'])."', '$img_copyright_news')";
 							$id_news = insertsql($sql);
 							sm_set_metadata('news', $id_news, 'author_id', $sm['u']['id']);
+							sm_set_metadata('news', $id_news, 'news_template', $_postvars['tplnews']);
 							if ($_settings['news_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -159,6 +160,12 @@
 					add_path($lang['module_news']['list_news'], "index.php?m=news&d=list");
 					$m['date'] = getdate(time());
 					$m['images'] = load_file_list('./files/img/', 'jpg|gif|jpeg|png');
+					if (count($sm['themeinfo']['alttpl']['news'])>0)
+						{
+							$m['alttpl']['news']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['news']); $i++)
+								$m['alttpl']['news'][]=$sm['themeinfo']['alttpl']['news'][$i];
+						}
 					sm_setfocus('title_news');
 					sm_event('onaddnews', array($m['date']));
 				}
@@ -335,6 +342,7 @@
 											siman_upload_image($id_news, 'news');
 										}
 								}
+							sm_set_metadata('news', $id_news, 'news_template', $_postvars['tplnews']);
 							$title_news2 = (empty($title_news)) ? $_postvars['p_date_day'].'.'.$_postvars['p_date_month'].'.'.$_postvars['p_date_year'] : $title_news;
 							$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news='".$id_news."'";
 							$result = execsql($sql);
@@ -412,7 +420,7 @@
 							$m["ctgid"][$i][1] = $row->title_category;
 							$i++;
 						}
-					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news='".$_getvars["nid"]."'";
+					$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news='".intval($_getvars["nid"])."' LIMIT 1";
 					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_array($result))
@@ -440,7 +448,18 @@
 							$i++;
 						}
 					if (!empty($m["id_news"]))
-						sm_event('oneditnews', array($m["id_news"]));
+						{
+							if (count($sm['themeinfo']['alttpl']['news'])>0)
+								{
+									$m['alttpl']['news']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+									for ($i = 0; $i < count($sm['themeinfo']['alttpl']['news']); $i++)
+										$m['alttpl']['news'][]=$sm['themeinfo']['alttpl']['news'][$i];
+								}
+							$tmp=sm_load_metadata('news', $m["id_news"]);
+							if (!isset($sm['p']['tplnews']))
+								$sm['p']['tplnews']=$tmp['news_template'];
+							sm_event('oneditnews', array($m["id_news"]));
+						}
 				}
 			$m['images'] = load_file_list('./files/img/', 'jpg|gif|jpeg|png');
 			add_path($lang['control_panel'], "index.php?m=admin");
