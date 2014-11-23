@@ -535,4 +535,37 @@
 	$lang['ext']['editors']['switch_to_ext_editor']='Перейти на зовнішній редактор';
 	$lang['ext']['editors']['switch_to_standard_editor']='Перейти на вбудований редактор';
 
+	$lang['translitmap']['а'] = 'a';
+	$lang['translitmap']['б'] = 'b';
+	$lang['translitmap']['в'] = 'v';
+	$lang['translitmap']['г'] = 'g';
+	$lang['translitmap']['д'] = 'd';
+	$lang['translitmap']['е'] = 'e';
+	$lang['translitmap']['є'] = 'ye';
+	$lang['translitmap']['ж'] = 'zh';
+	$lang['translitmap']['з'] = 'z';
+	$lang['translitmap']['и'] = 'y';
+	$lang['translitmap']['і'] = 'i';
+	$lang['translitmap']['ї'] = 'yi';
+	$lang['translitmap']['й'] = 'y';
+	$lang['translitmap']['к'] = 'k';
+	$lang['translitmap']['л'] = 'l';
+	$lang['translitmap']['м'] = 'm';
+	$lang['translitmap']['н'] = 'n';
+	$lang['translitmap']['о'] = 'o';
+	$lang['translitmap']['п'] = 'p';
+	$lang['translitmap']['р'] = 'r';
+	$lang['translitmap']['с'] = 's';
+	$lang['translitmap']['т'] = 't';
+	$lang['translitmap']['у'] = 'u';
+	$lang['translitmap']['ф'] = 'f';
+	$lang['translitmap']['х'] = 'h';
+	$lang['translitmap']['ц'] = 'c';
+	$lang['translitmap']['ч'] = 'ch';
+	$lang['translitmap']['ш'] = 'sh';
+	$lang['translitmap']['щ'] = 'shch';
+	$lang['translitmap']['ю'] = 'yu';
+	$lang['translitmap']['я'] = 'ya';
+	$lang['translitmap']['ґ'] = 'g';
+
 ?>

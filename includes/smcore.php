@@ -302,80 +302,34 @@
 
 	function sm_getnicename($str)
 		{
-			$replacers['à'] = 'a';
-			$replacers['á'] = 'b';
-			$replacers['â'] = 'v';
-			$replacers['ã'] = 'g';
-			$replacers['ä'] = 'd';
-			$replacers['å'] = 'e';
-			$replacers['º'] = 'ye';
-			$replacers['æ'] = 'zh';
-			$replacers['ç'] = 'z';
-			$replacers['è'] = 'y';
-			$replacers['³'] = 'i';
-			$replacers['¿'] = 'yi';
-			$replacers['é'] = 'y';
-			$replacers['ê'] = 'k';
-			$replacers['ë'] = 'l';
-			$replacers['ì'] = 'm';
-			$replacers['í'] = 'n';
-			$replacers['î'] = 'o';
-			$replacers['ï'] = 'p';
-			$replacers['ð'] = 'r';
-			$replacers['ñ'] = 's';
-			$replacers['ò'] = 't';
-			$replacers['ó'] = 'u';
-			$replacers['ô'] = 'f';
-			$replacers['õ'] = 'h';
-			$replacers['ö'] = 'c';
-			$replacers['÷'] = 'ch';
-			$replacers['ø'] = 'sh';
-			$replacers['ù'] = 'shch';
-			$replacers['þ'] = 'yu';
-			$replacers['ÿ'] = 'ya';
-			$replacers['´'] = 'g';
-			$replacers['À'] = 'a';
-			$replacers['Á'] = 'b';
-			$replacers['Â'] = 'v';
-			$replacers['Ã'] = 'g';
-			$replacers['Ä'] = 'd';
-			$replacers['Å'] = 'e';
-			$replacers['ª'] = 'ye';
-			$replacers['Æ'] = 'zh';
-			$replacers['Ç'] = 'z';
-			$replacers['È'] = 'y';
-			$replacers['²'] = 'i';
-			$replacers['¯'] = 'yi';
-			$replacers['É'] = 'y';
-			$replacers['Ê'] = 'k';
-			$replacers['Ë'] = 'l';
-			$replacers['Ì'] = 'm';
-			$replacers['Í'] = 'n';
-			$replacers['Î'] = 'o';
-			$replacers['Ï'] = 'p';
-			$replacers['Ð'] = 'r';
-			$replacers['Ñ'] = 's';
-			$replacers['Ò'] = 't';
-			$replacers['Ó'] = 'u';
-			$replacers['Ô'] = 'f';
-			$replacers['Õ'] = 'h';
-			$replacers['Ö'] = 'c';
-			$replacers['×'] = 'ch';
-			$replacers['Ø'] = 'sh';
-			$replacers['Ù'] = 'shch';
-			$replacers['Þ'] = 'yu';
-			$replacers['ß'] = 'ya';
-			$replacers['¥'] = 'g';
-			$str = strtolower($str);
+			global $lang;
 			$nice = '';
-			for ($i = 0; $i<strlen($str); $i++)
+			if ($lang['charset']=='utf-8')
 				{
-					if ($str[$i]>='a' && $str[$i]<='z' || $str[$i]>='0' && $str[$i]<='9' || $str[$i] == '.' || $str[$i] == '_' || $str[$i] == '-')
-						$nice .= $str[$i];
-					elseif (!empty($replacers[$str[$i]]))
-						$nice .= $replacers[$str[$i]];
-					else
-						$nice .= '-';
+					$str = mb_strtolower($str, $lang['charset']);
+					for ($i = 0; $i<mb_strlen($str, $lang['charset']); $i++)
+						{
+							$c=mb_substr($str, $i, 1, $lang['charset']);
+							if ($c>='a' && $c<='z' || $c>='0' && $c<='9' || $c == '.' || $c == '_' || $c == '-')
+								$nice .= $c;
+							elseif (!empty($lang['translitmap'][$c]))
+								$nice .= $lang['translitmap'][$c];
+							else
+								$nice .= '-';
+						}
+				}
+			else
+				{
+					$str = strtolower($str);
+					for ($i = 0; $i<strlen($str); $i++)
+						{
+							if ($str[$i]>='a' && $str[$i]<='z' || $str[$i]>='0' && $str[$i]<='9' || $str[$i] == '.' || $str[$i] == '_' || $str[$i] == '-')
+								$nice .= $str[$i];
+							elseif (!empty($lang['translitmap'][$str[$i]]))
+								$nice .= $lang['translitmap'][$str[$i]];
+							else
+								$nice .= '-';
+						}
 				}
 			return $nice;
 		}
