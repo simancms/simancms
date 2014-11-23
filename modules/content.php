@@ -382,6 +382,11 @@
 							else
 								$m['content'][$i]['alike_texts_present'] = 0;
 							$m['content'][$i]['data']=$row;
+							$tmp=sm_load_metadata('content', $row['id_content']);
+							if (!empty($tmp['main_template']) && $modules_index==0)
+								sm_use_template($tmp['main_template']);
+							if (!empty($tmp['content_template']) && $i==0)
+								$m['module']=$tmp['content_template'];
 							sm_event('oncontentprocessed', $i);
 							$i++;
 						}

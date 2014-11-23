@@ -37,6 +37,18 @@
 								}
 							$m['ctgidselected'] = intval($_getvars['ctg']);
 							$m['images'] = load_file_list('./files/img/', 'jpg|gif|jpeg|png');
+							if (count($sm['themeinfo']['alttpl']['main'])>0)
+								{
+									$m['alttpl']['main']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+									for ($i = 0; $i < count($sm['themeinfo']['alttpl']['main']); $i++)
+										$m['alttpl']['main'][]=$sm['themeinfo']['alttpl']['main'][$i];
+								}
+							if (count($sm['themeinfo']['alttpl']['content'])>0)
+								{
+									$m['alttpl']['content']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+									for ($i = 0; $i < count($sm['themeinfo']['alttpl']['content']); $i++)
+										$m['alttpl']['content'][]=$sm['themeinfo']['alttpl']['content'][$i];
+								}
 							sm_event('onaddcontent', array($m['selected_ctg']));
 						}
 				}
@@ -63,6 +75,8 @@
 							$sql = "INSERT INTO ".$tableprefix."content (id_category_c, title_content, preview_content, text_content, type_content, keywords_content, refuse_direct_show, description_content) VALUES ('$id_category_c', '$title_content', '$preview_content', '$text_content', '$type_content', '$keywords_content', '$refuse_direct_show', '$description_content')";
 							$cid = insertsql($sql);
 							sm_set_metadata('content', $cid, 'author_id', $sm['u']['id']);
+							sm_set_metadata('content', $cid, 'main_template', $_postvars['tplmain']);
+							sm_set_metadata('content', $cid, 'content_template', $_postvars['tplcontent']);
 							if (!empty($filename))
 								{
 									$urlid = register_filesystem('index.php?m=content&d=view&cid='.$cid, $filename, $title_content);
@@ -195,6 +209,8 @@
 										update_filesystem($fname, 'index.php?m=content&d=view&cid='.intval($_getvars["cid"]), $filename, $title_content);
 								}
 							$result = execsql($sql);
+							sm_set_metadata('content', intval($_getvars["cid"]), 'main_template', $_postvars['tplmain']);
+							sm_set_metadata('content', intval($_getvars["cid"]), 'content_template', $_postvars['tplcontent']);
 							for ($i = 0; $i < $_settings['content_attachments_count']; $i++)
 								{
 									sm_upload_attachment('content', intval($_getvars["cid"]), $_uplfilevars['attachment'.$i]);
@@ -270,6 +286,23 @@
 								$m["module"] = 'content';
 							$m['images'] = load_file_list('./files/img/', 'jpg|gif|jpeg|png');
 							//$m["ctgid"]=siman_load_ctgs_content();
+							if (count($sm['themeinfo']['alttpl']['main'])>0)
+								{
+									$m['alttpl']['main']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+									for ($i = 0; $i < count($sm['themeinfo']['alttpl']['main']); $i++)
+										$m['alttpl']['main'][]=$sm['themeinfo']['alttpl']['main'][$i];
+								}
+							if (count($sm['themeinfo']['alttpl']['content'])>0)
+								{
+									$m['alttpl']['content']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+									for ($i = 0; $i < count($sm['themeinfo']['alttpl']['content']); $i++)
+										$m['alttpl']['content'][]=$sm['themeinfo']['alttpl']['content'][$i];
+								}
+							$tmp=sm_load_metadata('content', intval($_getvars["cid"]));
+							if (!isset($sm['p']['tplmain']))
+								$sm['p']['tplmain']=$tmp['main_template'];
+							if (!isset($sm['p']['tplcontent']))
+								$sm['p']['tplcontent']=$tmp['content_template'];
 							if (!empty($m["id_content"]))
 								sm_event('oneditcontent', array($m["id_content"]));
 						}

@@ -96,6 +96,34 @@
 		</td>
 	</tr>
 	{/section}
+	{if $modules[$index].alttpl.main[0].name neq ""}
+		<tr>
+			<td>
+				{$lang.common.template} ({$lang.common.site}):
+			</td>
+			<td>
+				<select name="tplmain" size="1">
+					{section name=i loop=$modules[$index].alttpl.main}
+					<option value="{$modules[$index].alttpl.main[i].tpl|htmlescape}"{if $modules[$index].alttpl.main[i].tpl eq $sm.p.tplmain} selected{/if}>{$modules[$index].alttpl.main[i].name}</option>
+					{/section}
+				</select>
+			</td>
+		</tr>
+	{/if}
+	{if $modules[$index].alttpl.content[0].name neq ""}
+		<tr>
+			<td>
+				{$lang.common.template} ({$lang.common.page}):
+			</td>
+			<td>
+				<select name="tplcontent" size="1">
+					{section name=i loop=$modules[$index].alttpl.content}
+					<option value="{$modules[$index].alttpl.content[i].tpl|htmlescape}"{if $modules[$index].alttpl.content[i].tpl eq $sm.p.tplcontent} selected{/if}>{$modules[$index].alttpl.content[i].name}</option>
+					{/section}
+				</select>
+			</td>
+		</tr>
+	{/if}
 	{$modules[$index].formadditionalhtml}
 	<tr>
 		<td colspan="2">
@@ -122,6 +150,7 @@
 {include file="common_admintable.tpl" table=$modules[$index].table}
 {if $modules[$index].showall neq "1" and $modules[$index].pages.pages neq "0" and $modules[$index].pages.pages neq ""}
 <div align="right"><a href="index.php?m=content&d=list&ctg={$modules[$index].ctg_id}&showall=1">{$lang.common.show_all}</a></div>
+{include file="pagebar.tpl"}
 {/if}
 <br />
 <a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}">{$lang.add_content}</a>
