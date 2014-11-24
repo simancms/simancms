@@ -126,6 +126,10 @@ $sql="
 INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('search', '".$lang['p_modules']['search']."');
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
+$sql="
+INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('media', '".$lang['p_modules']['search']."');
+";
+$result=database_db_query($nameDB, $sql, $lnkDB);
 
 
 //----------[Категорії новин]-[Categories news]----------------

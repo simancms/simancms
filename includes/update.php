@@ -58,6 +58,31 @@
 			execsql("ALTER TABLE `".$sm['t']."log` ADD `object_id` VARCHAR(255)  NOT NULL  DEFAULT '0'  AFTER `object_name`;");
 			sm_add_settings('autogenerate_content_filesystem', '1', 'content');
 			sm_add_settings('autogenerate_news_filesystem', '1', 'news');
+			execsql("CREATE TABLE `".$sm['t']."media` (
+					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+					`id_ctg` int(11) unsigned NOT NULL DEFAULT '0',
+					`type` varchar(255) NOT NULL DEFAULT 'jpg',
+					`title` varchar(255) DEFAULT NULL,
+					`originalname` varchar(255) DEFAULT '',
+					`filepath` varchar(255) DEFAULT NULL,
+					`alt_text` varchar(255) DEFAULT NULL,
+					`description` text,
+					PRIMARY KEY (`id`)
+				)");
+			execsql("CREATE TABLE `".$sm['t']."categories_media` (
+					`id_ctg` int(11) unsigned NOT NULL AUTO_INCREMENT,
+					`title` varchar(255) DEFAULT NULL,
+					`public` tinyint(4) unsigned NOT NULL DEFAULT '1',
+					`keywords` varchar(255) DEFAULT NULL,
+					`description` varchar(255) DEFAULT NULL,
+					`items_count` int(11) unsigned NOT NULL DEFAULT '0',
+					`lastupdate` int(11) unsigned NOT NULL DEFAULT '0',
+					PRIMARY KEY (`id_ctg`)
+				)");
+			$q=new TQuery($sm['t'].'modules');
+			$q->Add('module_name', 'media');
+			$q->Add('module_title', 'Media');
+			$q->Insert();
 
 			sm_update_settings('database_date', '20140701');
 		}

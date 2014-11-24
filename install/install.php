@@ -158,6 +158,8 @@
 							$inst['tables'][16]['name'] = 'tempdata';
 							$inst['tables'][17]['name'] = 'metadata';
 							$inst['tables'][18]['name'] = 'taxonomy';
+							$inst['tables'][18]['name'] = 'media';
+							$inst['tables'][18]['name'] = 'categories_media';
 							include('dbcreate'.$serverDB.'.php');
 							for ($i = 0; $i < count($inst['tables']); $i++)
 								{

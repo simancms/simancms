@@ -58,6 +58,7 @@ $lang['p_modules']['news']='Новини';
 $lang['p_modules']['menu']='Меню';
 $lang['p_modules']['download']='Завантаження';
 $lang['p_modules']['search']='Пошук';
+$lang['p_modules']['media']='Медіа';
 
 $inst['p_news']['firs_news']='SiMan CMS встановлено!';
 $inst['p_news']['firs_news_text']='Це приклад новини. Зайдіть під адміністративник обліковим записом щоб змінити або видалити її.';

@@ -58,6 +58,7 @@ $lang['p_modules']['news']='News';
 $lang['p_modules']['menu']='Navigation';
 $lang['p_modules']['download']='Downloads';
 $lang['p_modules']['search']='Search';
+$lang['p_modules']['media']='Media';
 
 $inst['p_news']['firs_news']='SiMan CMS installed!';
 $inst['p_news']['firs_news_text']='This is sample news. Please login to change or delete it.';
