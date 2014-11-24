@@ -127,7 +127,7 @@ INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('search'
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $sql="
-INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('media', '".$lang['p_modules']['search']."');
+INSERT INTO ".$tableprefix."modules (module_name, module_title) VALUES ('media', '".$lang['p_modules']['media']."');
 ";
 $result=database_db_query($nameDB, $sql, $lnkDB);
 
