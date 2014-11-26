@@ -313,7 +313,8 @@ if (!defined("adminform_DEFINED"))
 					}
 				function SetValue($name, $value)
 					{
-						$this->form['data'][$name]=htmlescape($value);
+						if (!is_array($value))
+							$this->form['data'][$name]=htmlescape($value);
 					}
 				function Output()
 					{
