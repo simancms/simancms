@@ -1134,5 +1134,12 @@
 			@header('Pragma: no-cache');
 			@header('Expires: 0');
 		}
+	
+	function sm_printmode()
+		{
+			global $sm;
+			$sm['s']['printmode'] = 'on';
+			$sm['s']['main_tpl'] = 'indexprint';
+		}
 
 ?>
