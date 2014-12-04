@@ -39,13 +39,12 @@
 				{
 					$rss['items'][$i]['title'] = $row->title_news;
 					$rss['items'][$i]['pubDate'] = date('D, d M Y H:i:s O', $row->date_news);
-					//$rss['items'][$i]['pubDate']=date('D, d M Y H:i:s +0200', $row->date_news);
-					if (empty($row->prewiew_news))
+					if (empty($row->preview_news))
 						{
 							$rss['items'][$i]['description'] = cut_str_by_word(strip_tags($row->text_news), sm_settings('news_anounce_cut'), '...');
 						}
 					else
-						$rss['items'][$i]['description'] = strip_tags($row->prewiew_news);
+						$rss['items'][$i]['description'] = strip_tags($row->preview_news);
 					$rss['items'][$i]['description'] = preg_replace("/&#?[a-z0-9]+;/i", "", $rss['items'][$i]['description']);
 					$rss['items'][$i]['description'] = str_replace('&', '&amp;', $rss['items'][$i]['description']);
 					$rss['items'][$i]['description'] = str_replace('&nbsp;', ' ', $rss['items'][$i]['description']);
