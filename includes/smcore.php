@@ -840,7 +840,7 @@
 	function sm_use($libname)
 		{
 			global $sm;
-			if ($libname=='ui') $libname='admininterface';
+			if ($libname=='ui' || $libname=='ui.interface') $libname='admininterface';
 			if ($libname=='ui.grid') $libname='admintable';
 			if ($libname=='ui.buttons') $libname='adminbuttons';
 			if ($libname=='ui.form') $libname='adminform';
