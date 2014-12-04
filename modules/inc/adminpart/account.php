@@ -176,28 +176,49 @@
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
-			if (sm_action('setpwd'))
-				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['module_account']['set_password'];
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user=".intval($_getvars['uid']);
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$m['user']['id'] = $row->id_user;
-							$m['user']['login'] = $row->login;
-							$m['user']['email'] = $row->email;
-							$m['user']['status'] = $row->user_status;
-						}
-				}
 			if (sm_action('postsetpwd'))
 				{
-					$password = md5($_postvars['p_newpwd']);
-					$id_user = intval($_postvars['p_iduser']);
-					$random_code = md5($id_user.microtime().rand());
-					execsql("UPDATE ".$tableusersprefix."users SET password = '".dbescape($password).", random_code='".dbescape($random_code)."' WHERE id_user=".intval($id_user)." AND id_user>1");
-					sm_redirect($lang['module_account']['message_set_password_finish']);
-					sm_redirect($_getvars['returnto']);
+					$usr = sm_userinfo(intval($_getvars['uid']));
+					if (!empty($usr['id']))
+						{
+							if (empty($_postvars['newpwd']))
+								{
+									$errormessage=$lang['message_set_all_fields'];
+									sm_set_action('setpwd');
+								}
+							else
+								{
+									$password = md5($_postvars['newpwd']);
+									$random_code = md5($id_user.microtime().rand());
+									execsql("UPDATE ".$tableusersprefix."users SET password = '".dbescape($password)."', random_code='".dbescape($random_code)."' WHERE id_user=".intval($usr['id'])." AND id_user>1");
+									sm_notify($lang['module_account']['message_set_password_finish']);
+									sm_redirect($_getvars['returnto']);
+								}
+						}
+				}
+			if (sm_action('setpwd'))
+				{
+					$usr=sm_userinfo(intval($_getvars['uid']));
+					if (!empty($usr['id']))
+						{
+							add_path_control();
+							add_path($lang['user_list'], 'index.php?m=account&d=usrlist');
+							add_path_current($lang['set_password']);
+							sm_title($lang['module_account']['type_new_password_for_user']);
+							sm_use('ui.interface');
+							sm_use('ui.form');
+							$ui = new TInterface();
+							if (!empty($errormessage))
+								$ui->NotificationError($errormessage);
+							$f = new TForm('index.php?m=account&d=postsetpwd&uid='.$usr['id'].'&returnto='.urlencode($_getvars['returnto']));
+							$f->AddLabel('login', $lang['login_str'], $usr['login']);
+							$f->AddText('newpwd', $lang['password']);
+							$f->LoadValuesArray($_postvars);
+							$f->SaveButton($lang['set_password']);
+							$ui->AddForm($f);
+							$ui->Output(true);
+							sm_setfocus('newpwd');
+						}
 				}
 			if (sm_action('listgroups'))
 				{

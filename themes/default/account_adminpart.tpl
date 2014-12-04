@@ -46,17 +46,6 @@
 {/if}
 {/if}
 
-{if $modules[$index].mode eq "setpwd"}
-{include file="block_begin.tpl"}
-<form action="index.php?m=account&d=postsetpwd&returnto={$sm.g.returnto|urlencode}" method="post">
-{$lang.module_account.type_new_password_for_user} <strong>{$modules[$index].user.login}</strong>:<br />
-<input type="hidden" name="p_iduser" value="{$modules[$index].user.id}">
-<input type="text" name="p_newpwd"><br />
-<input type="submit" value="{$lang.set_password}">
-</form>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "viewprivmsg"}
 {include file="block_begin.tpl"}
 <a href="index.php?m=account&d=sendprivmsg">{$lang.module_account.send_message}</a> :: {if $modules[$index].privmsg_folder eq "inbox"}<b>{/if}<a href="index.php?m=account&d=viewprivmsg&folder=inbox">{$lang.module_account.inbox}</a>{if $modules[$index].privmsg_folder eq "inbox"}</b>{/if} :: {if $modules[$index].privmsg_folder eq "outbox"}<b>{/if}<a href="index.php?m=account&d=viewprivmsg&folder=outbox">{$lang.module_account.outbox}</a>{if $modules[$index].privmsg_folder eq "outbox"}</b>{/if}<br>
