@@ -340,10 +340,13 @@
 			add_path($lang['modules_mamagement'], 'index.php?m=admin&d=modules');
 		}
 
-	function add_path_current()
+	function add_path_current($title=NULL)
 		{
 			global $sm;
-			add_path($sm['modules'][0]['title'], sm_this_url(), 'currentpage');
+			if ($title===NULL)
+				add_path($sm['modules'][0]['title'], sm_this_url(), 'currentpage');
+			else
+				add_path($title, sm_this_url());
 		}
 
 	//nllist - sting with items separated by new line character (s)
