@@ -14,7 +14,7 @@ $serverDB=0;
 $hostNameDB='localhost';
 
 //Database name
-$nameDB='siman_167';
+$nameDB='siman_168';
 
 //Database user name
 $userNameDB='root';
@@ -30,11 +30,11 @@ $initialStatementDB="SET NAMES 'utf8'";
 $tableprefix='sm_';
 
 //Table `users` prefix.
-// Leave ampte for default value.
+// Leave empty for default value.
 $tableusersprefix='';
 
 //Session prefix. You need to change it for your site to prevent hacks
-$session_prefix='needchange167_';
+$session_prefix='needchange168_';
 
 //Caching of pages; 0 - disabled; positive integer - min time for caching in seconds
 $siman_cache=0;
