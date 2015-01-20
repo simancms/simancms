@@ -949,10 +949,12 @@
 					add_path($lang['module_admin']['view_log'], 'index.php?m=admin&d=viewlog');
 					if (intval($_settings['log_store_days'])>0)
 						{
-							$sql = "DELETE FROM ".$sm['t']."log WHERE time<".(time() - $_settings['log_store_days'] * 3600 * 24);
-							$result = execsql($sql);
+							$q = new TQuery($sm['t'].'log');
+							$q->Add('object_name', 'system');
+							$q->Add('time<'.(time()-intval($_settings['log_store_days'])*3600*24));
+							$q->Remove();
 						}
-					$m["title"] = $lang['module_admin']['view_log'];
+					sm_title($lang['module_admin']['view_log']);
 					sm_use('admintable');
 					sm_use('admininterface');
 					$limit=100;
@@ -978,12 +980,7 @@
 							$t->NewRow();
 						}
 					$ui->AddGrid($t);
-					$m['pages']['url'] = sm_this_url('from', '');
-					$m['pages']['interval'] = $limit;
-					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
-					$m['pages']['records']=$q->Find();
-					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
-					$ui->AddPagebar('');
+					$ui->AddPagebarParams($q->Find(), $limit, $offset);
 					$ui->Output(true);
 				}
 			if (sm_action('postpackage') && $_settings['packages_upload_allowed'])
