@@ -25,6 +25,20 @@ function siman_add_modifier_menu(&$menu)
 
 if (!function_exists('siman_load_menu'))
 	{
+		function siman_menu_open_detect(&$menu, $opened_id)
+			{
+				if (intval($opened_id) == 0)
+					return;
+				for ($i = 0; $i < count($menu); $i++)
+					{
+						if (intval($menu[$i]['id']) == intval($opened_id) && intval($opened_id) != intval($menu[$i]['submenu_from']))
+							{
+								$menu[$i]['opened'] = true;
+								siman_menu_open_detect($menu, $menu[$i]['submenu_from']);
+							}
+					}
+			}
+
 		function siman_load_menu($menu_id, $maxlevel=-1)
 			{
 				global $nameDB, $lnkDB, $_servervars, $tableprefix, $_settings, $special, $row;
@@ -128,6 +142,14 @@ if (!function_exists('siman_load_menu'))
 				for ($i=0; $i<count($menu); $i++)
 					{
 						$rmenu[$pos[$i]-1]=$menu[$i];
+					}
+				for ($i=0; $i<count($rmenu); $i++)
+					{
+						if (intval($rmenu[$i]['active'])==1)
+							{
+								$rmenu[$i]['opened']=true;
+								siman_menu_open_detect($rmenu, $rmenu[$i]['submenu_from']);
+							}
 					}
 				return $rmenu;
 			}
