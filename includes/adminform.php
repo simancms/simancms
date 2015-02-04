@@ -541,6 +541,11 @@ if (!defined("adminform_DEFINED"))
 						sm_setfocus($name);
 						return $this;
 					}
+				function WithValue($value)
+					{
+						$this->SetValue($this->currentname, $value);
+						return $this;
+					}
 			}
 
 		define("adminform_DEFINED", 1);
