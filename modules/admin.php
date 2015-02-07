@@ -220,6 +220,7 @@
 					sm_use('admininterface');
 					$ui = new TInterface();
 					sm_event('onadmindashboardstart');
+					$ui->AddBlock($lang['control_panel']);
 					$dashboard=new TDashBoard();
 					sm_event('onadmindashboardcommonstart');
 					$dashboard->AddItem($lang['modules_mamagement'], 'index.php?m=admin&d=modules', 'applications');

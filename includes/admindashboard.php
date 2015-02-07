@@ -37,6 +37,11 @@
 							return $this;
 						}
 					
+					function Count()
+						{
+							return count($this->board['items']);
+						}
+					
 					function SetURL($url, $name='')
 						{
 							if (!empty($name))
