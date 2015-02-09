@@ -133,6 +133,21 @@ if (!defined("adminbuttons_DEFINED"))
 						$this->bar['buttons'][$buttonname]['attrs'][$attrname]=$attrvalue;
 						return $this;
 					}
+				function ApplyClassnameForAll($classname)
+					{
+						if (is_array($this->bar['buttons']))
+							{
+								foreach ($this->bar['buttons'] as $buttonname=>&$buttonparams)
+									{
+										$this->AddClassname($classname, $buttonname);
+									}
+							}
+						return $this;
+					}
+				function Count()
+					{
+						return count($this->bar['buttons']);
+					}
 				function OnClick($javascript, $buttonname=NULL)
 					{
 						if ($buttonname==NULL)
