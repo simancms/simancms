@@ -475,9 +475,35 @@ if (!defined("adminform_DEFINED"))
 						$this->MergeColumns($name);
 						return $this;
 					}
-				function Disable($name)
+				function Disable($name=NULL)
 					{
+						if ($name===NULL)
+							$name=$this->currentname;
 						$this->form['fields'][$name]['attrs']['disabled']='disabled';
+						return $this;
+					}
+				function SetFieldClass($name=NULL, $classname)
+					{
+						if ($name===NULL)
+							$name=$this->currentname;
+						$this->form['fields'][$name]['attrs']['class']=$classname;
+						return $this;
+					}
+				function AppendFieldClass($name=NULL, $classname)
+					{
+						if ($name===NULL)
+							$name=$this->currentname;
+						$this->form['fields'][$name]['attrs']['class'].=' '.$classname;
+						return $this;
+					}
+				function WithFieldClass($classname)
+					{
+						$this->SetFieldClass(NULL, $classname);
+						return $this;
+					}
+				function WithFieldClassAppended($classname)
+					{
+						$this->AppendFieldClass(NULL, $classname);
 						return $this;
 					}
 				//-------------------------------------------------------------
