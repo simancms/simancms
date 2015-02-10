@@ -71,6 +71,12 @@ if (!defined("adminform_DEFINED"))
 						$this->SetRowClass('adminform-separator');
 						return $this;
 					}
+				function Separator($title)
+					{
+						$name='separator'.count($this->form['fields']).'r'.rand(1111, 9999);
+						$this->AddSeparator($name, $title);
+						return $this;
+					}
 				function SetRowClass($class, $name=NULL)
 					{
 						if ($name===NULL)
