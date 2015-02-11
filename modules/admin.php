@@ -1046,29 +1046,36 @@
 					sm_title($lang['module_admin']['upload_package']);
 					add_path_control();
 					add_path_current();
-					sm_use('admininterface');
-					sm_use('adminform');
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.tabs');
 					$ui = new TInterface();
 					if (!empty($m['error_message']))
 						{
 							$ui->AddBlock($lang['error']);
 							$ui->NotificationError($m['error_message']);
 						}
-					$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['file'].')');
+					$tabs=new TTabs();
+					$tabs->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['file'].')');
 					$f = new TForm('index.php?m=admin&d=postpackage');
 					$f->AddFile('userfile', $lang['file_name']);
 					$f->SaveButton($lang['upload']);
-					$ui->AddForm($f);
-					$ui->Output(true);
+					$tabs->AddForm($f);
 					if (function_exists('curl_init'))
 						{
-							$ui->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['url'].')');
+							$tabs->AddBlock($lang['module_admin']['upload_package'].' ('.$lang['common']['url'].')');
 							$f = new TForm('index.php?m=admin&d=postpackage&typeupload=url');
 							$f->AddText('urlupload', $lang['common']['url']);
 							$f->SaveButton($lang['upload']);
-							$ui->AddForm($f);
-							$ui->Output(true);
+							if ($_getvars['typeupload']=='url')
+								{
+									$tabs->SetActiveIndex(1);
+									sm_setfocus('urlupload');
+								}
+							$tabs->AddForm($f);
 						}
+					$ui->Add($tabs);
+					$ui->Output(true);
 				}
 			if (sm_actionpost('saverobotstxt'))
 				{

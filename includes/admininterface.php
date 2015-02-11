@@ -52,6 +52,25 @@ if (!defined("admininterface_DEFINED"))
 							$this->item['data']=$object->Output();
 						$this->SetActiveItem();
 					}
+				function Add($object)
+					{
+						if (get_class($object)=='TGrid')
+							$this->AddOutputObject('table', $object);
+						elseif (get_class($object)=='TForm')
+							$this->AddOutputObject('form', $object);
+						elseif (get_class($object)=='TButtons')
+							$this->AddOutputObject('bar', $object);
+						elseif (get_class($object)=='TPanel')
+							$this->AddOutputObject('panel', $object);
+						elseif (get_class($object)=='TBoardMessages')
+							$this->AddOutputObject('board', $object);
+						elseif (get_class($object)=='TTabs')
+							$this->AddOutputObject('tabs', $object, 'common_admintabs.tpl', true);
+						elseif (get_class($object)=='TDashBoard')
+							$this->AddOutputObject('dashboard', $object, 'common_admindashboard.tpl', true);
+						elseif (get_class($object)=='TNavigation')
+							$this->AddOutputObject('navigation', $object, 'common_adminnavigation.tpl', true);
+					}
 				function AddForm($form)
 					{
 						$this->AddOutputObject('form', $form);

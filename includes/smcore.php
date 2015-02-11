@@ -847,6 +847,7 @@
 			if ($libname=='ui.navigation') $libname='adminnavigation';
 			if ($libname=='ui.boardmessages') $libname='boardmessages';
 			if ($libname=='ui.dashboard') $libname='admindashboard';
+			if ($libname=='ui.tabs') $libname='admintabs';
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
 			elseif (strcmp($libname, 'autocomplete')==0)
