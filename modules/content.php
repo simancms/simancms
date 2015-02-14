@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.7
-	Revision: 2014-09-16
+	Version: 1.6.8
+	Revision: 2015-02-13
 	Author URI: http://simancms.org/
 	*/
 
@@ -112,16 +112,17 @@
 	$tmp_load_preview_only = 0;
 	$tmp_dont_set_title = 0;
 
-	if (empty($m["mode"])) $m["mode"] = 'view';
-	/*
-	$m["module"]='content';
-	*/
+	sm_default_action('view');
 	if (sm_action('view'))
 		{
-			$m["module"] = 'content';
 			if (!empty($m["bid"])) $m["cid"] = intval($m["bid"]);
 			$content_id = intval($m["cid"]);
-			if (empty($content_id) && $modules_index == 0) $content_id = intval($_getvars["cid"]);
+			if (empty($content_id) && $modules_index == 0)
+				{
+					$content_id = intval($_getvars["cid"]);
+					if ($sm['s']['is_index_page'] && empty($content_id))
+						$content_id=1;
+				}
 			if (empty($content_id))
 				{
 					$m["title"] = $lang["error"];
@@ -130,6 +131,7 @@
 				}
 			else
 				{
+					$m["module"] = 'content';
 					sm_page_viewid('content-view-'.$content_id);
 					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category AND id_content=".intval($content_id);
 					if ($modules_index == 0)
