@@ -143,6 +143,10 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['rows'][$this->rownumber][$name]['colspan']=$value;
 					}
+				function RowCount()
+					{
+						return count($this->table['rows']);
+					}
 				function NewRow()
 					{
 						$this->rownumber++;

@@ -75,12 +75,13 @@ if (!defined("admininterface_DEFINED"))
 					{
 						$this->AddOutputObject('form', $form);
 					}
-				function AddTPL($tplname, $action='view')
+				function AddTPL($tplname, $action='view', $data=Array())
 					{
 						$this->blocks[$this->currentblock]['itemscount']++;
 						$this->item['type']='tpl';
 						$this->item['action']=$action;
 						$this->item['tpl']=$tplname;
+						$this->item['data']=$data;
 						$this->SetActiveItem();
 					}
 				function AddGrid($grid)
