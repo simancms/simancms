@@ -1,3 +1,4 @@
+{strip}
 {if $modules[$index].mode eq "common_admininterface_launcher" and $blocks eq ""}
 	{include file="common_admininterface.tpl" blocks=$modules[$index].common_admininterface_output}
 {else}
@@ -33,3 +34,4 @@
 		{/if}
 	{/section}
 {/if}
+{/strip}

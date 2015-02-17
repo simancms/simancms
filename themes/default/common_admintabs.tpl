@@ -1,3 +1,4 @@
+{strip}
 {if $postfix eq ""}
 	{assign var=postfix value=1|mt_rand:2000000}
 {/if}
@@ -35,3 +36,4 @@
 	{/section}
 	</div>
 </div>
+{/strip}

@@ -1,3 +1,4 @@
+{strip}
 	{section name=adminpanelblockindex loop=$panelblocks}
 		{section name=adminpanelitemindex loop=$panelblocks[adminpanelblockindex].items}
 		{if $panelblocks[adminpanelblockindex].items[adminpanelitemindex].type eq "form"}
@@ -17,3 +18,4 @@
 		{/if}
 		{/section}
 	{/section}
+{/strip}
