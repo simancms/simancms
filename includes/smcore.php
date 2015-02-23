@@ -784,6 +784,13 @@
 			sm_add_title_modifier($sm['m']['title']);
 		}
 
+	function sm_title_append($title_append)
+		{
+			global $sm;
+			$title=$sm['m']['title'].$title_append;
+			sm_title($title);
+		}
+
 	function sm_meta_title($title, $hide_site_title = true)
 		{
 			global $special, $_settings;
