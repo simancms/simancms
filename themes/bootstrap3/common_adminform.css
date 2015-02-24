@@ -42,3 +42,10 @@ tr.adminform-row-odd:hover td, tr.adminform-row-pair:hover td
 {
 	background-color:#d9edf7;
 }
+
+.adminform_savebutton_helper
+{
+	font-style:italic;
+	padding-right:2em;
+	font-size:smaller;
+}

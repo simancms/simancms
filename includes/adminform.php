@@ -518,6 +518,16 @@ if (!defined("adminform_DEFINED"))
 						$this->form['savetitle']=$text;
 						return $this;
 					}
+				function SetSaveButtonHelperText($text)
+					{
+						$this->form['savebutton_helper']['text']=$text;
+						return $this;
+					}
+				function SetSaveButtonHelperClassname($class)
+					{
+						$this->form['savebutton_helper']['class']=$class;
+						return $this;
+					}
 				//-------------------------------------------------------------
 				function Calendar($name=NULL)
 					{
