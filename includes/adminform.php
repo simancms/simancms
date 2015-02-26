@@ -229,6 +229,7 @@ if (!defined("adminform_DEFINED"))
 					}
 				function AddEditor($name, $title, $required=false)
 					{
+						global $sm;
 						$this->currentname=$name;
 						$this->form['fields'][$name]['name']=$name;
 						$this->form['fields'][$name]['caption']=$title;
@@ -236,10 +237,11 @@ if (!defined("adminform_DEFINED"))
 						$this->form['fields'][$name]['type']='editor';
 						$this->form['updates']=addto_nllist($this->form['updates'], $name);
 						$this->form['fields'][$name]['tab']=$this->currentTab;
-						if (!$this->firsteditor)
+						if (!$this->firsteditor || intval($sm['s']['tinymce_instances_in_tform'])>0)
 							$this->form['fields'][$name]['noinit']=1;
 						if ($this->firsteditor)
 							$this->firsteditor=false;
+						$sm['s']['tinymce_instances_in_tform']++;
 						return $this;
 					}
 				function AddCheckbox($name, $title, $checkedvalue=1, $required=false)
