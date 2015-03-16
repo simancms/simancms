@@ -1,18 +1,18 @@
 {strip}
-{if $postfix eq ""}
-	{assign var=postfix value=1|mt_rand:2000000}
+{if $tabspostfix eq ""}
+	{assign var=tabspostfix value=1|mt_rand:2000000}
 {/if}
 <div role="tabpanel">
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs" role="tablist">
 	{section name=admintabsblockindex loop=$data}
-		<li role="presentation"{if $data[admintabsblockindex].active} class="active"{/if}><a href="#tab-{$postfix}-{$smarty.section.admintabsblockindex.index}" aria-controls="tab-{$postfix}-{$smarty.section.admintabsblockindex.index}" role="tab" data-toggle="tab">{$data[admintabsblockindex].title}</a></li>
+		<li role="presentation"{if $data[admintabsblockindex].active} class="active"{/if}><a href="#tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" aria-controls="tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" role="tab" data-toggle="tab">{$data[admintabsblockindex].title}</a></li>
 	{/section}
 	</ul>
 	<!-- Tab panes -->
 	<div class="tab-content">
 	{section name=admintabsblockindex loop=$data}
-		<div role="tabpanel" class="tab-pane{if $data[admintabsblockindex].active} active{/if}" id="tab-{$postfix}-{$smarty.section.admintabsblockindex.index}">
+		<div role="tabpanel" class="tab-pane{if $data[admintabsblockindex].active} active{/if}" id="tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}">
 		{section name=admintabsitemindex loop=$data[admintabsblockindex].items}
 		{if $data[admintabsblockindex].items[admintabsitemindex].type eq "form"}
 			{include file="common_adminform.tpl" form=$data[admintabsblockindex].items[admintabsitemindex].form}
