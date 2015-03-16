@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 
 //==============================================================================
-//#ver 1.6.7
-//#revision 2014-05-20
+//#ver 1.6.8
+//#revision 2015-03-16
 //==============================================================================
 
 if (!defined("adminform_DEFINED"))
@@ -371,6 +371,17 @@ if (!defined("adminform_DEFINED"))
 					{
 						$this->form['tabscount']=count($this->form['tabs']);
 						$this->form['method']=strtolower($this->form['method']);
+						foreach ($this->form['fields'] as $name=>$value)
+							{
+								if (!empty($this->form['fields'][$name]['toptext']))
+									$this->form['fields'][$name]['toptext']='<span class="adminform-filed-top-txt'.(!empty($this->form['fields'][$name]['toptext_classname'])?' '.$this->form['fields'][$name]['toptext_classname']:'').'"'.(!empty($this->form['fields'][$name]['toptext_style'])?' style="'.$this->form['fields'][$name]['toptext_style'].'"':'').'>'.$this->form['fields'][$name]['toptext'].'</span>';
+								if (!empty($this->form['fields'][$name]['bottomtext']))
+									$this->form['fields'][$name]['bottomtext']='<span class="adminform-filed-btm-txt'.(!empty($this->form['fields'][$name]['bottomtext_classname'])?' '.$this->form['fields'][$name]['bottomtext_classname']:'').'"'.(!empty($this->form['fields'][$name]['bottomtext_style'])?' style="'.$this->form['fields'][$name]['bottomtext_style'].'"':'').'>'.$this->form['fields'][$name]['bottomtext'].'</span>';
+								if (!empty($this->form['fields'][$name]['begintext']))
+									$this->form['fields'][$name]['begintext']='<span class="adminform-filed-bgn-txt'.(!empty($this->form['fields'][$name]['begintext_classname'])?' '.$this->form['fields'][$name]['begintext_classname']:'').'"'.(!empty($this->form['fields'][$name]['begintext_style'])?' style="'.$this->form['fields'][$name]['begintext_style'].'"':'').'>'.$this->form['fields'][$name]['begintext'].'</span>';
+								if (!empty($this->form['fields'][$name]['endtext']))
+									$this->form['fields'][$name]['endtext']='<span class="adminform-filed-end-txt'.(!empty($this->form['fields'][$name]['endtext_classname'])?' '.$this->form['fields'][$name]['endtext_classname']:'').'"'.(!empty($this->form['fields'][$name]['endtext_style'])?' style="'.$this->form['fields'][$name]['endtext_style'].'"':'').'>'.$this->form['fields'][$name]['endtext'].'</span>';
+							}
 						if ($this->form['no_highlight']!=1)
 							{
 								$class='';
@@ -420,24 +431,32 @@ if (!defined("adminform_DEFINED"))
 						$this->form['fields'][$name]['caption']=$title;
 						return $this;
 					}
-				function SetFieldTopText($name, $text)
+				function SetFieldTopText($name, $text, $classname='', $style='')
 					{
 						$this->form['fields'][$name]['toptext']=$text;
+						$this->form['fields'][$name]['toptext_classname']=$classname;
+						$this->form['fields'][$name]['toptext_style']=$style;
 						return $this;
 					}
-				function SetFieldBeginText($name, $text)
+				function SetFieldBeginText($name, $text, $classname='', $style='')
 					{
 						$this->form['fields'][$name]['begintext']=$text;
+						$this->form['fields'][$name]['begintext_classname']=$classname;
+						$this->form['fields'][$name]['begintext_style']=$style;
 						return $this;
 					}
-				function SetFieldEndText($name, $text)
+				function SetFieldEndText($name, $text, $classname='', $style='')
 					{
 						$this->form['fields'][$name]['endtext']=$text;
+						$this->form['fields'][$name]['endtext_classname']=$classname;
+						$this->form['fields'][$name]['endtext_style']=$style;
 						return $this;
 					}
-				function SetFieldBottomText($name, $text)
+				function SetFieldBottomText($name, $text, $classname='', $style='')
 					{
 						$this->form['fields'][$name]['bottomtext']=$text;
+						$this->form['fields'][$name]['bottomtext_classname']=$classname;
+						$this->form['fields'][$name]['bottomtext_style']=$style;
 						return $this;
 					}
 				function MergeColumns($name=NULL)
