@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.8
-	//#revision 2015-02-13
+	//#revision 2015-03-17
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -202,6 +202,7 @@
 					$sm['modules'] =& $modules;
 					$sm['index'] =& $modules_index;
 					$m =& $modules[$modules_index];
+					$modules[$modules_index]['current_module'] = $module;
 					include('modules/'.$module.'.php');
 					if (!$sm['s']['nosmarty'])
 						{
@@ -229,6 +230,7 @@
 					$sm['m'] =& $modules[$modules_index];
 					if ($special['no_borders_main_block'])
 						$modules[$modules_index]['borders_off'] = 1;
+					$modules[$modules_index]['current_module'] = $module;
 					if ($module <> '404')
 						include('modules/'.$module.'.php');
 					if (empty($modules[$modules_index]['module']))
@@ -352,7 +354,10 @@
 													sm_add_content_modifier($m['content'][0]["text"]);
 												}
 											else
-												include('modules/'.$pnlrow->name_block.'.php');
+												{
+													$modules[$modules_index]['current_module'] = $pnlrow->name_block;
+													include('modules/'.$pnlrow->name_block.'.php');
+												}
 										}
 									else
 										{

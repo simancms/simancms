@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-09-16
+	//#ver 1.6.8
+	//#revision 2015-03-17
 	//==============================================================================
 
 
@@ -684,10 +684,22 @@
 			for ($i = 0; $i<func_num_args(); $i++)
 				{
 					$param = func_get_arg($i);
-					if (strcmp($m["mode"], $param) == 0)
+					if (strcmp($m['mode'], $param) == 0)
 						return true;
 				}
 			return false;
+		}
+
+	function sm_current_action()
+		{
+			global $m;
+			return $m['mode'];
+		}
+
+	function sm_current_module()
+		{
+			global $m;
+			return $m['current_module'];
 		}
 
 	//Return true  if not empty $_POST and current action is in set $action1, $action2... or false otherwice
