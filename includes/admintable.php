@@ -339,6 +339,18 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
 						$this->table['rows'][$this->rownumber][$name]['checked']=$checked;
 					}
+				function SetControlAttr($name, $attrname, $attrval)
+					{
+						$this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname]=$attrval;
+					}
+				function GetControlAttr($name, $attrname)
+					{
+						return $this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname];
+					}
+				function AppendControlAttr($name, $attrname, $attrval, $append_prefix=' ')
+					{
+						$this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname].=(strlen($this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname])>0?$append_prefix:'').$attrval;
+					}
 				//Input type=hidden + Label
 				function StoredLabel($name, $varname, $value)
 					{
@@ -386,7 +398,7 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['colcount']=count($this->table['columns']);
 						$this->table['rowcount']=count($this->table['rows']);
-						for ($i = 0; $i<count($this->table['rows']); $i++)
+						for ($this->rownumber = 0; $this->rownumber<$this->RowCount(); $this->rownumber++)
 							{
 								$this->RowAddClass('at-row-'.$i, $i);
 								if (intval($this->table['no_highlight'])!=1)
@@ -394,6 +406,40 @@ if (!defined("admintable_DEFINED"))
 										$this->RowAddClass('at-row-pair', $i);
 									else
 										$this->RowAddClass('at-row-odd', $i);
+								foreach ($this->table['columns'] as $name=>$columnval)
+									{
+										if (in_array($this->table['rows'][$this->rownumber][$name]['element'], Array('text', 'select', 'checkbox', 'radioitem', 'storedlabel')))
+											{
+												if ($this->table['rows'][$this->rownumber][$name]['element']=='text')
+													$this->SetControlAttr($name, 'type', 'text');
+												if ($this->table['rows'][$this->rownumber][$name]['element']=='checkbox')
+													{
+														$this->SetControlAttr($name, 'type', 'checkbox');
+														if ($this->table['rows'][$this->rownumber][$name]['checked'])
+															$this->SetControlAttr($name, 'checked', 'checked');
+													}
+												if ($this->table['rows'][$this->rownumber][$name]['element']=='radioitem')
+													$this->SetControlAttr($name, 'type', 'radio');
+												if ($this->table['rows'][$this->rownumber][$name]['element']=='storedlabel')
+													$this->SetControlAttr($name, 'type', 'hidden');
+												if ($this->table['rows'][$this->rownumber][$name]['element']=='select')
+													{
+														$this->SetControlAttr($name, 'size', '1');
+														$this->AppendControlAttr($name, 'class', 'admintable-control-select');
+														$this->AppendControlAttr($name, 'class', 'admintable-'.$this->table['postfix'].'-control-select');
+													}
+												else
+													{
+														$this->SetControlAttr($name, 'value', $this->table['rows'][$this->rownumber][$name]['data']);
+														$this->AppendControlAttr($name, 'class', 'admintable-control-'.$this->GetControlAttr($name, 'type'));
+														$this->AppendControlAttr($name, 'class', 'admintable-'.$this->table['postfix'].'-control-'.$this->GetControlAttr($name, 'type'));
+													}
+												$this->SetControlAttr($name, 'name', $this->table['rows'][$this->rownumber][$name]['varname']);
+												$this->SetControlAttr($name, 'id', 'control-'.$this->table['postfix'].'-'.$name.'-row'.$this->rownumber);
+												if (!empty($this->table['rows'][$this->rownumber][$name]['onclick']))
+													$this->SetControlAttr($name, 'onclick', $this->table['rows'][$this->rownumber][$name]['onclick']);
+											}
+									}
 							}
 						return $this->table;
 					}

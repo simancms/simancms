@@ -141,20 +141,14 @@ function atdropdowncancelclosetime{$postfix}()
 				{elseif $table.rows[table_row_index].$column_name.image neq ""}
 					<img src="{if not $table.rows[table_row_index].$column_name.imagepath}themes/{$sm.s.theme}/images/admintable/{/if}{$table.rows[table_row_index].$column_name.image}" border="0">
 				{else}
-					{if $table.rows[table_row_index].$column_name.element eq "text"}
-						<input type="text" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}" id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-text admintable-{$postfix}-control-text" />
-					{elseif $table.rows[table_row_index].$column_name.element eq "select"}
-						<select name="{$table.rows[table_row_index].$column_name.varname}" size="1" id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-select admintable-{$postfix}-control-select"{if $table.rows[table_row_index].$column_name.onclick neq ""} onclick="{$table.rows[table_row_index].$column_name.onclick}"{/if}>
+					{if $table.rows[table_row_index].$column_name.element eq "select"}
+						<select{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach}>
 							{section name=table_row_index_section loop=$table.rows[table_row_index].$column_name.values}
 								<option value="{$table.rows[table_row_index].$column_name.values[table_row_index_section]}"{if $table.rows[table_row_index].$column_name.values[table_row_index_section] eq $table.rows[table_row_index].$column_name.data} SELECTED{/if}>{$table.rows[table_row_index].$column_name.labels[table_row_index_section]}</option>
 							{/section}
 						</select>
-					{elseif $table.rows[table_row_index].$column_name.element eq "checkbox"}
-						<input type="checkbox" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}"{if $table.rows[table_row_index].$column_name.checked} checked{/if} id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-checkbox admintable-{$postfix}-control-checkbox"{if $table.rows[table_row_index].$column_name.onclick neq ""} onclick="{$table.rows[table_row_index].$column_name.onclick}"{/if} />
-					{elseif $table.rows[table_row_index].$column_name.element eq "radioitem"}
-						<input type="radio" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}"{if $table.rows[table_row_index].$column_name.checked} checked{/if} id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" class="admintable-control-radio admintable-{$postfix}-control-radio"{if $table.rows[table_row_index].$column_name.onclick neq ""} onclick="{$table.rows[table_row_index].$column_name.onclick}"{/if} />
-					{elseif $table.rows[table_row_index].$column_name.element eq "storedlabel"}
-						<input type="hidden" name="{$table.rows[table_row_index].$column_name.varname}" value="{$table.rows[table_row_index].$column_name.data}" id="control-{$postfix}-{$column_name}-row{$smarty.section.table_row_index.index}" /> {$table.rows[table_row_index].$column_name.data}
+					{elseif $table.rows[table_row_index].$column_name.element neq ""}
+						<input{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach} />{if $table.rows[table_row_index].$column_name.element eq "storedlabel"} {$table.rows[table_row_index].$column_name.data}{/if}
 					{else}
 						{$table.rows[table_row_index].$column_name.data}
 					{/if}
