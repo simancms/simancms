@@ -351,6 +351,12 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname].=(strlen($this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname])>0?$append_prefix:'').$attrval;
 					}
+				function GetControlDOMID($name, $rownumber=NULL)
+					{
+						if ($rownumber===NULL)
+							$rownumber=$this->rownumber;
+						return 'control-'.$this->table['postfix'].'-'.$name.'-row'.$rownumber;
+					}
 				//Input type=hidden + Label
 				function StoredLabel($name, $varname, $value)
 					{
@@ -435,7 +441,7 @@ if (!defined("admintable_DEFINED"))
 														$this->AppendControlAttr($name, 'class', 'admintable-'.$this->table['postfix'].'-control-'.$this->GetControlAttr($name, 'type'));
 													}
 												$this->SetControlAttr($name, 'name', $this->table['rows'][$this->rownumber][$name]['varname']);
-												$this->SetControlAttr($name, 'id', 'control-'.$this->table['postfix'].'-'.$name.'-row'.$this->rownumber);
+												$this->SetControlAttr($name, 'id', $this->GetControlDOMID($name, $this->rownumber));
 												if (!empty($this->table['rows'][$this->rownumber][$name]['onclick']))
 													$this->SetControlAttr($name, 'onclick', $this->table['rows'][$this->rownumber][$name]['onclick']);
 											}
