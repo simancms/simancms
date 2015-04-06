@@ -36,17 +36,50 @@
 							$this->currentitem['name']=$name;
 							return $this;
 						}
-					
+
 					function Count()
 						{
 							return count($this->board['items']);
 						}
-					
+
 					function SetURL($url, $name='')
 						{
 							if (!empty($name))
 								$this->SetActiveItem($name);
 							$this->currentitem['url']=$url;
+							return $this;
+						}
+					
+					function SetBadge($text, $type='info', $name='')
+						{
+							if (!empty($name))
+								$this->SetActiveItem($name);
+							$this->currentitem['badge']['text']=$text;
+							$this->currentitem['badge']['attrs']['class']='adash-badge adash-badge-'.$type;
+							return $this;
+						}
+					
+					function SetBadgeInfo($text, $name='')
+						{
+							$this->SetBadge($text, 'info');
+							return $this;
+						}
+					
+					function SetBadgeAlert($text, $name='')
+						{
+							$this->SetBadge($text, 'alert');
+							return $this;
+						}
+					
+					function SetBadgeWarning($text, $name='')
+						{
+							$this->SetBadge($text, 'warning');
+							return $this;
+						}
+					
+					function SetBadgeSuccess($text, $name='')
+						{
+							$this->SetBadge($text, 'success');
 							return $this;
 						}
 					
@@ -121,6 +154,10 @@
 											$itemparams['attrs']['style']=$itemparams['style'];
 											$itemparams['attrs']['onclick']=$itemparams['onclick'];
 											$itemparams['attrs']['class']=$itemparams['class'];
+											if (!empty($itemparams['badge']['text']))
+												{
+													$itemparams['htmltop'].='<span class="'.$itemparams['badge']['attrs']['class'].'">'.$itemparams['badge']['text'].'</span>';
+												}
 										}
 								}
 							$this->board['count']=count($this->board['items']);

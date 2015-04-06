@@ -20,6 +20,13 @@
 							$this->activeindex = $activeindex;
 						}
 
+					function SetActiveIndexCurrent()
+						{
+							$this->activeindex = count($this->blocks)-1;
+							if ($this->activeindex==0)
+								$this->activeindex=0;
+						}
+
 					function Output()
 						{
 							$this->blocks[$this->activeindex]['active'] = true;
