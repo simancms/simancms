@@ -268,7 +268,7 @@
 										$dont_show_high_priority = 1;
 									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == sm_current_theme())
 										$dont_show_high_priority = 1;
-									if (!empty($pnlrow->showonlang) && $pnlrow->showontheme == $sm['s']['lang'])
+									if (!empty($pnlrow->showonlang) && $pnlrow->showonlang == $sm['s']['lang'])
 										$dont_show_high_priority = 1;
 									$show_panel = 1;
 									if (!empty($pnlrow->show_on_module))
