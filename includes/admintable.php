@@ -62,6 +62,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['messagebox']=$messagebox;
 						$this->table['columns'][$name]['messagebox_text']=$messagebox_text;
 						$this->table['columns'][$name]['to_menu']=$to_menu;//Deprecated
+						return $this;
 					}
 				function SetHeaderImage($name, $image)
 					{
@@ -74,17 +75,20 @@ if (!defined("admintable_DEFINED"))
 						else
 							$img='themes/default/images/admintable/'.$image;
 						$this->table['columns'][$name]['html'].='<img src="'.$img.'" class="adminform_header_image" />';
+						return $this;
 					}
 				function AddIcon($name, $image, $hint='')
 					{
 						if (strpos($image, '.')===false && strpos($image, '://')===false)
 							$image.='.gif';
 						$this->AddCol($name, '', '16', $hint, $hint, $image);
+						return $this;
 					}
 				function AddEdit($name='edit')
 					{
 						global $lang;
 						$this->AddCol($name, '', '16', $lang['common']['edit'], $lang['common']['edit'], 'edit');
+						return $this;
 					}
 				function AddDelete($msg='', $name='delete')
 					{
@@ -92,21 +96,25 @@ if (!defined("admintable_DEFINED"))
 						if (empty($msg))
 							$msg=$lang['common']['really_want_delete'];
 						$this->AddCol($name, '', '16', $lang['common']['delete'], $lang['common']['delete'], 'delete', 1, addslashes($msg));
+						return $this;
 					}
 				function SetAsMessageBox($name, $msg)
 					{
 						$this->table['columns'][$name]['messagebox']=1;
 						$this->table['columns'][$name]['messagebox_text']=$msg;
+						return $this;
 					}
 				function HeaderUrl($name, $url)
 					{
 						$this->table['columns'][$name]['headerurl']=$url;
+						return $this;
 					}
 				function AddMenuInsert($name='tomenu')
 					{
 						global $lang;
 						$this->AddCol($name, '', '', $lang['module_menu']['add_to_menu'], $lang['module_menu']['add_to_menu']);
 						$this->table['columns'][$name]['nobr']=1;
+						return $this;
 					}
 				function OneLine($name)
 					{
@@ -117,6 +125,7 @@ if (!defined("admintable_DEFINED"))
 									if ($key!=$name)
 										$this->table['rows'][$this->rownumber][$key]['hide']=1;
 								}
+						return $this;
 					}
 				function AttachEmptyCellsToLeft()
 					{
@@ -147,10 +156,12 @@ if (!defined("admintable_DEFINED"))
 								if ($colspan>1)
 									$this->Colspan($notempty, $colspan);
 							}
+						return $this;
 					}
 				function Colspan($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['colspan']=$value;
+						return $this;
 					}
 				function RowCount()
 					{
@@ -159,10 +170,12 @@ if (!defined("admintable_DEFINED"))
 				function NewRow()
 					{
 						$this->rownumber++;
+						return $this;
 					}
 				function Label($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['data']=$value;
+						return $this;
 					}
 				function AddClassnameGlobal($classname)
 					{
@@ -172,14 +185,17 @@ if (!defined("admintable_DEFINED"))
 				function CellAddClass($name, $classname)
 					{
 						$this->table['rows'][$this->rownumber][$name]['class'].=' '.$classname;
+						return $this;
 					}
 				function CellAddStyle($name, $style)
 					{
 						$this->table['rows'][$this->rownumber][$name]['style'].=$style;
+						return $this;
 					}
 				function Hint($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['hint']=$value;
+						return $this;
 					}
 				function Image($name, $replace_image)
 					{
@@ -197,61 +213,74 @@ if (!defined("admintable_DEFINED"))
 						elseif (!empty($replace_image))
 							$this->table['rows'][$this->rownumber][$name]['imagepath']=true;
 						$this->table['rows'][$this->rownumber][$name]['image']=$replace_image;
+						return $this;
 					}
 				function CustomMessageBox($name, $message)
 					{
 						$this->table['rows'][$this->rownumber][$name]['messagebox_text']=$message;
+						return $this;
 					}
 				function URL($name, $value, $open_in_new_window=false)
 					{
 						$this->table['rows'][$this->rownumber][$name]['url']=$value;
 						$this->table['rows'][$this->rownumber][$name]['new_window']=$open_in_new_window;
+						return $this;
 					}
 				function Menu($menu_caption, $menu_url, $name='tomenu')
 					{
 						global $lang;
 						sm_extcore();
 						$this->URL($name, sm_tomenuurl($menu_caption, $menu_url, sm_this_url()));
+						return $this;
 					}
 				function Hide($name)
 					{
 						$this->table['rows'][$this->rownumber][$name]['hide']=1;
+						return $this;
 					}
 				function ExpanderHTML($html)
 					{
 						$this->table['expanders'][$this->rownumber]['html']=$html;
+						return $this;
 					}
 				function Expand($name)
 					{
 						$this->table['rows'][$this->rownumber][$name]['url']='javascript:;';
 						$this->table['rows'][$this->rownumber][$name]['onclick'].="document.getElementById('admintable-expander-".$this->rownumber."-".$this->table['postfix']."').style.display=(document.getElementById('admintable-expander-".$this->rownumber."-".$this->table['postfix']."').style.display)?'':'none';";
+						return $this;
 					}
 				function ExpandAJAX($name, $url)
 					{
 						$this->Expand($name);
 						$this->table['rows'][$this->rownumber][$name]['onclick'].="admintable_ajax_load".$this->table['postfix']."('".$url."', 'admintable-expanderarea-".$this->rownumber."-".$this->table['postfix']."');";
+						return $this;
 					}
 				//--------------------------------------------------------------------------------------------------------
 				function HeaderColspan($name, $value=2)
 					{
 						$this->table['columns'][$name]['headercolspan']=$value;
+						return $this;
 					}
 				function HeaderHideCol($name)
 					{
 						$this->table['columns'][$name]['hideheader']=1;
+						return $this;
 					}
 				function HideHeader()
 					{
 						$this->table['hideheader']=1;
+						return $this;
 					}
 				//--------------------------------------------------------------------------------------------------------
 				function OnClick($name, $code)
 					{
 						$this->table['rows'][$this->rownumber][$name]['onclick'].=$code;
+						return $this;
 					}
 				function HeaderOnClick($name, $code)
 					{
 						$this->table['columns'][$name]['onclick'].=$code;
+						return $this;
 					}
 				function DropDownItemsCount($name)
 					{
@@ -267,6 +296,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['url']=$url;
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['confirm_message']=htmlescape($confirm_message);
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['tomenutitle']=$tomenutitle;
+						return $this;
 					}
 				function DropDownItemSelect($name, $index=-1)
 					{
@@ -275,6 +305,7 @@ if (!defined("admintable_DEFINED"))
 						else
 							$i=$index;
 						$this->table['rows'][$this->rownumber][$name]['dropdownitems'][$i]['selected']=1;
+						return $this;
 					}
 				function HeaderDropDownItem($name, $title, $url, $confirm_message='')
 					{
@@ -285,6 +316,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['columns'][$name]['dropdownitems'][$i]['title']=$title;
 						$this->table['columns'][$name]['dropdownitems'][$i]['url']=$url;
 						$this->table['columns'][$name]['dropdownitems'][$i]['confirm_message']=$confirm_message;
+						return $this;
 					}
 				function HeaderDropDownItemSelect($name, $index=-1)
 					{
@@ -293,6 +325,7 @@ if (!defined("admintable_DEFINED"))
 						else
 							$i=$index;
 						$this->table['columns'][$name]['dropdownitems'][$i]['selected']=1;
+						return $this;
 					}
 				private function USortRowsByColumnData($a, $b)
 					{
@@ -319,6 +352,7 @@ if (!defined("admintable_DEFINED"))
 					{
 						$this->sort_statement=$comma_separaded_columns;
 						usort($this->table['rows'], array($this, "USortRowsByColumnData"));
+						return $this;
 					}
 				//-------- FORM FUNCTIONS ------------------------------------------------------------------------------------------------
 				function Textbox($name, $varname, $value)
@@ -326,6 +360,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['data']=$value;
 						$this->table['rows'][$this->rownumber][$name]['element']='text';
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+						return $this;
 					}
 				function Selectbox($name, $varname, $value, $valuesarrayornllist, $labelsarrayornllist)
 					{
@@ -338,6 +373,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['values']=$valuesarrayornllist;
 						$this->table['rows'][$this->rownumber][$name]['labels']=$labelsarrayornllist;
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+						return $this;
 					}
 				function Checkbox($name, $varname, $checkedvalue, $checked=false)
 					{
@@ -345,6 +381,7 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['element']='checkbox';
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
 						$this->table['rows'][$this->rownumber][$name]['checked']=$checked;
+						return $this;
 					}
 				function RadioItem($name, $varname, $checkedvalue, $checked=false)
 					{
@@ -352,18 +389,22 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['element']='radioitem';
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
 						$this->table['rows'][$this->rownumber][$name]['checked']=$checked;
+						return $this;
 					}
 				function SetControlAttr($name, $attrname, $attrval)
 					{
 						$this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname]=$attrval;
+						return $this;
 					}
 				function GetControlAttr($name, $attrname)
 					{
 						return $this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname];
+						return $this;
 					}
 				function AppendControlAttr($name, $attrname, $attrval, $append_prefix=' ')
 					{
 						$this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname].=(strlen($this->table['rows'][$this->rownumber][$name]['control_attr'][$attrname])>0?$append_prefix:'').$attrval;
+						return $this;
 					}
 				function GetControlDOMID($name, $rownumber=NULL)
 					{
@@ -377,17 +418,20 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rows'][$this->rownumber][$name]['data']=$value;
 						$this->table['rows'][$this->rownumber][$name]['element']='storedlabel';
 						$this->table['rows'][$this->rownumber][$name]['varname']=$varname;
+						return $this;
 					}
 				//-------- /FORM FUNCTIONS ------------------------------------------------------------------------------------------------
 				function NoHighlight()
 					{
 						$this->table['no_highlight']=1;
+						return $this;
 					}
 				function HeaderBulkCheckbox($name)
 					{
 						$this->table['columns'][$name]['html']='<input type="checkbox" id="'.$name.'-'.($this->table['postfix']).'-bulkcheckbox" class="at-bulk-checkbox" onchange="'.
 							"\$('.admintable-".($this->table['postfix'])."-control-checkbox').prop('checked', \$('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').prop('checked')?true:false);".
 							'" />';
+						return $this;
 					}
 				//-----------------------------
 				function LabelsFromArray($array)
@@ -399,6 +443,7 @@ if (!defined("admintable_DEFINED"))
 								if (array_key_exists($key, $array))
 									$this->Label($key, $array[$key]);
 							}
+						return $this;
 					}
 				//-----------------------------
 				function RowAddClass($classname, $rownumber=NULL)
@@ -406,12 +451,14 @@ if (!defined("admintable_DEFINED"))
 						if ($rownumber===NULL)
 							$rownumber=$this->rownumber;
 						$this->table['rowparams'][$rownumber]['class'].=' '.$classname;
+						return $this;
 					}
 				function RowAddStyle($rule, $rownumber=NULL)
 					{
 						if ($rownumber===NULL)
 							$rownumber=$this->rownumber;
 						$this->table['rowparams'][$rownumber]['style'].=$rule;
+						return $this;
 					}
 				//====================================================
 				function Output()
