@@ -91,7 +91,7 @@ function atdropdowncancelclosetime{$postfix}()
 
 </script>
 {assign var=default_column value=$table.default_column}
-<table width="100%" cellspacing="2" cellpadding="2" id="admintable{$postfix}" class="admintable">
+<table{foreach name=table_attr_index from=$table.attrs item=attr key=attr_name} {$attr_name}="{$attr}"{/foreach} id="admintable{$postfix}" class="admintable{$table.class}">
 	{if $table.hideheader neq 1}{strip}<tr class="admintable_header" id="admintable_header{$postfix}">
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $column.hideheader neq 1}

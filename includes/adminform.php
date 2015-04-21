@@ -38,6 +38,8 @@ if (!defined("adminform_DEFINED"))
 						$this->form['tooltip_present']=false;
 						if ($sm['adminform']['nohighlight']===true)
 							$this->NoHighlight();
+						if (!empty($sm['adminform']['globalclass']))
+							$this->AddClassnameGlobal($sm['adminform']['globalclass']);
 					}
 				public static function withAction($action, $method='POST')
 					{
@@ -607,6 +609,11 @@ if (!defined("adminform_DEFINED"))
 				function WithValue($value)
 					{
 						$this->SetValue($this->currentname, $value);
+						return $this;
+					}
+				function AddClassnameGlobal($classname)
+					{
+						$this->form['class'].=' '.$classname;
 						return $this;
 					}
 			}

@@ -21,13 +21,22 @@ if (!defined("admintable_DEFINED"))
 
 				function TGrid($default_column='', $postfix='')
 					{
+						global $sm;
 						$this->rownumber=0;
 						$this->table['default_column']='';
+						$this->SetWidth('100%');
 						if (strlen($postfix)==0)
 							$this->table['postfix']=TGrid::$grids_used;
 						else
 							$this->table['postfix']=$postfix;
+						if (!empty($sm['admintable']['globalclass']))
+							$this->AddClassnameGlobal($sm['admintable']['globalclass']);
 						TGrid::$grids_used++;
+					}
+				function SetWidth($width)
+					{
+						$this->table['attrs']['width']=$width;
+						return $this;
 					}
 				function AddCol($name, $title, $width='', $hint='', $replace_text='', $replace_image='', $messagebox=0, $messagebox_text='', $to_menu=0)
 					{
@@ -154,6 +163,11 @@ if (!defined("admintable_DEFINED"))
 				function Label($name, $value)
 					{
 						$this->table['rows'][$this->rownumber][$name]['data']=$value;
+					}
+				function AddClassnameGlobal($classname)
+					{
+						$this->table['class'].=' '.$classname;
+						return $this;
 					}
 				function CellAddClass($name, $classname)
 					{
@@ -406,12 +420,12 @@ if (!defined("admintable_DEFINED"))
 						$this->table['rowcount']=count($this->table['rows']);
 						for ($this->rownumber = 0; $this->rownumber<$this->RowCount(); $this->rownumber++)
 							{
-								$this->RowAddClass('at-row-'.$i, $i);
+								$this->RowAddClass('at-row-'.$this->rownumber, $this->rownumber);
 								if (intval($this->table['no_highlight'])!=1)
-									if ($i % 2 == 0)
-										$this->RowAddClass('at-row-pair', $i);
+									if ($this->rownumber % 2 == 0)
+										$this->RowAddClass('at-row-pair', $this->rownumber);
 									else
-										$this->RowAddClass('at-row-odd', $i);
+										$this->RowAddClass('at-row-odd', $this->rownumber);
 								foreach ($this->table['columns'] as $name=>$columnval)
 									{
 										if (in_array($this->table['rows'][$this->rownumber][$name]['element'], Array('text', 'select', 'checkbox', 'radioitem', 'storedlabel')))
