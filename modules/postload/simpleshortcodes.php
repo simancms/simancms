@@ -1,11 +1,7 @@
 <?php
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
-
+		exit('Hacking attempt!');
 
 	function simpleshortcodes_replace_time($str)
 		{

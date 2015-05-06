@@ -15,10 +15,7 @@
 	*/
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	sm_default_action('view');
 

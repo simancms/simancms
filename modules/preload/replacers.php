@@ -1,10 +1,7 @@
 <?php
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	$result = execsql("SELECT key_r, value_r FROM ".$sm['t']."replacers");
 	while ($row = database_fetch_row($result))

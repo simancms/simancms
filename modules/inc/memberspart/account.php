@@ -6,15 +6,12 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-17
+	//#ver 1.6.9
+	//#revision 2015-05-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if ($_settings['allow_private_messages'] == 1 && !empty($userinfo['id']))
 		include('modules/inc/memberspart/account_privatemessages.php');

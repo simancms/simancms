@@ -6,15 +6,12 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#ver 1.6.9
+	//#revision 2015-05-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
-		{
-			print('Hacking attempt!');
-			exit();
-		}
+		exit('Hacking attempt!');
 
 	if (sm_actionpost('postadd') && ($userinfo['level']>=intval(sm_settings('news_editor_level')) || !empty($userinfo['groups'])))
 		{
