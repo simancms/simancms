@@ -5,7 +5,7 @@
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
 
-	$_settings['version'] = '1.6.8';
+	$_settings['version'] = '1.6.9';
 
 	$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='default'");
 	while ($row = database_fetch_assoc($result))

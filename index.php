@@ -6,21 +6,19 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.8
-	//#revision 2015-03-17
+	//#ver 1.6.9
+	//#revision 2015-05-07
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
 		exit('Configuration error! magic_quotes_gpc is on.');
 	if (!file_exists('files/temp'))
-		exit('SiMan CMS is not instaled!');
+		exit('SiMan CMS is not installed!');
 
 	define("SIMAN_DEFINED", 1);
 
 	$special['rand'] = rand();
-	$special['time']['generation_begin'] = microtime();
-	$special['time']['generation_begin'] = explode(' ', $special['time']['generation_begin']);
-	$special['time']['generation_begin'] = $special['time']['generation_begin'][0] + $special['time']['generation_begin'][1];
+	$special['time']['generation_begin'] = microtime(true);
 	require_once("includes/dbsettings.php");
 	require_once("includes/dbengine".$serverDB.".php");
 	require_once("includes/dbelite.php");
@@ -397,9 +395,7 @@
 							$smarty->assign_by_ref('_settings', $_settings);
 							$smarty->assign_by_ref('sm', $sm);
 						}
-					$special['time']['generation_end'] = microtime();
-					$special['time']['generation_end'] = explode(' ', $special['time']['generation_end']);
-					$special['time']['generation_end'] = $special['time']['generation_end'][0] + $special['time']['generation_end'][1];
+					$special['time']['generation_end'] = microtime(true);
 					$special['time']['generation_time'] = round($special['time']['generation_end'] - $special['time']['generation_begin'], 4);
 					if (!$sm['s']['nosmarty'])
 						$smarty->assign_by_ref('special', $special);
