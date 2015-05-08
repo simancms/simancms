@@ -139,7 +139,7 @@
 						{
 							if ($buttonname == NULL)
 								$buttonname = $this->currentbuttonname;
-							$this->bar['buttons'][$buttonname]['class'] = (empty($this->bar['buttons'][$buttonname]['class']) ? '' : ' ').$classname;
+							$this->bar['buttons'][$buttonname]['class'] .= (empty($this->bar['buttons'][$buttonname]['class']) ? '' : ' ').$classname;
 							return $this;
 						}
 
