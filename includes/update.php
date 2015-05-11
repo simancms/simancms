@@ -34,7 +34,7 @@
 			sm_add_settings('media_meduim_height', '600');
 			sm_add_settings('media_allowed_extensions', "jpg\njpeg\ngif\npng\nmp4\nmp3\nwav");
 			sm_add_settings('media_edit_after_upload', '1', 'media');
-			execsql("CREATE TABLE `".$sm['t']."metadata` (
+			execsql("CREATE TABLE ".$sm['t']."metadata (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`object_name` varchar(50) NOT NULL DEFAULT '',
 					`object_id` varchar(50) NOT NULL DEFAULT '',
@@ -48,7 +48,7 @@
 			sm_add_settings('robots_txt', '', 'seo');
 			sm_add_settings('notifications_time', '5');
 			sm_add_settings('notifierlib', 'alertify');
-			execsql("CREATE TABLE `".$sm['t']."taxonomy` (
+			execsql("CREATE TABLE ".$sm['t']."taxonomy (
 					`object_name` varchar(50) NOT NULL DEFAULT '',
 					`object_id` int(11) unsigned NOT NULL DEFAULT '0',
 					`rel_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -58,7 +58,7 @@
 			execsql("ALTER TABLE `".$sm['t']."log` ADD `object_id` VARCHAR(255)  NOT NULL  DEFAULT '0'  AFTER `object_name`;");
 			sm_add_settings('autogenerate_content_filesystem', '1', 'content');
 			sm_add_settings('autogenerate_news_filesystem', '1', 'news');
-			execsql("CREATE TABLE `".$sm['t']."media` (
+			execsql("CREATE TABLE ".$sm['t']."media (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`id_ctg` int(11) unsigned NOT NULL DEFAULT '0',
 					`type` varchar(255) NOT NULL DEFAULT 'jpg',
@@ -69,7 +69,7 @@
 					`description` text,
 					PRIMARY KEY (`id`)
 				)");
-			execsql("CREATE TABLE `".$sm['t']."categories_media` (
+			execsql("CREATE TABLE ".$sm['t']."categories_media (
 					`id_ctg` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`title` varchar(255) DEFAULT NULL,
 					`public` tinyint(4) unsigned NOT NULL DEFAULT '1',

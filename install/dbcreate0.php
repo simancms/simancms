@@ -282,7 +282,7 @@ $sql="CREATE TABLE ".$tableprefix."metadata (
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][17]['result']=$result;
 
-$sql="CREATE TABLE `".$tableprefix."taxonomy` (
+$sql="CREATE TABLE ".$tableprefix."taxonomy (
 					`object_name` varchar(50) NOT NULL DEFAULT '',
 					`object_id` int(11) unsigned NOT NULL DEFAULT '0',
 					`rel_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -291,7 +291,7 @@ $sql="CREATE TABLE `".$tableprefix."taxonomy` (
 $result=database_db_query($nameDB, $sql, $lnkDB);
 $inst['tables'][18]['result']=$result;
 
-	$sql=("CREATE TABLE `".$tableprefix."media` (
+	$sql=("CREATE TABLE ".$tableprefix."media (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`id_ctg` int(11) unsigned NOT NULL DEFAULT '0',
 					`type` varchar(255) NOT NULL DEFAULT 'jpg',
@@ -305,7 +305,7 @@ $inst['tables'][18]['result']=$result;
 	$result=database_db_query($nameDB, $sql, $lnkDB);
 	$inst['tables'][19]['result']=$result;
 
-	$sql=("CREATE TABLE `".$tableprefix."categories_media` (
+	$sql=("CREATE TABLE ".$tableprefix."categories_media (
 					`id_ctg` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`title` varchar(255) DEFAULT NULL,
 					`public` tinyint(4) unsigned NOT NULL DEFAULT '1',
