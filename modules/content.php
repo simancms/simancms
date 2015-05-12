@@ -120,7 +120,7 @@
 			if (empty($content_id) && $modules_index == 0)
 				{
 					$content_id = intval($_getvars["cid"]);
-					if ($sm['s']['is_index_page'] && empty($content_id))
+					if (sm_is_index_page() && empty($content_id))
 						$content_id=1;
 				}
 			if (empty($content_id))

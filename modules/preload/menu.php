@@ -76,7 +76,7 @@
 								(strcmp($main_suburl.$menu[$i]['url'], $_servervars['REQUEST_URI']) == 0
 								||
 								strcmp($main_suburl.$menu[$i]['url'], $_servervars['REQUEST_URI'].'index.php') == 0)
-								|| ($special['is_index_page'] == 1 && strcmp($menu[$i]['url'], 'http://'.$_settings['resource_url']) == 0)
+								|| (sm_is_index_page() && strcmp($menu[$i]['url'], 'http://'.$_settings['resource_url']) == 0)
 							)
 								$menu[$i]['active'] = '1';
 							if ($menu[$i]['active'] != '1' && $menu[$i]['partial'] == 1)

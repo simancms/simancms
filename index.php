@@ -238,7 +238,7 @@
 						}
 					if ($special['dont_take_a_title'] != 1)
 						$special['pagetitle'] = $modules[$modules_index]['title'];
-					if ($special['is_index_page'] == 1 && !empty($_settings['rewrite_index_title']))
+					if (sm_is_index_page() && !empty($_settings['rewrite_index_title']))
 						$special['pagetitle'] = $_settings['rewrite_index_title'];
 					if (!empty($_msgbox["mode"]))
 						{
@@ -262,7 +262,7 @@
 										$dont_show_high_priority = 1;
 									elseif (intval($userinfo['level']) != intval($pnlrow->level) && $pnlrow->thislevelonly == 1)
 										$dont_show_high_priority = 1;
-									elseif ($special['is_index_page'] != 1 && strcmp('#index#', $pnlrow->show_on_module) == 0 && $pnlrow->dont_show_modif != 1)
+									elseif (!sm_is_index_page() && strcmp('#index#', $pnlrow->show_on_module) == 0 && $pnlrow->dont_show_modif != 1)
 										$dont_show_high_priority = 1;
 									if (!empty($pnlrow->showontheme) && $pnlrow->showontheme == sm_current_theme())
 										$dont_show_high_priority = 1;
@@ -272,7 +272,7 @@
 									if (!empty($pnlrow->show_on_module))
 										{
 											$show_panel = 0;
-											if ((strcmp($pnlrow->show_on_module, $module) == 0 || (empty($pnlrow->show_on_doing) && empty($modules[0]["mode"]) || strcmp($pnlrow->show_on_doing, $modules[0]["mode"]) == 0)) || ($special['is_index_page'] == 1 && strcmp('#index#', $pnlrow->show_on_module) == 0))
+											if ((strcmp($pnlrow->show_on_module, $module) == 0 || (empty($pnlrow->show_on_doing) && empty($modules[0]["mode"]) || strcmp($pnlrow->show_on_doing, $modules[0]["mode"]) == 0)) || (sm_is_index_page() && strcmp('#index#', $pnlrow->show_on_module) == 0))
 												{
 													if ($pnlrow->show_on_ctg != 0)
 														{

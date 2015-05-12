@@ -138,7 +138,7 @@
 												(strcmp($main_suburl.$itemparams['attrs']['href'], $sm['server']['REQUEST_URI'])==0
 												||
 												strcmp($main_suburl.$itemparams['attrs']['href'], $sm['server']['REQUEST_URI'].'index.php')==0)
-												|| ($sm['s']['is_index_page'] == 1 && strcmp($itemparams['attrs']['href'], $sm['s']['page']['scheme'].'://'.$sm['_s']['resource_url'])==0)
+												|| (sm_is_index_page() && strcmp($itemparams['attrs']['href'], $sm['s']['page']['scheme'].'://'.$sm['_s']['resource_url'])==0)
 											)
 												$this->SetActive($itemname);
 											if (!$itemparams['active'] && $itemparams['active_on_partial'])

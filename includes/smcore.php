@@ -838,7 +838,7 @@
 	function sm_meta_canonical($canonical_url, $show_on_canonical_page=false)
 		{
 			global $sm;
-			if (intval($sm['s']['is_index_page'])==1)
+			if (sm_is_index_page())
 				return;
 			if (strpos($canonical_url, '://')===false)
 				{
@@ -850,6 +850,12 @@
 				sm_html_headend('<link rel="canonical" href="'.$canonical_url.'" />');
 		}
 
+	function sm_is_index_page()
+		{
+			global $sm;
+			return intval($sm['s']['is_index_page'])==1;
+		}
+	
 	function sm_homepage()
 		{
 			global $special, $_settings;
