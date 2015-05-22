@@ -1,6 +1,6 @@
 {if $modules[$index].borders_off neq "1"}
 {if $modules[$index].panel eq "center"}
-  {* якщо центральна панель *}
+  {* center panel *}
 		<div class="row" id="block{$index}body">
 			<div class="col-md-12">
 				<h2 id="block{$index}title">
