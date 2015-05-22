@@ -72,6 +72,12 @@
 	if (!empty($sm['s']['autofocus']))
 		$sm['s']['document']['headend'].='<script type="text/javascript">$( document ).ready(function() {$("'.$sm['s']['autofocus'].'").focus()});</script>';
 	//Head section generation end
+	
+	//Body tag start
+	$sm['s']['document']['bodymodifier']=' class="allbody'.(!empty($sm['s']['body_class'])?' '.$sm['s']['body_class']:'').'"';
+	if (!empty($sm['s']['body_onload']))
+		$sm['s']['document']['bodymodifier']=' onload="'.$sm['s']['body_onload'].'"';
+	//Body tag end
 
 	unset($sm['cache']);
 

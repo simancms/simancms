@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.8
-	//#revision 2015-03-17
+	//#ver 1.6.9
+	//#revision 2015-05-22
 	//==============================================================================
 
 
@@ -595,7 +595,10 @@
 		{
 			global $sm, $modules_index;
 			if ($modules_index == 0 || $rewriteanyway)
-				$sm['s']['page']['viewid'] = $id;
+				{
+					$sm['s']['page']['viewid'] = $id;
+					sm_add_body_class('sm-'.$sm['s']['page']['viewid']);
+				}
 		}
 
 	function sm_extcore()
@@ -1166,6 +1169,12 @@
 			global $sm;
 			$sm['s']['printmode'] = 'on';
 			$sm['s']['main_tpl'] = 'indexprint';
+		}
+	
+	function sm_add_body_class($add_classname)
+		{
+			global $sm;
+			$sm['s']['body_class'].=(empty($sm['s']['body_class'])?'':' ').$add_classname;
 		}
 
 ?>
