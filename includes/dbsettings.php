@@ -14,7 +14,7 @@
 	$hostNameDB = 'localhost';
 
 	//Database name
-	$nameDB = 'siman_168';
+	$nameDB = 'siman_169';
 
 	//Database user name
 	$userNameDB = 'root';
@@ -34,7 +34,7 @@
 	$tableusersprefix = '';
 
 	//Session prefix. You need to change it for your site to prevent hacks
-	$session_prefix = 'needchange168_';
+	$session_prefix = 'needchange169_';
 
 	//Caching of pages; 0 - disabled; positive integer - min time for caching in seconds
 	$siman_cache = 0;
