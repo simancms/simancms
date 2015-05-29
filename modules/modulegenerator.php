@@ -78,11 +78,11 @@
 				{
 					add_path_modules();
 					add_path('".$moduletitle."', 'index.php?m=".$modulename."&d=list');
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					\$ui = new TInterface();
 					if (!empty(\$error))
-						\$ui->div(\$error, '', 'error alert-error');
+						\$ui->NotificationError(\$error);
 					if (sm_action('edit'))
 						{
 							sm_title(\$lang['common']['edit']);
@@ -129,9 +129,9 @@
 			$str="
 			if (sm_action('list'))
 				{
-					include_once('includes/admininterface.php');
-					include_once('includes/adminform.php');
-					include_once('includes/admintable.php');
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.grid');
 					include_once('includes/adminbuttons.php');
 					add_path_modules();
 					add_path('".$moduletitle."', 'index.php?m=".$modulename."&d=list');
@@ -177,8 +177,8 @@
 					if (sm_action('admin'))
 						{
 							add_path_modules();
-							\$m['title'] = '".$moduletitle."';
-							include_once('includes/admininterface.php');
+							\$sm_title('".$moduletitle."');
+							sm_use('ui.interface');
 							\$ui = new TInterface();
 							\$ui->a('index.php?m=".$modulename."&d=list', \$lang['common']['list']);
 							\$ui->Output(true);
@@ -226,9 +226,9 @@
 			$info.=get_admin_code($modulename, $sql, $moduletitle);
 			$info.="\n";
 			$info.="\n?".'>';
-			$m['title'] = 'Code Generator';
-			include_once('includes/admininterface.php');
-			include_once('includes/adminform.php');
+			sm_title('Code Generator');
+			sm_use('ui.interface');
+			sm_use('ui.form');
 			$ui = new TInterface();
 			//$ui->html('<pre>'.$info.'</pre>');
 			$f = new TForm(false);
@@ -240,16 +240,34 @@
 	
 	if (sm_action('prepare'))
 		{
-			$m['title'] = 'Code Generator';
-			include_once('includes/admininterface.php');
-			include_once('includes/adminform.php');
+			sm_title('Code Generator');
+			sm_use('ui.interface');
+			sm_use('ui.form');
 			$ui = new TInterface();
 			$f = new TForm('index.php?m=modulegenerator&d=generate');
-			$f->AddText('module', 'Module ID');
+			$f->AddText('module', 'Module ID')->SetFocus();
 			$f->AddText('title', 'Module Title');
 			$f->AddTextarea('sql', 'SQL Create Query');
 			$ui->AddForm($f);
 			$ui->Output(true);
+		}
+	
+	if ($userinfo['level'] == 3)
+		{
+			if (sm_action('admin'))
+				{
+					sm_redirect('index.php?m=modulegenerator&d=prepare');
+				}
+			if (sm_action('install'))
+				{
+					sm_register_module('modulegenerator', 'Code Generator');
+					sm_redirect('index.php?m=admin&d=modules');
+				}
+			if (sm_action('uninstall'))
+				{
+					sm_unregister_module('modulegenerator');
+					sm_redirect('index.php?m=admin&d=modules');
+				}
 		}
 
 ?>
