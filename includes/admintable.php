@@ -67,6 +67,14 @@
 							return $this;
 						}
 
+					function HasColumn($colname)
+						{
+							if (is_array($this->table['columns']) && array_key_exists($colname, $this->table['columns']))
+								return true;
+							else
+								return false;
+						}
+					
 					function SetHeaderImage($name, $image)
 						{
 							if (strpos($image, '.') === false && strpos($image, '://') === false)
