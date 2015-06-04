@@ -89,7 +89,6 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 		</td>
 		{if $form.tooltip_present}
 			<td width="{if $form.options.width3 neq ""}{$form.options.width2}{else}3%{/if}">
-				{if $field.tooltip neq ""}<div class="adminform-tooltip" title="{$field.tooltip}"><img src="{$field.tooltipimg}" /></div>{/if}
 				{$field.column[2]}
 			</td>
 		{/if}

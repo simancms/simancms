@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-05-06
+	//#revision 2015-06-04
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -417,6 +417,16 @@
 										$this->form['fields'][$name]['begintext'] = '<span class="adminform-filed-bgn-txt'.(!empty($this->form['fields'][$name]['begintext_classname']) ? ' '.$this->form['fields'][$name]['begintext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['begintext_style']) ? ' style="'.$this->form['fields'][$name]['begintext_style'].'"' : '').'>'.$this->form['fields'][$name]['begintext'].'</span>';
 									if (!empty($this->form['fields'][$name]['endtext']))
 										$this->form['fields'][$name]['endtext'] = '<span class="adminform-filed-end-txt'.(!empty($this->form['fields'][$name]['endtext_classname']) ? ' '.$this->form['fields'][$name]['endtext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['endtext_style']) ? ' style="'.$this->form['fields'][$name]['endtext_style'].'"' : '').'>'.$this->form['fields'][$name]['endtext'].'</span>';
+									if (!empty($this->form['fields'][$name]['tooltip']) || !empty($this->form['fields'][$name]['tooltip_url']))
+										{
+											$this->form['fields'][$name]['column'][2] = '<div class="adminform-tooltip" title="'.$this->form['fields'][$name]['tooltip'].'">';
+											if (!empty($this->form['fields'][$name]['tooltip_url']))
+												$this->form['fields'][$name]['column'][2] .= '<a href="'.$this->form['fields'][$name]['tooltip_url'].'"'.(!empty($this->form['fields'][$name]['tooltip_url_target'])?' target="'.$this->form['fields'][$name]['tooltip_url_target'].'"':'').' class="tooltip-url">';
+											$this->form['fields'][$name]['column'][2] .= '<img src="'.$this->form['fields'][$name]['tooltipimg'].'" />';
+											if (!empty($this->form['fields'][$name]['tooltip_url']))
+												$this->form['fields'][$name]['column'][2] .= '</a>';
+											$this->form['fields'][$name]['column'][2] .= '</div>';
+										}
 								}
 							if ($this->form['no_highlight'] != 1)
 								{
@@ -634,14 +644,47 @@
 							return $this;
 						}
 
-					function Tooltip($name, $text, $image = 'help.gif')
+					function SetTooltipImage($name, $image = 'help.gif')
 						{
-							$this->form['fields'][$name]['tooltip'] = $text;
 							if (!file_exists('themes/'.sm_settings('default_theme').'/images/admintable/'.$image))
 								$this->form['fields'][$name]['tooltipimg'] = 'themes/default/images/admintable/'.$image;
 							else
 								$this->form['fields'][$name]['tooltipimg'] = 'themes/'.sm_settings('default_theme').'/images/admintable/'.$image;
 							$this->form['tooltip_present'] = true;
+							return $this;
+						}
+
+					function Tooltip($name, $text, $image = 'help.gif')
+						{
+							$this->form['fields'][$name]['tooltip'] = $text;
+							$this->SetTooltipImage($name, $image);
+							$this->form['tooltip_present'] = true;
+							return $this;
+						}
+
+					function WithTooltip($text, $image = 'help.gif', $name = NULL)
+						{
+							if ($name === NULL)
+								$name = $this->currentname;
+							$this->Tooltip($name, $text, $image);
+							return $this;
+						}
+
+					function TooltipURL($name, $url, $open_in_new_page=true, $image = 'help.gif')
+						{
+							$this->form['fields'][$name]['tooltip_url'] = $url;
+							if ($open_in_new_page)
+								$this->form['fields'][$name]['tooltip_url_target'] = '_blank';
+							$this->SetTooltipImage($name, $image);
+							$this->form['tooltip_present'] = true;
+							return $this;
+						}
+
+					function WithTooltipURL($url, $open_in_new_page=true, $image = 'help.gif', $name = NULL)
+						{
+							if ($name === NULL)
+								$name = $this->currentname;
+							$this->TooltipURL($name, $url, $open_in_new_page, $image);
 							return $this;
 						}
 
