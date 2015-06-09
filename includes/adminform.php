@@ -423,6 +423,10 @@
 							$this->form['method'] = strtolower($this->form['method']);
 							foreach ($this->form['fields'] as $name => $value)
 								{
+									$this->SetFieldId($name, $this->GetFieldId($name));
+									if (!empty($this->form['fields'][$name]['rowclassname']))
+										$this->AppendFieldRowAttribute($name, 'class', $this->form['fields'][$name]['rowclassname']);
+									$this->SetFieldRowAttribute($name, 'id', $this->GetFieldRowId($name));
 									if (!empty($this->form['fields'][$name]['toptext']))
 										$this->form['fields'][$name]['toptext'] = '<span class="adminform-filed-top-txt'.(!empty($this->form['fields'][$name]['toptext_classname']) ? ' '.$this->form['fields'][$name]['toptext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['toptext_style']) ? ' style="'.$this->form['fields'][$name]['toptext_style'].'"' : '').'>'.$this->form['fields'][$name]['toptext'].'</span>';
 									if (!empty($this->form['fields'][$name]['bottomtext']))
@@ -485,6 +489,19 @@
 							return $this;
 						}
 
+					function GetFieldId($name)
+						{
+							if (!empty($this->form['fields'][$name]['id']))
+								return $this->form['fields'][$name]['id'];
+							else
+								return $this->form['prefix'].$name;
+						}
+
+					function GetFieldRowId($name)
+						{
+							return 'admintablerow-'.$this->GetFieldId($name);
+						}
+
 					function SetFieldAttribute($name, $attribute, $value)
 						{
 							$this->form['fields'][$name]['attrs'][$attribute] = $value;
@@ -500,6 +517,15 @@
 					function GetFieldRowAttribute($name, $attribute)
 						{
 							return $this->form['fields'][$name]['rowattrs'][$attribute];
+						}
+
+					function AppendFieldRowAttribute($name, $attribute, $value, $delimiter=' ')
+						{
+							$attr=$this->GetFieldRowAttribute($name, $attribute, $value);
+							if (!empty($attr))
+								$attr.=$delimiter;
+							$attr.=$value;
+							$this->SetFieldRowAttribute($name, $attribute, $attr);
 						}
 
 					function SetTitleText($name, $title)
