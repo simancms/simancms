@@ -848,6 +848,8 @@
 					$f->AddText('filename_fs', $lang['common']['url']);
 					$f->AddText('url_fs', $lang['module_admin']['true_url']);
 					$f->AddText('comment_fs', $lang['common']['comment']);
+					$f->AddCheckbox('test', 'Test');
+					$f->AddText('test1', 'Test 1');
 					if (sm_action('editfilesystem'))
 						{
 							$q=new TQuery($sm['t'].'filesystem');

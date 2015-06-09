@@ -403,6 +403,20 @@
 							return $this;
 						}
 
+					function ToggleAddElement($element_name_or_array, $name = NULL)
+						{
+							if ($name === NULL)
+								$name = $this->currentname;
+							if (!is_array($element_name_or_array))
+								{
+									foreach ($element_name_or_array as $key=>$val)
+										$this->ToggleAddElement($val, $name);
+								}
+							else
+								$this->form['fields'][$name]['checkbox_toggle'][] = $element_name_or_array;
+							return $this;
+						}
+
 					function Output()
 						{
 							$this->form['tabscount'] = count($this->form['tabs']);
@@ -475,6 +489,17 @@
 						{
 							$this->form['fields'][$name]['attrs'][$attribute] = $value;
 							return $this;
+						}
+
+					function SetFieldRowAttribute($name, $attribute, $value)
+						{
+							$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
+							return $this;
+						}
+
+					function GetFieldRowAttribute($name, $attribute)
+						{
+							return $this->form['fields'][$name]['rowattrs'][$attribute];
 						}
 
 					function SetTitleText($name, $title)
