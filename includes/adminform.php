@@ -403,14 +403,14 @@
 							return $this;
 						}
 
-					function ToggleAddElement($element_name_or_array, $name = NULL)
+					function ToggleFor($element_name_or_array, $name = NULL)
 						{
 							if ($name === NULL)
 								$name = $this->currentname;
-							if (!is_array($element_name_or_array))
+							if (is_array($element_name_or_array))
 								{
 									foreach ($element_name_or_array as $key=>$val)
-										$this->ToggleAddElement($val, $name);
+										$this->ToggleFor($val, $name);
 								}
 							else
 								$this->form['fields'][$name]['checkbox_toggle'][] = $element_name_or_array;
@@ -445,6 +445,11 @@
 												$this->form['fields'][$name]['column'][2] .= '</a>';
 											$this->form['fields'][$name]['column'][2] .= '</div>';
 										}
+									if (is_array($this->form['fields'][$name]['checkbox_toggle']))
+										for ($i = 0; $i<count($this->form['fields'][$name]['checkbox_toggle']); $i++)
+											{
+												$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($("#'.$this->GetFieldId($name).'").prop("checked"))$("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
+											}
 								}
 							if ($this->form['no_highlight'] != 1)
 								{
@@ -774,6 +779,11 @@
 						{
 							$this->form['class'] .= ' '.$classname;
 							return $this;
+						}
+					
+					function javascriptCode($jscode)
+						{
+							$this->form['html_end'].='<script type="text/javascript">'.$jscode.'</script>';
 						}
 				}
 
