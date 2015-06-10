@@ -40,6 +40,18 @@
 							return $this;
 						}
 
+					function SetInlineImagesStyleGlobal($style)
+						{
+							$this->table['inlineimages']['style'] = $style;
+							return $this;
+						}
+
+					function SetInlineImagesClassGlobal($class)
+						{
+							$this->table['inlineimages']['class'] = $class;
+							return $this;
+						}
+
 					function AddCol($name, $title, $width = '', $hint = '', $replace_text = '', $replace_image = '', $messagebox = 0, $messagebox_text = '', $to_menu = 0)
 						{
 							global $sm;
@@ -241,6 +253,26 @@
 							elseif (!empty($replace_image))
 								$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;
 							$this->table['rows'][$this->rownumber][$name]['image'] = $replace_image;
+							return $this;
+						}
+
+					function InlineImage($name, $image, $url='', $onclick_javascript='')
+						{
+							$i=count($this->table['rows'][$this->rownumber][$name]['inlineimages']);
+							if (strpos($image, '.') === false && strpos($image, '://') === false)
+								$image .= '.gif';
+							if (!empty($image) && strpos($image, '/') === false)
+								{
+									if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image))
+										{
+											$image = 'themes/default/images/admintable/'.$image;
+										}
+								}
+							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['image'] = $image;
+							if (!empty($onclick_javascript) && empty($url))
+								$url='javascript:;';
+							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['url'] = $url;
+							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['onclick'] = $onclick_javascript;
 							return $this;
 						}
 
@@ -577,6 +609,24 @@
 													$this->SetControlAttr($name, 'id', $this->GetControlDOMID($name, $this->rownumber));
 													if (!empty($this->table['rows'][$this->rownumber][$name]['onclick']))
 														$this->SetControlAttr($name, 'onclick', $this->table['rows'][$this->rownumber][$name]['onclick']);
+												}
+											if (count($this->table['rows'][$this->rownumber][$name]['inlineimages'])>0)
+												{
+													$inlineimages='';
+													for ($i = 0; $i<count($this->table['rows'][$this->rownumber][$name]['inlineimages']); $i++)
+														{
+															if (!empty($this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['url']))
+																{
+																	$html='<a href="'.$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['url'].'"';
+																	if (!empty($this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['onclick']))
+																		$html.=' onclick="'.$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['onclick'].'"';
+																	$html.='>'.'<img src="'.$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['image'].'" />'.'</a>';
+																}
+															else
+																$html='<img src="'.$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['image'].'" />';
+															$inlineimages.=$html;
+														}
+													$this->table['rows'][$this->rownumber][$name]['data'].='<span class="at-inlineimages'.(empty($this->table['inlineimages']['class'])?'':' '.$this->table['inlineimages']['class']).'"'.(empty($this->table['inlineimages']['style'])?'':' style="'.$this->table['inlineimages']['style']).'">'.$inlineimages.'</span>';
 												}
 										}
 								}
