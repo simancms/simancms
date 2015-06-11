@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-05-22
+	//#revision 2015-06-11
 	//==============================================================================
 
 
@@ -776,7 +776,15 @@
 	function sm_set_action($action)
 		{
 			global $m;
-			$m['mode'] = $action;
+			if (!is_array($action))
+				$m['mode'] = $action;
+			else
+				{
+					if (array_key_exists(sm_current_action(), $action))
+						$m['mode'] = $action[sm_current_action()];
+					elseif (count($action)>0)
+						$m['mode'] = array_shift($action);
+				}
 		}
 
 	function sm_default_action($action)
