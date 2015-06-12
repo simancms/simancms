@@ -111,6 +111,7 @@ $lang['common']['default']='Default';
 $lang['common']['template']='Template';
 $lang['common']['site']='Site';
 $lang['common']['page']='Page';
+$lang['common']['open']='Open';
 $lang['messages']['fill_requied_fields']='Fill required fields';
 $lang['messages']['wrong_email']='Wrong email';
 $lang['register'] = 'Register';

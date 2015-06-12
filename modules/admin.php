@@ -610,7 +610,8 @@
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					$t=new TGrid();
 					$t->AddCol('thumb', $lang['common']['thumbnail'], '10');
-					$t->AddCol('title', $lang['module_admin']['image_file_name'], '90%');
+					$t->AddCol('title', $lang['module_admin']['image_file_name'], '85%');
+					$t->AddCol('open', $lang['common']['open'], '5%');
 					$t->AddEdit();
 					$t->AddDelete();
 					$t->SetAsMessageBox('delete', $lang['module_admin']['really_want_delete_image']);
@@ -632,7 +633,9 @@
 										{
 											$t->Image('thumb', sm_thumburl($entry, 50, 50));
 											$t->Label('title', $entry);
+											$t->Label('open', $lang['common']['open']);
 											$t->URL('title', 'index.php?m=admin&d=viewimg&path='.urlencode($entry));
+											$t->URL('open', 'files/img/'.$entry, true);
 											$t->URL('edit', 'index.php?m=admin&d=renimg&imgn='.urlencode($entry));
 											$t->URL('delete', 'index.php?m=admin&d=postdelimg&imgn='.urlencode($entry));
 											$t->NewRow();

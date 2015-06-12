@@ -155,6 +155,7 @@
 	$lang['common']['template']='Шаблон';
 	$lang['common']['site']='Сайт';
 	$lang['common']['page']='Сторінка';
+	$lang['common']['open']='Відкрити';
 
 	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
