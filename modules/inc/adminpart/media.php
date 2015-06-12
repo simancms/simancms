@@ -180,7 +180,7 @@
 							add_path_modules();
 							add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 							add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
-							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($image['id_ctg']))->Get();
 							if (!empty($ctg['id_ctg']))
 								add_path($ctg['title'], 'index.php?m=media&d=list&ctg='.$ctg['id_ctg']);
 							else
