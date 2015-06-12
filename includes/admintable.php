@@ -284,8 +284,16 @@
 
 					function URL($name, $value, $open_in_new_window = false)
 						{
-							$this->table['rows'][$this->rownumber][$name]['url'] = $value;
-							$this->table['rows'][$this->rownumber][$name]['new_window'] = $open_in_new_window;
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->URL($name[$i], $value, $open_in_new_window);
+								}
+							else
+								{
+									$this->table['rows'][$this->rownumber][$name]['url'] = $value;
+									$this->table['rows'][$this->rownumber][$name]['new_window'] = $open_in_new_window;
+								}
 							return $this;
 						}
 
