@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2014-06-07
+	//#revision 2015-06-12
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -81,7 +81,7 @@
 								{
 									$q = new TQuery($sm['t'].'media');
 									$q->Add('id_ctg', intval($ctg['id_ctg']));
-									$q->Add('type', dbescape($_uplfilevars['userfile'][$i]['type']));
+									$q->Add('type', dbescape($_uplfilevars['userfile']['type'][$i]));
 									$q->Add('title', dbescape(pathinfo($_uplfilevars['userfile']['name'][$i], PATHINFO_FILENAME)));
 									$q->Add('originalname', dbescape($_uplfilevars['userfile']['name'][$i]));
 									$q->Add('alt_text', dbescape($_postvars['alt_text']));
@@ -142,8 +142,8 @@
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
 					add_path_current();
-					sm_use('admininterface');
-					sm_use('adminform');
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->NotificationError($error);
@@ -187,8 +187,8 @@
 								add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
 							add_path_current();
 							sm_title($lang['common']['image'].' - '.$image['title']);
-							sm_use('admininterface');
-							sm_use('adminform');
+							sm_use('ui.interface');
+							sm_use('ui.form');
 							$ui = new TInterface();
 							$ui->div_open('image-detail-'.$image['id'], 'image-detail');
 							$ui->img($image['filepath']);
@@ -208,8 +208,8 @@
 					else
 						add_path($lang['common']['uncategorized'], 'index.php?m=media&d=list&ctg=0');
 					add_path_current();
-					sm_use('admininterface');
-					sm_use('adminform');
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					$ui = new TInterface();
 					if (is_array($error))
 						for ($i = 0; $i < count($error); $i++)
@@ -229,10 +229,10 @@
 
 			if (sm_action('list'))
 				{
-					sm_use('admininterface');
-					sm_use('adminform');
-					sm_use('admintable');
-					sm_use('adminbuttons');
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.grid');
+					sm_use('ui.buttons');
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
@@ -300,7 +300,7 @@
 				{
 					if (empty($_postvars['title']))
 						{
-							$error=	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
+							$error=$lang['messages']['fill_requied_fields'];
 							if (sm_action('postaddctg'))
 								sm_set_action('addctg');
 							else
@@ -339,8 +339,8 @@
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path_current();
-					sm_use('admininterface');
-					sm_use('adminform');
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->NotificationError($error);
@@ -378,10 +378,10 @@
 
 			if (sm_action('libraries'))
 				{
-					sm_use('admininterface');
-					sm_use('adminform');
-					sm_use('admintable');
-					sm_use('adminbuttons');
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.grid');
+					sm_use('ui.buttons');
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					sm_title($lang['module_galleies']['galleries']);
@@ -452,8 +452,8 @@
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					add_path_current();
 					sm_title($lang['settings']);
-					sm_use('admininterface');
-					sm_use('adminform');
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					$ui = new TInterface();
 					$f=new TForm('index.php?m=media&d=postsettings');
 					$f->AddText('gallery_thumb_width', $lang['module_galleies']['gallery_thumb_width']);
@@ -481,7 +481,7 @@
 					add_path_modules();
 					sm_title($lang['module_galleies']['media_files']);
 					add_path_current();
-					sm_use('admininterface');
+					sm_use('ui.interface');
 					sm_use('admindashboard');
 					$ui = new TInterface();
 					$dash=new TDashBoard();

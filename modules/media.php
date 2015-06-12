@@ -7,10 +7,10 @@
 
 	/*
 	Module Name: Media
-	Module URI: http://simancms.org/modules/content/
+	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
-	Version: 1.6.7
-	Revision: 2014-06-07
+	Version: 1.6.9
+	Revision: 2015-06-12
 	Author URI: http://simancms.org/
 	*/
 
