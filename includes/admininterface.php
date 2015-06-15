@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-05-06
+	//#revision 2015-06-15
 	//==============================================================================
 
 	if (!defined("admininterface_DEFINED"))
@@ -162,6 +162,17 @@
 					function div_close()
 						{
 							$this->html('</div>');
+						}
+
+					function form_open($action, $method='post', $id = '', $class = '', $style = '', $additionaltagattrs = '')
+						{
+							$code = '<form action="'.$action.'" method="'.$method.'"'.(empty($id) ? '' : ' id="'.$id.'"').''.(empty($class) ? '' : ' class="'.$class.'"').''.(empty($style) ? '' : ' style="'.$style.'"').$additionaltagattrs.'>';
+							$this->html($code);
+						}
+
+					function form_close()
+						{
+							$this->html('</form>');
 						}
 
 					function p($html, $id = '', $class = '', $style = '', $additionaltagattrs = '', $writeclosetag = true)
