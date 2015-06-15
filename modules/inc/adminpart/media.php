@@ -252,8 +252,8 @@
 					$t->AddCol('id', $lang['common']['id']);
 					$t->AddCol('image', $lang['common']['image']);
 					$t->AddCol('type', 'type');
-					$t->AddCol('title', $lang['common']['title']);
-					$t->AddCol('description', $lang['common']['description']);
+					$t->AddCol('title', $lang['common']['description']);
+					$t->AddCol('action', $lang['action']);
 					$t->AddEdit();
 					$t->AddDelete();
 					$q = new TQuery($sm['t'].'media');
@@ -269,6 +269,8 @@
 							$t->Label('type', $q->items[$i]['type']);
 							$t->Label('title', $q->items[$i]['title']);
 							$t->Label('description', $q->items[$i]['description']);
+							$t->Label('action', htmlescape($lang['action']));
+							$t->DropDownItem('action', $lang['module_galleies']['gallery_thumb'], 'index.php?m=media&d=gallerythumb&id='.$q->items[$i]['id'].'&returnto='.urlencode(sm_this_url()), $lang['common']['are_you_sure']);
 							$t->Url('edit', 'index.php?m=media&d=edit&id='.$q->items[$i]['id'].'&returnto='.urlencode(sm_this_url()));
 							$t->Url('delete', 'index.php?m=media&d=postdelete&id='.$q->items[$i]['id'].'&returnto='.urlencode(sm_this_url()));
 							$t->NewRow();
@@ -332,6 +334,25 @@
 								}
 							sm_redirect($_getvars['returnto']);
 						}
+				}
+
+			if (sm_action('gallerythumb'))
+				{
+					$image=TQuery::ForTable($sm['t'].'media')
+						->AddWhere('id', intval($_getvars['id']))
+						->Get();
+					$ctg=TQuery::ForTable($sm['t'].'categories_media')
+						->AddWhere('id_ctg', intval($image['id_ctg']))
+						->Get();
+					if (!empty($ctg['id_ctg']) && file_exists($image['filepath']))
+						{
+							$filename='files/img/mediagallery'.$ctg['id_ctg'].'.jpg';
+							if (file_exists($filename))
+								unlink($filename);
+							sm_extcore();
+							sm_resizeimage($image['filepath'], $filename, sm_settings('gallery_thumb_width'), sm_settings('gallery_thumb_height'), 0, 100, 1);
+						}
+					sm_redirect($_getvars['returnto']);
 				}
 
 			if (sm_action('addctg', 'editctg'))

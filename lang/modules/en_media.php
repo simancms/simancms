@@ -3,6 +3,7 @@
 	$lang['module_galleies']['media_files']='Media';
 	$lang['module_galleies']['galleries']='Galleries';
 	$lang['module_galleies']['gallery']='Gallery';
+	$lang['module_galleies']['gallery_thumb']='Gallery thumb';
 	$lang['module_galleies']['gallery_thumb_width']='Gallery thumbnail width';
 	$lang['module_galleies']['gallery_thumb_height']='Gallery thumbnail height';
 	$lang['module_galleies']['gallery_default_view']='Gallery default view';

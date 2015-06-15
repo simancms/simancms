@@ -3,6 +3,7 @@
 	$lang['module_galleies']['media_files']='Медіа';
 	$lang['module_galleies']['galleries']='Галереї';
 	$lang['module_galleies']['gallery']='Галерея';
+	$lang['module_galleies']['gallery_thumb']='Мініатюра галереї';
 	$lang['module_galleies']['gallery_thumb_width']='Ширина мініатюри галереї';
 	$lang['module_galleies']['gallery_thumb_height']='Висота мініатюри галереї';
 	$lang['module_galleies']['gallery_default_view']='Вигляд галерeї по замовчуванню';
