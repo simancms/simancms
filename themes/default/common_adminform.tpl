@@ -37,7 +37,7 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 <table width="100%" cellspacing="2" cellpadding="2" id="adminform_table{$postfix}-{$smarty.section.tabsectionindex.index}" class="adminform_table">
 	{foreach name=form_field_index from=$form.fields item=field key=field_name}
 	{if $field.tab eq $smarty.section.tabsectionindex.index}
-		<tr{foreach name=form_field_attr_index from=$field.rowattrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>
+		{if $field.hidedefinition neq 1 and  $field.type neq "hidden"}<tr{foreach name=form_field_attr_index from=$field.rowattrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>{/if}
 		{if $field.type neq "hidden" and  $field.type neq "separator" and $field.mergecolumns neq 1 and $field.hidedefinition neq 1}
 		<td width="{if $form.options.width1 neq ""}{$form.options.width1}{else}30%{/if}">{$field.caption}{$field.column[0]}{if $field.required}<sup class="adminform-required">*</sup>{/if}</td>
 		<td width="{if $form.options.width2 neq ""}{$form.options.width2}{else}{if $form.tooltip_present}67%{else}70%{/if}{/if}">
