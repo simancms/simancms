@@ -37,7 +37,7 @@
 					\$q->Add('".$info['id']."', intval(\$_getvars['id']));
 					\$q->Remove();
 					sm_extcore();
-					sm_saferemove('index.php?m=".$modulename."&d=view&id='.intval(\$_getvars['id']));
+					sm_saferemove('index.php?m='.sm_current_module().'&d=view&id='.intval(\$_getvars['id']));
 					sm_redirect(\$_getvars['returnto']);
 				}
 			";
@@ -77,7 +77,7 @@
 			if (sm_action('add', 'edit'))
 				{
 					add_path_modules();
-					add_path('".$moduletitle."', 'index.php?m=".$modulename."&d=list');
+					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					\$ui = new TInterface();
@@ -86,12 +86,12 @@
 					if (sm_action('edit'))
 						{
 							sm_title(\$lang['common']['edit']);
-							\$f=new TForm('index.php?m=".$modulename."&d=postedit&id='.intval(\$_getvars['id']).'&returnto='.urlencode(\$_getvars['returnto']));
+							\$f=new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.intval(\$_getvars['id']).'&returnto='.urlencode(\$_getvars['returnto']));
 						}
 					else
 						{
 							sm_title(\$lang['common']['add']);
-							\$f=new TForm('index.php?m=".$modulename."&d=postadd&returnto='.urlencode(\$_getvars['returnto']));
+							\$f=new TForm('index.php?m='.sm_current_module().'&d=postadd&returnto='.urlencode(\$_getvars['returnto']));
 						}\n";
 			for ($i = 0; $i<count($info['fields']); $i++)
 				{
@@ -134,13 +134,13 @@
 					sm_use('ui.grid');
 					include_once('includes/adminbuttons.php');
 					add_path_modules();
-					add_path('".$moduletitle."', 'index.php?m=".$modulename."&d=list');
+					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
 					sm_title('".$moduletitle."');
 					\$offset=abs(intval(\$_getvars['from']));
 					\$limit=30;
 					\$ui = new TInterface();
 					\$b=new TButtons();
-					\$b->AddButton('add', \$lang['common']['add'], 'index.php?m=".$modulename."&d=add&returnto='.urlencode(sm_this_url()));
+					\$b->AddButton('add', \$lang['common']['add'], 'index.php?m='.sm_current_module().'&d=add&returnto='.urlencode(sm_this_url()));
 					\$ui->AddButtons(\$b);
 					\$t=new TGrid();\n";
 			for ($i = 0; $i<count($info['fields']); $i++)
@@ -155,8 +155,8 @@
 						{\n";
 			for ($i = 0; $i<count($info['fields']); $i++)
 				$str.="\t\t\t\t\t\t\t\$t->Label('".$info['fields'][$i][1]."', \$q->items[\$i]['".$info['fields'][$i][1]."']);\n";
-			$str.="\t\t\t\t\t\t\t\$t->Url('edit', 'index.php?m=".$modulename."&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
-							\$t->Url('delete', 'index.php?m=".$modulename."&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
+			$str.="\t\t\t\t\t\t\t\$t->Url('edit', 'index.php?m='.sm_current_module().'&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
+							\$t->Url('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->NewRow();
 						}
 					\$ui->AddGrid(\$t);
@@ -180,7 +180,7 @@
 							\$sm_title('".$moduletitle."');
 							sm_use('ui.interface');
 							\$ui = new TInterface();
-							\$ui->a('index.php?m=".$modulename."&d=list', \$lang['common']['list']);
+							\$ui->a('index.php?m='.sm_current_module().'&d=list', \$lang['common']['list']);
 							\$ui->Output(true);
 						}
 					if (sm_action('install'))
@@ -213,7 +213,7 @@
 			$info.="Module Name: ".$moduletitle."\n";
 			$info.="Module URI: http://simancms.org/\n";
 			$info.="Description: ".$moduletitle."\n";
-			$info.="Version: 1.6.4\n";
+			$info.="Version: 1.0\n";
 			$info.="Revision: ".date('Y-m-d')."\n";
 			$info.="Author URI: http://simancms.org/\n";
 			$info.="*/\n\n";
