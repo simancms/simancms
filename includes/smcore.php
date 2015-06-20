@@ -58,6 +58,11 @@
 			sm_update_settings('installed_packages', $_settings['installed_packages']);
 		}
 
+	function sm_is_installed($module_name)
+		{
+			return in_array($module_name, nllistToArray(sm_settings('installed_packages')));
+		}
+
 	function sm_register_autoload($module_name)
 		{
 			global $_settings;
