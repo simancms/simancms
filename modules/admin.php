@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-06-06
+	//#ver 1.6.9
+	//#revision 2015-06-20
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -351,9 +351,9 @@
 					$sql = "SELECT * FROM ".$tableprefix."modules";
 					$result = execsql($sql);
 					$i = 0;
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
-							$info = sm_get_module_info('./modules/'.$row->module_name.'.php');
+							$info = sm_get_module_info('./modules/'.$row['module_name'].'.php');
 							if (!empty($info[sm_getnicename('Module Name')]))
 								$t->Label('title', $info[sm_getnicename('Module Name')]);
 							else
@@ -373,13 +373,14 @@
 								$t->Label('description', $info[sm_getnicename('Description')]);
 							if (!empty($info[sm_getnicename('Module URI')]))
 								$t->URL('description', $info[sm_getnicename('Module URI')], true);
-							$t->Label('title', $row->module_title);
-							$t->Url('title', 'index.php?m='.$row->module_name.'&d=admin');
-							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row->id_module);
-							if (!in_array($row->module_name, Array('content', 'news', 'download', 'menu', 'search', 'media')))
+							if (!empty($row['module_title']))
+								$t->Label('title', $row['module_title']);
+							$t->Url('title', 'index.php?m='.$row['module_name'].'&d=admin');
+							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row['id_module']);
+							if (!in_array($row['module_name'], Array('content', 'news', 'download', 'menu', 'search', 'media')))
 								{
 									$t->Image('delete', 'delete.gif');
-									$t->Url('delete', 'index.php?m='.$row->module_name.'&d=uninstall');
+									$t->Url('delete', 'index.php?m='.$row['module_name'].'&d=uninstall');
 									$t->CustomMessageBox('delete', $lang['common']['are_you_sure']);
 								}
 							$t->NewRow();
