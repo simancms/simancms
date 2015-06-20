@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-06-11
+	//#revision 2015-06-20
 	//==============================================================================
 
 
@@ -686,13 +686,20 @@
 		}
 
 	//Return true  if current action is in set $action1, $action2... or false otherwice
+	// If some action is array - recurring sm_action for items will be applied
 	function sm_action()
 		{
 			global $m;
 			for ($i = 0; $i<func_num_args(); $i++)
 				{
 					$param = func_get_arg($i);
-					if (strcmp($m['mode'], $param) == 0)
+					if (is_array($param))
+						{
+							foreach ($param as $val)
+								if (sm_action($val))
+									return true;
+						}
+					elseif (strcmp($m['mode'], $param) == 0)
 						return true;
 				}
 			return false;
