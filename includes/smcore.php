@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-06-20
+	//#revision 2015-06-23
 	//==============================================================================
 
 
@@ -336,7 +336,9 @@
 								$nice .= '-';
 						}
 				}
-			return $nice;
+			while (strpos($nice, '--')!==false)
+				$nice=str_replace('--', '-', $nice);
+			return trim($nice, '-');
 		}
 
 	function sm_event($eventname, $paramsarray = Array())
