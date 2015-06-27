@@ -113,8 +113,7 @@
 							\$f->LoadValuesArray(\$q->Get());
 							unset(\$q);
 						}
-					if (is_array(\$_postvars))
-						\$f->LoadValuesArray(\$_postvars);
+					\$f->LoadValuesArray(\$_postvars);
 					\$ui->AddForm(\$f);
 					\$ui->Output(true);
 					sm_setfocus('".$setfocus."');
