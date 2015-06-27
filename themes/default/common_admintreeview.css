@@ -1,0 +1,70 @@
+.atw-treeview-item
+{
+}
+
+.atw-title-container
+{
+	padding-left:5px;
+}
+
+.atw-title-container:hover
+{
+	background:#eeeeee;
+}
+
+.atw-visible
+{
+}
+
+
+.atw-invisible
+{
+	display:none;
+}
+
+.atw-treeview-subitems-container
+{
+	margin-left:30px;
+	border-left:1px dashed #cccccc;
+}
+
+.atw-collapser
+{
+	border:1px solid #bbbbbb;
+	margin-right:5px;
+	padding-left:2px;
+	padding-right:2px;
+}
+
+.atw-treeview-item a
+{
+ 	text-decoration:none;
+	color:#333333;
+}
+
+
+.atw-treeview-item a:hover
+{
+	text-decoration:none;
+}
+
+.atw-collapser:hover
+{
+	background:#cceeee;
+}
+
+.atw-mass-chk
+{
+	border:2px solid #dddddd;
+	color:#dddddd;
+	margin-left:2px;
+	font-size:8px;
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:2px;
+}
+
+.atw-item-title
+{
+	margin-left:3px;
+}
