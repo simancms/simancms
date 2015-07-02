@@ -166,6 +166,8 @@
 
 					function form_open($action, $method='post', $id = '', $class = '', $style = '', $additionaltagattrs = '')
 						{
+							if (empty($method))
+								$method='post';
 							$code = '<form action="'.$action.'" method="'.$method.'"'.(empty($id) ? '' : ' id="'.$id.'"').''.(empty($class) ? '' : ' class="'.$class.'"').''.(empty($style) ? '' : ' style="'.$style.'"').$additionaltagattrs.'>';
 							$this->html($code);
 						}
