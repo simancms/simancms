@@ -176,7 +176,7 @@
 					if (sm_action('admin'))
 						{
 							add_path_modules();
-							\$sm_title('".$moduletitle."');
+							sm_title('".$moduletitle."');
 							sm_use('ui.interface');
 							\$ui = new TInterface();
 							\$ui->a('index.php?m='.sm_current_module().'&d=list', \$lang['common']['list']);
