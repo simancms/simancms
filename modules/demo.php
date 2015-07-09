@@ -23,7 +23,40 @@
 		}
 
 	if (sm_is_installed(sm_current_module()) && $userinfo['level'] > 0)
-		{
+		{                 
+			sm_default_action('demos');
+			if (sm_action('htmlshortcuts'))
+				{
+					sm_title('UI HTML-shortcuts');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demos');
+					add_path_current();
+					sm_use('ui.interface');
+					$ui = new TInterface();
+					$ui->p('Paragraph simple');
+					$ui->p_open();
+					$ui->html('Paragraph open');
+					$ui->br();
+					$ui->html('BR tag');
+					$ui->hr();
+					$ui->html('HR tag');
+					$ui->br();
+					$ui->html('Paragraph close');
+					$ui->Output(true);
+				}
+			if (sm_action('demos'))
+				{
+					sm_title('Available Demos');
+					add_path_home();
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.navigation');
+					$ui = new TInterface();
+					$nav=new TNavigation();
+					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
+					$ui->Add($nav);
+					$ui->Output(true);
+				}
 			if ($userinfo['level'] == 3)
 				{
 					if (sm_action('admin'))
@@ -33,6 +66,7 @@
 							sm_use('ui.interface');
 							sm_title('Demo');
 							$ui = new TInterface();
+							$ui->a('index.php?m=demo', 'View Demos');
 							$ui->Output(true);
 
 						}
