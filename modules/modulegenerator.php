@@ -106,11 +106,11 @@
 					if (empty($setfocus))
 						$setfocus=$fields[$i]['name'];
 					if ($fields[$i]['datatype']=='tinyint')
-						$str.="\t\t\t\t\t\$f->AddCheckbox('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
+						$str.="\t\t\t\t\t\$f->AddCheckbox('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 					elseif ($fields[$i]['datatype']=='text')
-						$str.="\t\t\t\t\t\$f->AddTextarea('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
+						$str.="\t\t\t\t\t\$f->AddTextarea('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 					else
-						$str.="\t\t\t\t\t\$f->AddText('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
+						$str.="\t\t\t\t\t\$f->AddText('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 				}
 			$str.="\t\t\t\t\tif (sm_action('edit'))
 						{
@@ -221,6 +221,7 @@
 					$fields[$i]['datatype']=$info['fields'][$i][2];
 					$fields[$i]['control']=$_postvars['field_'.$i];
 					$fields[$i]['caption']=$_postvars['fieldcap_'.$i];
+					$fields[$i]['required']=intval($_postvars['required_'.$i])==1;
 				}
 			$info='<'.'?'."php\n\n";
 			$info.="/*\n";
@@ -270,30 +271,26 @@
 			$f->AddTextarea('sql', 'SQL Create Query');
 			if ($_getvars['type']=='fields')
 				{
-					$f->Separator('Fields');
 					$info=parse_mysql_create($_postvars['module'], $_postvars['sql']);
 					for ($i = 0; $i<count($info['fields']); $i++)
 						{
-							$f->AddSelectVL('field_'.$i, $info['fields'][$i][1], Array('text', 'textarea', 'editor', 'checkbox', 'disabled'), Array('Text', 'Textarea', 'WYSIWYG editor', 'Checkbox', 'Disabled'));
+							$f->Separator('Field: '.$info['fields'][$i][1]);
+							$f->AddSelectVL('field_'.$i, 'Type', Array('text', 'textarea', 'editor', 'checkbox', 'disabled'), Array('Text', 'Textarea', 'WYSIWYG editor', 'Checkbox', 'Disabled'));
 							if ($info['fields'][$i][2]=='tinyint')
 								$f->WithValue('checkbox');
 							elseif ($info['fields'][$i][2]=='text')
 								$f->WithValue('textarea');
 							else
 								$f->WithValue('text');
-							$f->WithFieldClassAppended('percent49');
-							$f->HideEncloser();
-							$f->AddText('fieldcap_'.$i, $info['fields'][$i][1]);
+							$f->AddText('fieldcap_'.$i, 'Caption');
 							$cap=str_replace('_', ' ', $info['fields'][$i][1]);
 							$cap=strtoupper(substr($cap, 0, 1)).substr($cap, 1);
 							$f->WithValue($cap);
-							$f->WithFieldClassAppended('percent49');
-							$f->HideDefinition();
+							$f->AddCheckbox('required_'.$i, 'Required');
 						}
 				}
 			$f->LoadValuesArray($_postvars);
 			$f->SaveButton('Next');
-			$ui->style('.percent49{width:49% !important;}');
 			$ui->AddForm($f);
 			$ui->Output(true);
 		}
