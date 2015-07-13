@@ -27,7 +27,7 @@
 			return $result;
 		}
 	
-	function get_postdelete_code($modulename, $sql, $moduletitle)
+	function get_postdelete_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$str="
@@ -43,21 +43,25 @@
 			";
 			return $str;
 		}
-	function get_postadd_code($modulename, $sql, $moduletitle)
+	function get_postadd_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$str="
 			if (sm_action('postadd', 'postedit'))
 				{
 					\$q=new TQuery('".$info['table']."');\n";
-			for ($i = 0; $i<count($info['fields']); $i++)
+			for ($i = 0; $i<count($fields); $i++)
 				{
-					if ($info['id']==$info['fields'][$i][1])
+					if ($info['id']==$fields[$i]['name'])
 						continue;
-					if ($info['fields'][$i][2]=='tinyint')
-						$str.="\t\t\t\t\t\$q->Add('".$info['fields'][$i][1]."', intval(\$_postvars['".$info['fields'][$i][1]."']));\n";
+					if ($fields[$i]['control']=='disabled')
+						continue;
+					if ($fields[$i]['datatype']=='tinyint' || $fields[$i]['datatype']=='int')
+						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', intval(\$_postvars['".$fields[$i]['name']."']));\n";
+					elseif ($fields[$i]['datatype']=='decimal')
+						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', floatval(\$_postvars['".$fields[$i]['name']."']));\n";
 					else
-						$str.="\t\t\t\t\t\$q->Add('".$info['fields'][$i][1]."', dbescape(\$_postvars['".$info['fields'][$i][1]."']));\n";
+						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', dbescape(\$_postvars['".$fields[$i]['name']."']));\n";
 				}
 			$str.="\t\t\t\t\tif (sm_action('postadd'))
 						\$q->Insert();
@@ -69,7 +73,7 @@
 			return $str;
 		}
 	
-	function get_add_code($modulename, $sql, $moduletitle)
+	function get_add_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$setfocus='';
@@ -93,18 +97,20 @@
 							sm_title(\$lang['common']['add']);
 							\$f=new TForm('index.php?m='.sm_current_module().'&d=postadd&returnto='.urlencode(\$_getvars['returnto']));
 						}\n";
-			for ($i = 0; $i<count($info['fields']); $i++)
+			for ($i = 0; $i<count($fields); $i++)
 				{
-					if ($info['id']==$info['fields'][$i][1])
+					if ($info['id']==$fields[$i]['name'])
+						continue;
+					if ($fields[$i]['control']=='disabled')
 						continue;
 					if (empty($setfocus))
-						$setfocus=$info['fields'][$i][1];
-					if ($info['fields'][$i][2]=='tinyint')
-						$str.="\t\t\t\t\t\$f->AddCheckbox('".$info['fields'][$i][1]."', '".$info['fields'][$i][1]."');\n";
-					elseif ($info['fields'][$i][2]=='text')
-						$str.="\t\t\t\t\t\$f->AddTextarea('".$info['fields'][$i][1]."', '".$info['fields'][$i][1]."');\n";
+						$setfocus=$fields[$i]['name'];
+					if ($fields[$i]['datatype']=='tinyint')
+						$str.="\t\t\t\t\t\$f->AddCheckbox('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
+					elseif ($fields[$i]['datatype']=='text')
+						$str.="\t\t\t\t\t\$f->AddTextarea('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
 					else
-						$str.="\t\t\t\t\t\$f->AddText('".$info['fields'][$i][1]."', '".$info['fields'][$i][1]."');\n";
+						$str.="\t\t\t\t\t\$f->AddText('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
 				}
 			$str.="\t\t\t\t\tif (sm_action('edit'))
 						{
@@ -122,7 +128,7 @@
 			return $str;
 		}
 	
-	function get_list_code($modulename, $sql, $moduletitle)
+	function get_list_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$str="
@@ -142,8 +148,8 @@
 					\$b->AddButton('add', \$lang['common']['add'], 'index.php?m='.sm_current_module().'&d=add&returnto='.urlencode(sm_this_url()));
 					\$ui->AddButtons(\$b);
 					\$t=new TGrid();\n";
-			for ($i = 0; $i<count($info['fields']); $i++)
-				$str.="\t\t\t\t\t\$t->AddCol('".$info['fields'][$i][1]."', '".$info['fields'][$i][1]."');\n";
+			for ($i = 0; $i<count($fields); $i++)
+				$str.="\t\t\t\t\t\$t->AddCol('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
 			$str.="\t\t\t\t\t\$t->AddEdit();
 					\$t->AddDelete();
 					\$q=new TQuery('".$info['table']."');
@@ -152,8 +158,8 @@
 					\$q->Select();
 					for (\$i = 0; \$i<count(\$q->items); \$i++)
 						{\n";
-			for ($i = 0; $i<count($info['fields']); $i++)
-				$str.="\t\t\t\t\t\t\t\$t->Label('".$info['fields'][$i][1]."', \$q->items[\$i]['".$info['fields'][$i][1]."']);\n";
+			for ($i = 0; $i<count($fields); $i++)
+				$str.="\t\t\t\t\t\t\t\$t->Label('".$fields[$i]['name']."', \$q->items[\$i]['".$fields[$i]['name']."']);\n";
 			$str.="\t\t\t\t\t\t\t\$t->Url('edit', 'index.php?m='.sm_current_module().'&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->Url('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->NewRow();
@@ -167,7 +173,7 @@
 			return ($str);
 		}
 	
-	function get_admin_code($modulename, $sql, $moduletitle)
+	function get_admin_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$str="
@@ -207,6 +213,15 @@
 			$modulename=$_postvars['module'];
 			$moduletitle=$_postvars['title'];
 			$sql=$_postvars['sql'];
+			$fields=Array();
+			$info=parse_mysql_create($modulename, $sql);
+			for ($i = 0; $i<count($info['fields']); $i++)
+				{
+					$fields[$i]['name']=$info['fields'][$i][1];
+					$fields[$i]['datatype']=$info['fields'][$i][2];
+					$fields[$i]['control']=$_postvars['field_'.$i];
+					$fields[$i]['caption']=$_postvars['fieldcap_'.$i];
+				}
 			$info='<'.'?'."php\n\n";
 			$info.="/*\n";
 			$info.="Module Name: ".$moduletitle."\n";
@@ -217,12 +232,12 @@
 			$info.="Author URI: http://simancms.org/\n";
 			$info.="*/\n\n";
 			$info.='if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
-			$info.=get_postdelete_code($modulename, $sql, $moduletitle);
-			$info.=get_postadd_code($modulename, $sql, $moduletitle);
-			$info.=get_add_code($modulename, $sql, $moduletitle);
-			$info.=get_list_code($modulename, $sql, $moduletitle);
+			$info.=get_postdelete_code($modulename, $sql, $moduletitle, $fields);
+			$info.=get_postadd_code($modulename, $sql, $moduletitle, $fields);
+			$info.=get_add_code($modulename, $sql, $moduletitle, $fields);
+			$info.=get_list_code($modulename, $sql, $moduletitle, $fields);
 			$info.="\n\t\t}\n";
-			$info.=get_admin_code($modulename, $sql, $moduletitle);
+			$info.=get_admin_code($modulename, $sql, $moduletitle, $fields);
 			$info.="\n";
 			$info.="\n?".'>';
 			sm_title('Code Generator');
@@ -231,9 +246,12 @@
 			$ui = new TInterface();
 			//$ui->html('<pre>'.$info.'</pre>');
 			$f = new TForm(false);
-			$f->AddTextarea('php', 'PHP');
+			$f->AddTextarea('php', 'PHP Code');
+			$f->SetFieldAttribute('php', 'wrap', 'off');
+			$f->MergeColumns('php', 'wrap', 'off');
 			$f->SetValue('php', $info);
 			$ui->AddForm($f);
+			$ui->style('#php{height:500px;}');
 			$ui->Output(true);
 		}
 	
@@ -243,10 +261,39 @@
 			sm_use('ui.interface');
 			sm_use('ui.form');
 			$ui = new TInterface();
-			$f = new TForm('index.php?m=modulegenerator&d=generate');
+			if ($_getvars['type']=='fields')
+				$f = new TForm('index.php?m=modulegenerator&d=generate');
+			else
+				$f = new TForm('index.php?m=modulegenerator&d=prepare&type=fields');
 			$f->AddText('module', 'Module ID')->SetFocus();
 			$f->AddText('title', 'Module Title');
 			$f->AddTextarea('sql', 'SQL Create Query');
+			if ($_getvars['type']=='fields')
+				{
+					$f->Separator('Fields');
+					$info=parse_mysql_create($_postvars['module'], $_postvars['sql']);
+					for ($i = 0; $i<count($info['fields']); $i++)
+						{
+							$f->AddSelectVL('field_'.$i, $info['fields'][$i][1], Array('text', 'textarea', 'editor', 'checkbox', 'disabled'), Array('Text', 'Textarea', 'WYSIWYG editor', 'Checkbox', 'Disabled'));
+							if ($info['fields'][$i][2]=='tinyint')
+								$f->WithValue('checkbox');
+							elseif ($info['fields'][$i][2]=='text')
+								$f->WithValue('textarea');
+							else
+								$f->WithValue('text');
+							$f->WithFieldClassAppended('percent49');
+							$f->HideEncloser();
+							$f->AddText('fieldcap_'.$i, $info['fields'][$i][1]);
+							$cap=str_replace('_', ' ', $info['fields'][$i][1]);
+							$cap=strtoupper(substr($cap, 0, 1)).substr($cap, 1);
+							$f->WithValue($cap);
+							$f->WithFieldClassAppended('percent49');
+							$f->HideDefinition();
+						}
+				}
+			$f->LoadValuesArray($_postvars);
+			$f->SaveButton('Next');
+			$ui->style('.percent49{width:49% !important;}');
 			$ui->AddForm($f);
 			$ui->Output(true);
 		}
