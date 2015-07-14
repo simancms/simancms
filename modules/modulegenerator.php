@@ -13,6 +13,7 @@
 	
 	function parse_mysql_create($modulename, $sql)
 		{
+			global $sm;
 			preg_match_all('/`(.+)` (\w+)\(? ?(\d*) ?\)?/', $sql, $fields, PREG_SET_ORDER);
 			$result['fields']=$fields;
 			if (preg_match('/CREATE\s+(?:TEMPORARY\s+)?TABLE\s+(?:IF NOT EXISTS\s+)?([^\s]+)/i', $sql, $matches))
@@ -20,6 +21,11 @@
 					$tableName = $matches[1];
 				}
 			$result['table']=str_replace('`', '', $tableName);
+			if (strcmp(substr($result['table'], 0, strlen($sm['t'])), $sm['t'])==0)
+				{
+					$result['tableprefix']='$sm[\'t\'].';
+					$result['table']=substr($result['table'], strlen($sm['t']));
+				}
 			if (preg_match('#.*PRIMARY\s+KEY\s+\(`(.*?)`\).*#i', $sql, $matches))
 				{
 					$result['id']=$matches[1];
@@ -33,7 +39,7 @@
 			$str="
 			if (sm_action('postdelete'))
 				{
-					\$q=new TQuery('".$info['table']."');
+					\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');
 					\$q->Add('".$info['id']."', intval(\$_getvars['id']));
 					\$q->Remove();
 					sm_extcore();
@@ -46,10 +52,26 @@
 	function get_postadd_code($modulename, $sql, $moduletitle, $fields)
 		{
 			$info=parse_mysql_create($modulename, $sql);
+			$req='';
+			for ($i = 0; $i<count($fields); $i++)
+				{
+					if ($fields[$i]['required'])
+						{
+							if (!empty($req))
+								$req.=' || ';
+							$req.="empty(\$_postvars['".$fields[$i]['name']."'])";
+						}
+				}
 			$str="
 			if (sm_action('postadd', 'postedit'))
 				{
-					\$q=new TQuery('".$info['table']."');\n";
+					\$error='';\n";
+			if (!empty($req))
+			$str.="\t\t\t\t\tif (".$req.")
+						\$error=\$lang['messages']['fill_requied_fields'];\n";
+			$str.="\t\t\t\t\tif (empty(\$error))
+						{
+							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');\n";
 			for ($i = 0; $i<count($fields); $i++)
 				{
 					if ($info['id']==$fields[$i]['name'])
@@ -57,17 +79,20 @@
 					if ($fields[$i]['control']=='disabled')
 						continue;
 					if ($fields[$i]['datatype']=='tinyint' || $fields[$i]['datatype']=='int')
-						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', intval(\$_postvars['".$fields[$i]['name']."']));\n";
+						$str.="\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', intval(\$_postvars['".$fields[$i]['name']."']));\n";
 					elseif ($fields[$i]['datatype']=='decimal')
-						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', floatval(\$_postvars['".$fields[$i]['name']."']));\n";
+						$str.="\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', floatval(\$_postvars['".$fields[$i]['name']."']));\n";
 					else
-						$str.="\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', dbescape(\$_postvars['".$fields[$i]['name']."']));\n";
+						$str.="\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', dbescape(\$_postvars['".$fields[$i]['name']."']));\n";
 				}
-			$str.="\t\t\t\t\tif (sm_action('postadd'))
-						\$q->Insert();
+			$str.="\t\t\t\t\t\t\tif (sm_action('postadd'))
+								\$q->Insert();
+							else
+								\$q->Update('".$info['id']."', intval(\$_getvars['id']));
+							sm_redirect(\$_getvars['returnto']);
+						}
 					else
-						\$q->Update('".$info['id']."', intval(\$_getvars['id']));
-					sm_redirect(\$_getvars['returnto']);
+						sm_set_action(Array('postadd'=>'add', 'postedit'=>'edit'));
 				}
 			";
 			return $str;
@@ -109,12 +134,14 @@
 						$str.="\t\t\t\t\t\$f->AddCheckbox('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 					elseif ($fields[$i]['datatype']=='text')
 						$str.="\t\t\t\t\t\$f->AddTextarea('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
+					elseif ($fields[$i]['datatype']=='editor')
+						$str.="\t\t\t\t\t\$f->AddEditor('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 					else
 						$str.="\t\t\t\t\t\$f->AddText('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required']?', true':'').");\n";
 				}
 			$str.="\t\t\t\t\tif (sm_action('edit'))
 						{
-							\$q=new TQuery('".$info['table']."');
+							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');
 							\$q->Add('".$info['id']."', intval(\$_getvars['id']));
 							\$f->LoadValuesArray(\$q->Get());
 							unset(\$q);
@@ -152,7 +179,7 @@
 				$str.="\t\t\t\t\t\$t->AddCol('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
 			$str.="\t\t\t\t\t\$t->AddEdit();
 					\$t->AddDelete();
-					\$q=new TQuery('".$info['table']."');
+					\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');
 					\$q->Limit(\$limit);
 					\$q->Offset(\$offset);
 					\$q->Select();
@@ -177,7 +204,7 @@
 		{
 			$info=parse_mysql_create($modulename, $sql);
 			$str="
-				if (\$userinfo['level']==3)
+			if (\$userinfo['level']==3)
 				{
 					if (sm_action('admin'))
 						{
@@ -232,14 +259,13 @@
 			$info.="Revision: ".date('Y-m-d')."\n";
 			$info.="Author URI: http://simancms.org/\n";
 			$info.="*/\n\n";
-			$info.='if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
+			$info.='	if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
 			$info.=get_postdelete_code($modulename, $sql, $moduletitle, $fields);
 			$info.=get_postadd_code($modulename, $sql, $moduletitle, $fields);
 			$info.=get_add_code($modulename, $sql, $moduletitle, $fields);
 			$info.=get_list_code($modulename, $sql, $moduletitle, $fields);
-			$info.="\n\t\t}\n";
 			$info.=get_admin_code($modulename, $sql, $moduletitle, $fields);
-			$info.="\n";
+			$info.="\n\t\t}\n";
 			$info.="\n?".'>';
 			sm_title('Code Generator');
 			sm_use('ui.interface');
