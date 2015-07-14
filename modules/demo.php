@@ -42,6 +42,10 @@
 					$ui->html('HR tag');
 					$ui->br();
 					$ui->html('Paragraph close');
+					$ui->p_close();
+					$ui->div('Div with classname demo-red', '', 'demo-red');
+					$ui->div('Div with style', '', '', 'background:#ccccff;');
+					$ui->style('.demo-red{background:#ffcccc;}');
 					$ui->Output(true);
 				}
 			if (sm_action('demos'))
