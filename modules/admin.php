@@ -17,6 +17,8 @@
 		{
 			function sm_get_module_info($filename)
 				{
+					if (!file_exists($filename))
+						return false;
 					$fh = fopen($filename, 'r');
 					$info = fread($fh, 2048);
 					fclose($fh);
