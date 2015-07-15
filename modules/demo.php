@@ -29,7 +29,7 @@
 				{
 					sm_title('UI HTML-shortcuts');
 					add_path_home();
-					add_path('Demos', 'index.php?m=demos');
+					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
 					$ui = new TInterface();
@@ -45,8 +45,23 @@
 					$ui->p_close();
 					$ui->div('Div with classname demo-red', '', 'demo-red');
 					$ui->div('Div with style', '', '', 'background:#ccccff;');
+					$ui->h(1, 'H1');
+					$ui->h(2, 'H2');
+					$ui->h(3, 'H3');
+					$ui->h(4, 'H4');
+					$ui->h(5, 'H5');
+					$ui->h(6, 'H6');
+					$ui->a(sm_homepage(), 'Clickable URL');
 					$ui->style('.demo-red{background:#ffcccc;}');
 					$ui->Output(true);
+				}
+			if (sm_action('regular'))
+				{
+					sm_title('Smarty Template');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					$m['module']='demo';
 				}
 			if (sm_action('demos'))
 				{
@@ -58,6 +73,7 @@
 					$ui = new TInterface();
 					$nav=new TNavigation();
 					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
+					$nav->AddItem('Smarty Template', 'index.php?m=demo&d=regular');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
