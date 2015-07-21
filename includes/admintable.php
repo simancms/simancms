@@ -213,6 +213,11 @@
 							return $this;
 						}
 
+					function GetLabelText($name)
+						{
+							return $this->table['rows'][$this->rownumber][$name]['data'];
+						}
+
 					function AddClassnameGlobal($classname)
 						{
 							$this->table['class'] .= ' '.$classname;
