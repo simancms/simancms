@@ -82,11 +82,11 @@
 							return $this;
 						}
 
-					function INStrings($fieldname, $values_array, $trim = false)
+					function INStrings($fieldname, $values_array, $trim = false, $not_in_operator=false)
 						{
 							if (is_array($values_array) AND count($values_array)>0)
 								{
-									$sql = '`'.$fieldname.'` IN (';
+									$sql = '`'.$fieldname.'` '.($not_in_operator?'NOT ':'').'IN (';
 									for ($i = 0; $i<count($values_array); $i++)
 										{
 											if ($trim)
@@ -101,11 +101,11 @@
 							return $this;
 						}
 
-					function INIntegers($fieldname, $values_array)
+					function INIntegers($fieldname, $values_array, $not_in_operator=false)
 						{
 							if (is_array($values_array) AND count($values_array)>0)
 								{
-									$sql = '`'.$fieldname.'` IN (';
+									$sql = '`'.$fieldname.'` '.($not_in_operator?'NOT ':'').'IN (';
 									for ($i = 0; $i<count($values_array); $i++)
 										{
 											$sql .= ($i>0 ? ',' : '').intval($values_array[$i]);
