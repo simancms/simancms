@@ -183,7 +183,7 @@
 					\$q->Limit(\$limit);
 					\$q->Offset(\$offset);
 					\$q->Select();
-					for (\$i = 0; \$i<count(\$q->items); \$i++)
+					for (\$i = 0; \$i<\$q->Count(); \$i++)
 						{\n";
 			for ($i = 0; $i<count($fields); $i++)
 				$str.="\t\t\t\t\t\t\t\$t->Label('".$fields[$i]['name']."', \$q->items[\$i]['".$fields[$i]['name']."']);\n";
