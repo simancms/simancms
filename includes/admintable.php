@@ -146,7 +146,7 @@
 							return $this;
 						}
 
-					function OneLine($name)
+					function OneLine($name)//Deprecated. Use SingleLineLabel instead
 						{
 							$this->table['rows'][$this->rownumber][$name]['colspan'] = count($this->table['columns']);
 							if (!empty($this->table['columns']))
@@ -155,6 +155,24 @@
 										if ($key != $name)
 											$this->table['rows'][$this->rownumber][$key]['hide'] = 1;
 									}
+							return $this;
+						}
+
+					function SingleLineLabel($label)
+						{
+							$first=true;
+							if (!empty($this->table['columns']))
+								while (list($key, $val) = each($this->table['columns']))
+									{
+										if ($first)
+											{
+												$this->Label($key, $label);
+												$first=false;
+											}
+										else
+											$this->Label($key, '');
+									}
+							$this->AttachEmptyCellsToLeft();
 							return $this;
 						}
 

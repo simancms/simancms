@@ -249,8 +249,7 @@
 						{
 							if (intval(sm_settings('main_block_position'))==$i)
 								{
-									$t->Label('title', $lang['module_blocks']['main_block_position']);
-									$t->OneLine('title');
+									$t->SingleLineLabel($lang['module_blocks']['main_block_position']);
 									$t->NewRow();
 								}
 							$v[]=$i+1;
@@ -272,8 +271,7 @@
 						}
 					if (intval(sm_settings('main_block_position')) >= $q->Count())
 						{
-							$t->Label('title', $lang['module_blocks']['main_block_position']);
-							$t->OneLine('title');
+							$t->SingleLineLabel($lang['module_blocks']['main_block_position']);
 							$t->NewRow();
 							$_settings['main_block_position'] = $q->Count();
 						}

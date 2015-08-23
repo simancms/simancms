@@ -86,18 +86,15 @@
 					$t->AddDelete();
 					$q = new TQuery($sm['t']."replacers");
 					$q->Select();
-					for ($i = 0; $i < count($q->items); $i++)
+					for ($i = 0; $i < $q->Count(); $i++)
 						{
 							$t->Label('key_r', $q->items[$i]['key_r']);
 							$t->Url('edit', 'index.php?m=replacers&d=edit&id='.$q->items[$i]['id_r']);
 							$t->Url('delete', 'index.php?m=replacers&d=postdelete&id='.$q->items[$i]['id_r']);
 							$t->NewRow();
 						}
-					if (count($q->items) == 0)
-						{
-							$t->Label('key_r', 'Nothing found');
-							$t->OneLine('key_r');
-						}
+					if ($q->Count() == 0)
+						$t->SingleLineLabel('Nothing found');
 					$ui->AddGrid($t);
 					$ui->AddButtons($b);
 					$ui->Output(true);
