@@ -240,5 +240,8 @@
 
 	if ($userinfo['level'] > 0)
 		include('modules/inc/memberspart/account.php');
+	else
+		if (sm_action('logout'))
+			sm_redirect('index.php?m=account');
 
 ?>
