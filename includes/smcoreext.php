@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-07-22
+	//#ver 1.6.9
+	//#revision 2015-08-24
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -522,5 +522,13 @@
 				}
 			return '('.$r.')';
 		}
+	
+	function sm_output_replacer($functionname)
+		{
+			global $sm;
+			if (empty($sm['output_replacers']) || !in_array($functionname, $sm['output_replacers']))
+				$sm['output_replacers'][] = $functionname;
+		}
+
 
 ?>

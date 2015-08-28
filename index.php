@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-07-15
+	//#revision 2015-08-24
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -299,15 +299,27 @@
 					if (!empty($special['main_tpl']))
 						if (!$sm['s']['nosmarty'])
 							{
-								if (!empty($siman_cache) && $sm['cacheit'] && $sm['u']['level']==0)
+								if (!empty($siman_cache) && $sm['cacheit'] && $sm['u']['level']==0 || is_array($sm['output_replacers']) && count($sm['output_replacers'])>0)
 									{
 										$output = $smarty->fetch($special['main_tpl'].'.tpl');
-										$fname='files/temp/cache_'.md5($_SERVER['REQUEST_URI']);
-										$fh=fopen($fname, 'w');
-										fwrite($fh, $output);
-										fclose($fh);
-										if (intval($sm['cacheittime'])>0)
-											touch($fname, time()+intval($sm['cacheittime']));
+										if (is_array($sm['output_replacers']) && count($sm['output_replacers'])>0)
+											{
+												$output = $smarty->fetch($special['main_tpl'].'.tpl');
+												for ($i = 0; $i < count($sm['output_replacers']); $i++)
+													{
+														if (function_exists($sm['output_replacers'][$i]))
+															$output=call_user_func_array($sm['output_replacers'][$i], Array($output));
+													}
+											}
+										if (!empty($siman_cache) && $sm['cacheit'] && $sm['u']['level']==0)
+											{
+												$fname='files/temp/cache_'.md5($_SERVER['REQUEST_URI']);
+												$fh=fopen($fname, 'w');
+												fwrite($fh, $output);
+												fclose($fh);
+												if (intval($sm['cacheittime'])>0)
+													touch($fname, time()+intval($sm['cacheittime']));
+											}
 										print($output);
 									}
 								else
