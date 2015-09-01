@@ -218,6 +218,8 @@
 								}
 							elseif (func_num_args() == 0)
 								return;
+							if (!empty($this->limit))
+								$this->sql .= ' LIMIT '.$this->limit;
 							if ($execute || !$this->sqlgenerationmode)
 								execsql($this->sql);
 						}
