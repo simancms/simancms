@@ -37,7 +37,7 @@
 							$m['show_on'][$i]['value'] = $row->module_name.'|0';
 							$i++;
 						}
-					$listeners = nllistToArray($_settings['autoload_modules']);
+					$listeners = nllistToArray(sm_settings('autoload_modules'));
 					for ($i = 0; $i < count($listeners); $i++)
 						{
 							$blockfn = 'siman_block_items_'.$listeners[$i];
@@ -89,7 +89,7 @@
 								$m['show_on'][$i]['selected'] = 1;
 							$i++;
 						}
-					$listeners = nllistToArray($_settings['autoload_modules']);
+					$listeners = nllistToArray(sm_settings('autoload_modules'));
 					for ($i = 0; $i < count($listeners); $i++)
 						{
 							$blockfn = 'siman_block_items_'.$listeners[$i];
@@ -141,7 +141,7 @@
 							$sql = "UPDATE ".$tableprefix."blocks SET level = '$level', caption_block = '$caption_block', show_on_module='$module_block', show_on_doing='$show_doing_block', show_on_ctg='$ctg_block', no_borders='$no_borders', dont_show_modif ='$dont_show_modif', rewrite_title = '$rewrite_title', groups_view = '$groups_view', thislevelonly='$thislevelonly', show_on_device='$show_on_device', show_on_viewids='$show_on_viewids'  WHERE id_block = '$id_block'";
 							$result = execsql($sql);
 						}
-					if ($_settings['blocks_use_image'] == 1)
+					if (sm_settings('blocks_use_image') == 1)
 						{
 							siman_upload_image($id_block, 'block');
 						}
@@ -176,7 +176,7 @@
 					$pos_block++;
 					$sql = "INSERT INTO ".$tableprefix."blocks (level, panel_block, position_block, name_block, caption_block, showed_id, show_on_module, show_on_doing, show_on_ctg, dont_show_modif, doing_block, no_borders, rewrite_title, groups_view, thislevelonly, show_on_device, show_on_viewids) VALUES ('$level', '$panel_block', '$pos_block', '$name_block', '$caption_block', '$id_block', '$module_block', '$show_doing_block', '$ctg_block', '$dont_show_modif', '$doing_block', '$no_borders', '$rewrite_title', '$groups_view', '$thislevelonly', '$show_on_device', '$show_on_viewids')";
 					$result = execsql($sql);
-					if ($_settings['blocks_use_image'] == 1)
+					if (sm_settings('blocks_use_image') == 1)
 						{
 							$id_block = database_insert_id('blocks', $nameDB, $lnkDB);
 							siman_upload_image($id_block, 'block');
@@ -277,13 +277,13 @@
 						}
 					$f = new TForm('index.php?m=blocks&d=setmain');
 					$f->AddSelectVL('p_mainpos', $lang['module_blocks']['main_block_position'], $v, $l);
-					$f->SetValue('p_mainpos', $_settings['main_block_position']);
+					$f->SetValue('p_mainpos', sm_settings('main_block_position'));
 					$ui->AddForm($f);
 					unset($f);
 					$ui->br();
 					$ui->AddGrid($t);
 					unset($t);
-					for ($panel = 1; $panel < intval($_settings['sidepanel_count']) + 1; $panel++)
+					for ($panel = 1; $panel < intval(sm_settings('sidepanel_count')) + 1; $panel++)
 						{
 							$t=new TGrid('edit');
 							$t->AddCol('title', $lang['panel'].' '.$panel, '100%');
