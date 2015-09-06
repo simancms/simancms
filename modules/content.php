@@ -506,7 +506,7 @@
 				{
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".intval($ctg_id);
 					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
 							sm_event('onbeforeblockctgviewcontentprocessing', $i);
 							$m['title'] = $row['title_category'];
@@ -541,7 +541,7 @@
 					$result = execsql($sql);
 					$i = 0;
 					$m['menu'] = Array();
-					while ($row = database_fetch_object($result))
+					while ($row = database_fetch_assoc($result))
 						{
 							$m['category']['ctg'][$i]['title'] = $row['title_content'];
 							$m['category']['ctg'][$i]['id'] = $row['id_content'];
