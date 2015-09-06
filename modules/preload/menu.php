@@ -158,6 +158,7 @@
 
 	function sm_add_menuitem(&$menu, $title, $url, $level = 1, $partial_select = '', $alt_text = '', $newpage = 0)
 		{
+			global $sm;
 			$i = count($menu);
 			$menu[$i]['url'] = $url;
 			$menu[$i]['caption'] = $title;
@@ -173,6 +174,22 @@
 					else
 						$menu[$i-1]['last'] = 0;
 				}
+			$tmp_index = strpos(sm_settings('resource_url'), '/');
+			$main_suburl = substr(sm_settings('resource_url'), $tmp_index);
+			if (
+				(strcmp($main_suburl.$menu[$i]['url'], $sm['server']['REQUEST_URI']) == 0
+				||
+				strcmp($main_suburl.$menu[$i]['url'], $sm['server']['REQUEST_URI'].'index.php') == 0)
+				|| (sm_is_index_page() && strcmp($menu[$i]['url'], 'http://'.sm_settings('resource_url')) == 0)
+			)
+				$menu[$i]['active'] = '1';
+			if ($menu[$i]['active'] != '1' && $menu[$i]['partial'] == 1)
+				{
+					if (strpos($sm['server']['REQUEST_URI'], $main_suburl.$menu[$i]['url']) === 0)
+						$menu[$i]['active'] = '1';
+				}
+			if (empty($menu[$i]['url']))
+				$menu[$i]['active'] = '0';
 		}
 
 	if (!empty($_settings['upper_menu_id']))
