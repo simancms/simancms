@@ -53,6 +53,7 @@
 					return $url;
 				}
 
+			sm_add_cssfile('stylesheetsadmin.css');
 			define("ADMIN_FUNCTIONS_DEFINED", 1);
 		}
 
