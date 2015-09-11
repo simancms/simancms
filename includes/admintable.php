@@ -208,6 +208,33 @@
 							return $this;
 						}
 
+					function AutoColspanFor($fieldname)
+						{
+							if (!empty($this->table['columns']))
+								{
+									$colspan = 1;
+									reset($this->table['columns']);
+									$found=false;
+									while (list($key, $val) = each($this->table['columns']))
+										{
+											if (!$found)
+												{
+													if ($key==$fieldname)
+														$found=true;
+													continue;
+												}
+											if (strlen($this->table['rows'][$this->rownumber][$key]['data']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['image']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['url']) == 0)
+												{
+													$this->Hide($key);
+													$colspan++;
+												}
+										}
+									if ($colspan>1)
+										$this->Colspan($fieldname, $colspan);
+								}
+							return $this;
+						}
+
 					function Colspan($name, $value)
 						{
 							$this->table['rows'][$this->rownumber][$name]['colspan'] = $value;
