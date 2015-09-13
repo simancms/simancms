@@ -132,6 +132,12 @@
 							return $this;
 						}
 
+					function ColumnAddClass($name, $classname)
+						{
+							$this->table['columns'][$name]['column_class'] .= ' '.$classname;
+							return $this;
+						}
+
 					function HeaderUrl($name, $url)
 						{
 							$this->table['columns'][$name]['headerurl'] = $url;
@@ -162,7 +168,7 @@
 						{
 							$first=true;
 							if (!empty($this->table['columns']))
-								while (list($key, $val) = each($this->table['columns']))
+								foreach ($this->table['columns'] as $key=>$val)
 									{
 										if ($first)
 											{
@@ -296,9 +302,11 @@
 							return $this;
 						}
 
-					function CellAddClass($name, $classname)
+					function CellAddClass($name, $classname, $rownumber=NULL)
 						{
-							$this->table['rows'][$this->rownumber][$name]['class'] .= ' '.$classname;
+							if ($rownumber === NULL)
+								$rownumber = $this->rownumber;
+							$this->table['rows'][$rownumber][$name]['class'] .= ' '.$classname;
 							return $this;
 						}
 
@@ -641,6 +649,58 @@
 							$this->table['rowparams'][$rownumber]['style'] .= $rule;
 							return $this;
 						}
+					function RowHighlightError($rownumber = NULL)
+						{
+							$this->RowAddClass('at-highlight-error', $rownumber);
+						}
+					function RowHighlightWarning($rownumber = NULL)
+						{
+							$this->RowAddClass('at-highlight-warning', $rownumber);
+						}
+					function RowHighlightInfo($rownumber = NULL)
+						{
+							$this->RowAddClass('at-highlight-info', $rownumber);
+						}
+					function RowHighlightSuccess($rownumber = NULL)
+						{
+							$this->RowAddClass('at-highlight-success', $rownumber);
+						}
+					function RowHighlightAttention($rownumber = NULL)
+						{
+							$this->RowAddClass('at-highlight-attention', $rownumber);
+						}
+					function CellHighlightError($name)
+						{
+							$this->CellAddClass($name, 'at-highlight-error');
+						}
+					function CellHighlightWarning($name)
+						{
+							$this->CellAddClass($name, 'at-highlight-warning');
+						}
+					function CellHighlightInfo($name)
+						{
+							$this->CellAddClass($name, 'at-highlight-info');
+						}
+					function CellHighlightSuccess($name)
+						{
+							$this->CellAddClass($name, 'at-highlight-success');
+						}
+					function CellHighlightAttention($name)
+						{
+							$this->CellAddClass($name, 'at-highlight-attention');
+						}
+					function CellAlignLeft($name)
+						{
+							$this->CellAddStyle($name, 'text-align:left;');
+						}
+					function CellAlignRight($name)
+						{
+							$this->CellAddStyle($name, 'text-align:right;');
+						}
+					function CellAlignCenter($name)
+						{
+							$this->CellAddStyle($name, 'text-align:center;');
+						}
 
 				//====================================================
 					function Output()
@@ -713,6 +773,10 @@
 															$inlineimages.=$html;
 														}
 													$this->table['rows'][$this->rownumber][$name]['data'].='<span class="at-inlineimages'.(empty($this->table['inlineimages']['class'])?'':' '.$this->table['inlineimages']['class']).'"'.(empty($this->table['inlineimages']['style'])?'':' style="'.$this->table['inlineimages']['style']).'">'.$inlineimages.'</span>';
+												}
+											if (!empty($this->table['columns'][$name]['column_class']))
+												{
+													$this->CellAddClass($name, $this->table['columns'][$name]['column_class'], $this->rownumber);
 												}
 										}
 								}

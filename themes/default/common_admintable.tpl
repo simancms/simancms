@@ -119,6 +119,7 @@ function atdropdowncancelclosetime{$postfix}()
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $table.rows[table_row_index].$column_name.hide neq 1}
 		<td{if $table.rows[table_row_index].$column_name.hint neq ""} title="{$table.rows[table_row_index].$column_name.hint}"{elseif $column.hint neq ""} title="{$column.hint}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $table.rows[table_row_index].$column_name.colspan neq ""} colspan="{$table.rows[table_row_index].$column_name.colspan}"{/if}{if $column.width neq "" and $table.hideheader eq 1} width="{$column.width}"{/if} id="at{$postfix}-cell-{$column_name}-{$smarty.section.table_row_index.index}" class="at-cell-{$column_name}{$table.rows[table_row_index].$column_name.class}"{if $table.rows[table_row_index].$column_name.style neq ""} style="{$table.rows[table_row_index].$column_name.style}"{/if}>
+			{$table.rows[table_row_index].$column_name.html_start}
 			{if $column.nobr eq "1"}
 				<nobr>
 			{/if}
@@ -162,6 +163,7 @@ function atdropdowncancelclosetime{$postfix}()
 			{if $column.nobr eq "1"}
 				</nobr>
 			{/if}
+			{$table.rows[table_row_index].$column_name.html_content_end}
 			{if $table.rows[table_row_index].$column_name.dropdown eq 1}
 				<div class="atdropdownitems" id="atdropdown-{$column_name}-{$smarty.section.table_row_index.index}-{$postfix}" onmouseover="atdropdowncancelclosetime{$postfix}()" onmouseout="atdropdownclosetime{$postfix}()">
 				{section name=table_row_index_dropdown loop=$table.rows[table_row_index].$column_name.dropdownitems}
@@ -175,6 +177,7 @@ function atdropdowncancelclosetime{$postfix}()
 				{/section}
 				</div>
 			{/if}
+			{$table.rows[table_row_index].$column_name.html_end}
 		</td>
 		{/if}
 		{/foreach}

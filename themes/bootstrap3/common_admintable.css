@@ -92,3 +92,71 @@ tr.admintable_row:hover td
 {
 	background-color:#d9edf7;
 }
+
+.at-highlight-error
+{
+	background: #f2dede;
+	color:#ac2925;
+}
+
+.at-highlight-error:hover, .at-highlight-error:hover td
+{
+	background: #eed3d7!important;
+	color:#ac2925;
+}
+
+.at-highlight-attention
+{
+	background: #ffba51;
+}
+
+.at-highlight-attention:hover, .at-highlight-attention:hover td
+{
+	background:#f0ad4e!important;
+}
+
+.at-highlight-warning
+{
+	background: #fcf8e3;
+	color:#c09853;
+}
+
+.at-highlight-warning:hover, .at-highlight-warning:hover td
+{
+	background:#fbeed5!important;
+}
+
+.at-highlight-info
+{
+	background: #e1f5ff;
+	color: #3a87ad;
+}
+
+.at-highlight-info:hover, .at-highlight-info:hover td
+{
+	background: #bce8f1!important;
+}
+
+.at-highlight-success
+{
+	background: #dff0d8;
+	color: #468847;
+}
+
+.at-highlight-success:hover, .at-highlight-success:hover td
+{
+	background: #d6e9c6!important;
+}
+
+.at-align-left
+{
+	text-align:left;
+}
+.at-align-right
+{
+	text-align:right;
+}
+.at-align-center
+{
+	text-align:center;
+}
