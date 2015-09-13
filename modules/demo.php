@@ -55,6 +55,140 @@
 					$ui->style('.demo-red{background:#ffcccc;}');
 					$ui->Output(true);
 				}
+			if (sm_action('ajaxresponder'))
+				{
+					out(strftime($lang['datetimemask'], time()).'<br />');
+					for ($i = 0; $i < 5+rand(1, 10); $i++)
+						{
+							out('Line '.$i.'<br />');
+						}
+				}
+			if (sm_action('grid'))
+				{
+					sm_title('Grid / Table');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.grid');
+					$src=Array(
+						Array(
+							'text'=>'Sample text 0',
+							'url'=>''
+						)
+					);
+					for ($i = 1; $i < 21; $i++)
+						{
+							$src[]=Array(
+								'text'=>'Sample text '.$i,
+								'url'=>'index.php?m=demo&d=grid&testid='.$i,
+								'expand'=>'Expander for row #'.$i
+							);
+						}
+					$ui = new TInterface();
+					$t=new TGrid();
+					$t->AddCol('n', '#', '5%');
+					$t->AddCol('text', 'Text', '55%');
+					$t->ColumnAddClass('text', 'at-align-center');
+					$t->AddCol('note', 'Note', '40%');
+					$t->AddCol('view', 'Actions', '16');
+					$t->AddEdit();
+					$t->AddDelete();
+					$t->AddCol('chk1', '', '10');
+					$t->HeaderBulkCheckbox('chk1');
+					$t->AddCol('chk2', '', '10');
+					$t->HeaderBulkCheckbox('chk2');
+					$t->HeaderAutoColspanFor('view');
+					for ($i = 0; $i < count($src); $i++)
+						{
+							if ($i==1)
+								{
+									$t->RowHighlightError();
+									$t->Label('note', 'Error for row');
+									$t->CellAlignCenter('note');
+								}
+							if ($i==2)
+								{
+									$t->RowHighlightInfo();
+									$t->Label('note', 'Info for row');
+									$t->CellAlignCenter('note');
+								}
+							if ($i==3)
+								{
+									$t->RowHighlightSuccess();
+									$t->Label('note', 'Success for row');
+									$t->CellAlignCenter('note');
+								}
+							if ($i==4)
+								{
+									$t->RowHighlightWarning();
+									$t->Label('note', 'Warning for row');
+									$t->CellAlignCenter('note');
+								}
+							if ($i==5)
+								{
+									$t->RowHighlightAttention();
+									$t->Label('note', 'Attention for row');
+									$t->CellAlignCenter('note');
+								}
+							if ($i==10)
+								{
+									$t->CellHighlightError('text');
+									$t->Label('note', '&lt;- Error for cell');
+								}
+							if ($i==11)
+								{
+									$t->CellHighlightInfo('text');
+									$t->Label('note', '&lt;- Info for cell');
+								}
+							if ($i==12)
+								{
+									$t->CellHighlightSuccess('text');
+									$t->Label('note', '&lt;- Success for cell');
+								}
+							if ($i==13)
+								{
+									$t->CellHighlightWarning('text');
+									$t->Label('note', '&lt;- Warning for cell');
+								}
+							if ($i==14)
+								{
+									$t->CellHighlightAttention('text');
+									$t->Label('note', '&lt;- Attention for cell');
+								}
+							$t->Label('n', $i);
+							$t->Label('text', $src[$i]['text']);
+							$t->URL('text', $src[$i]['url']);
+							$t->Image('view', 'info');
+							if ($i==0)
+								{
+									$t->ExpandAJAX('view', 'index.php?m=demo&d=ajaxresponder&ajax=1');
+									$t->Label('note', 'With AJAX expander -&gt;');
+									$t->CellAlignRight('note');
+									$t->CellAlignLeft('text');
+								}
+							elseif (!empty($src[$i]['expand']))
+								{
+									$t->ExpanderHTML($src[$i]['expand']);
+									$t->Expand('view');
+								}
+							if ($i==17)
+								{
+									$t->Label('note', 'Drop down menu');
+									$t->DropDownItem('note', 'Item 1', 'index.php?m=demo&d=htmlshortcuts');
+									$t->DropDownItem('note', 'Item 1 (confirm)', 'index.php?m=demo&d=htmlshortcuts', 'Are you sure?');
+								}
+							$t->Checkbox('chk1', 'chk1[]', $i, (intval($sm['g']['testid'])==$i));
+							$t->Checkbox('chk2', 'chk2[]', $i);
+							$t->URL('edit', 'index.php?m=demo&d=forms');
+							$t->URL('delete', 'index.php?m=demo&d=grid');
+							$t->NewRow();
+						}
+					$t->SingleLineLabel('Single Line Notification');
+					$t->NewRow();
+					$ui->Add($t);
+					$ui->Output(true);
+				}
 			if (sm_action('regular'))
 				{
 					sm_title('Smarty Template');
@@ -74,6 +208,7 @@
 					$nav=new TNavigation();
 					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
 					$nav->AddItem('Smarty Template', 'index.php?m=demo&d=regular');
+					$nav->AddItem('Grid / Table', 'index.php?m=demo&d=grid');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
