@@ -223,7 +223,7 @@
 														$found=true;
 													continue;
 												}
-											if (strlen($this->table['rows'][$this->rownumber][$key]['data']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['image']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['url']) == 0)
+											if (strlen($this->table['rows'][$this->rownumber][$key]['data']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['image']) == 0 && strlen($this->table['rows'][$this->rownumber][$key]['headerurl']) == 0)
 												{
 													$this->Hide($key);
 													$colspan++;
@@ -231,6 +231,33 @@
 										}
 									if ($colspan>1)
 										$this->Colspan($fieldname, $colspan);
+								}
+							return $this;
+						}
+
+					function HeaderAutoColspanFor($fieldname)
+						{
+							if (!empty($this->table['columns']))
+								{
+									$colspan = 1;
+									reset($this->table['columns']);
+									$found=false;
+									while (list($key, $val) = each($this->table['columns']))
+										{
+											if (!$found)
+												{
+													if ($key==$fieldname)
+														$found=true;
+													continue;
+												}
+											if (strlen($this->table['columns'][$key]['caption']) == 0 && strlen($this->table['columns'][$key]['html']) == 0 && strlen($this->table['columns'][$key]['url']) == 0)
+												{
+													$this->HeaderHideCol($key);
+													$colspan++;
+												}
+										}
+									if ($colspan>1)
+										$this->HeaderColspan($fieldname, $colspan);
 								}
 							return $this;
 						}
@@ -580,7 +607,7 @@
 					function HeaderBulkCheckbox($name)
 						{
 							$this->table['columns'][$name]['html'] = '<input type="checkbox" id="'.$name.'-'.($this->table['postfix']).'-bulkcheckbox" class="at-bulk-checkbox" onchange="'.
-								"\$('.admintable-".($this->table['postfix'])."-control-checkbox').prop('checked', \$('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').prop('checked')?true:false);".
+								"\$('.admintable-".($this->table['postfix'])."-control-".$name."').prop('checked', \$('#".$name.'-'.($this->table['postfix'])."-bulkcheckbox').prop('checked')?true:false);$('.admintable-".($this->table['postfix'])."-control-".$name."').trigger('change');".
 								'" />';
 							return $this;
 						}
@@ -662,6 +689,7 @@
 															$this->SetControlAttr($name, 'value', $this->table['rows'][$this->rownumber][$name]['data']);
 															$this->AppendControlAttr($name, 'class', 'admintable-control-'.$this->GetControlAttr($name, 'type'));
 															$this->AppendControlAttr($name, 'class', 'admintable-'.$this->table['postfix'].'-control-'.$this->GetControlAttr($name, 'type'));
+															$this->AppendControlAttr($name, 'class', 'admintable-'.$this->table['postfix'].'-control-'.$name);
 														}
 													$this->SetControlAttr($name, 'name', $this->table['rows'][$this->rownumber][$name]['varname']);
 													$this->SetControlAttr($name, 'id', $this->GetControlDOMID($name, $this->rownumber));
