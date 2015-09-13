@@ -55,6 +55,38 @@
 					$ui->style('.demo-red{background:#ffcccc;}');
 					$ui->Output(true);
 				}
+			if (sm_action('forms'))
+				{
+					sm_title('UI HTML-shortcuts');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					$values=Array(
+						'text'=>'Text',
+						'select'=>2, 
+						'checkbox1'=>1,
+						'checkbox3'=>'+'
+					);
+					$ui = new TInterface();
+					$f=new TForm('index.php?m=demo&d=forms');
+					$f->AddText('text', 'Text field')->SetFocus();
+					$f->AddSelectVL('select', 'Select field', Array(1, 2, 3), Array('Label 1', 'Label 2', 'Label 3'));
+					$f->AddTextarea('textarea', 'Textarea field');
+					$f->Separator('Checkboxes');
+					$f->AddCheckbox('checkbox1', 'Checkbox 1');
+					$f->AddCheckbox('checkbox2', 'Checkbox 2 (label after control)');
+					$f->LabelAfterControl();
+					$f->AddCheckbox('checkbox3', 'Checkbox 3 (custom value)', '+');
+					$f->Separator('Separator');
+					$f->AddEditor('editor', 'Editor');
+					$f->SaveButton('Custom Submit Button Title');
+					$f->LoadValuesArray($values);
+					$f->SetValue('textarea', 'Custom value');
+					$ui->Add($f);
+					$ui->Output(true);
+				}
 			if (sm_action('ajaxresponder'))
 				{
 					out(strftime($lang['datetimemask'], time()).'<br />');
@@ -65,7 +97,7 @@
 				}
 			if (sm_action('grid'))
 				{
-					sm_title('Grid / Table');
+					sm_title('UI TGrid - Table');
 					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
@@ -206,9 +238,10 @@
 					sm_use('ui.navigation');
 					$ui = new TInterface();
 					$nav=new TNavigation();
-					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
 					$nav->AddItem('Smarty Template', 'index.php?m=demo&d=regular');
-					$nav->AddItem('Grid / Table', 'index.php?m=demo&d=grid');
+					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
+					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
+					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
