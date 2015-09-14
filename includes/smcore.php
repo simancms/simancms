@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-06-23
+	//#revision 2015-09-14
 	//==============================================================================
 
 
@@ -1197,6 +1197,17 @@
 		{
 			global $sm;
 			$sm['s']['body_class'].=(empty($sm['s']['body_class'])?'':' ').$add_classname;
+		}
+	
+	function sm_delayed_action($module, $action, $params=Array(), $bid=0, $panel='center', $no_borders=0)
+		{
+			global $sm;
+			$sm['delayed_actions'][0]['module']=$module;
+			$sm['delayed_actions'][0]['no_borders']=$no_borders;
+			$sm['delayed_actions'][0]['bid']=$bid;
+			$sm['delayed_actions'][0]['action']=$action;
+			$sm['delayed_actions'][0]['panel']=$panel;
+			$sm['delayed_actions'][0]['params']=$params;
 		}
 
 ?>

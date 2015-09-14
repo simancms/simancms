@@ -6,8 +6,25 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-07-15
+	//#revision 2015-09-14
 	//==============================================================================
+
+	for ($tmpdelayedactionindex = 0; $tmpdelayedactionindex<count($sm['delayed_actions']); $tmpdelayedactionindex++)
+		{
+			$modules_index++;
+			$modules[$modules_index]['current_module'] = $sm['delayed_actions'][$tmpdelayedactionindex]['module'];
+			$modules[$modules_index]['borders_off'] = $sm['delayed_actions'][$tmpdelayedactionindex]['no_borders'];
+			$modules[$modules_index]['bid'] = $sm['delayed_actions'][$tmpdelayedactionindex]['bid'];
+			$modules[$modules_index]['mode'] = $sm['delayed_actions'][$tmpdelayedactionindex]['action'];
+			$modules[$modules_index]['params'] = $sm['delayed_actions'][$tmpdelayedactionindex]['params'];
+			if (is_numeric($sm['delayed_actions'][$tmpdelayedactionindex]['panel']))
+				$modules[$modules_index]['panel'] = $sm['delayed_actions'][$tmpdelayedactionindex]['panel'];
+			else
+				$modules[$modules_index]['panel'] = 'center';
+			$m =& $modules[$modules_index];
+			$sm['m'] =& $modules[$modules_index];
+			include('modules/'.$sm['delayed_actions'][$tmpdelayedactionindex]['module'].'.php');
+		}
 	
 	//Static blocks out
 	$sql = "SELECT * FROM ".$tableprefix."blocks ORDER BY position_block ASC";
