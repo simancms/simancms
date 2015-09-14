@@ -57,7 +57,7 @@
 				}
 			if (sm_action('forms'))
 				{
-					sm_title('UI HTML-shortcuts');
+					sm_title('UI TForm - From');
 					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
@@ -256,12 +256,6 @@
 							$ui = new TInterface();
 							$ui->a('index.php?m=demo', 'View Demos');
 							$ui->Output(true);
-
-						}
-					if (sm_action('install'))
-						{
-							sm_register_module('demo', $lang['module_demo']['module_demo']);
-							sm_redirect('index.php?m=admin&d=modules');
 						}
 					if (sm_action('uninstall'))
 						{
