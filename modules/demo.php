@@ -22,13 +22,16 @@
 			define("demo_FUNCTIONS_DEFINED", 1);
 		}
 
-	if (sm_is_installed(sm_current_module()) && $userinfo['level'] > 0)
-		{                 
+	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
+		{
 			sm_default_action('demos');
 			if (sm_action('htmlshortcuts'))
 				{
 					sm_title('UI HTML-shortcuts');
-					add_path_home();
+					if ($userinfo['level'] == 3)
+						add_path_modules();
+					else
+						add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
@@ -58,19 +61,22 @@
 			if (sm_action('forms'))
 				{
 					sm_title('UI TForm - From');
-					add_path_home();
+					if ($userinfo['level'] == 3)
+						add_path_modules();
+					else
+						add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.form');
-					$values=Array(
-						'text'=>'Text',
-						'select'=>2, 
-						'checkbox1'=>1,
-						'checkbox3'=>'+'
+					$values = Array(
+						'text' => 'Text',
+						'select' => 2,
+						'checkbox1' => 1,
+						'checkbox3' => '+'
 					);
 					$ui = new TInterface();
-					$f=new TForm('index.php?m=demo&d=forms');
+					$f = new TForm('index.php?m=demo&d=forms');
 					$f->AddText('text', 'Text field')->SetFocus();
 					$f->AddSelectVL('select', 'Select field', Array(1, 2, 3), Array('Label 1', 'Label 2', 'Label 3'));
 					$f->AddTextarea('textarea', 'Textarea field');
@@ -90,7 +96,7 @@
 			if (sm_action('ajaxresponder'))
 				{
 					out(strftime($lang['datetimemask'], time()).'<br />');
-					for ($i = 0; $i < 5+rand(1, 10); $i++)
+					for ($i = 0; $i < 5 + rand(1, 10); $i++)
 						{
 							out('Line '.$i.'<br />');
 						}
@@ -98,27 +104,30 @@
 			if (sm_action('grid'))
 				{
 					sm_title('UI TGrid - Table');
-					add_path_home();
+					if ($userinfo['level'] == 3)
+						add_path_modules();
+					else
+						add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.grid');
-					$src=Array(
+					$src = Array(
 						Array(
-							'text'=>'Sample text 0',
-							'url'=>''
+							'text' => 'Sample text 0',
+							'url' => ''
 						)
 					);
 					for ($i = 1; $i < 21; $i++)
 						{
-							$src[]=Array(
-								'text'=>'Sample text '.$i,
-								'url'=>'index.php?m=demo&d=grid&testid='.$i,
-								'expand'=>'Expander for row #'.$i
+							$src[] = Array(
+								'text' => 'Sample text '.$i,
+								'url' => 'index.php?m=demo&d=grid&testid='.$i,
+								'expand' => 'Expander for row #'.$i
 							);
 						}
 					$ui = new TInterface();
-					$t=new TGrid();
+					$t = new TGrid();
 					$t->AddCol('n', '#', '5%');
 					$t->AddCol('text', 'Text', '55%');
 					$t->ColumnAddClass('text', 'at-align-center');
@@ -133,57 +142,57 @@
 					$t->HeaderAutoColspanFor('view');
 					for ($i = 0; $i < count($src); $i++)
 						{
-							if ($i==1)
+							if ($i == 1)
 								{
 									$t->RowHighlightError();
 									$t->Label('note', 'Error for row');
 									$t->CellAlignCenter('note');
 								}
-							if ($i==2)
+							if ($i == 2)
 								{
 									$t->RowHighlightInfo();
 									$t->Label('note', 'Info for row');
 									$t->CellAlignCenter('note');
 								}
-							if ($i==3)
+							if ($i == 3)
 								{
 									$t->RowHighlightSuccess();
 									$t->Label('note', 'Success for row');
 									$t->CellAlignCenter('note');
 								}
-							if ($i==4)
+							if ($i == 4)
 								{
 									$t->RowHighlightWarning();
 									$t->Label('note', 'Warning for row');
 									$t->CellAlignCenter('note');
 								}
-							if ($i==5)
+							if ($i == 5)
 								{
 									$t->RowHighlightAttention();
 									$t->Label('note', 'Attention for row');
 									$t->CellAlignCenter('note');
 								}
-							if ($i==10)
+							if ($i == 10)
 								{
 									$t->CellHighlightError('text');
 									$t->Label('note', '&lt;- Error for cell');
 								}
-							if ($i==11)
+							if ($i == 11)
 								{
 									$t->CellHighlightInfo('text');
 									$t->Label('note', '&lt;- Info for cell');
 								}
-							if ($i==12)
+							if ($i == 12)
 								{
 									$t->CellHighlightSuccess('text');
 									$t->Label('note', '&lt;- Success for cell');
 								}
-							if ($i==13)
+							if ($i == 13)
 								{
 									$t->CellHighlightWarning('text');
 									$t->Label('note', '&lt;- Warning for cell');
 								}
-							if ($i==14)
+							if ($i == 14)
 								{
 									$t->CellHighlightAttention('text');
 									$t->Label('note', '&lt;- Attention for cell');
@@ -192,7 +201,7 @@
 							$t->Label('text', $src[$i]['text']);
 							$t->URL('text', $src[$i]['url']);
 							$t->Image('view', 'info');
-							if ($i==0)
+							if ($i == 0)
 								{
 									$t->ExpandAJAX('view', 'index.php?m=demo&d=ajaxresponder&ajax=1');
 									$t->Label('note', 'With AJAX expander -&gt;');
@@ -204,13 +213,13 @@
 									$t->ExpanderHTML($src[$i]['expand']);
 									$t->Expand('view');
 								}
-							if ($i==17)
+							if ($i == 17)
 								{
 									$t->Label('note', 'Drop down menu');
 									$t->DropDownItem('note', 'Item 1', 'index.php?m=demo&d=htmlshortcuts');
 									$t->DropDownItem('note', 'Item 1 (confirm)', 'index.php?m=demo&d=htmlshortcuts', 'Are you sure?');
 								}
-							$t->Checkbox('chk1', 'chk1[]', $i, (intval($sm['g']['testid'])==$i));
+							$t->Checkbox('chk1', 'chk1[]', $i, (intval($sm['g']['testid']) == $i));
 							$t->Checkbox('chk2', 'chk2[]', $i);
 							$t->URL('edit', 'index.php?m=demo&d=forms');
 							$t->URL('delete', 'index.php?m=demo&d=grid');
@@ -224,20 +233,26 @@
 			if (sm_action('regular'))
 				{
 					sm_title('Smarty Template');
-					add_path_home();
+					if ($userinfo['level'] == 3)
+						add_path_modules();
+					else
+						add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
-					$m['module']='demo';
+					$m['module'] = 'demo';
 				}
 			if (sm_action('demos'))
 				{
 					sm_title('Available Demos');
-					add_path_home();
+					if ($userinfo['level'] == 3)
+						add_path_modules();
+					else
+						add_path_home();
 					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.navigation');
 					$ui = new TInterface();
-					$nav=new TNavigation();
+					$nav = new TNavigation();
 					$nav->AddItem('Smarty Template', 'index.php?m=demo&d=regular');
 					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
@@ -247,19 +262,32 @@
 				}
 			if ($userinfo['level'] == 3)
 				{
+					if (sm_action('updatesettings'))
+						{
+							sm_update_settings('demo_public', intval($sm['g']['public']));
+							sm_redirect($sm['g']['returnto']);
+						}
 					if (sm_action('admin'))
 						{
 							add_path_modules();
 							add_path('Demo', 'index.php?m=demo&d=admin');
 							sm_use('ui.interface');
+							sm_use('ui.buttons');
 							sm_title('Demo');
 							$ui = new TInterface();
-							$ui->a('index.php?m=demo', 'View Demos');
+							$b = new TButtons();
+							$b->Button('View Demos', 'index.php?m=demo');
+							if (intval(sm_settings('demo_public')) > 0)
+								$b->Button('Set Public Access OFF', 'index.php?m='.sm_current_module().'&d=updatesettings&public=0&returnto='.urlencode(sm_this_url()));
+							else
+								$b->Button('Set Public Access ON', 'index.php?m='.sm_current_module().'&d=updatesettings&public=1&returnto='.urlencode(sm_this_url()));
+							$ui->Add($b);
 							$ui->Output(true);
 						}
 					if (sm_action('uninstall'))
 						{
 							sm_unregister_module('demo');
+							sm_delete_settings('demo_public');
 							sm_redirect('index.php?m=admin&d=modules');
 						}
 				}
@@ -269,6 +297,7 @@
 			if (sm_action('install'))
 				{
 					sm_register_module('demo', 'Demo');
+					sm_add_settings('demo_public', 0);
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}
