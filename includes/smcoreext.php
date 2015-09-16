@@ -494,7 +494,7 @@
 			$q->Select();
 			for ($i = 0; $i < $q->Count(); $i++)
 				{
-					$q->items[$i]['ip']=inet_ntop($q->items[$i]['ip']);
+					$q->items[$i]['ip']=@inet_ntop($q->items[$i]['ip']);
 				}
 			return $q->items;
 		}

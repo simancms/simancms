@@ -1173,7 +1173,7 @@
 			$q->Add('object_name', dbescape($object_name));
 			$q->Add('object_id', dbescape($object_id));
 			$q->Add('description', dbescape($description));
-			$q->Add('ip', dbescape(inet_pton($sm['server']['REMOTE_ADDR'])));
+			$q->Add('ip', dbescape(@inet_pton($sm['server']['REMOTE_ADDR'])));
 			$q->Add('time', time());
 			$q->Add('user', $sm['u']['login']);
 			$q->Insert();
