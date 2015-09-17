@@ -170,8 +170,10 @@
 			if (!empty($_postvars["login_d"]))
 				{
 					sm_extcore();
+					sm_event('beforelogincheck');
 					if ($uid=sm_check_user($_postvars["login_d"], $_postvars["passwd_d"]))
 						{
+							sm_event('beforelogin');
 							sm_process_login($uid);
 							sm_notify($lang['message_success_login']);
 							//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
