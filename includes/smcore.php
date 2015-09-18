@@ -578,7 +578,17 @@
 				}
 			$modules[$modules_index]['message'] = $message;
 			$sm['s']['dontsendredirectheaders'] = $dontsendredirectheaders;
-			$refresh_url = $url;
+			if (is_array($url))
+				{
+					for ($i = 0; $i<count($url); $i++)
+						if (!empty($url[$i]))
+							{
+								$refresh_url = $url[$i];
+								break;
+							}
+				}
+			else
+				$refresh_url = $url;
 			for ($i = 0; $i < count($sm['session']['notifications']); $i++)
 				if (!empty($sm['session']['notifications'][$i]['frompage']) && strcmp(sm_relative_url($sm['session']['notifications'][$i]['frompage']), sm_relative_url(sm_this_url()))==0 && empty($sm['session']['notifications'][$i]['onpage']))
 					$sm['session']['notifications'][$i]['onpage']=sm_relative_url($refresh_url);
@@ -592,7 +602,17 @@
 					if (intval($header_http_code)==301)
 						$header_http_code='301 Moved Permanently';
 				}
-			@header('Location: '.$url);
+			if (is_array($url))
+				{
+					for ($i = 0; $i<count($url); $i++)
+						if (!empty($url[$i]))
+							{
+								@header('Location: '.$url[$i]);
+								break;
+							}
+				}
+			else
+				@header('Location: '.$url);
 			if (!empty($header_http_code))
 				@header($sm['server']['SERVER_PROTOCOL']." ".$header_http_code);
 			exit;
