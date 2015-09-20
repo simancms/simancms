@@ -5,7 +5,7 @@
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
 	Version: 1.6.9
-	Revision: 2015-05-27
+	Revision: 2015-09-20
 	Author URI: http://simancms.org/
 	*/
 
@@ -164,7 +164,7 @@
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					sm_use('ui.grid');
-					include_once('includes/adminbuttons.php');
+					sm_use('ui.buttons');
 					add_path_modules();
 					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
 					sm_title('".$moduletitle."');
