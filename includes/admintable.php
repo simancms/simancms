@@ -234,6 +234,8 @@
 													$this->Hide($key);
 													$colspan++;
 												}
+											else
+												break;
 										}
 									if ($colspan>1)
 										$this->Colspan($fieldname, $colspan);
@@ -261,6 +263,8 @@
 													$this->HeaderHideCol($key);
 													$colspan++;
 												}
+											else
+												break;
 										}
 									if ($colspan>1)
 										$this->HeaderColspan($fieldname, $colspan);
