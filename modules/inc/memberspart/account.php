@@ -140,7 +140,7 @@
 			if (!empty($_settings['redirect_after_logout']))
 				sm_redirect($_settings['redirect_after_logout']);
 			else
-				sm_redirect('http://'.$_settings['resource_url']);
+				sm_redirect(sm_homepage());
 		}
 	if (sm_action('cabinet') && !empty($userinfo['id']))
 		{

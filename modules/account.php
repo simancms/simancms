@@ -244,6 +244,11 @@
 		include('modules/inc/memberspart/account.php');
 	else
 		if (sm_action('logout'))
-			sm_redirect('index.php?m=account');
+			{
+				if (!empty($_settings['redirect_after_logout']))
+					sm_redirect($_settings['redirect_after_logout']);
+				else
+					sm_redirect(sm_homepage());
+			}
 
 ?>
