@@ -1,4 +1,4 @@
-<ul class="anav-container{if $data.class neq ""} {$data.class}{/if}">
+{strip}<ul class="anav-container{if $data.class neq ""} {$data.class}{/if}">
 {foreach name=admindash_index from=$data.items item=item key=item_index}
 	<li class="anav-item{if $item.active} active{/if}">
 		{$item.htmlstart}<a {foreach name=admindashitemattrs_index from=$item.attrs item=attr key=attr_name}{if $attr neq ""} {$attr_name}="{$attr}"{/if}{/foreach}>
@@ -7,4 +7,4 @@
 		</a>
 	</li>{$item.htmlend}
 {/foreach}
-</ul>
+</ul>{/strip}

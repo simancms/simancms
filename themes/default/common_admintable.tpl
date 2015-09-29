@@ -1,4 +1,4 @@
-{if $postfix eq ""}
+{strip}{if $postfix eq ""}
 	{assign var=postfix value=$table.postfix}
 {/if}
 <script type="text/javascript">
@@ -189,4 +189,4 @@ function atdropdowncancelclosetime{$postfix}()
 	</tr>
 	{/section}
 </table>
-
+{/strip}

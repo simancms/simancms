@@ -1,4 +1,4 @@
-{if $postfix eq ""}
+{strip}{if $postfix eq ""}
 	{assign var=postfix value=$board.postfix}
 {/if}
 
@@ -107,3 +107,4 @@ function  set_boardmessages_style{$postfix}()
 <script type="text/javascript">
 set_boardmessages_style{$postfix}();
 </script>
+{/strip}

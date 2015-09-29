@@ -1,4 +1,4 @@
-<div class="adash-main{if $data.class neq ""} {$data.class}{/if}">
+{strip}<div class="adash-main{if $data.class neq ""} {$data.class}{/if}">
 {foreach name=admindash_index from=$data.items item=item key=item_name}
 	<div class="adash-element{if $item.class neq ""} {$bar.class}{/if}"{foreach name=admindashitemattrs_index from=$item.attrs item=attr key=attr_name}{if $attr neq ""} {$attr_name}="{$attr}"{/if}{/foreach}>
 		{$item.htmltop}
@@ -8,4 +8,4 @@
 	</div>
 {/foreach}
 <div style="clear:both;"></div>
-</div>
+</div>{/strip}

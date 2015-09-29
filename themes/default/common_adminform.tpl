@@ -1,4 +1,4 @@
-{if $postfix eq ""}
+{strip}{if $postfix eq ""}
 	{assign var=postfix value=$form.postfix}
 {/if}
 {$form.html_begin}
@@ -113,4 +113,4 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 	show_admintable_tab{$postfix}(1);
 {/if}
 </script>
-{$form.html_end}
+{$form.html_end}{/strip}
