@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-09-16
+	//#ver 1.6.9
+	//#revision 2015-09-29
 	//==============================================================================
 
 	function is_email($string)
@@ -112,34 +112,42 @@
 
 	function register_filesystem($url, $filename, $comment)
 		{
-			global $tableprefix;
-			return insertsql("INSERT INTO ".$tableprefix."filesystem (`filename_fs`, `url_fs`, `comment_fs`) VALUES ('".dbescape($filename)."', '".dbescape($url)."', '".dbescape($comment)."')");
+			global $sm;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('filename_fs', dbescape($filename));
+			$q->Add('url_fs', dbescape($url));
+			$q->Add('comment_fs', dbescape($comment));
+			$q->Insert();
 		}
 
 	function update_filesystem($id, $url, $filename, $comment)
 		{
-			global $tableprefix;
-			execsql("UPDATE ".$tableprefix."filesystem SET filename_fs='".dbescape($filename)."', url_fs='".dbescape($url)."', comment_fs='".dbescape($comment)."' WHERE id_fs=".intval($id)." ");
+			global $sm;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->Add('filename_fs', dbescape($filename));
+			$q->Add('url_fs', dbescape($url));
+			$q->Add('comment_fs', dbescape($comment));
+			$q->Update('id_fs', intval($id));
 		}
 
 	function delete_filesystem($id)
 		{
-			global $tableprefix;
-			execsql("DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id));
+			global $sm;
+			$q=new TQuery($sm['t'].'filesystem');
+			$q->AddWhere('id_fs', intval($id));
+			$q->Remove();
 		}
 
 	function get_filesystem($id)
 		{
-			global $tableprefix;
-			$result = execsql("SELECT * FROM ".$tableprefix."filesystem WHERE id_fs=".intval($id));
-			while ($row = database_fetch_object($result))
-				{
-					$res['id'] = $row->id_fs;
-					$res['url'] = $row->url_fs;
-					$res['filename'] = $row->filename_fs;
-					$res['comment'] = $row->comment_fs;
-				}
-			return $res;
+			global $sm;
+			$info=TQuery::ForTable($sm['t'].'filesystem')->AddWhere('id_fs', intval($id))->Get();
+			return Array(
+					'id' => $info['id_fs'],
+					'url' => $info['url_fs'],
+					'filename' => $info['filename_fs'],
+					'comment' => $info['comment_fs']
+				);
 		}
 
 	function get_filename($id)
