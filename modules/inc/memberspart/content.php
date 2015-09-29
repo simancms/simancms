@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-10-14
+	//#ver 1.6.9
+	//#revision 2015-09-29
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -77,6 +77,7 @@
 							sm_set_metadata('content', $cid, 'author_id', $sm['u']['id']);
 							sm_set_metadata('content', $cid, 'main_template', $_postvars['tplmain']);
 							sm_set_metadata('content', $cid, 'content_template', $_postvars['tplcontent']);
+							sm_set_metadata('content', $cid, 'seo_title', $_postvars['seo_title']);
 							if (!empty($filename))
 								{
 									$urlid = register_filesystem('index.php?m=content&d=view&cid='.$cid, $filename, $title_content);
@@ -211,6 +212,7 @@
 							$result = execsql($sql);
 							sm_set_metadata('content', intval($_getvars["cid"]), 'main_template', $_postvars['tplmain']);
 							sm_set_metadata('content', intval($_getvars["cid"]), 'content_template', $_postvars['tplcontent']);
+							sm_set_metadata('content', intval($_getvars["cid"]), 'seo_title', $_postvars['seo_title']);
 							for ($i = 0; $i < $_settings['content_attachments_count']; $i++)
 								{
 									sm_upload_attachment('content', intval($_getvars["cid"]), $_uplfilevars['attachment'.$i]);
@@ -250,6 +252,7 @@
 										$special['ext_editor_on'] = 0;
 									$m["title_content"] = htmlescape($row->title_content);
 									$m["keywords_content"] = htmlescape($row->keywords_content);
+									$m["seo_title"] = sm_metadata('content', intval($_getvars["cid"]), 'seo_title');
 									$m["description_content"] = htmlescape($row->description_content);
 									$m["ctgidselected"] = $row->id_category_c;
 									if ($special['ext_editor_on'] != 1)

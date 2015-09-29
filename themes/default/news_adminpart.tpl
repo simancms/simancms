@@ -41,7 +41,7 @@
 					<option value="12"{if $modules[$index].date.mon eq "12"} SELECTED{/if}>{$lang.month_12}</option>
 				</select>
 				<select name="p_date_year" size="1" class="admindate">
-					{section name=i start=2006 loop=2016 step=1}
+					{section name=i start=2006 loop=2026 step=1}
 					<option value="{$smarty.section.i.index}"{if $smarty.section.i.index eq $modules[$index].date.year} SELECTED{/if}>{$smarty.section.i.index}</option>
 					{/section}
 				</select>
@@ -119,6 +119,15 @@
 		</td>
 		<td>
 			<input type="text" name="p_filename" value="{$modules[$index].filename_news}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=news_add_edit_url&lang={$_settings.default_language}" target="_blank">[?]</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{$lang.common.seo_title}:
+			<br /><span style="font-size:smaller;">{$lang.common.leave_empty_for_default}</span>
+		</td>
+		<td>
+			<input type="text" name="seo_title" value="{$modules[$index].seo_title}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=seo_title&lang={$_settings.default_language}" target="_blank">[?]</a>
 		</td>
 	</tr>
 	<tr>

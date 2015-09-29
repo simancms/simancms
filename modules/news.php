@@ -9,8 +9,8 @@
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.7
-	Revision: 2014-09-16
+	Version: 1.6.9
+	Revision: 2015-09-29
 	Author URI: http://simancms.org/
 	*/
 
@@ -277,6 +277,8 @@
 									$m['row'] = $row;
 									$m['id'] = $row['id_news'];
 									$tmp=sm_load_metadata('news', $row['id_news']);
+									if (!empty($tmp['seo_title']) && $modules_index==0)
+										sm_meta_title($tmp['seo_title']);
 									if (!empty($tmp['news_template']))
 										$m['module']=$tmp['news_template'];
 									if ($_settings['news_use_title'])

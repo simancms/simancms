@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#revision 2015-09-29
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -73,6 +73,7 @@
 							$id_news = insertsql($sql);
 							sm_set_metadata('news', $id_news, 'author_id', $sm['u']['id']);
 							sm_set_metadata('news', $id_news, 'news_template', $_postvars['tplnews']);
+							sm_set_metadata('news', $id_news, 'seo_title', $_postvars['seo_title']);
 							if ($_settings['news_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -290,6 +291,7 @@
 							$m['filename_news'] = $_postvars['p_filename'];
 							$m['keywords_news'] = $_postvars['keywords_news'];
 							$m['description_news'] = $_postvars['description_news'];
+							$m['seo_title'] = $_postvars['seo_title'];
 						}
 					else
 						{
@@ -314,6 +316,7 @@
 							$description_news = dbescape($_postvars["description_news"]);
 							$sql = "UPDATE ".$tableprefix."news SET id_category_n='$id_category_n', title_news='$title_news', preview_news='$preview_news', text_news='$text_news', type_news='$type_news', date_news='$date_news', keywords_news='$keywords_news', description_news='$description_news' WHERE id_news='".$id_news."'";
 							$result = execsql($sql);
+							sm_set_metadata('news', $id_news, 'seo_title', $_postvars['seo_title']);
 							if ($_settings['news_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
@@ -433,6 +436,7 @@
 							$m["preview_news"] = $row['preview_news'];
 							$m["text_news"] = $row['text_news'];
 							$m["filename_news"] = get_filename($row['filename_news']);
+							$m["seo_title"] = sm_metadata('news', intval($_getvars["nid"]), 'seo_title');
 							$m["keywords_news"] = $row['keywords_news'];
 							$m["description_news"] = $row['description_news'];
 							if ($special['ext_editor_on'] == 1)

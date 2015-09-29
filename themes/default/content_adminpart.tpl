@@ -72,6 +72,15 @@
 	</tr>
 	<tr>
 		<td>
+			{$lang.common.seo_title}:
+			<br /><span style="font-size:smaller;">{$lang.common.leave_empty_for_default}</span>
+		</td>
+		<td>
+			<input type="text" name="seo_title" value="{$modules[$index].seo_title}" size="50" maxlength="255"> <a href="http://{$_settings.help_resource}/index.php?m=help&q=seo_title&lang={$_settings.default_language}" target="_blank">[?]</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			{$lang.module_content.keywords_this_text}:
 		</td>
 		<td>

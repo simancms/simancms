@@ -130,6 +130,7 @@
 	$lang['common']['identifier']='Ідентифікатор';
 	$lang['common']['seo_keywords']='Ключові слова (META keywords)';
 	$lang['common']['seo_description']='Опис (META description)';
+	$lang['common']['seo_title']='Значення тегу title';
 	$lang['common']['auto_login']='Автоматичний вхід';
 	$lang['common']['loading']='Завантаження';
 	$lang['common']['copyright']='Копірайт';
@@ -157,6 +158,7 @@
 	$lang['common']['site']='Сайт';
 	$lang['common']['page']='Сторінка';
 	$lang['common']['open']='Відкрити';
+	$lang['common']['leave_empty_for_default']='Залиште порожнім для значення по замовчуванню';
 
 	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
