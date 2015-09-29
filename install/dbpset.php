@@ -63,7 +63,7 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('met
 ";
 execsql($sql);
 $sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('meta_keywords','siman, apserver, CMS');
+INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('meta_keywords','siman, CMS');
 ";
 execsql($sql);
 $sql="
