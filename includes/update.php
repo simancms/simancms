@@ -90,5 +90,9 @@
 		{
 			sm_update_settings('database_date', '20150422');
 		}
+	if (intval(sm_settings('database_date'))<20150930)//1.6.9
+		{
+			sm_update_settings('database_date', '20150930');
+		}
 
 ?>
