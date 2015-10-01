@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.5
-	//#revision 2013-10-07
+	//#ver 1.6.10
+	//#revision 2015-10-01
 	//==============================================================================
 
 	function database_get_fn_name($fn)
@@ -34,16 +34,21 @@
 			return database_db_query('', $sql, $lnkDB);
 		}
 
-	function database_db_query($nameDB /*DEPRECATED*/, $sql, $lnkDB)
+	function database_db_query($nameDB /*UNUSED*/, $sql, $lnkDB)
 		{
 			global $special, $_settings;
 			if ($_settings['show_script_info'] == 'on')
 				{
+					$timestart=microtime(true);
 					$special['sql']['count']++;
 					$special['sql']['last_query']=$sql;
 					$special['sql']['queries'][count($special['sql']['queries'])]=$sql;
 				}
 			$r = mysql_query($sql);
+			if ($_settings['show_script_info'] == 'on')
+				{
+					$special['sql']['time'][count($special['sql']['time'])]=microtime(true)-$timestart;
+				}
 			if (!$r)
 				{
 					if ($_settings['show_script_info'] == 'on')
