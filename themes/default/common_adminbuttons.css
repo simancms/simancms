@@ -3,3 +3,9 @@
 	padding-top:10px;
 	padding-bottom:10px;
 }
+
+.adminbuttons button
+{
+	margin-left:2px;
+	margin-right:2px;
+}
