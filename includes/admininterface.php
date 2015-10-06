@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-06-15
+	//#revision 2015-10-06
 	//==============================================================================
 
 	if (!defined("admininterface_DEFINED"))
@@ -58,6 +58,8 @@
 
 					function Add($object)
 						{
+							if (!is_object($object))
+								return;
 							if (get_class($object) == 'TGrid')
 								$this->AddOutputObject('table', $object);
 							elseif (get_class($object) == 'TForm')
