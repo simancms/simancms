@@ -14,6 +14,14 @@
 							$this->TInterface('', 0);
 							$this->activeindex = $activeindex;
 						}
+					
+					function Tab($title, $tab_url='')
+						{
+							$this->AddBlock($title);
+							if (!empty($tab_url))
+								$this->blocks[$this->currentblock]['taburl'] = $tab_url;
+							return $this;
+						}
 
 					function SetActiveIndex($activeindex)
 						{

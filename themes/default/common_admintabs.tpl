@@ -6,7 +6,7 @@
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs" role="tablist">
 	{section name=admintabsblockindex loop=$data}
-		<li role="presentation"{if $data[admintabsblockindex].active} class="active"{/if}><a href="#tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" aria-controls="tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" role="tab" data-toggle="tab">{$data[admintabsblockindex].title}</a></li>
+		<li role="presentation"{if $data[admintabsblockindex].active} class="active"{/if}><a {if $data[admintabsblockindex].taburl neq ""}href="{$data[admintabsblockindex].taburl}"{else}href="#tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" aria-controls="tab-{$tabspostfix}-{$smarty.section.admintabsblockindex.index}" role="tab" data-toggle="tab"{/if}>{$data[admintabsblockindex].title}</a></li>
 	{/section}
 	</ul>
 	<!-- Tab panes -->
