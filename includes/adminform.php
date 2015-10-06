@@ -417,6 +417,20 @@
 							return $this;
 						}
 
+					function ValueToggleFor($element_name_or_array, $value_on, $name = NULL)
+						{
+							if ($name === NULL)
+								$name = $this->currentname;
+							if (is_array($element_name_or_array))
+								{
+									foreach ($element_name_or_array as $key=>$val)
+										$this->ValueToggleFor($val, $value_on, $name);
+								}
+							else
+								$this->form['fields'][$name]['value_toggle'][] = Array('id'=>$element_name_or_array, 'val'=>$value_on);
+							return $this;
+						}
+
 					function Output()
 						{
 							$this->form['tabscount'] = count($this->form['tabs']);
@@ -449,6 +463,23 @@
 										for ($i = 0; $i<count($this->form['fields'][$name]['checkbox_toggle']); $i++)
 											{
 												$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($("#'.$this->GetFieldId($name).'").prop("checked"))$("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
+											}
+									if (is_array($this->form['fields'][$name]['value_toggle']))
+										for ($i = 0; $i<count($this->form['fields'][$name]['value_toggle']); $i++)
+											{
+												if (!is_array($this->form['fields'][$name]['value_toggle'][$i]['val']))
+													$tmp='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val']).'"';
+												else
+													{
+														$tmp='';
+														for ($j = 0; $j<count($this->form['fields'][$name]['value_toggle'][$i]['val']); $j++)
+															{
+																if (!empty($tmp))
+																	$tmp.=',';
+																$tmp.='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val'][$j]).'"';
+															}
+													}
+												$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($.inArray($("#'.$this->GetFieldId($name).'").val(), ['.$tmp.'])!=-1)$("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
 											}
 								}
 							if ($this->form['no_highlight'] != 1)
