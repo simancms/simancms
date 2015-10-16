@@ -13,17 +13,111 @@
 	if (!defined("SIMAN_DEFINED"))
 		exit('Hacking attempt!');
 
-	if ($userinfo['level'] > 0)
+	if ($sm['u']['level'] > 0)
 		{
-
-			if (sm_action('add') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (!defined("CONTENT_FUNCTIONS_DEFINED"))
 				{
-					if ($userinfo['level'] < intval(sm_settings('content_editor_level')))
-						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
+					function siman_is_allowed_to_add_content()
+						{
+							global $sm;
+							if ($sm['u']['level']>=intval(sm_settings('content_editor_level')))
+								return true;
+							elseif (!empty($sm['u']['groups']))
+								{
+									$categories = siman_load_ctgs_content(
+										-1,
+										convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
+									);
+									if (count($categories)>0)
+										return true;
+								}
+							return false;
+						}
+					function siman_is_allowed_to_edit_content($id)
+						{
+							global $sm;
+							if ($sm['u']['level']>=intval(sm_settings('content_editor_level')))
+								return true;
+							elseif (!empty($sm['u']['groups']))
+								{
+									$categories = siman_load_ctgs_content(
+										-1,
+										convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
+									);
+									if (count($categories)>0)
+										{
+											$content=TQuery::ForTable($sm['t']['content'].'content')
+												->AddWhere('id_content', intval($id))
+												->Get();
+											if (empty($content['id_content']))
+												return false;
+											for ($i = 0; $i < count($categories); $i++)
+												{
+													if (intval($categories[$i]['id'])==intval($content['id_category_c']))
+														return true;
+												}
+										}
+								}
+							return false;
+						}
+					define("CONTENT_FUNCTIONS_DEFINED", 1);
+				}
+
+
+			if (sm_action('add') && siman_is_allowed_to_add_content() || sm_action('edit') && siman_is_allowed_to_edit_content(intval($_getvars['id'])))
+				{
+					if ($sm['u']['level']>=intval(sm_settings('content_editor_level')))
+						$categories = siman_load_ctgs_content(-1);
+					elseif (!empty($sm['u']['groups']))
+						$categories = siman_load_ctgs_content(
+							-1,
+							convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
+						);
+					sm_title($lang['add_content']);
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					if ($sm['u']['level']==3)
+						{
+							add_path_modules();
+							add_path($lang['module_content_name'], "index.php?m=content&d=admin");
+							add_path($lang['list_content'], "index.php?m=content&d=list");
+						}
+					else
+						add_path_home();
+					$ui = new TInterface();
+					if (sm_action('add'))
+						$f = new TForm('index.php?m='.sm_current_module().'&d=postadd');
+					else
+						{
+							$content=TQuery::ForTable($sm['t']['content'].'content')
+								->AddWhere('id_content', intval($id))
+								->Get();
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content']);
+						}
+					$f->AddText('id_category_c', '');
+					$f->AddText('title_content', '');
+					$f->AddText('preview_content', '');
+					$f->AddText('text_content', '');
+					$f->AddText('type_content', '');
+					$f->AddText('keywords_content', '');
+					$f->AddText('description_content', '');
+					$f->AddText('filename_content', '');
+					$f->AddText('priority_content', '');
+					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show']);
+					if (sm_action('edit'))
+						$f->LoadValuesArray($content);
+					$ui->Add($f);
+					$ui->Output(true);
+
+				}
+			if (sm_action('add') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
+				{
+					if ($sm['u']['level'] < intval(sm_settings('content_editor_level')))
+						$extsql = convert_groups_to_sql($sm['u']['groups'], 'groups_modify');
 					else
 						$extsql = '';
-					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
-					if (count($m['ctgid']) > 0)
+					$categories = siman_load_ctgs_content(-1, $extsql);
+					if (count($categories) > 0)
 						{
 							sm_title($lang['add_content']);
 							$m["module"] = 'content';
@@ -53,10 +147,10 @@
 						}
 				}
 
-			if (sm_action('postadd') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (sm_action('postadd') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
-					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
-						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
+					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
+						$extsql = '('.convert_groups_to_sql($sm['u']['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
 					else
 						$extsql = '';
 					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
@@ -116,7 +210,7 @@
 										}
 								}
 							sm_notify($lang['add_content_successful']);
-							if ($userinfo['level'] < 3)
+							if ($sm['u']['level'] < 3)
 								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$id_category_c);
 							else
 								sm_redirect('index.php?m=content&d=list&ctg='.$id_category_c);
@@ -124,10 +218,10 @@
 						}
 				}
 
-			if (sm_actionpost('postedit') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (sm_actionpost('postedit') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
-					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
-						$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
+					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
+						$extsql = '('.convert_groups_to_sql($sm['u']['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_c"]);
 					else
 						{
 							$extsql = '';
@@ -218,7 +312,7 @@
 									sm_upload_attachment('content', intval($_getvars["cid"]), $_uplfilevars['attachment'.$i]);
 								}
 							sm_notify($lang['edit_content_successful']);
-							if ($userinfo['level'] < 3)
+							if ($sm['u']['level'] < 3)
 								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$id_category_c);
 							else
 								sm_redirect('index.php?m=content&d=list&ctg='.$id_category_c);
@@ -226,10 +320,10 @@
 						}
 				}
 
-			if (sm_action('edit') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (sm_action('edit') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
-					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
-						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
+					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
+						$extsql = convert_groups_to_sql($sm['u']['groups'], 'groups_modify');
 					else
 						$extsql = '';
 					$m['ctgid'] = siman_load_ctgs_content(-1, $extsql);
@@ -311,10 +405,10 @@
 						}
 				}
 
-			if (sm_action('delete') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (sm_action('delete') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
-					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
-						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
+					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
+						$extsql = convert_groups_to_sql($sm['u']['groups'], 'groups_modify');
 					else
 						{
 							$extsql = '';
@@ -338,16 +432,16 @@
 							$_msgbox['title'] = $lang['delete_content'];
 							$_msgbox['msg'] = $lang['module_content']['really_want_delete_text'];
 							$_msgbox['yes'] = 'index.php?m=content&d=postdelete&cid='.$_getvars["cid"].'&ctg='.$_getvars['ctg'];
-							if ($userinfo['level'] < 3)
+							if ($sm['u']['level'] < 3)
 								$_msgbox['no'] = 'index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg'];
 							else
 								$_msgbox['no'] = 'index.php?m=content&d=list&ctg='.$_getvars['ctg'];
 						}
 				}
-			if (sm_action('postdelete') && ($userinfo['level']>=intval(sm_settings('content_editor_level')) || !empty($userinfo['groups'])))
+			if (sm_action('postdelete') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
-					if ($userinfo['level']<intval(sm_settings('content_editor_level')))
-						$extsql = convert_groups_to_sql($userinfo['groups'], 'groups_modify');
+					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
+						$extsql = convert_groups_to_sql($sm['u']['groups'], 'groups_modify');
 					else
 						{
 							$extsql = '';
@@ -391,7 +485,7 @@
 							if (file_exists('files/img/content'.intval($_getvars["cid"]).'.jpg'))
 								unlink('files/img/content'.intval($_getvars["cid"]).'.jpg');
 							sm_notify($lang['delete_content_successful']);
-							if ($userinfo['level'] < 3)
+							if ($sm['u']['level'] < 3)
 								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg']);
 							else
 								sm_redirect('index.php?m=content&d=list&ctg='.$_getvars['ctg']);
@@ -399,7 +493,7 @@
 						}
 				}
 
-			if ($userinfo['level'] > 2)
+			if ($sm['u']['level'] > 2)
 				include('modules/inc/adminpart/content.php');
 		}
 
