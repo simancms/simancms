@@ -130,6 +130,7 @@
 	$lang['common']['seo_keywords']='Ключові слова (META keywords)';
 	$lang['common']['seo_description']='Опис (META description)';
 	$lang['common']['seo_title']='Значення тегу title';
+	$lang['common']['seo']='SEO';
 	$lang['common']['auto_login']='Автоматичний вхід';
 	$lang['common']['loading']='Завантаження';
 	$lang['common']['copyright']='Копірайт';
@@ -158,6 +159,8 @@
 	$lang['common']['page']='Сторінка';
 	$lang['common']['open']='Відкрити';
 	$lang['common']['leave_empty_for_default']='Залиште порожнім для значення по замовчуванню';
+	$lang['common']['additional_options']='Додаткові опції';
+	$lang['common']['text']='Текст';
 
 	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
@@ -247,11 +250,6 @@
 	//Content
 	$lang['module_content_name']='Тексти';
 	$lang["list_content"]='Список текстів';
-	$lang["add_content"]='Додати новий текст';
-	$lang["edit_content"]='Редагувати текст';
-	$lang["delete_content"]='Видалити текст';
-	$lang["caption_content"]='Назва';
-	$lang["text_content"]='Текст';
 	$lang["type_content"]='Тип тексту';
 	$lang["type_content_HTML"]='HTML текст';
 	$lang["type_content_simple_text"]='Звичайний текст';
@@ -264,8 +262,6 @@
 	$lang['list_content_categories']='Список категорій текстів';
 	$lang['really_want_delete_category']='Ви дійсно хочете видалити цю категорію';
 	$lang['set_as_block_random_text']='Встановити статичним блоком випадковий текст';
-	$lang['module_content']['keywords_this_text']='Ключові слова';
-	$lang['module_content']['preview_content']='Анонс';
 	$lang['module_content']['view_full']='Переглянути повністю';
 	$lang['module_content']['main_category']='Є підкатегорією для';
 	$lang['module_content']['root_category']='Головна категорія';

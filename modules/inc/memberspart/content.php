@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-09-29
+	//#ver 1.6.10
+	//#revision 2015-10-20
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -15,8 +15,17 @@
 
 	if ($sm['u']['level'] > 0)
 		{
-			if (!defined("CONTENT_FUNCTIONS_DEFINED"))
+			if (!defined("CONTENT_MEMBERSPART_FUNCTIONS_DEFINED"))
 				{
+					function siman_get_available_categories()
+						{
+							global $sm;
+							$categories = siman_load_ctgs_content(
+								-1,
+								convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
+							);
+							return $categories;
+						}
 					function siman_is_allowed_to_add_content()
 						{
 							global $sm;
@@ -24,10 +33,7 @@
 								return true;
 							elseif (!empty($sm['u']['groups']))
 								{
-									$categories = siman_load_ctgs_content(
-										-1,
-										convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
-									);
+									$categories = siman_get_available_categories();
 									if (count($categories)>0)
 										return true;
 								}
@@ -40,10 +46,7 @@
 								return true;
 							elseif (!empty($sm['u']['groups']))
 								{
-									$categories = siman_load_ctgs_content(
-										-1,
-										convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
-									);
+									$categories = siman_get_available_categories();
 									if (count($categories)>0)
 										{
 											$content=TQuery::ForTable($sm['t']['content'].'content')
@@ -60,7 +63,7 @@
 								}
 							return false;
 						}
-					define("CONTENT_FUNCTIONS_DEFINED", 1);
+					define("CONTENT_MEMBERSPART_FUNCTIONS_DEFINED", 1);
 				}
 
 
@@ -69,11 +72,12 @@
 					if ($sm['u']['level']>=intval(sm_settings('content_editor_level')))
 						$categories = siman_load_ctgs_content(-1);
 					elseif (!empty($sm['u']['groups']))
-						$categories = siman_load_ctgs_content(
-							-1,
-							convert_groups_to_sql($sm['u']['groups'], 'groups_modify')
-						);
-					sm_title($lang['add_content']);
+						$categories = siman_get_available_categories();
+					$use_ext_editor=strcmp($_getvars['exteditor'], 'off')!=0;
+					if (sm_action('add'))
+						sm_title($lang['common']['add']);
+					else
+						sm_title($lang['common']['edit']);
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					if ($sm['u']['level']==3)
@@ -84,32 +88,70 @@
 						}
 					else
 						add_path_home();
+					add_path_current();
 					$ui = new TInterface();
+					if (!empty($error))
+						$ui->NotificationError($error);
 					if (sm_action('add'))
 						$f = new TForm('index.php?m='.sm_current_module().'&d=postadd');
 					else
 						{
-							$content=TQuery::ForTable($sm['t']['content'].'content')
-								->AddWhere('id_content', intval($id))
+							$content=TQuery::ForTable($sm['t'].'content')
+								->AddWhere('id_content', intval($sm['g']['cid']))
 								->Get();
+							if (!empty($content['filename_content']))
+								$content['url']=get_filename($content['filename_content']);
 							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content']);
 						}
-					$f->AddText('id_category_c', '');
-					$f->AddText('title_content', '');
-					$f->AddText('preview_content', '');
-					$f->AddText('text_content', '');
-					$f->AddText('type_content', '');
-					$f->AddText('keywords_content', '');
-					$f->AddText('description_content', '');
-					$f->AddText('filename_content', '');
-					$f->AddText('priority_content', '');
+					$v=Array();
+					$l=Array();
+					for ($i = 0; $i < count($categories); $i++)
+						{
+							$v[]=$categories[$i]['id'];
+							$l[]=$categories[$i]['title'];
+						}
+					$f->AddText('title_content', $lang['title'], true)
+						->SetFocus();
+					$f->AddSelectVL('id_category_c', $lang['common']['category'], $v, $l, true);
+					if (intval(sm_settings('content_use_image'))==1)
+						{
+							$f->AddFile('userfile', $lang['common']['image']);
+						}
+					if ($use_ext_editor)
+						$f->AddEditor('text_content', $lang['common']['text'], true);
+					else
+						$f->AddTextarea('text_content', $lang['common']['text'], true);
+					$f->MergeColumns('text_content');
+					if (intval(sm_settings('content_use_preview'))==1)
+						{
+							if ($use_ext_editor)
+								$f->AddEditor('preview_content', $lang['common']['preview']);
+							else
+								$f->AddTextarea('preview_content', $lang['common']['preview']);
+							$f->MergeColumns('preview_content');
+						}
+					if ($use_ext_editor)
+						$f->AddHidden('type_content', 1);
+					else
+						$f->AddSelectVL('type_content', $lang['type_content'], Array(0, 1, 2), Array($lang['type_content_simple_text'], $lang['type_content_HTML'], $lang['type_content_simple_text'].' / Header: plain/text'));
+					$f->Separator($lang['common']['seo']);
+					$f->AddText('url', $lang['url'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					$f->AddText('seo_title', $lang['common']['seo_title'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					$f->AddText('keywords_content', $lang['common']['seo_keywords']);
+					$f->AddTextarea('description_content', $lang['common']['seo_description']);
+					$f->Separator($lang['common']['additional_options']);
 					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show']);
+					$f->LoadValuesArray($_postvars);
 					if (sm_action('edit'))
 						$f->LoadValuesArray($content);
+					//TODO: Attachments
+					//TODO: Select template
 					$ui->Add($f);
 					$ui->Output(true);
-
 				}
+			/*
 			if (sm_action('add') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
 					if ($sm['u']['level'] < intval(sm_settings('content_editor_level')))
@@ -146,6 +188,7 @@
 							sm_event('onaddcontent', array($m['selected_ctg']));
 						}
 				}
+			*/
 
 			if (sm_action('postadd') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
