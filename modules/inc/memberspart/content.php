@@ -67,6 +67,63 @@
 				}
 
 
+			if (sm_action('postadd') && siman_is_allowed_to_add_content() || sm_action('postedit') && siman_is_allowed_to_edit_content(intval($_getvars['id'])))
+				{
+					sm_extcore();
+					if (empty($_postvars['title_content']) || empty($_postvars['id_category_c']))
+						$error=$lang['messages']['fill_requied_fields'];
+					elseif (sm_action('postadd') && !empty($_postvars['url']) && sm_fs_exists($_postvars['url']))
+						$error=$lang['messages']['seo_url_exists'];
+					elseif (sm_action('postadd') && !empty($_postvars['url']) && sm_fs_exists($_postvars['url']) && strcmp($_postvars['url'], sm_fs_url('index.php?m=content&d=view&cid='.intval($_getvars['id'])))!=0)
+						$error=$lang['messages']['seo_url_exists'];
+					if (empty($error))
+						{
+							$q=new TQuery($sm['t'].'content');
+							$q->Add('id_category_c', intval($_postvars['id_category_c']));
+							$q->Add('title_content', dbescape($_postvars['title_content']));
+							if (intval(sm_settings('content_use_preview'))==1)
+								$q->Add('preview_content', dbescape($_postvars['preview_content']));
+							$q->Add('text_content', dbescape($_postvars['text_content']));
+							$q->Add('type_content', intval($_postvars['type_content']));
+							$q->Add('keywords_content', dbescape($_postvars['type_content']));
+							$q->Add('description_content', dbescape($_postvars['description_content']));
+							$q->Add('refuse_direct_show', intval($_postvars['refuse_direct_show']));
+							if (sm_action('postadd'))
+								{
+									$cid=$q->Insert();
+									sm_set_metadata('content', $cid, 'author_id', $sm['u']['id']);
+									TQuery::ForTable($sm['t'].'content')
+										->Add('priority_content', intval($cid))
+										->Update('id_content', intval($cid));
+								}
+							else
+								{
+									$cid=intval($_getvars['id']);
+									$q->Update('id_content', intval($cid));
+								}
+							sm_set_metadata('content', $cid, 'main_template', $_postvars['tplmain']);
+							sm_set_metadata('content', $cid, 'content_template', $_postvars['tplcontent']);
+							sm_set_metadata('content', $cid, 'seo_title', $_postvars['seo_title']);
+							if (!empty($_postvars['url']))
+								sm_fs_update($_postvars['title_content'], 'index.php?m=content&d=view&cid='.intval($cid), $_postvars['url']);
+								//TODO remove url if empty
+							if (sm_action('postadd'))
+								sm_notify($lang['messages']['add_successful']);
+							else
+								sm_notify($lang['messages']['edit_successful']);
+							if (!empty($_getvars['returnto']))
+								sm_redirect($_getvars['returnto']);
+							else
+								{
+									if ($sm['u']['level'] < 3)
+										sm_redirect('index.php?m=content&d=viewctg&ctgid='.intval($_postvars['id_category_c']));
+									else
+										sm_redirect('index.php?m=content&d=list&ctg='.intval($_postvars['id_category_c']));
+								}
+						}
+					else
+						sm_set_action(Array('postadd'=>'add', 'postedit'=>'edit'));
+				}
 			if (sm_action('add') && siman_is_allowed_to_add_content() || sm_action('edit') && siman_is_allowed_to_edit_content(intval($_getvars['id'])))
 				{
 					if ($sm['u']['level']>=intval(sm_settings('content_editor_level')))
@@ -137,15 +194,18 @@
 					$f->Separator($lang['common']['seo']);
 					$f->AddText('url', $lang['url'])
 						->WithTooltip($lang['common']['leave_empty_for_default']);
+					if (sm_action('edit'))
+						$f->WithValue(sm_fs_url('index.php?m=content&d=view&cid='.intval($content['id_content']), true));
 					$f->AddText('seo_title', $lang['common']['seo_title'])
-						->WithTooltip($lang['common']['leave_empty_for_default']);
+						->WithTooltip($lang['common']['leave_empty_for_default'])
+						->WithValue(sm_metadata('content', intval($_getvars["cid"]), 'seo_title'));
 					$f->AddText('keywords_content', $lang['common']['seo_keywords']);
 					$f->AddTextarea('description_content', $lang['common']['seo_description']);
 					$f->Separator($lang['common']['additional_options']);
 					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show']);
-					$f->LoadValuesArray($_postvars);
 					if (sm_action('edit'))
 						$f->LoadValuesArray($content);
+					$f->LoadValuesArray($_postvars);
 					//TODO: Attachments
 					//TODO: Select template
 					$ui->Add($f);
@@ -188,7 +248,6 @@
 							sm_event('onaddcontent', array($m['selected_ctg']));
 						}
 				}
-			*/
 
 			if (sm_action('postadd') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
@@ -260,7 +319,8 @@
 							sm_event('postaddcontent', array($cid));
 						}
 				}
-
+			*/
+			/*
 			if (sm_actionpost('postedit') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
 					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
@@ -361,7 +421,8 @@
 								sm_redirect('index.php?m=content&d=list&ctg='.$id_category_c);
 							sm_event('posteditcontent', array(intval($_getvars["cid"])));
 						}
-				}
+				}    
+			*/
 
 			if (sm_action('edit') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
@@ -527,11 +588,16 @@
 								unlink('files/fullimg/content'.intval($_getvars["cid"]).'.jpg');
 							if (file_exists('files/img/content'.intval($_getvars["cid"]).'.jpg'))
 								unlink('files/img/content'.intval($_getvars["cid"]).'.jpg');
-							sm_notify($lang['delete_content_successful']);
-							if ($sm['u']['level'] < 3)
-								sm_redirect('index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg']);
+							sm_notify($lang['messages']['delete_successful']);
+							if (!empty($_getvars['returnto']))
+								sm_redirect($_getvars['returnto']);
 							else
-								sm_redirect('index.php?m=content&d=list&ctg='.$_getvars['ctg']);
+								{
+									if ($sm['u']['level'] < 3)
+										sm_redirect('index.php?m=content&d=viewctg&ctgid='.intval($_getvars['ctg']));
+									else
+										sm_redirect('index.php?m=content&d=list&ctg='.intval($_getvars['ctg']));
+								}
 							sm_event('postdeletecontent', array(intval($_getvars["cid"])));
 						}
 				}

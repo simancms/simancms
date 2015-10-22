@@ -162,7 +162,7 @@
 {include file="pagebar.tpl"}
 {/if}
 <br />
-<a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}">{$lang.add_content}</a>
+<a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}">{$lang.common.add}</a>
 (<a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}&exteditor=off">{$lang.common.html}</a>)
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=content_list_content&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
 {include file="block_end.tpl"}
@@ -299,7 +299,7 @@
 
 {if $modules[$index].mode eq "admin"}
 {include file="block_begin.tpl"}
-<a href="index.php?m=content&d=add">{$lang.add_content}</a> (<a href="index.php?m=content&d=add&exteditor=off">{$lang.common.html}</a>)<br />
+<a href="index.php?m=content&d=add">{$lang.common.add}</a> (<a href="index.php?m=content&d=add&exteditor=off">{$lang.common.html}</a>)<br />
 <br />
 <a href="index.php?m=content&d=list">{$lang.list_content}</a><br />
 <br />

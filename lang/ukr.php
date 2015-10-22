@@ -165,6 +165,10 @@
 
 	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
+	$lang['messages']['seo_url_exists']='Таке SEO URL вже існує';
+	$lang['messages']['add_successful']='Дані додано';
+	$lang['messages']['edit_successful']='Дані змінено';
+	$lang['messages']['delete_successful']='Дані видалено';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
@@ -254,9 +258,6 @@
 	$lang["type_content"]='Тип тексту';
 	$lang["type_content_HTML"]='HTML текст';
 	$lang["type_content_simple_text"]='Звичайний текст';
-	$lang["add_content_successful"]='Текст додано';
-	$lang["edit_content_successful"]='Текст відредаговано';
-	$lang["delete_content_successful"]='Текст видалено';
 	$lang["add_content_category_successful"]='Категорію текстів додано';
 	$lang["edit_content_category_successful"]='Категорію текстів відредаговано';
 	$lang["delete_content_category_successful"]='Категорію текстів видалено';
