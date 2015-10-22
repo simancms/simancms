@@ -435,65 +435,68 @@
 						{
 							$this->form['tabscount'] = count($this->form['tabs']);
 							$this->form['method'] = strtolower($this->form['method']);
-							foreach ($this->form['fields'] as $name => $value)
+							if (is_array($this->form['fields']))
 								{
-									$this->SetFieldId($name, $this->GetFieldId($name));
-									if (!empty($this->form['fields'][$name]['rowclassname']))
-										$this->AppendFieldRowAttribute($name, 'class', $this->form['fields'][$name]['rowclassname']);
-									$this->SetFieldRowAttribute($name, 'id', $this->GetFieldRowId($name));
-									if (!empty($this->form['fields'][$name]['toptext']))
-										$this->form['fields'][$name]['toptext'] = '<span class="adminform-filed-top-txt'.(!empty($this->form['fields'][$name]['toptext_classname']) ? ' '.$this->form['fields'][$name]['toptext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['toptext_style']) ? ' style="'.$this->form['fields'][$name]['toptext_style'].'"' : '').'>'.$this->form['fields'][$name]['toptext'].'</span>';
-									if (!empty($this->form['fields'][$name]['bottomtext']))
-										$this->form['fields'][$name]['bottomtext'] = '<span class="adminform-filed-btm-txt'.(!empty($this->form['fields'][$name]['bottomtext_classname']) ? ' '.$this->form['fields'][$name]['bottomtext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['bottomtext_style']) ? ' style="'.$this->form['fields'][$name]['bottomtext_style'].'"' : '').'>'.$this->form['fields'][$name]['bottomtext'].'</span>';
-									if (!empty($this->form['fields'][$name]['begintext']))
-										$this->form['fields'][$name]['begintext'] = '<span class="adminform-filed-bgn-txt'.(!empty($this->form['fields'][$name]['begintext_classname']) ? ' '.$this->form['fields'][$name]['begintext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['begintext_style']) ? ' style="'.$this->form['fields'][$name]['begintext_style'].'"' : '').'>'.$this->form['fields'][$name]['begintext'].'</span>';
-									if (!empty($this->form['fields'][$name]['endtext']))
-										$this->form['fields'][$name]['endtext'] = '<span class="adminform-filed-end-txt'.(!empty($this->form['fields'][$name]['endtext_classname']) ? ' '.$this->form['fields'][$name]['endtext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['endtext_style']) ? ' style="'.$this->form['fields'][$name]['endtext_style'].'"' : '').'>'.$this->form['fields'][$name]['endtext'].'</span>';
-									if (!empty($this->form['fields'][$name]['tooltip']) || !empty($this->form['fields'][$name]['tooltip_url']))
-										{
-											$this->form['fields'][$name]['column'][2] = '<div class="adminform-tooltip" title="'.$this->form['fields'][$name]['tooltip'].'">';
-											if (!empty($this->form['fields'][$name]['tooltip_url']))
-												$this->form['fields'][$name]['column'][2] .= '<a href="'.$this->form['fields'][$name]['tooltip_url'].'"'.(!empty($this->form['fields'][$name]['tooltip_url_target'])?' target="'.$this->form['fields'][$name]['tooltip_url_target'].'"':'').' class="tooltip-url">';
-											$this->form['fields'][$name]['column'][2] .= '<img src="'.$this->form['fields'][$name]['tooltipimg'].'" />';
-											if (!empty($this->form['fields'][$name]['tooltip_url']))
-												$this->form['fields'][$name]['column'][2] .= '</a>';
-											$this->form['fields'][$name]['column'][2] .= '</div>';
-										}
-									if (is_array($this->form['fields'][$name]['checkbox_toggle']))
-										for ($i = 0; $i<count($this->form['fields'][$name]['checkbox_toggle']); $i++)
-											{
-												$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($("#'.$this->GetFieldId($name).'").prop("checked"))$("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
-											}
-									if (is_array($this->form['fields'][$name]['value_toggle']))
-										for ($i = 0; $i<count($this->form['fields'][$name]['value_toggle']); $i++)
-											{
-												if (!is_array($this->form['fields'][$name]['value_toggle'][$i]['val']))
-													$tmp='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val']).'"';
-												else
-													{
-														$tmp='';
-														for ($j = 0; $j<count($this->form['fields'][$name]['value_toggle'][$i]['val']); $j++)
-															{
-																if (!empty($tmp))
-																	$tmp.=',';
-																$tmp.='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val'][$j]).'"';
-															}
-													}
-												$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($.inArray($("#'.$this->GetFieldId($name).'").val(), ['.$tmp.'])!=-1)$("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
-											}
-								}
-							if ($this->form['no_highlight'] != 1)
-								{
-									$class = '';
 									foreach ($this->form['fields'] as $name => $value)
 										{
-											if ($this->form['fields'][$name]['hidedefinition'] == 1 || $this->form['fields'][$name]['type'] == 'separator')
-												continue;
-											if ($class != 'adminform-row-odd')
-												$class = 'adminform-row-odd';
-											else
-												$class = 'adminform-row-pair';
-											$this->AppendRowClass($class, $name);
+											$this->SetFieldId($name, $this->GetFieldId($name));
+											if (!empty($this->form['fields'][$name]['rowclassname']))
+												$this->AppendFieldRowAttribute($name, 'class', $this->form['fields'][$name]['rowclassname']);
+											$this->SetFieldRowAttribute($name, 'id', $this->GetFieldRowId($name));
+											if (!empty($this->form['fields'][$name]['toptext']))
+												$this->form['fields'][$name]['toptext'] = '<span class="adminform-filed-top-txt'.(!empty($this->form['fields'][$name]['toptext_classname']) ? ' '.$this->form['fields'][$name]['toptext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['toptext_style']) ? ' style="'.$this->form['fields'][$name]['toptext_style'].'"' : '').'>'.$this->form['fields'][$name]['toptext'].'</span>';
+											if (!empty($this->form['fields'][$name]['bottomtext']))
+												$this->form['fields'][$name]['bottomtext'] = '<span class="adminform-filed-btm-txt'.(!empty($this->form['fields'][$name]['bottomtext_classname']) ? ' '.$this->form['fields'][$name]['bottomtext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['bottomtext_style']) ? ' style="'.$this->form['fields'][$name]['bottomtext_style'].'"' : '').'>'.$this->form['fields'][$name]['bottomtext'].'</span>';
+											if (!empty($this->form['fields'][$name]['begintext']))
+												$this->form['fields'][$name]['begintext'] = '<span class="adminform-filed-bgn-txt'.(!empty($this->form['fields'][$name]['begintext_classname']) ? ' '.$this->form['fields'][$name]['begintext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['begintext_style']) ? ' style="'.$this->form['fields'][$name]['begintext_style'].'"' : '').'>'.$this->form['fields'][$name]['begintext'].'</span>';
+											if (!empty($this->form['fields'][$name]['endtext']))
+												$this->form['fields'][$name]['endtext'] = '<span class="adminform-filed-end-txt'.(!empty($this->form['fields'][$name]['endtext_classname']) ? ' '.$this->form['fields'][$name]['endtext_classname'] : '').'"'.(!empty($this->form['fields'][$name]['endtext_style']) ? ' style="'.$this->form['fields'][$name]['endtext_style'].'"' : '').'>'.$this->form['fields'][$name]['endtext'].'</span>';
+											if (!empty($this->form['fields'][$name]['tooltip']) || !empty($this->form['fields'][$name]['tooltip_url']))
+												{
+													$this->form['fields'][$name]['column'][2] = '<div class="adminform-tooltip" title="'.$this->form['fields'][$name]['tooltip'].'">';
+													if (!empty($this->form['fields'][$name]['tooltip_url']))
+														$this->form['fields'][$name]['column'][2] .= '<a href="'.$this->form['fields'][$name]['tooltip_url'].'"'.(!empty($this->form['fields'][$name]['tooltip_url_target'])?' target="'.$this->form['fields'][$name]['tooltip_url_target'].'"':'').' class="tooltip-url">';
+													$this->form['fields'][$name]['column'][2] .= '<img src="'.$this->form['fields'][$name]['tooltipimg'].'" />';
+													if (!empty($this->form['fields'][$name]['tooltip_url']))
+														$this->form['fields'][$name]['column'][2] .= '</a>';
+													$this->form['fields'][$name]['column'][2] .= '</div>';
+												}
+											if (is_array($this->form['fields'][$name]['checkbox_toggle']))
+												for ($i = 0; $i<count($this->form['fields'][$name]['checkbox_toggle']); $i++)
+													{
+														$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($("#'.$this->GetFieldId($name).'").prop("checked"))$("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['checkbox_toggle'][$i]).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
+													}
+											if (is_array($this->form['fields'][$name]['value_toggle']))
+												for ($i = 0; $i<count($this->form['fields'][$name]['value_toggle']); $i++)
+													{
+														if (!is_array($this->form['fields'][$name]['value_toggle'][$i]['val']))
+															$tmp='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val']).'"';
+														else
+															{
+																$tmp='';
+																for ($j = 0; $j<count($this->form['fields'][$name]['value_toggle'][$i]['val']); $j++)
+																	{
+																		if (!empty($tmp))
+																			$tmp.=',';
+																		$tmp.='"'.jsescape($this->form['fields'][$name]['value_toggle'][$i]['val'][$j]).'"';
+																	}
+															}
+														$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($.inArray($("#'.$this->GetFieldId($name).'").val(), ['.$tmp.'])!=-1)$("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
+													}
+										}
+									if ($this->form['no_highlight'] != 1)
+										{
+											$class = '';
+											foreach ($this->form['fields'] as $name => $value)
+												{
+													if ($this->form['fields'][$name]['hidedefinition'] == 1 || $this->form['fields'][$name]['type'] == 'separator')
+														continue;
+													if ($class != 'adminform-row-odd')
+														$class = 'adminform-row-odd';
+													else
+														$class = 'adminform-row-pair';
+													$this->AppendRowClass($class, $name);
+												}
 										}
 								}
 							return $this->form;
