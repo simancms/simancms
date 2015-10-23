@@ -68,7 +68,7 @@
 					\$error='';\n";
 			if (!empty($req))
 			$str.="\t\t\t\t\tif (".$req.")
-						\$error=\$lang['messages']['fill_requied_fields'];\n";
+						\$error=\$lang['messages']['fill_required_fields'];\n";
 			$str.="\t\t\t\t\tif (empty(\$error))
 						{
 							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');\n";

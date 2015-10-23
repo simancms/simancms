@@ -302,7 +302,7 @@
 				{
 					if (empty($_postvars['title']))
 						{
-							$error=$lang['messages']['fill_requied_fields'];
+							$error=$lang['messages']['fill_required_fields'];
 							if (sm_action('postaddctg'))
 								sm_set_action('addctg');
 							else

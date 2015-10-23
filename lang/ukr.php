@@ -163,7 +163,7 @@
 	$lang['common']['additional_options']='Додаткові опції';
 	$lang['common']['text']='Текст';
 
-	$lang['messages']['fill_requied_fields']='Заповніть необхідні поля';
+	$lang['messages']['fill_required_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
 	$lang['messages']['seo_url_exists']='Таке SEO URL вже існує';
 	$lang['messages']['add_successful']='Дані додано';
