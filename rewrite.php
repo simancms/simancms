@@ -25,13 +25,13 @@
 			if (strcmp($_GET['rewrittenquery'], 'robots.txt') == 0)
 				{
 					@header('Content-type: text/plain; charset=utf-8');
-					print(getsqlfield("SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings='robots_txt' AND `mode`='seo'"));
+					print(@getsqlfield("SELECT value_settings FROM ".$tableprefix."settings WHERE name_settings='robots_txt' AND `mode`='seo'"));
 					exit();
 				}
 			if (substr($_GET['rewrittenquery'], -1) == '/')
 				$_GET['rewrittenquery'] = substr($_GET['rewrittenquery'], 0, -1);
 			$tmp=dbescape($_GET['rewrittenquery']);
-			$url = getsqlfield("SELECT url_fs FROM ".$tableprefix."filesystem WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/' LIMIT 1");
+			$url = @getsqlfield("SELECT url_fs FROM ".$tableprefix."filesystem WHERE `filename_fs`='".$tmp."' OR `filename_fs`='".$tmp."/' LIMIT 1");
 		}
 
 	if (empty($url))
