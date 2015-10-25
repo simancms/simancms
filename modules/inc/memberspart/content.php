@@ -424,6 +424,7 @@
 				}    
 			*/
 
+			/*
 			if (sm_action('edit') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
 					if ($sm['u']['level']<intval(sm_settings('content_editor_level')))
@@ -507,7 +508,8 @@
 							if (!empty($m["id_content"]))
 								sm_event('oneditcontent', array($m["id_content"]));
 						}
-				}
+				} 
+			*/
 
 			if (sm_action('delete') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
 				{
