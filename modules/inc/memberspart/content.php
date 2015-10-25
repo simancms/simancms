@@ -70,24 +70,24 @@
 			if (sm_action('postadd') && siman_is_allowed_to_add_content() || sm_action('postedit') && siman_is_allowed_to_edit_content(intval($_getvars['id'])))
 				{
 					sm_extcore();
-					if (empty($_postvars['title_content']) || empty($_postvars['id_category_c']))
+					if (empty($sm['p']['title_content']) || empty($sm['p']['id_category_c']))
 						$error=$lang['messages']['fill_required_fields'];
-					elseif (sm_action('postadd') && !empty($_postvars['url']) && sm_fs_exists($_postvars['url']))
+					elseif (sm_action('postadd') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']))
 						$error=$lang['messages']['seo_url_exists'];
-					elseif (sm_action('postadd') && !empty($_postvars['url']) && sm_fs_exists($_postvars['url']) && strcmp($_postvars['url'], sm_fs_url('index.php?m=content&d=view&cid='.intval($_getvars['id'])))!=0)
+					elseif (sm_action('postadd') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']) && strcmp($sm['p']['url'], sm_fs_url('index.php?m=content&d=view&cid='.intval($_getvars['id'])))!=0)
 						$error=$lang['messages']['seo_url_exists'];
 					if (empty($error))
 						{
 							$q=new TQuery($sm['t'].'content');
-							$q->Add('id_category_c', intval($_postvars['id_category_c']));
-							$q->Add('title_content', dbescape($_postvars['title_content']));
+							$q->Add('id_category_c', intval($sm['p']['id_category_c']));
+							$q->Add('title_content', dbescape($sm['p']['title_content']));
 							if (intval(sm_settings('content_use_preview'))==1)
-								$q->Add('preview_content', dbescape($_postvars['preview_content']));
-							$q->Add('text_content', dbescape($_postvars['text_content']));
-							$q->Add('type_content', intval($_postvars['type_content']));
-							$q->Add('keywords_content', dbescape($_postvars['type_content']));
-							$q->Add('description_content', dbescape($_postvars['description_content']));
-							$q->Add('refuse_direct_show', intval($_postvars['refuse_direct_show']));
+								$q->Add('preview_content', dbescape($sm['p']['preview_content']));
+							$q->Add('text_content', dbescape($sm['p']['text_content']));
+							$q->Add('type_content', intval($sm['p']['type_content']));
+							$q->Add('keywords_content', dbescape($sm['p']['keywords_content']));
+							$q->Add('description_content', dbescape($sm['p']['description_content']));
+							$q->Add('refuse_direct_show', intval($sm['p']['refuse_direct_show']));
 							if (sm_action('postadd'))
 								{
 									$cid=$q->Insert();
@@ -101,11 +101,27 @@
 									$cid=intval($_getvars['id']);
 									$q->Update('id_content', intval($cid));
 								}
-							sm_set_metadata('content', $cid, 'main_template', $_postvars['tplmain']);
-							sm_set_metadata('content', $cid, 'content_template', $_postvars['tplcontent']);
-							sm_set_metadata('content', $cid, 'seo_title', $_postvars['seo_title']);
-							if (!empty($_postvars['url']))
-								sm_fs_update($_postvars['title_content'], 'index.php?m=content&d=view&cid='.intval($cid), $_postvars['url']);
+							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
+							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
+							sm_set_metadata('content', $cid, 'seo_title', $sm['p']['seo_title']);
+							if (sm_action('postedit'))
+								{
+									$attachments=sm_get_attachments('content', $cid);
+									for ($i = 0; $i<count($attachments); $i++)
+										{
+											if (!empty($sm['p']['delete_attachment_'.$attachments[$i]['id']]))
+												{
+													sm_delete_attachment(intval($attachments[$i]['id']));
+													sm_event('postdeleteattachment', array(intval($attachments[$i]['id'])));
+												}
+										}
+								}
+							for ($i = 0; $i < intval(sm_settings('content_attachments_count')); $i++)
+								{
+									sm_upload_attachment('content', $cid, $_uplfilevars['attachment'.$i]);
+								}
+							if (!empty($sm['p']['url']))
+								sm_fs_update($sm['p']['title_content'], 'index.php?m=content&d=view&cid='.intval($cid), $sm['p']['url']);
 								//TODO remove url if empty
 							if (sm_action('postadd'))
 								sm_notify($lang['messages']['add_successful']);
@@ -116,9 +132,9 @@
 							else
 								{
 									if ($sm['u']['level'] < 3)
-										sm_redirect('index.php?m=content&d=viewctg&ctgid='.intval($_postvars['id_category_c']));
+										sm_redirect('index.php?m=content&d=viewctg&ctgid='.intval($sm['p']['id_category_c']));
 									else
-										sm_redirect('index.php?m=content&d=list&ctg='.intval($_postvars['id_category_c']));
+										sm_redirect('index.php?m=content&d=list&ctg='.intval($sm['p']['id_category_c']));
 								}
 						}
 					else
@@ -197,16 +213,32 @@
 					if (sm_action('edit'))
 						$f->WithValue(sm_fs_url('index.php?m=content&d=view&cid='.intval($content['id_content']), true));
 					$f->AddText('seo_title', $lang['common']['seo_title'])
-						->WithTooltip($lang['common']['leave_empty_for_default'])
-						->WithValue(sm_metadata('content', intval($_getvars["cid"]), 'seo_title'));
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					if (sm_action('edit'))
+						$f->WithValue(sm_metadata('content', intval($content['id_content']), 'seo_title'));
 					$f->AddText('keywords_content', $lang['common']['seo_keywords']);
 					$f->AddTextarea('description_content', $lang['common']['seo_description']);
 					$f->Separator($lang['common']['additional_options']);
 					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show']);
+					if (intval(sm_settings('content_attachments_count')))
+						{
+							$f->Separator($lang['common']['attachments']);
+							if (sm_action('edit'))
+								$attachments=sm_get_attachments('content', $content['id_content']);
+							else
+								$attachments=Array();
+							for ($i = 0; $i<intval(sm_settings('content_attachments_count')); $i++)
+								{
+									if ($i<count($attachments))
+										$f->AddCheckbox('delete_attachment_'.$attachments[$i]['id'], $lang['number_short'].($i+1).'. '.$lang['delete'].' - '.$attachments[$i]['filename'])
+											->LabelAfterControl();
+									else
+										$f->AddFile('attachment'.$i, $lang['number_short'].($i+1));
+								}
+						}
 					if (sm_action('edit'))
 						$f->LoadValuesArray($content);
 					$f->LoadValuesArray($_postvars);
-					//TODO: Attachments
 					//TODO: Select template
 					$ui->Add($f);
 					$ui->Output(true);
