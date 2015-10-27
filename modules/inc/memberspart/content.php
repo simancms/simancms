@@ -104,6 +104,8 @@
 							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
 							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
 							sm_set_metadata('content', $cid, 'seo_title', $sm['p']['seo_title']);
+							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
+							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
 							if (sm_action('postedit'))
 								{
 									$attachments=sm_get_attachments('content', $cid);
@@ -214,12 +216,33 @@
 						$f->WithValue(sm_fs_url('index.php?m=content&d=view&cid='.intval($content['id_content']), true));
 					$f->AddText('seo_title', $lang['common']['seo_title'])
 						->WithTooltip($lang['common']['leave_empty_for_default']);
-					if (sm_action('edit'))
-						$f->WithValue(sm_metadata('content', intval($content['id_content']), 'seo_title'));
 					$f->AddText('keywords_content', $lang['common']['seo_keywords']);
 					$f->AddTextarea('description_content', $lang['common']['seo_description']);
 					$f->Separator($lang['common']['additional_options']);
-					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show']);
+					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show'])
+						->LabelAfterControl();
+					if (count($sm['themeinfo']['alttpl']['main'])>0)
+						{
+							$v=Array('');
+							$l=Array($lang['common']['default']);
+							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['main']); $i++)
+								{
+									$v[]=$sm['themeinfo']['alttpl']['main'][$i]['tpl'];
+									$l[]=$sm['themeinfo']['alttpl']['main'][$i]['name'];
+								}
+							$f->AddSelectVL('tplmain', $lang['common']['template'].' ('.$lang['common']['site'].')', $v, $l);
+						}
+					if (count($sm['themeinfo']['alttpl']['content'])>0)
+						{
+							$v=Array('');
+							$l=Array($lang['common']['default']);
+							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['content']); $i++)
+								{
+									$v[]=$sm['themeinfo']['alttpl']['content'][$i]['tpl'];
+									$l[]=$sm['themeinfo']['alttpl']['content'][$i]['name'];
+								}
+							$f->AddSelectVL('tplcontent', $lang['common']['template'].' ('.$lang['common']['page'].')', $v, $l);
+						}
 					if (intval(sm_settings('content_attachments_count')))
 						{
 							$f->Separator($lang['common']['attachments']);
@@ -237,9 +260,14 @@
 								}
 						}
 					if (sm_action('edit'))
-						$f->LoadValuesArray($content);
+						{
+							$f->LoadValuesArray($content);
+							$tmp=sm_load_metadata('content', intval($content['id_content']));
+							$f->SetValue('seo_title', $tmp['seo_title']);
+							$f->SetValue('tplmain', $tmp['main_template']);
+							$f->SetValue('tplcontent', $tmp['content_template']);
+						}
 					$f->LoadValuesArray($_postvars);
-					//TODO: Select template
 					$ui->Add($f);
 					$ui->Output(true);
 				}
