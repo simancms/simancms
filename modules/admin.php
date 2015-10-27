@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-06-20
+	//#ver 1.6.10
+	//#revision 2015-10-27
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -294,7 +294,7 @@
 						{
 							if (strpos($entry, '.php') > 0)
 								{
-									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php')))
+									if (in_array($entry, Array('admin.php', 'content.php', 'account.php', 'blocks.php', 'refresh.php', 'menu.php', 'news.php', 'download.php', 'search.php', 'media.php')))
 										continue;
 									if (in_array(substr($entry, 0, -4), nllistToArray(sm_settings('installed_packages'))))
 										continue;
