@@ -267,7 +267,7 @@
 							if ($special['categories']['getctg'] == 1)
 								$special['categories']['id'] = $row['id_category_c'];
 							$m['content'][$i]["title_category"] = $row['title_category'];
-							if ($modules_index == 0 && $i == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1)
+							if ($modules_index == 0 && $i == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1 && !sm_is_index_page())
 								{
 									$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row['id_category_c']);
 									add_path_home();
