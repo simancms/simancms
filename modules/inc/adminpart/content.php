@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-06-02
+	//#ver 1.6.10
+	//#revision 2015-10-29
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -29,7 +29,6 @@
 					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='".intval($_getvars['ctgid'])."'";
-					;
 					$result = execsql($sql);
 					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
 						{
@@ -83,7 +82,10 @@
 							$result = execsql($sql);
 						}
 					sm_notify($lang['add_content_category_successful']);
-					sm_redirect('index.php?m=content&d=listctg');
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=content&d=listctg');
 					sm_event('postaddctgcontent', array($ctgid));
 				}
 			if (sm_action('addctg'))
@@ -138,7 +140,10 @@
 								update_filesystem($fname, 'index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
 						}
 					sm_notify($lang['edit_content_category_successful']);
-					sm_redirect('index.php?m=content&d=listctg');
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=content&d=listctg');
 					sm_event('posteditctgcontent', array($id_ctg));
 				}
 			if (sm_action('postdeletectg') && intval($_getvars['ctgid'])!=1)
@@ -187,8 +192,8 @@
 							$t->URL('search', 'index.php?m=content&d=list&ctg='.$m['ctg'][$i]['id']);
 							if ($m['ctg'][$i]['id'] != 1)
 								$t->URL('delete', 'index.php?m=content&d=postdeletectg&ctgid='.$m['ctg'][$i]['id']);
-							$t->URL('edit', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id']);
-							$t->URL('html', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off');
+							$t->URL('edit', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&returnto='.urlencode(sm_this_url()));
+							$t->URL('html', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off'.'&returnto='.urlencode(sm_this_url()));
 							$t->URL('tomenu', sm_tomenuurl($m['ctg'][$i]['title'], $m['ctg'][$i]['filename'], sm_this_url()));
 							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title']);
 							$t->NewRow();
@@ -300,24 +305,17 @@
 				{
 					$id1 = intval($_getvars['id1']);
 					$id2 = intval($_getvars['id2']);
-					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($id1);
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$pr1 = $row->priority_content;
-						}
-					$sql = "SELECT * FROM ".$tableprefix."content WHERE id_content=".intval($id2);
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$pr2 = $row->priority_content;
-						}
+					$pr1 = getsqlfield("SELECT priority_content FROM ".$tableprefix."content WHERE id_content=".intval($id1));
+					$pr2 = getsqlfield("SELECT priority_content FROM ".$tableprefix."content WHERE id_content=".intval($id2));
 					if (!empty($pr1) || !empty($pr2))
 						{
 							execsql("UPDATE ".$tableprefix."content SET priority_content=".intval($pr1)." WHERE id_content=".intval($id2));
 							execsql("UPDATE ".$tableprefix."content SET priority_content=".intval($pr2)." WHERE id_content=".intval($id1));
 						}
-					sm_redirect('index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall'])));
+					if (!empty($_getvars['returnto']))
+						sm_redirect($_getvars['returnto']);
+					else
+						sm_redirect('index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall'])));
 				}
 		}
 

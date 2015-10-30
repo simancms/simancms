@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.9
-	Revision: 2015-09-29
+	Version: 1.6.10
+	Revision: 2015-10-29
 	Author URI: http://simancms.org/
 	*/
 
@@ -359,7 +359,7 @@
 									if (!empty($row['description_content']))
 										$special['meta']['description'] = $row['description_content'];
 								}
-							if ($tmp_no_alike_content != 1 && $modules_index == 1 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0)
+							if ($tmp_no_alike_content != 1 && $modules_index == 0 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0 && !sm_is_index_page())
 								{
 									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>".intval($m['content'][$i]["cid"])." AND id_category_c=".intval($m['content'][$i]['id_category'])." ORDER BY priority_content DESC LIMIT ".intval($_settings['alike_content_count']);
 									$tmpresult = database_db_query($nameDB, $tmpsql, $lnkDB);
