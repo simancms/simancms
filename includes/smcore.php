@@ -34,12 +34,16 @@
 		{
 			global $tableprefix;
 			execsql("INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')");
+			if ($mode=='default')
+				$sm['_s'][$settings_name]=$new_value;
 		}
 
 	function sm_update_settings($settings_name, $new_value, $mode = 'default')
 		{
-			global $tableprefix;
+			global $tableprefix, $sm;
 			execsql("UPDATE ".$tableprefix."settings SET value_settings = '".dbescape($new_value)."' WHERE name_settings = '".dbescape($settings_name)."' AND mode='".dbescape($mode)."'");
+			if ($mode=='default')
+				$sm['_s'][$settings_name]=$new_value;
 		}
 
 	function sm_register_module($module_name, $module_title, $search_fields = '', $search_doing = '', $search_var = '', $search_table = '', $search_title = '', $search_idfield = '', $search_text = '')
@@ -251,7 +255,6 @@
 			return $rctg;
 		}
 
-	//Функція для виведення шляху в дереві з таблиці
 	function sm_get_path_tree($tablename, $field_id, $field_root, $start_id, $stop_id = 0)
 		{
 			if ($start_id == $stop_id) return Array();
