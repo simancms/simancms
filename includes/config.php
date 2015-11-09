@@ -4,8 +4,10 @@
 	//|            Content Management System SiMan CMS                             |
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
-
-	$_settings['version'] = '1.6.9';
+	//| [!] Check includes/dbsettings.php to setup system configuration            |
+	//------------------------------------------------------------------------------
+	
+	$_settings['version'] = '1.6.10';
 
 	$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='default'");
 	while ($row = database_fetch_assoc($result))
