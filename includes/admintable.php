@@ -86,7 +86,23 @@
 							else
 								return false;
 						}
-					
+
+					function GetColumnNames()
+						{
+							$cols=Array();
+							if (is_array($this->table['columns']))
+								{
+									foreach ($this->table['columns'] as $name => $columnval)
+										$cols[]=$name;
+								}
+							return $cols;
+						}
+
+					function GetColumnTitle($colname)
+						{
+							return $this->table['columns'][$colname]['caption'];
+						}
+
 					function SetHeaderImage($name, $image)
 						{
 							if (strpos($image, '.') === false && strpos($image, '://') === false)
@@ -295,9 +311,11 @@
 							return $this;
 						}
 
-					function GetLabelText($name)
+					function GetLabelText($name, $row_index=NULL)
 						{
-							return $this->table['rows'][$this->rownumber][$name]['data'];
+							if ($row_index===NULL)
+								$row_index=$this->rownumber;
+							return $this->table['rows'][$row_index][$name]['data'];
 						}
 
 					function AddClassnameGlobal($classname)
