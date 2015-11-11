@@ -103,6 +103,23 @@
 							return $this->table['columns'][$colname]['caption'];
 						}
 
+					function SetColumnHeaderAttr($colname, $attrname, $attrval)
+						{
+							$this->table['columns'][$colname]['header_attr'][$attrname] = $attrval;
+							return $this;
+						}
+
+					function GetColumnHeaderAttr($colname, $attrname)
+						{
+							return $this->table['columns'][$colname]['header_attr'][$attrname];
+						}
+
+					function AppendCoumnHeaderAttr($colname, $attrname, $attrval, $append_prefix = ' ')
+						{
+							$this->table['columns'][$colname]['header_attr'][$attrname] .= (strlen($this->table['columns'][$colname]['attr'][$attrname])>0 ? $append_prefix : '').$attrval;
+							return $this;
+						}
+
 					function SetHeaderImage($name, $image)
 						{
 							if (strpos($image, '.') === false && strpos($image, '://') === false)
