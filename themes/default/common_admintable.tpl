@@ -135,12 +135,12 @@ function atdropdowncancelclosetime{$postfix}()
 				{/if}
 			{/if}
 			{if $column.replace_image neq ""}
-				<img src="{if not $column.imagepath}themes/{$sm.s.theme}/images/admintable/{/if}{$column.replace_image}" border="0">
+				<img src="{$column.replace_image}" border="0">
 			{else}
 				{if $column.replace_text neq ""}
 					{$column.replace_text}			
 				{elseif $table.rows[table_row_index].$column_name.image neq ""}
-					<img src="{if not $table.rows[table_row_index].$column_name.imagepath}themes/{$sm.s.theme}/images/admintable/{/if}{$table.rows[table_row_index].$column_name.image}" border="0">
+					<img src="{$table.rows[table_row_index].$column_name.image}" border="0">
 				{else}
 					{if $table.rows[table_row_index].$column_name.element eq "select"}
 						<select{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach}>

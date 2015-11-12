@@ -61,17 +61,14 @@
 							$this->table['columns'][$name]['width'] = $width;
 							$this->table['columns'][$name]['hint'] = $hint;
 							$this->table['columns'][$name]['replace_text'] = $replace_text;
-							$this->table['columns'][$name]['imagepath'] = false;
+							$this->table['columns'][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
 							if (!empty($replace_image) && strpos($replace_image, '/') === false)
 								{
-									if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
-										{
-											$replace_image = 'themes/default/images/admintable/'.$replace_image;
-											$this->table['columns'][$name]['imagepath'] = true;
-										}
+									if (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
+										$replace_image = 'themes/'.sm_current_theme().'/images/admintable/'.$replace_image;
+									else
+										$replace_image = 'themes/default/images/admintable/'.$replace_image;
 								}
-							elseif (!empty($replace_image))
-								$this->table['columns'][$name]['imagepath'] = true;
 							$this->table['columns'][$name]['replace_image'] = $replace_image;
 							$this->table['columns'][$name]['messagebox'] = $messagebox;
 							$this->table['columns'][$name]['messagebox_text'] = $messagebox_text;
@@ -363,19 +360,18 @@
 
 					function Image($name, $replace_image)
 						{
+							if (empty($replace_image))
+								return $this;
 							if (strpos($replace_image, '.') === false && strpos($replace_image, '://') === false)
 								$replace_image .= '.gif';
-							$this->table['rows'][$this->rownumber][$name]['imagepath'] = false;
-							if (!empty($replace_image) && strpos($replace_image, '/') === false)
+							$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
+							if (strpos($replace_image, '/') === false)
 								{
-									if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
-										{
-											$replace_image = 'themes/default/images/admintable/'.$replace_image;
-											$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;
-										}
+									if (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
+										$replace_image = 'themes/'.sm_current_theme().'/images/admintable/'.$replace_image;
+									else
+										$replace_image = 'themes/default/images/admintable/'.$replace_image;
 								}
-							elseif (!empty($replace_image))
-								$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;
 							$this->table['rows'][$this->rownumber][$name]['image'] = $replace_image;
 							return $this;
 						}
