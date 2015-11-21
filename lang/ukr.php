@@ -169,6 +169,7 @@
 	$lang['messages']['add_successful']='Дані додано';
 	$lang['messages']['edit_successful']='Дані змінено';
 	$lang['messages']['delete_successful']='Дані видалено';
+	$lang['messages']['nothing_found']='Нічого не знайдено';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
@@ -249,8 +250,7 @@
 	$lang['module_account']['log']['user_send_privmsg']='Користувач надіслав приватне повідомлення';
 	
 	//errors
-	$lang["error"]='Помилка';
-	$lang["error_cannot_found"]='Обрану Вами тему не знайдено.';
+	$lang['error']='Помилка';
 	
 	//Content
 	$lang['module_content_name']='Тексти';

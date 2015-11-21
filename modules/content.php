@@ -125,8 +125,8 @@
 				}
 			if (empty($content_id))
 				{
-					$m["title"] = $lang["error"];
-					$m["text"] = $lang["error_cannot_found"];
+					$m['title'] = $lang['error'];
+					$m['text'] = $lang['messages']['nothing_found'];
 					$content_error = 1;
 				}
 			else

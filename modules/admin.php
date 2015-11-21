@@ -647,6 +647,8 @@
 									$i++;
 								}
 						}
+					if ($t->RowCount()==0)
+						$t->SingleLineLabel($lang['messages']['nothing_found']);
 					$m['table']=$t->Output();
 					$m['pages']['url'] = sm_this_url('from', '');
 					$m['pages']['interval'] = $limit;
