@@ -191,6 +191,8 @@
 							\$t->Url('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->NewRow();
 						}
+					if (\$t->RowCount()==0)
+						\$t->SingleLineLabel(\$lang['messages']['nothing_found']);
 					\$ui->AddGrid(\$t);
 					\$ui->AddPagebarParams(\$q->Find(), \$limit, \$offset);
 					\$ui->AddButtons(\$b);

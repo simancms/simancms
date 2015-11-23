@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.10
+	//#revision 2015-11-23
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -307,6 +307,8 @@
 							$t->Url('delete', 'index.php?m=download&d=postdelete&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
 							$t->NewRow();
 						}
+					if ($t->RowCount()==0)
+						$t->SingleLineLabel($lang['messages']['nothing_found']);
 					$ui->AddGrid($t);
 					$ui->AddPagebarParams($q->Find(), $limit, $offset);
 					$ui->AddButtons($b);

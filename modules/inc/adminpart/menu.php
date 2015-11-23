@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.10
+	//#revision 2015-11-23
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -307,6 +307,8 @@
 							$t->URL('delete', 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id']);
 							$t->NewRow();
 						}
+					if ($t->RowCount()==0)
+						$t->SingleLineLabel($lang['messages']['nothing_found']);
 					$b=new TButtons();
 					$b->AddButton('add', $lang['module_menu']['add_menu_line'], 'index.php?m=menu&d=addline&mid='.$menu_id);
 					$ui->AddButtons($b);

@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2015-10-27
+	//#revision 2015-11-23
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -278,7 +278,8 @@
 			if (sm_action('addmodule'))
 				{
 					add_path_modules();
-					$m['title'] = $lang['module_admin']['add_module'];
+					add_path_current();
+					sm_title($lang['module_admin']['add_module']);
 					sm_use('admininterface');
 					sm_use('admintable');
 					$ui = new TInterface();
@@ -336,7 +337,7 @@
 			if (sm_action('modules'))
 				{
 					add_path_modules();
-					$m["title"] = $lang['modules_mamagement'];
+					sm_title($lang['modules_mamagement']);
 					sm_use('admininterface');
 					sm_use('admintable');
 					sm_use('adminbuttons');
