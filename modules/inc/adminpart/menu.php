@@ -291,7 +291,8 @@
 					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$t=new TGrid('edit');
-					$t->AddCol('title', $lang['common']['title'], '100%');
+					$t->AddCol('title', $lang['common']['title'], '40%');
+					$t->AddCol('url', $lang['url'], '60%');
 					$t->AddEdit();
 					$t->AddDelete();
 					for ($i = 0; $i < count($m['menu']); $i++)
@@ -302,6 +303,14 @@
 									$lev .= '-';
 								}
 							$t->Label('title', $lev.$m['menu'][$i]['caption']);
+							if (strlen($m['menu'][$i]['url'])>65)
+								{
+									$t->Label('url', substr($m['menu'][$i]['url'], 0, 65).'...');
+									$t->Expand('url');
+									$t->ExpanderHTML($m['menu'][$i]['url']);
+								}
+							else
+								$t->Label('url', $m['menu'][$i]['url'], 0, 65);
 							$t->URL('title', $m['menu'][$i]['url'], true);
 							$t->URL('edit', 'index.php?m=menu&d=editline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'].'&sid='.$m['menu'][$i]['submenu_from']);
 							$t->URL('delete', 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id']);
