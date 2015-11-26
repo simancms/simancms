@@ -694,7 +694,6 @@
 			if (sm_action('renimg') && !empty($_getvars["imgn"]))
 				{
 					sm_title($lang['module_admin']['rename_image']);
-					$m['image']['old_name'] = $_getvars["imgn"];
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], "index.php?m=admin&d=listimg");
 					sm_use('admininterface');
