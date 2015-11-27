@@ -25,13 +25,13 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular'))
+				sm_delayed_action('demo', 'footercode');
+			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
 				{
 					sm_title('UI HTML-shortcuts');
-					if ($userinfo['level'] == 3)
-						add_path_modules();
-					else
-						add_path_home();
+					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
@@ -58,13 +58,12 @@
 					$ui->style('.demo-red{background:#ffcccc;}');
 					$ui->Output(true);
 				}
+			//end-htmlshortcuts
+			//start-forms
 			if (sm_action('forms'))
 				{
 					sm_title('UI TForm - From');
-					if ($userinfo['level'] == 3)
-						add_path_modules();
-					else
-						add_path_home();
+					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
@@ -93,6 +92,7 @@
 					$ui->Add($f);
 					$ui->Output(true);
 				}
+			//end-forms
 			if (sm_action('ajaxresponder'))
 				{
 					out(strftime($lang['datetimemask'], time()).'<br />');
@@ -101,13 +101,11 @@
 							out('Line '.$i.'<br />');
 						}
 				}
+			//start-grid
 			if (sm_action('grid'))
 				{
 					sm_title('UI TGrid - Table');
-					if ($userinfo['level'] == 3)
-						add_path_modules();
-					else
-						add_path_home();
+					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					sm_use('ui.interface');
@@ -230,24 +228,22 @@
 					$ui->Add($t);
 					$ui->Output(true);
 				}
+			//end-grid
+			//start-regular
 			if (sm_action('regular'))
 				{
 					sm_title('Smarty Template');
-					if ($userinfo['level'] == 3)
-						add_path_modules();
-					else
-						add_path_home();
+					add_path_home();
 					add_path('Demos', 'index.php?m=demo');
 					add_path_current();
 					$m['module'] = 'demo';
 				}
+			//end-regular
+			//start-demos
 			if (sm_action('demos'))
 				{
 					sm_title('Available Demos');
-					if ($userinfo['level'] == 3)
-						add_path_modules();
-					else
-						add_path_home();
+					add_path_home();
 					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.navigation');
@@ -258,6 +254,20 @@
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
 					$ui->Add($nav);
+					$ui->Output(true);
+				}
+			//end-demos
+			if (sm_action('footercode'))
+				{
+					$action=$_getvars['d'];
+					$str=file_get_contents(__FILE__);
+					if (strpos($str, '//start-'.$action)!==false && strpos($str, '//end-'.$action)!==false)
+						$code=substr($str, strpos($str, '//start-'.$action)+9+strlen($action), strpos($str, '//end-'.$action)-(strpos($str, '//start-'.$action)+9+strlen($action)));
+					sm_title('Code Example');
+					sm_use('ui.interface');
+					sm_use('ui.navigation');
+					$ui = new TInterface();
+					$ui->html('<textarea wrap="off" style="width:99%; height:150px;">'.htmlescape($code).'</textarea>');
 					$ui->Output(true);
 				}
 			if ($userinfo['level'] == 3)
