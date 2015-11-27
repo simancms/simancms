@@ -533,6 +533,18 @@
 							return $this;
 						}
 
+					function HeaderDropDownItemAutoSelect($name, $url=NULL)
+						{
+							if ($url===NULL)
+								$url=sm_this_url();
+							for ($i = 0; $i<count($this->table['columns'][$name]['dropdownitems']); $i++)
+								{
+									if (strcmp(sm_relative_url($this->table['columns'][$name]['dropdownitems'][$i]['url']), sm_relative_url($url))==0)
+										$this->HeaderDropDownItemSelect($name, $i);
+								}
+							return $this;
+						}
+
 					private function USortRowsByColumnData($a, $b)
 						{
 							if ($a == $b)
