@@ -75,7 +75,7 @@
 {if $userinfo.level eq 3}
 <a href="index.php?m=admin">{$lang.control_panel}</a><br />
 {/if}
-<a href="index.php?m=account&d=cabinet">{$lang.my_cabinet}</a><br />
+<a href="{$modules[$index].cabinet_home_url}">{$lang.my_cabinet}</a><br />
 <a href="index.php?m=account&d=logout">{$lang.logout}</a>
 {/if}
 {include file="block_end.tpl"}

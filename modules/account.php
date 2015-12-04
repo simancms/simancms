@@ -235,6 +235,12 @@
 					$m["goto_url"] = $_servervars['REQUEST_URI'];
 					if ($modules_index == 0)
 						sm_setfocus('login_d');
+					if (!empty($userinfo['id']))
+						{
+							$m['cabinet_home_url'] = 'index.php?m=account&d=cabinet';
+							if (sm_has_settings('cabinet_module'))
+								$m['cabinet_home_url'] = 'index.php?m='.sm_settings('cabinet_module');
+						}
 					sm_event('onshowloginpage', array(''));
 					sm_page_viewid('account-show');
 				}

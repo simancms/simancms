@@ -692,6 +692,12 @@
 			return $sm['_s'][$name];
 		}
 
+	function sm_has_settings($name)
+		{
+			global $sm;
+			return array_key_exists($name, $sm['_s']);
+		}
+
 	function sm_change_theme($themename)
 		{
 			global $smarty, $sm;
