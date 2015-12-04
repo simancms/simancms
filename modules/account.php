@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.10
+	//#revision 2015-12-04
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -21,14 +21,14 @@
 
 	sm_default_action('show');
 
-	if (sm_actionpost("postregister") && ($_settings['allow_register'] || $userinfo['level']==3))
+	if (sm_actionpost("postregister") && (!sm_empty_settings('allow_register') || $userinfo['level']==3))
 		{
 			$m["module"] = 'account';
 			sm_title($lang["register"]);
 			$login = $_postvars["p_login"];
 			$password = $_postvars["p_password"];
 			$password2 = $_postvars["p_password2"];
-			if ($_settings['use_email_as_login'] == 1)
+			if (intval(sm_settings('use_email_as_login')) == 1)
 				$email = $login;
 			else
 				$email = $_postvars["p_email"];
@@ -50,7 +50,7 @@
 					$m['message'] = $lang["message_passwords_not_equal"];
 					$m['mode'] = 'register';
 				}
-			elseif ($_settings['use_protect_code'] == 1 && (strcmp($_sessionvars['protect_code'], $_postvars['p_protect_code']) != 0 || empty($_postvars['p_protect_code'])))
+			elseif (intval(sm_settings('use_protect_code')) == 1 && (strcmp($_sessionvars['protect_code'], $_postvars['p_protect_code']) != 0 || empty($_postvars['p_protect_code'])))
 				{
 					$m['message'] = $lang['module_account']['wrong_protect_code'];
 					$m['mode'] = 'register';
@@ -69,15 +69,15 @@
 				{
 					//$password=md5($password);
 					include('includes/smcoreext.php');
-					if ($_settings['user_activating_by_admin'] == 1)
+					if (intval(sm_settings('user_activating_by_admin')) == 1)
 						$user_status = '0';
 					else
 						$user_status = '1';
 					$id_newuser = sm_add_user($login, $password, $email, $question, $answer, $user_status);
 					sm_event('successregister', array($id_newuser));
-					if (!empty($_settings['redirect_after_register']))
+					if (!sm_empty_settings('redirect_after_register'))
 						{
-							sm_redirect($_settings['redirect_after_register']);
+							sm_redirect(sm_settings('redirect_after_register'));
 						}
 					elseif ($userinfo['level']>0)
 						{
@@ -98,7 +98,7 @@
 		}
 
 
-	if ($_settings['allow_forgot_password'] == 1)
+	if (intval(sm_settings('allow_forgot_password')) == 1)
 		{
 			if (sm_action('getpasswd'))
 				{
@@ -148,11 +148,11 @@
 
 	if (sm_action('register'))
 		{
-			if ($_settings['allow_register'] || $userinfo['level']==3)
+			if (!sm_empty_settings('allow_register') || $userinfo['level']==3)
 				{
 					$m["module"] = 'account';
 					sm_title($lang["register"]);
-					if ($_settings['use_protect_code'] == 1)
+					if (intval(sm_settings('use_protect_code')) == 1)
 						siman_generate_protect_code();
 					sm_event('onregister', array(''));
 					sm_page_viewid('account-register');
@@ -178,30 +178,33 @@
 							sm_notify($lang['message_success_login']);
 							//$sql="UPDATE ".$tableusersprefix."users SET id_session='".$userinfo['session']."', last_login='".time()."' WHERE id_user='".$userinfo['id']."'";
 							//$result=execsql($sql);
-							if ($_postvars['autologin_d'] == 1 || $_settings['alwaysautologin'] == 1)
+							if ($_postvars['autologin_d'] == 1 || intval(sm_settings('alwaysautologin')) == 1)
 								{
-									setcookie($_settings['cookprefix'].'simanautologin', md5($session_prefix.$userinfo['info']['random_code'].$userinfo['id']), time() + (intval($_settings['autologinlifetime']) > 0 ? intval($_settings['autologinlifetime']) : 30758400));
+									setcookie(sm_settings('cookprefix').'simanautologin', md5($session_prefix.$userinfo['info']['random_code'].$userinfo['id']), time() + (intval(sm_settings('autologinlifetime')) > 0 ? intval(sm_settings('autologinlifetime')) : 30758400));
 								}
 							log_write(LOG_LOGIN, $lang['module_account']['log']['user_logged']);
-							if ($_settings['return_after_login'] == 1 && !empty($_postvars['p_goto_url']))
+							if (intval(sm_settings('return_after_login')) == 1 && !empty($_postvars['p_goto_url']))
 								{
 									sm_redirect($_postvars['p_goto_url']);
 								}
-							elseif (!empty($_settings['redirect_after_login_3']) && $userinfo['level'] == 3)
+							elseif (!sm_empty_settings('redirect_after_login_3') && $userinfo['level'] == 3)
 								{
-									sm_redirect($_settings['redirect_after_login_3']);
+									sm_redirect(sm_settings('redirect_after_login_3'));
 								}
-							elseif (!empty($_settings['redirect_after_login_2']) && $userinfo['level'] >= 2)
+							elseif (!sm_empty_settings('redirect_after_login_2') && $userinfo['level'] >= 2)
 								{
-									sm_redirect($_settings['redirect_after_login_2']);
+									sm_redirect(sm_settings('redirect_after_login_2'));
 								}
-							elseif (!empty($_settings['redirect_after_login_1']) && $userinfo['level'] >= 1)
+							elseif (!sm_empty_settings('redirect_after_login_1') && $userinfo['level'] >= 1)
 								{
-									sm_redirect($_settings['redirect_after_login_1']);
+									sm_redirect(sm_settings('redirect_after_login_1'));
 								}
 							else
 								{
-									sm_redirect('index.php?m=account&d=cabinet');
+									if (!sm_empty_settings('cabinet_module'))
+										sm_redirect('index.php?m='.sm_settings('cabinet_module'));
+									else
+										sm_redirect('index.php?m=account&d=cabinet');
 								}
 						}
 					else
@@ -238,7 +241,7 @@
 					if (!empty($userinfo['id']))
 						{
 							$m['cabinet_home_url'] = 'index.php?m=account&d=cabinet';
-							if (sm_has_settings('cabinet_module'))
+							if (!sm_empty_settings('cabinet_module'))
 								$m['cabinet_home_url'] = 'index.php?m='.sm_settings('cabinet_module');
 						}
 					sm_event('onshowloginpage', array(''));
@@ -251,8 +254,8 @@
 	else
 		if (sm_action('logout'))
 			{
-				if (!empty($_settings['redirect_after_logout']))
-					sm_redirect($_settings['redirect_after_logout']);
+				if (!sm_empty_settings('redirect_after_logout'))
+					sm_redirect(sm_settings('redirect_after_logout'));
 				else
 					sm_redirect(sm_homepage());
 			}
