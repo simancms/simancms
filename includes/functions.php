@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-09-29
+	//#ver 1.6.10
+	//#revision 2015-12-16
 	//==============================================================================
 
 	function is_email($string)
@@ -52,11 +52,12 @@
 
 	function send_mail($from, $to, $subject, $message, $attachment = '', $filename = '')
 		{
-			global $lang;
+			global $sm;
+			$charset=$sm['s']['charset'];
 			$eol = "\r\n";
 			$boundary = '----=_Part_'.md5(uniqid(time()));
 			if ($from and $a = strpos($from, '<') and strpos($from, '>', $a))
-				$from = "=?".$lang["charset"]."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
+				$from = "=?".$charset."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
 			$headers =
 				($from ? "From: $from$eol" : '').
 					"Content-Type: multipart/mixed; boundary=\"$boundary\"$eol".
@@ -65,7 +66,7 @@
 					"MIME-Version: 1.0$eol";
 			$body =
 				"$eol--$boundary$eol".
-					"Content-Type: text/html; charset=\"".$lang["charset"]."\"; format=\"flowed\"$eol".
+					"Content-Type: text/html; charset=\"".$charset."\"; format=\"flowed\"$eol".
 					"Content-Disposition: inline$eol".
 					"Content-Transfer-Encoding: 8bit$eol$eol".
 					$message.$eol;
@@ -77,7 +78,7 @@
 						"Content-Transfer-Encoding: base64$eol$eol".
 						chunk_split(base64_encode($data)).$eol;
 			$body .= "--$boundary--$eol";
-			return mail($to, "=?".$lang["charset"]."?B?".base64_encode($subject)."?=", $body, $headers);
+			return mail($to, "=?".$charset."?B?".base64_encode($subject)."?=", $body, $headers);
 		}
 
 	// load_file_list('./files/img/', 'jpg|gif|bmp')

@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2015-12-04
+	//#revision 2015-12-16
 	//==============================================================================
 
 
@@ -1092,7 +1092,10 @@
 					{
 						sm_include_lang($sm['other']['includedlanguages'][$i]['module'], $sm['other']['includedlanguages'][$i]['language']);
 					}
-			$sm['s']['charset']=$lang['charset'];
+			if (sm_empty_settings('charset'))
+				$sm['s']['charset']=$lang['charset'];
+			else
+				$sm['s']['charset']=sm_settings('charset');
 		}
 	
 	function sm_current_theme()
