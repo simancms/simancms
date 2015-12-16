@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-06-04
+	//#revision 2015-12-16
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -115,6 +115,7 @@
 
 					function AddText($name, $title, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -122,6 +123,8 @@
 							$this->form['fields'][$name]['type'] = 'text';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['textclass']))
+								$this->SetFieldClass($name, $sm['adminform']['textclass']);
 							return $this;
 						}
 
@@ -184,6 +187,7 @@
 
 					function AddTextarea($name, $title, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -191,6 +195,8 @@
 							$this->form['fields'][$name]['type'] = 'textarea';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['textareaclass']))
+								$this->SetFieldClass($name, $sm['adminform']['textareaclass']);
 							return $this;
 						}
 
@@ -284,6 +290,7 @@
 
 					function AddSelectNLList($name, $title, $nllist_values, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -292,11 +299,14 @@
 							$this->form['fields'][$name]['values'] = nllistToArray($nllist_values);
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['selectclass']))
+								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
 						}
 
 					function AddSelect($name, $title, $array_values, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -305,11 +315,14 @@
 							$this->form['fields'][$name]['values'] = $array_values;
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['selectclass']))
+								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
 						}
 
 					function AddSelectVL($name, $title, $array_values, $array_labels, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -319,11 +332,14 @@
 							$this->form['fields'][$name]['labels'] = $array_labels;
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['selectclass']))
+								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
 						}
 
 					function AddSelectNLListVL($name, $title, $nllist_values, $nllist_labels, $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -333,6 +349,8 @@
 							$this->form['fields'][$name]['labels'] = nllistToArray($nllist_labels);
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->form['fields'][$name]['tab'] = $this->currentTab;
+							if (!empty($sm['adminform']['selectclass']))
+								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
 						}
 
@@ -373,6 +391,7 @@
 
 					function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel = '', $required = false)
 						{
+							global $sm;
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -386,6 +405,8 @@
 									$this->form['fields'][$name]['labels'][$i] = $list[$i][empty($fieldlabel) ? $fiedvalue : $fieldlabel];
 								}
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
+							if (!empty($sm['adminform']['selectclass']))
+								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
 						}
 
@@ -433,12 +454,29 @@
 
 					function Output()
 						{
+							global $sm;
 							$this->form['tabscount'] = count($this->form['tabs']);
 							$this->form['method'] = strtolower($this->form['method']);
 							if (is_array($this->form['fields']))
 								{
+									if ($this->form['no_highlight'] != 1)
+										{
+											$class = '';
+											foreach ($this->form['fields'] as $name => $value)
+												{
+													if ($this->form['fields'][$name]['hidedefinition'] == 1 || $this->form['fields'][$name]['type'] == 'separator')
+														continue;
+													if ($class != 'adminform-row-odd')
+														$class = 'adminform-row-odd';
+													else
+														$class = 'adminform-row-pair';
+													$this->AppendRowClass($class, $name);
+												}
+										}
 									foreach ($this->form['fields'] as $name => $value)
 										{
+											if (!empty($sm['adminform']['rowclass']))
+												$this->AppendRowClass($sm['adminform']['rowclass'], $name);
 											$this->SetFieldId($name, $this->GetFieldId($name));
 											if (!empty($this->form['fields'][$name]['rowclassname']))
 												$this->AppendFieldRowAttribute($name, 'class', $this->form['fields'][$name]['rowclassname']);
@@ -483,20 +521,6 @@
 															}
 														$this->javascriptCode('$("#'.$this->GetFieldId($name).'").change(function(){if($.inArray($("#'.$this->GetFieldId($name).'").val(), ['.$tmp.'])!=-1)$("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").show();else $("#'.$this->GetFieldRowId($this->form['fields'][$name]['value_toggle'][$i]['id']).'").hide();});$("#'.$this->GetFieldId($name).'").change();');
 													}
-										}
-									if ($this->form['no_highlight'] != 1)
-										{
-											$class = '';
-											foreach ($this->form['fields'] as $name => $value)
-												{
-													if ($this->form['fields'][$name]['hidedefinition'] == 1 || $this->form['fields'][$name]['type'] == 'separator')
-														continue;
-													if ($class != 'adminform-row-odd')
-														$class = 'adminform-row-odd';
-													else
-														$class = 'adminform-row-pair';
-													$this->AppendRowClass($class, $name);
-												}
 										}
 								}
 							return $this->form;
@@ -814,7 +838,7 @@
 							$this->form['class'] .= ' '.$classname;
 							return $this;
 						}
-					
+
 					function javascriptCode($jscode)
 						{
 							$this->form['html_end'].='<script type="text/javascript">'.$jscode.'</script>';
