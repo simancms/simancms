@@ -8,5 +8,6 @@
 	$sm['adminform']['selectclass']='';
 	$sm['adminform']['textareaclass']='';
 	$sm['admintable']['globalclass']='';
+	$sm['contenteditor']['controlbuttonsclass']='btn-xs';
 
 ?>

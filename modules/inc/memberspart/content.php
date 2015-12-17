@@ -179,6 +179,7 @@
 					sm_add_cssfile('contentaddedit.css');
 					sm_use('ui.interface');
 					sm_use('ui.form');
+					sm_use('ui.buttons');
 					if ($sm['u']['level']==3)
 						{
 							add_path_modules();
@@ -189,6 +190,11 @@
 						add_path_home();
 					add_path_current();
 					$ui = new TInterface();
+					$b=new TButtons();
+					if ($_getvars['exteditor']!='off')
+						$b->AddMessageBox('exteditoroff', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'off')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+					else
+						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
 					if (!empty($error))
 						$ui->NotificationError($error);
 					if (sm_action('add'))
@@ -221,6 +227,9 @@
 						{
 							$f->AddFile('userfile', $lang['common']['image']);
 						}
+					if (!empty($sm['contenteditor']['controlbuttonsclass']))
+						$b->ApplyClassnameForAll($sm['contenteditor']['controlbuttonsclass']);
+					$f->InsertButtons($b);
 					if ($use_ext_editor)
 						$f->AddEditor('text_content', $lang['common']['text'], true);
 					else
@@ -229,7 +238,10 @@
 					if (intval(sm_settings('content_use_preview'))==1)
 						{
 							if ($use_ext_editor)
-								$f->AddEditor('preview_content', $lang['common']['preview']);
+								{
+									$f->AddEditor('preview_content', $lang['common']['preview']);
+									$f->SetFieldAttribute('preview_content', 'style', ';');//TinyMCE temporary fix
+								}
 							else
 								$f->AddTextarea('preview_content', $lang['common']['preview']);
 							$f->MergeColumns('preview_content');

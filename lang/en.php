@@ -124,6 +124,7 @@ $lang['messages']['add_successful']='Add successful';
 $lang['messages']['edit_successful']='Edit successful';
 $lang['messages']['delete_successful']='Delete successful';
 $lang['messages']['nothing_found']='Nothing found';
+$lang['messages']['changes_will_be_lost']='If you leave before saving, your changes will be lost';
 $lang['register'] = 'Register';
 $lang['email'] = 'E-mail';
 $lang['upload'] = 'Upload';
