@@ -176,6 +176,7 @@
 							sm_event('oneditcontent', array($content['id_content']));
 							sm_title($lang['common']['edit']);
 						}
+					sm_add_cssfile('contentaddedit.css');
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					if ($sm['u']['level']==3)
