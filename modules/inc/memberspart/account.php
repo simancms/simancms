@@ -50,7 +50,7 @@
 						}
 					else
 						{
-							$password = md5($password);
+							$password = sm_password_hash($password);
 							$sqlpasswd = ", password = '$password' ";
 						}
 				}
@@ -69,7 +69,7 @@
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($userinfo['id'])."'";
 					if (!empty($old_password))
 						{
-							$sql .= " AND password = '".md5($old_password)."'";
+							$sql .= " AND password = '".sm_password_hash($old_password)."'";
 						}
 					$result = execsql($sql);
 					$u = 0;

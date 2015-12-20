@@ -14,7 +14,7 @@
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
 		{
 			global $tableusersprefix;
-			$password = md5($password);
+			$password = sm_password_hash($password);
 			$q = new TQuery($tableusersprefix.'users');
 			$q->Add('login', dbescape($login));
 			$q->Add('password', dbescape($password));
@@ -340,7 +340,7 @@
 		{
 			global $sm;
 			$usr_name = dbescape(strtolower($login));
-			$usr_passwd = md5($password);
+			$usr_passwd = sm_password_hash($password);
 			if (sm_settings('signinwithloginandemail')==1)
 				$id = getsqlfield("SELECT id_user FROM ".$sm['tu']."users WHERE (lower(login)='$usr_name' OR lower(email)='$usr_name') AND password='$usr_passwd' AND user_status>0 LIMIT 1");
 			else
@@ -530,5 +530,9 @@
 				$sm['output_replacers'][] = $functionname;
 		}
 
+	function sm_password_hash($password)
+		{
+			return md5($password);
+		}
 
 ?>

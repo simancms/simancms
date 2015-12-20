@@ -34,6 +34,7 @@
 	require("../includes/dbengine".$serverDB.".php");
 	require("../includes/dbelite.php");
 	require("../includes/functions.php");
+	require("../includes/smcoreext.php");
 
 	$smarty = new Smarty;
 
@@ -271,7 +272,7 @@
 								}
 							else
 								{
-									$password = md5($password);
+									$password = sm_password_hash($password);
 									$sql = "INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '', '', 3)";
 									$result = database_db_query($nameDB, $sql, $lnkDB);
 									$inst['messages'][0]['text'] = $lang['create_administrator'].'. </b> <font color="#00FF00">'.$lang['OK'].'</font>';
