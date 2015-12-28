@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-06-12
+	//#revision 2015-12-28
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -403,6 +403,7 @@
 					sm_use('ui.form');
 					sm_use('ui.grid');
 					sm_use('ui.buttons');
+					sm_extcore();
 					add_path_modules();
 					add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 					sm_title($lang['module_galleies']['galleries']);
@@ -419,6 +420,7 @@
 					$t->AddCol('title', $lang['common']['title']);
 					$t->AddCol('public', $lang['common']['public']);
 					$t->AddCol('items_count', $lang['count']);
+					$t->AddCol('action', $lang['action'], '5%');
 					$t->AddEdit();
 					$t->AddDelete();
 					$q=new TQuery($sm['t'].'categories_media');
@@ -439,6 +441,8 @@
 							$t->Url('title', 'index.php?m=media&d=list&ctg='.$q->items[$i]['id_ctg']);
 							$t->Label('public', $q->items[$i]['public']==1?$lang['yes']:$lang['no']);
 							$t->Label('items_count', $q->items[$i]['items_count']);
+							$t->Label('action', $lang['action']);
+							$t->DropDownItem('action', $lang['module_menu']['add_to_menu'], sm_tomenuurl($q->items[$i]['title'], sm_fs_url('index.php?m=media&d=gallery&ctg='.$q->items[$i]['id_ctg']), sm_this_url()));
 							$t->Url('edit', 'index.php?m=media&d=editctg&id='.$q->items[$i]['id_ctg'].'&returnto='.urlencode(sm_this_url()));
 							$t->Url('delete', 'index.php?m=media&d=postdeletectg&id='.$q->items[$i]['id_ctg'].'&returnto='.urlencode(sm_this_url()));
 							$t->NewRow();
@@ -503,10 +507,12 @@
 					sm_title($lang['module_galleies']['media_files']);
 					add_path_current();
 					sm_use('ui.interface');
-					sm_use('admindashboard');
+					sm_use('ui.dashboard');
+					sm_extcore();
 					$ui = new TInterface();
 					$dash=new TDashBoard();
 					$dash->AddItem($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries', 'photo');
+					$dash->AddItem($lang['module_menu']['add_to_menu'].' - '.$lang['module_galleies']['galleries'], sm_tomenuurl($lang['module_galleies']['galleries'], sm_fs_url('index.php?m=media'), sm_this_url()), 'add');
 					$dash->AddItem($lang['settings'], 'index.php?m=media&d=settings', 'settings');
 					$ui->AddDashboard($dash);
 					$ui->Output(true);
