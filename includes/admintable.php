@@ -326,9 +326,23 @@
 						}
 
 					//Data type should be used in export 
-					function SetDataTypeNumber($name)
+					function SetDataTypeInteger($name)
 						{
-							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'number';
+							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'integer';
+							return $this;
+						}
+					
+					//Data type should be used in export 
+					function SetDataTypeMoney($name)
+						{
+							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'money';
+							return $this;
+						}
+
+					//Data type should be used in export 
+					function SetDataTypeFloat($name)
+						{
+							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'float';
 							return $this;
 						}
 
