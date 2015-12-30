@@ -325,6 +325,20 @@
 							return $this;
 						}
 
+					//Data type should be used in export 
+					function SetDataTypeNumber($name)
+						{
+							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'number';
+							return $this;
+						}
+
+					//Data type should be used in export 
+					function SetDataTypeText($name)
+						{
+							$this->table['rows'][$this->rownumber][$name]['datatype'] = '';
+							return $this;
+						}
+
 					function GetLabelText($name, $row_index=NULL)
 						{
 							if ($row_index===NULL)
