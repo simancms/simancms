@@ -49,3 +49,7 @@ tr.adminform-row-odd:hover td, tr.adminform-row-pair:hover td
 	padding-right:2em;
 	font-size:smaller;
 }
+.at-nobr
+{
+	white-space:nowrap;
+}

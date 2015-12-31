@@ -125,3 +125,7 @@ tr.admintable_row:hover td
 {
 	text-align:center;
 }
+.at-nobr
+{
+	white-space:nowrap;
+}
