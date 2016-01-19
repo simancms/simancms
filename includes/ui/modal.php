@@ -7,12 +7,12 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-12-21
+	//#revision 2016-01-19
 	//==============================================================================
 
 	if (!defined("ui_modal_DEFINED"))
 		{
-			sm_add_cssfile('ext/modal/jsmodal/css/jsmodal-light.css', true);
+			sm_add_cssfile('ext/modal/jsmodal/css/jsmodal-siman.css', true);
 			sm_add_jsfile('ext/modal/jsmodal/js/jsmodal-1.0d.min.js', true);
 
 			class TModalHelper
