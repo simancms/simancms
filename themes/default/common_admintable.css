@@ -129,3 +129,8 @@ tr.admintable_row:hover td
 {
 	white-space:nowrap;
 }
+
+.at-inlineimages
+{
+	padding-left:5px;
+}
