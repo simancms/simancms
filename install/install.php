@@ -247,6 +247,8 @@
 					elseif ($inst['step'] == 6)
 						{
 							$inst['title'] = $lang['step6_title'];
+							$inst['addadmin']['user_login'] = 'admin';
+							$inst['addadmin']['user_email'] = 'webmaster@'.$_servervars['SERVER_NAME'];
 						}
 					elseif ($inst['step'] == 7)
 						{

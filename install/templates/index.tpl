@@ -175,7 +175,7 @@ a
 				
 				<table width="100%" border="0">
 				<tr>
-				<td width="50%">{$lang.addadm.login_str}<sup>*</sup></td><td width="50%"><input type="text" name="p_login" value="{if $inst.addadmin.user_login eq ""}admin{else}{$inst.addadmin.user_login}{/if}"></td>
+				<td width="50%">{$lang.addadm.login_str}<sup>*</sup></td><td width="50%"><input type="text" name="p_login" value="{$inst.addadmin.user_login}"></td>
 				</tr>
 				<tr>
 				<td>{$lang.addadm.password}<sup>*</sup></td><td><input type="text" name="p_password" value=""></td>
