@@ -176,10 +176,12 @@
 							sm_event('oneditcontent', array($content['id_content']));
 							sm_title($lang['common']['edit']);
 						}
+					sm_add_cssfile('mediainsert.css');
 					sm_add_cssfile('contentaddedit.css');
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					sm_use('ui.buttons');
+					sm_use('ui.modal');
 					if ($sm['u']['level']==3)
 						{
 							add_path_modules();
@@ -192,7 +194,13 @@
 					$ui = new TInterface();
 					$b=new TButtons();
 					if ($_getvars['exteditor']!='off')
-						$b->AddMessageBox('exteditoroff', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'off')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+						{
+							$b->AddMessageBox('exteditoroff', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'off')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+							$modal=new TModalHelper();
+							$modal->SetAJAXSource('index.php?m=media&d=editorinsert&theonepage=1');
+							$b->AddButton('insertimgmodal', $lang['add_image'])
+								->OnClick($modal->GetJSCode());
+						}
 					else
 						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
 					if (!empty($error))

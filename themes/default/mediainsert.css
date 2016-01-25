@@ -1,4 +1,4 @@
-.gallery-item
+.gallery-insert-item
 {
 	float:left;
 	min-width:100px;
@@ -6,17 +6,17 @@
 	margin:1px;
 }
 
-.gallery-image-container
+.gallery-insert-image-container
 {
 
 }
 
-.gallery-image
+.gallery-insert-image
 {
 	
 }
 
-.gallery-title
+.gallery-insert-title
 {
 	text-align:center;
 }
@@ -28,3 +28,4 @@
 	padding:5px;
 	margin:1px;
 }
+

@@ -117,6 +117,7 @@ $lang['common']['open']='Open';
 $lang['common']['leave_empty_for_default']='Leave empty for default';
 $lang['common']['additional_options']='Additional options';
 $lang['common']['text']='Text';
+$lang['common']['back']='Back';
 $lang['messages']['fill_required_fields']='Fill required fields';
 $lang['messages']['wrong_email']='Wrong email';
 $lang['messages']['seo_url_exists']='SEO URL already exists';

@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
 	Version: 1.6.10
-	Revision: 2015-12-28
+	Revision: 2016-01-24
 	Author URI: http://simancms.org/
 	*/
 
@@ -83,6 +83,8 @@
 				}
 		}
 	
+	if ($userinfo['level']>1)
+		include('modules/inc/memberspart/media.php');
 	if ($userinfo['level']>2)
 		include('modules/inc/adminpart/media.php');
 

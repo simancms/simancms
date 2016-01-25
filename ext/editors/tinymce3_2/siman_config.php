@@ -12,6 +12,11 @@
 					return $str;
 				}
 
+			function siman_exteditor_insert_image($image)
+				{
+					return "tinyMCE.execCommand('mceInsertContent',false,'<img src=\\'".jsescape($image)."\\'>')";
+				}
+
 			$_settings['ext_editor_toolbar'] = 'Siman'; //Basic,Default,Siman
 			define("EXTEDITOR_FUNCTIONS_DEFINED", 1);
 		}

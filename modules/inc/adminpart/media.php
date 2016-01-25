@@ -14,15 +14,6 @@
 
 	if (!defined("MEDIAADMIN_FUNCTIONS_DEFINED"))
 		{
-			function siman_thumb_for_media($filepath)
-				{
-					$info=pathinfo($filepath);
-					$filename=$info['dirname'].'/'.$info['filename'].'-small.'.$info['extension'];
-					if (file_exists($filename))
-						return $filename;
-					else
-						return $filepath;
-				}
 			function siman_update_media_category_count($id_ctg)
 				{
 					global $sm;

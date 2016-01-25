@@ -75,6 +75,11 @@
 							$js.="});";
 							return $js;
 						}
+					
+					public static function ModalDOMSelector()
+						{
+							return '#modal-content';
+						}
 
 				}
 

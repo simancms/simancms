@@ -1248,5 +1248,12 @@
 			$sm['delayed_actions'][0]['panel']=$panel;
 			$sm['delayed_actions'][0]['params']=$params;
 		}
+	
+	function sm_ajax_load($url, $dom_selector)
+		{
+			if (!in_array(substr($dom_selector, 0, 1), Array('#', '.')))
+				$dom_selector='#'.$dom_selector;
+			return "\$('".$dom_selector."').load('".$url."');";
+		}
 
 ?>

@@ -161,6 +161,7 @@
 	$lang['common']['leave_empty_for_default']='Залиште порожнім для значення по замовчуванню';
 	$lang['common']['additional_options']='Додаткові опції';
 	$lang['common']['text']='Текст';
+	$lang['common']['back']='Назад';
 
 	$lang['messages']['fill_required_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
