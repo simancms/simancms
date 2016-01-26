@@ -50,14 +50,13 @@
 			$_sessionvars['protect_code'] = $code;
 		}
 
-	function send_mail($from, $to, $subject, $message, $attachment = '', $filename = '')
+	function send_mail($from, $to, $subject, $message, $attachment_files = Array(), $attachment_names = Array())
 		{
-			global $sm;
-			$charset=$sm['s']['charset'];
+			global $lang;
 			$eol = "\r\n";
 			$boundary = '----=_Part_'.md5(uniqid(time()));
 			if ($from and $a = strpos($from, '<') and strpos($from, '>', $a))
-				$from = "=?".$charset."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
+				$from = "=?".$lang["charset"]."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
 			$headers =
 				($from ? "From: $from$eol" : '').
 					"Content-Type: multipart/mixed; boundary=\"$boundary\"$eol".
@@ -66,19 +65,31 @@
 					"MIME-Version: 1.0$eol";
 			$body =
 				"$eol--$boundary$eol".
-					"Content-Type: text/html; charset=\"".$charset."\"; format=\"flowed\"$eol".
+					"Content-Type: text/html; charset=\"".$lang["charset"]."\"; format=\"flowed\"$eol".
 					"Content-Disposition: inline$eol".
 					"Content-Transfer-Encoding: 8bit$eol$eol".
 					$message.$eol;
-			if ($attachment and is_readable($attachment) and $data = @file_get_contents($attachment))
-				$body .=
-					"--$boundary$eol".
-						"Content-Type: application/octet-stream; name=\"$filename\"$eol".
-						"Content-Disposition: attachment; filename=\"$filename\"$eol".
-						"Content-Transfer-Encoding: base64$eol$eol".
-						chunk_split(base64_encode($data)).$eol;
+			if (!is_array($attachment_files))
+				$attachment_files=Array($attachment_files);
+			if (!is_array($attachment_names))
+				$attachment_names=Array($attachment_names);
+			for ($i = 0; $i<count($attachment_files); $i++)
+				{
+					if (!empty($attachment_files[$i]) && is_readable($attachment_files[$i]) && $data = @file_get_contents($attachment_files[$i]))
+						{
+							$filename=$attachment_names[$i];
+							if (empty($filename))
+								$filename=sm_getnicename(basename($attachment_files[$i]));
+							$body .=
+								"--$boundary$eol".
+									"Content-Type: application/octet-stream; name=\"$filename\"$eol".
+									"Content-Disposition: attachment; filename=\"$filename\"$eol".
+									"Content-Transfer-Encoding: base64$eol$eol".
+									chunk_split(base64_encode($data)).$eol;
+						}
+				}
 			$body .= "--$boundary--$eol";
-			return mail($to, "=?".$charset."?B?".base64_encode($subject)."?=", $body, $headers);
+			return mail($to, "=?".$lang["charset"]."?B?".base64_encode($subject)."?=", $body, $headers);
 		}
 
 	// load_file_list('./files/img/', 'jpg|gif|bmp')
