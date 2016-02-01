@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-09-29
+	//#ver 1.6.10
+	//#revision 2016-02-04
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -17,7 +17,7 @@
 		{
 			$m['post'] = $_postvars;
 			if ($userinfo['level'] < intval(sm_settings('news_editor_level')))
-				$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars["p_id_category_n"]);
+				$extsql = '('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').') AND id_category='.intval($_postvars['p_id_category_n']);
 			else
 				$extsql = '';
 			$sql = "SELECT * FROM ".$tableprefix."categories_news";
@@ -25,10 +25,10 @@
 				$sql .= ' WHERE '.$extsql;
 			$result = execsql($sql);
 			$i = 0;
-			while ($row = database_fetch_object($result))
+			while ($row = database_fetch_assoc($result))
 				{
-					$m["ctgid"][$i][0] = $row->id_category;
-					$m["ctgid"][$i][1] = $row->title_category;
+					$m['ctgid'][$i][0] = $row['id_category'];
+					$m['ctgid'][$i][1] = $row['title_category'];
 					$i++;
 				}
 			if ($i > 0)
@@ -63,7 +63,7 @@
 							$keywords_news = dbescape($_postvars["keywords_news"]);
 							$description_news = dbescape($_postvars["description_news"]);
 							$img_copyright_news = dbescape($_postvars["img_copyright_news"]);
-							if ($_settings['news_use_time'])
+							if (!sm_empty_settings('news_use_time'))
 								{
 									$m['date']['hours'] = $_postvars['p_time_hours'];
 									$m['date']['minutes'] = $_postvars['p_time_minutes'];
@@ -72,9 +72,11 @@
 							$sql = "INSERT INTO ".$tableprefix."news (id_category_n, date_news, title_news, preview_news, text_news, type_news, keywords_news, description_news, id_author_news, img_copyright_news) VALUES ('$id_category_n', '$date_news', '$title_news', '$preview_news', '$text_news', '$type_news', '$keywords_news', '$description_news', '".intval($userinfo['id'])."', '$img_copyright_news')";
 							$id_news = insertsql($sql);
 							sm_set_metadata('news', $id_news, 'author_id', $sm['u']['id']);
+							sm_set_metadata('news', $id_news, 'time_created', time());
+							sm_set_metadata('news', $id_news, 'last_updated_time', time());
 							sm_set_metadata('news', $id_news, 'news_template', $_postvars['tplnews']);
 							sm_set_metadata('news', $id_news, 'seo_title', $_postvars['seo_title']);
-							if ($_settings['news_use_image'] == 1)
+							if (intval(sm_settings('news_use_image')) == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
 										{
@@ -107,7 +109,7 @@
 									$sql = "UPDATE ".$tableprefix."news SET filename_news='$urlid' WHERE id_news=".$nid;
 									$result = execsql($sql);
 								}
-							for ($i = 0; $i < $_settings['news_attachments_count']; $i++)
+							for ($i = 0; $i < sm_settings('news_attachments_count'); $i++)
 								{
 									sm_upload_attachment('news', $id_news, $_uplfilevars['attachment'.$i]);
 								}
@@ -143,7 +145,7 @@
 			if ($i > 0)
 				{
 					$m["module"] = 'news';
-					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
+					if (!sm_empty_settings('ext_editor') && $_getvars['exteditor'] != 'off')
 						{
 							$special['ext_editor_on'] = 1;
 						}
@@ -317,6 +319,7 @@
 							$sql = "UPDATE ".$tableprefix."news SET id_category_n='$id_category_n', title_news='$title_news', preview_news='$preview_news', text_news='$text_news', type_news='$type_news', date_news='$date_news', keywords_news='$keywords_news', description_news='$description_news' WHERE id_news='".$id_news."'";
 							$result = execsql($sql);
 							sm_set_metadata('news', $id_news, 'seo_title', $_postvars['seo_title']);
+							sm_set_metadata('news', $id_news, 'last_updated_time', time());
 							if ($_settings['news_use_image'] == 1)
 								{
 									if ($_settings['image_generation_type'] == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))

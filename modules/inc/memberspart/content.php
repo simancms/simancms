@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2015-10-29
+	//#revision 2016-02-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -49,7 +49,7 @@
 									$categories = siman_get_available_categories();
 									if (count($categories)>0)
 										{
-											$content=TQuery::ForTable($sm['t']['content'].'content')
+											$content=TQuery::ForTable($sm['t'].'content')
 												->AddWhere('id_content', intval($id))
 												->Get();
 											if (empty($content['id_content']))
@@ -103,6 +103,7 @@
 								{
 									$cid=$q->Insert();
 									sm_set_metadata('content', $cid, 'author_id', $sm['u']['id']);
+									sm_set_metadata('content', $cid, 'time_created', time());
 									TQuery::ForTable($sm['t'].'content')
 										->Add('priority_content', intval($cid))
 										->Update('id_content', intval($cid));
@@ -116,6 +117,7 @@
 							sm_set_metadata('content', $cid, 'seo_title', $sm['p']['seo_title']);
 							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
 							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
+							sm_set_metadata('content', $cid, 'last_updated_time', time());
 							if (sm_action('postedit'))
 								{
 									$attachments=sm_get_attachments('content', $cid);
