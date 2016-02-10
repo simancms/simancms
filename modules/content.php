@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
 	Version: 1.6.10
-	Revision: 2015-10-29
+	Revision: 2016-02-10
 	Author URI: http://simancms.org/
 	*/
 
@@ -304,14 +304,14 @@
 								{
 									$m['content'][$i]["text"] = nl2br($m['content'][$i]["text"]);
 								}
-							if ($userinfo['level']>=intval(sm_settings('content_editor_level')))
+							if ($userinfo['level']>=intval(sm_settings('content_editor_level')) && $modules_index==0)
 								{
 									$m['content'][$i]["can_edit"] = 1;
 									$m['content'][$i]["can_delete"] = 1;
 								}
 							elseif (!empty($userinfo['groups']))
 								{
-									if (compare_groups($userinfo['groups'], $row['groups_modify']))
+									if (compare_groups($userinfo['groups'], $row['groups_modify']) && $modules_index==0)
 										{
 											$m['content'][$i]["can_edit"] = 1;
 											$m['content'][$i]["can_delete"] = 1;
@@ -358,6 +358,10 @@
 										}
 									if (!empty($row['description_content']))
 										$special['meta']['description'] = $row['description_content'];
+									if ($m['content'][$i]["can_edit"]==1)
+										$m['content'][$i]['edit_url']='index.php?m=content&d=edit&cid='.$m['content'][$i]["cid"].'&returnto='.urlencode(sm_this_url());
+									if ($m['content'][$i]["can_delete"]==1)
+										$m['content'][$i]['delete_url']='index.php?m=content&d=delete&cid='.$m['content'][$i]["cid"].'&ctg='.$m['content'][$i]["id_category"].'&returnto='.urlencode(sm_this_url());
 								}
 							if ($tmp_no_alike_content != 1 && $modules_index == 0 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0 && !sm_is_index_page())
 								{

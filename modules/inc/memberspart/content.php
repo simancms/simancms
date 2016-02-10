@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2016-02-01
+	//#revision 2016-02-10
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -213,14 +213,14 @@
 						sm_event('beforecontenteditform', Array($cid));
 					if (sm_action('add'))
 						{
-							$f = new TForm('index.php?m='.sm_current_module().'&d=postadd');
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postadd&returnto='.urlencode($_getvars['returnto']));
 							sm_event('startcontentaddform');
 						}
 					else
 						{
 							if (!empty($content['filename_content']))
 								$content['url']=get_filename($content['filename_content']);
-							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content']);
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content'].'&returnto='.urlencode($_getvars['returnto']));
 							sm_event('startcontenteditform', Array($cid));
 						}
 					$v=Array();

@@ -21,11 +21,11 @@
 {if ($modules[$index].content[i].can_edit eq "1" or $modules[$index].content[i].can_delete eq "1" ) and $modules[$index].panel eq "center"}
 <hr>
 {if $modules[$index].content[i].can_edit eq "1" and $modules[$index].panel eq "center"}
-<a href="index.php?m=content&d=edit&cid={$modules[$index].content[i].cid}">{$lang.edit}</a>
+<a href="{$modules[$index].content[i].edit_url}">{$lang.edit}</a>
 {/if}
 {if $modules[$index].content[i].can_delete eq "1" and $modules[$index].panel eq "center"}
 &nbsp;&nbsp;&nbsp;
-<a href="index.php?m=content&d=delete&cid={$modules[$index].content[i].cid}&ctg={$modules[$index].content[i].id_category}">{$lang.delete}</a>
+<a href="{$modules[$index].content[i].delete_url}">{$lang.delete}</a>
 {/if}
 {/if}
 {include file="block_end.tpl"}
