@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-08-24
+	//#ver 1.6.10
+	//#revision 2016-02-13
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -42,7 +42,7 @@
 			require("includes/config.php");
 			$sm['_s'] =& $_settings;
 			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($_settings['resource_url'], strpos($_settings['resource_url'], '/')).'index.php')
-				sm_redirect_now($special['page']['scheme'].'://'.$_settings['resource_url'], 301);
+				sm_redirect_now(sm_homepage(), 301);
 			if (!empty($_settings['default_timezone']))
 				date_default_timezone_set($_settings['default_timezone']);
 			if (empty($_settings['database_date']))

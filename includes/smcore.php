@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2015-12-16
+	//#revision 2016-02-13
 	//==============================================================================
 
 
@@ -918,8 +918,15 @@
 	
 	function sm_homepage()
 		{
-			global $special, $_settings;
-			return $special['page']['parsed_url']['scheme'].'://'.$_settings['resource_url'];
+			global $sm;
+			if (intval(sm_settings('resource_url_rewrite'))==1)
+				{
+					$url=$sm['s']['page']['parsed_url']['scheme'].'://'.sm_settings('resource_url');
+					$parts=@parse_url($url);
+					return $parts['scheme'].'://'.$sm['s']['page']['parsed_url']['host'].(empty($parts['path'])?'/':$parts['path']);
+				}
+			else
+				return $sm['s']['page']['parsed_url']['scheme'].'://'.sm_settings('resource_url');
 		}
 
 	function sm_use($libname)
