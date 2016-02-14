@@ -272,8 +272,14 @@
 							return $sql;
 						}
 
-				//Return matches count
+					//Deprecated
 					function Find($addsql = '')
+						{
+							return $this->TotalCount($addsql);
+						}
+					
+					//Return matches count
+					function TotalCount($addsql = '')
 						{
 							$sql = $this->GetPairs(' AND ');
 							if (!empty($sql))
