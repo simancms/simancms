@@ -540,7 +540,7 @@
 
 					function LoadAllValues($array)
 						{
-							if (!is_array($array))
+							if (!is_array($array) || count($array)==0)
 								return $this;
 							if (!is_array($this->form['fields']))
 								return $this;
