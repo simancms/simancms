@@ -530,10 +530,23 @@
 					function LoadValuesArray($array)
 						{
 							if (!is_array($array))
-								return;
+								return $this;
 							while (list($name, $value) = each($array))
 								{
 									$this->SetValue($name, $value);
+								}
+							return $this;
+						}
+
+					function LoadAllValues($array)
+						{
+							if (!is_array($array))
+								return $this;
+							if (!is_array($this->form['fields']))
+								return $this;
+							foreach ($this->form['fields'] as $name => $value)
+								{
+									$this->SetValue($name, $array[$name]);
 								}
 							return $this;
 						}
