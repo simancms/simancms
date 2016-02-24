@@ -169,13 +169,6 @@
 					sm_notify($lang['settings_saved_successful']);
 					sm_redirect('index.php?m=admin&d=settings&viewmode='.$m['mode_settings']);
 				}
-			if (sm_action('postchgttl'))
-				{
-					$q=new TQuery($tableprefix."modules");
-					$q->AddPost('module_title');
-					$q->Update('id_module', intval($_getvars['mid']));
-					sm_redirect('index.php?m=admin&d=modules');
-				}
 			if (sm_action('postuplimg'))
 				{
 					sm_extcore();
@@ -352,7 +345,7 @@
 					$t->AddEdit();
 					$t->AddCol('delete', '', '16');
 					$t->SetHeaderImage('delete', 'transparent.gif');
-					$sql = "SELECT * FROM ".$tableprefix."modules";
+					$sql = "SELECT * FROM ".$sm['t'].'modules';
 					$result = execsql($sql);
 					$i = 0;
 					while ($row = database_fetch_assoc($result))
@@ -394,6 +387,13 @@
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
+			if (sm_action('postchgttl'))
+				{
+					$q=new TQuery($sm['t'].'modules');
+					$q->AddPost('module_title');
+					$q->Update('id_module', intval($_getvars['mid']));
+					sm_redirect('index.php?m=admin&d=modules');
+				}
 			if (sm_action('chgttl'))
 				{
 					add_path_control();
@@ -404,7 +404,7 @@
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=admin&d=postchgttl&mid='.intval($_getvars['mid']));
 					$f->AddText('module_title', $lang['title']);
-					$q=new TQuery($tableprefix."modules");
+					$q=new TQuery($sm['t'].'modules');
 					$q->Add('id_module', intval($_getvars['mid']));
 					$f->LoadValuesArray($q->Get());
 					$ui->AddForm($f);
@@ -510,7 +510,7 @@
 								}
 						}
 					$dir->close();
-					$q=new TQuery($tableprefix."modules");
+					$q=new TQuery($sm['t'].'modules');
 					$q->Open();
 					while ($q->Fetch())
 						$m['modules'][]=Array(
