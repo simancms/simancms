@@ -128,16 +128,16 @@
 									if (empty($_getvars['dd']))
 										{
 											$tmp['daystart'] = 1;
-											$tmp['dayend'] = date('d', mktime(23, 59, 59, ($tmp['monthend']<12 ? 1 : $tmp['monthend'] = 1), 1, ($tmp['monthend']<12 ? $_getvars['dy'] : intval($_getvars['dy'])+1))-86400);
+											$tmp['dayend'] = date('d', mktime(23, 59, 59, ($tmp['monthend']==12 ? 1 : $tmp['monthend'] + 1), 1, ($tmp['monthend']<12 ? intval($_getvars['dy']) : intval($_getvars['dy'])+1))-86400);
 										}
 									else
 										{
 											$tmp['daystart'] = intval($_getvars['dd']);
 											$tmp['dayend'] = intval($_getvars['dd']);
 										}
-									$tmp_date_filter1 = mktime(0, 0, 0, $tmp['monthstart'], $tmp['daystart'], $_getvars['dy']);
-									$tmp_date_filter2 = mktime(23, 59, 59, $tmp['monthend'], $tmp['dayend'], $_getvars['dy']);
-									$sql2 = " AND date_news>=$tmp_date_filter1 AND date_news<=$tmp_date_filter2 ";
+									$tmp_date_filter1 = intval(mktime(0, 0, 0, intval($tmp['monthstart']), intval($tmp['daystart']), intval($_getvars['dy'])));
+									$tmp_date_filter2 = intval(mktime(23, 59, 59, intval($tmp['monthend']), intval($tmp['dayend']), intval($_getvars['dy'])));
+									$sql2 .= " AND date_news>=$tmp_date_filter1 AND date_news<=$tmp_date_filter2 ";
 								}
 							$m["mode"] = 'listnews';
 						}
