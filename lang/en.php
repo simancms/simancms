@@ -1,7 +1,7 @@
 <?php
 
-$lang['datemask'] = '%m/%d/%y';
-$lang['datetimemask'] = '%m/%d/%y %I:%M %p';
+$lang['datemask'] = '%m/%d/%Y';
+$lang['datetimemask'] = '%m/%d/%Y %I:%M %p';
 $lang['timemask'] = '%I:%M %p';
 $lang['charset'] = 'utf-8';
 $lang['submit'] = 'Submit';
