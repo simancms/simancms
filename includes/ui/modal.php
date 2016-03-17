@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-01-19
+	//#revision 2016-03-17
 	//==============================================================================
 
 	if (!defined("ui_modal_DEFINED"))
@@ -33,6 +33,12 @@
 							return $this;
 						}
 					
+					function SetContentDOMSource($dom_element)
+						{
+							$this->info['content_dom']=$dom_element;
+							return $this;
+						}
+
 					function SetAJAXSource($url)
 						{
 							$this->info['ajaxContent']=$url;
@@ -66,6 +72,8 @@
 								$js.="closeAfter:".intval($this->info['closeAfter']).",";
 							if (!empty($this->info['content']))
 								$js.="content:'".$this->info['content']."',";
+							if (!empty($this->info['content_dom']))
+								$js.="content:$('".$this->info['content_dom']."').html(),";
 							if (!empty($this->info['openCallback']))
 								$js.="openCallback:".$this->info['openCallback'].",";
 							if ($this->info['draggable'])
