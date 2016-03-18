@@ -141,6 +141,7 @@
 	$lang['common']['month']='Місяць';
 	$lang['common']['day']='День';
 	$lang['common']['year']='Рік';
+	$lang['common']['date']='Дата';
 	$lang['common']['are_you_sure']='Ви впевнені';
 	$lang['common']['information']='Інформація';
 	$lang['common']['thumbnail']='Піктограма';
@@ -280,7 +281,6 @@
 	$lang["add_news"]='Додати новину';
 	$lang["edit_news"]='Редагувати новину';
 	$lang["delete_news"]='Видалити новину';
-	$lang["date_news"]='Дата';
 	$lang["text_news"]='Текст';
 	$lang["type_news"]='Тип тексту';
 	$lang["type_news_HTML"]='HTML текст';
@@ -295,7 +295,6 @@
 	$lang['news_wrong_date_message']='Ви обрали невірну дату';
 	$lang['module_news']['preview_news']='Анонс';
 	$lang['module_news']['module_news_name']='Новини';
-	$lang['module_news']['caption']='Заголовок';
 	$lang['module_news']['list_news']='Список новин';
 	$lang['module_news']['dont_show_alike_news']='Не показувати схожі новини';
 

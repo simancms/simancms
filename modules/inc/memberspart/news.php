@@ -123,7 +123,7 @@
 				}
 		}
 
-
+	/*
 	if (sm_action('add') && ($userinfo['level']>=intval(sm_settings('news_editor_level')) || !empty($userinfo['groups'])))
 		{
 			if ($userinfo['level'] < intval(sm_settings('news_editor_level')))
@@ -170,7 +170,7 @@
 					sm_event('onaddnews', array($m['date']));
 				}
 		}
-
+    */
 
 	if (sm_action('delete') && ($userinfo['level']>=intval(sm_settings('news_editor_level')) || !empty($userinfo['groups'])))
 		{
@@ -470,6 +470,153 @@
 			add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 			add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 			add_path($lang['module_news']['list_news'], "index.php?m=news&d=list&ctg=".$m['ctgidselected']."");
+		}
+	
+	if (sm_action('add') && ($userinfo['level']>=intval(sm_settings('news_editor_level')) || !empty($userinfo['groups'])))
+		{
+			$use_ext_editor=strcmp($_getvars['exteditor'], 'off')!=0;
+			$qctgs=new TQuery($sm['t'].'categories_news');
+			if ($userinfo['level'] < intval(sm_settings('news_editor_level')))
+				$qctgs->Add('('.convert_groups_to_sql($userinfo['groups'], 'groups_modify').')');
+			$qctgs->OrderBy('title_category');
+			$qctgs->Select();
+			if ($qctgs > 0)
+				{
+					if (sm_action('add'))
+						{
+							sm_event('onaddnews');
+							sm_title($lang['common']['add']);
+						}
+					else
+						{
+							$item=TQuery::ForTable($sm['t'].'news')
+								->AddWhere('id_news', intval($sm['g']['nid']))
+								->Get();
+							sm_event('oneditnews', array($item['id_news']));
+							sm_title($lang['common']['edit']);
+						}
+					sm_add_cssfile('mediainsert.css');
+					sm_add_cssfile('newsaddedit.css');
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.buttons');
+					sm_use('ui.modal');
+					if ($sm['u']['level']==3)
+						{
+							add_path_modules();
+							add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+							add_path($lang['module_news']['list_news'], "index.php?m=news&d=list");
+						}
+					else
+						add_path_home();
+					add_path_current();
+					$ui = new TInterface();
+					$b=new TButtons();
+					if ($_getvars['exteditor']!='off')
+						{
+							$b->AddMessageBox('exteditoroff', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'off')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+							$modal=new TModalHelper();
+							$modal->SetAJAXSource('index.php?m=media&d=editorinsert&theonepage=1');
+							$b->AddButton('insertimgmodal', $lang['add_image'])
+								->OnClick($modal->GetJSCode());
+						}
+					else
+						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+					if (!empty($error))
+						$ui->NotificationError($error);
+					if (sm_action('add'))
+						sm_event('beforenewsaddform');
+					else
+						sm_event('beforenewseditform', Array($cid));
+					if (sm_action('add'))
+						{
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postadd&returnto='.urlencode($_getvars['returnto']));
+							sm_event('startnewsaddform');
+						}
+					else
+						{
+							if (!empty($content['filename_content']))
+								$content['url']=get_filename($content['filename_content']);
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content'].'&returnto='.urlencode($_getvars['returnto']));
+							sm_event('startnewseditform', Array($cid));
+						}
+
+
+					$f->AddText('title_news', $lang['common']['title'])
+						->SetFocus();
+					$f->AddSelectVL('id_category', $lang['common']['category'], $qctgs->ColumnValues('id_category'), $qctgs->ColumnValues('title_category'));
+					if (intval(sm_settings('news_use_image'))==1)
+						{
+							$f->AddFile('userfile', $lang['common']['image']);
+							$f->AddText('img_copyright_news', $lang['common']['copyright'].' ('.$lang['common']['image'].')');
+						}
+					$years=Array();
+					for ($i = 2006; $i<=intval(date('Y')+10); $i++)
+						$years[]=$i;
+					$days=Array();
+					for ($i = 1; $i<=31; $i++)
+						$days[]=$i;
+					$months_v=Array();
+					$months_l=Array();
+					for ($i = 1; $i<=12; $i++)
+						{
+							$months_v[]=$i;
+							$months_l[]=$lang['month_'.$i];
+						}
+					$f->AddSelect('date_day', $lang['common']['date'], $days);
+					$f->HideEncloser();
+					$f->AddSelectVL('date_month', $lang['common']['date'], $months_v, $months_l);
+					$f->HideDefinition();
+					$f->HideEncloser();
+					$f->AddSelect('date_year', $lang['common']['date'], $years);
+					$f->HideDefinition();
+					if (intval(sm_settings('news_use_time'))==1)
+						{
+							$hrs=Array();
+							for ($i = 0; $i<24; $i++)
+								$hrs[]=($i<10?'0':'').$i;
+							$min=Array();
+							for ($i = 0; $i<60; $i++)
+								$min[]=($i<10?'0':'').$i;
+							$f->HideEncloser();
+							$f->AddSelect('time_hours', $lang['common']['date'], $hrs);
+							$f->SetFieldBeginText('time_hours', $lang['common']['time']);
+							$f->HideDefinition();
+							$f->HideEncloser();
+							$f->AddSelect('time_minutes', $lang['common']['date'], $min);
+							$f->HideDefinition();
+						}
+					
+					if ($use_ext_editor)
+						$f->AddHidden('type_content', 1);
+					else
+						$f->AddSelectVL('type_content', $lang['type_content'], Array(0, 1), Array($lang['type_content_simple_text'], $lang['type_content_HTML']));
+					
+					if (sm_action('add'))
+						{
+							$m['type_news'] = $_settings['default_news_text_style'];
+							$f->SetValue('id_category', intval($_getvars['ctg']));
+							$f->SetValue('date_day', date('d'));
+							$f->SetValue('date_month', date('m'));
+							$f->SetValue('date_year', date('Y'));
+							if (intval(sm_settings('news_use_time'))==1)
+								{
+									$f->SetValue('time_hours', date('H'));
+									$f->SetValue('time_minutes', date('i'));
+								}
+							if (!$use_ext_editor)
+								$f->SetValue('type_news', intval(sm_settings('default_news_text_style')));
+						}
+					$ui->AddForm($f);
+					$ui->Output(true);
+
+					if (count($sm['themeinfo']['alttpl']['news'])>0)
+						{
+							$m['alttpl']['news']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
+							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['news']); $i++)
+								$m['alttpl']['news'][]=$sm['themeinfo']['alttpl']['news'][$i];
+						}
+				}
 		}
 
 	if ($userinfo['level'] == 3)
