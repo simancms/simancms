@@ -187,6 +187,7 @@
 					sm_extcore();
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+					add_path_current();
 					$from_record = abs(intval($_getvars['from']));
 					if (empty($from_record)) $from_record = 0;
 					$from_page = ceil(($from_record + 1) / $_settings['admin_items_by_page']);
@@ -204,7 +205,7 @@
 							$m['ctg'][$i]['id'] = $row->id_category;
 							$i++;
 						}
-					$m['title'] = $lang['list_news'];
+					sm_title($lang['list_news']);
 					$q=new TQuery($sm['t']."news");
 					if (!empty($ctg_id))
 						$q->Add('id_category_n', intval($ctg_id));
