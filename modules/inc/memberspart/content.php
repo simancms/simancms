@@ -294,7 +294,7 @@
 								}
 							$f->AddSelectVL('tplcontent', $lang['common']['template'].' ('.$lang['common']['page'].')', $v, $l);
 						}
-					if (intval(sm_settings('content_attachments_count')))
+					if (intval(sm_settings('content_attachments_count'))>0)
 						{
 							$f->Separator($lang['common']['attachments']);
 							if (sm_action('edit'))
