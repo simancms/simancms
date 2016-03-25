@@ -585,7 +585,7 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_alike_news_count&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
-	{if $modules[$index].show_settings.news_news_attachments_count eq 1}
+	{if $modules[$index].show_settings.news_attachments_count eq 1}
 		<tr>
 			<td>{$lang.settings_news_attachments_count}:</td>
 			<td><select name="p_news_attachments_count" size="1">
