@@ -485,7 +485,7 @@
 					if (sm_action('add'))
 						{
 							sm_event('onaddnews');
-							sm_title($lang['common']['add']);
+							sm_title($lang['news'].' - '.$lang['common']['add']);
 						}
 					else
 						{
@@ -493,7 +493,7 @@
 								->AddWhere('id_news', intval($sm['g']['nid']))
 								->Get();
 							sm_event('oneditnews', array($item['id_news']));
-							sm_title($lang['common']['edit']);
+							sm_title($lang['news'].' - '.$lang['common']['edit']);
 						}
 					sm_add_cssfile('mediainsert.css');
 					sm_add_cssfile('newsaddedit.css');
@@ -620,7 +620,7 @@
 						->WithTooltip($lang['common']['leave_empty_for_default']);
 					$f->AddText('keywords_news', $lang['common']['seo_keywords']);
 					$f->AddTextarea('description_news', $lang['common']['seo_description']);
-					if (count($sm['themeinfo']['alttpl']['news'])>0 || intval(sm_settings('news_attachments_count'))>0)
+					if (count($sm['themeinfo']['alttpl']['news'])>0)
 						$f->Separator($lang['common']['additional_options']);
 					if (count($sm['themeinfo']['alttpl']['news'])>0)
 						{
@@ -631,7 +631,7 @@
 									$v[]=$sm['themeinfo']['alttpl']['news'][$i]['tpl'];
 									$l[]=$sm['themeinfo']['alttpl']['news'][$i]['name'];
 								}
-							$f->AddSelectVL('tplcontent', $lang['common']['template'].' ('.$lang['common']['page'].')', $v, $l);
+							$f->AddSelectVL('tplnews', $lang['common']['template'], $v, $l);
 						}
 					if (intval(sm_settings('news_attachments_count'))>0)
 						{
