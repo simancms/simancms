@@ -278,13 +278,13 @@
 	//News
 	$lang["list_news"]='Список новин';
 	$lang["all_news"]='Всі новини';
-	$lang["add_news"]='Додати новину';
-	$lang["edit_news"]='Редагувати новину';
-	$lang["delete_news"]='Видалити новину';
-	$lang["text_news"]='Текст';
-	$lang["type_news"]='Тип тексту';
-	$lang["type_news_HTML"]='HTML текст';
-	$lang["type_news_simple_text"]='Звичайний текст';
+	$lang["add_news"]='Додати новину';//deprecated
+	$lang["edit_news"]='Редагувати новину';//deprecated
+	$lang["delete_news"]='Видалити новину';//deprecated
+	$lang["text_news"]='Текст';//deprecated
+	$lang["type_news"]='Тип тексту';//deprecated
+	$lang["type_news_HTML"]='HTML текст';//deprecated
+	$lang["type_news_simple_text"]='Звичайний текст';//deprecated
 	$lang["add_news_successful"]='Новину додано';
 	$lang["edit_news_successful"]='Новину відредаговано';
 	$lang["delete_news_successful"]='Новину видалено';

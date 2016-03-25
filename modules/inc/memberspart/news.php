@@ -535,13 +535,11 @@
 						}
 					else
 						{
-							if (!empty($content['filename_content']))
-								$content['url']=get_filename($content['filename_content']);
-							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$content['id_content'].'&returnto='.urlencode($_getvars['returnto']));
+							if (!empty($item['filename_news']))
+								$item['url']=get_filename($item['filename_news']);
+							$f = new TForm('index.php?m='.sm_current_module().'&d=postedit&id='.$item['id_news'].'&returnto='.urlencode($_getvars['returnto']));
 							sm_event('startnewseditform', Array($cid));
 						}
-
-
 					$f->AddText('title_news', $lang['common']['title'])
 						->SetFocus();
 					$f->AddSelectVL('id_category', $lang['common']['category'], $qctgs->ColumnValues('id_category'), $qctgs->ColumnValues('title_category'));
@@ -550,6 +548,7 @@
 							$f->AddFile('userfile', $lang['common']['image']);
 							$f->AddText('img_copyright_news', $lang['common']['copyright'].' ('.$lang['common']['image'].')');
 						}
+					//-- Date and time begin -------
 					$years=Array();
 					for ($i = 2006; $i<=intval(date('Y')+10); $i++)
 						$years[]=$i;
@@ -586,11 +585,70 @@
 							$f->AddSelect('time_minutes', $lang['common']['date'], $min);
 							$f->HideDefinition();
 						}
-					
+					//-- Date and time end -------
+					//-- Editors begin -------
+					if (!empty($sm['contenteditor']['controlbuttonsclass']))
+						$b->ApplyClassnameForAll($sm['contenteditor']['controlbuttonsclass']);
+					$f->InsertButtons($b);
 					if ($use_ext_editor)
-						$f->AddHidden('type_content', 1);
+						$f->AddEditor('text_news', $lang['common']['text'], true);
 					else
-						$f->AddSelectVL('type_content', $lang['type_content'], Array(0, 1), Array($lang['type_content_simple_text'], $lang['type_content_HTML']));
+						$f->AddTextarea('text_news', $lang['common']['text'], true);
+					$f->MergeColumns('text_news');
+					if (intval(sm_settings('news_use_preview'))==1)
+						{
+							if ($use_ext_editor)
+								{
+									$f->AddEditor('preview_news', $lang['common']['preview']);
+									$f->SetFieldAttribute('preview_news', 'style', ';');//TinyMCE temporary fix
+								}
+							else
+								$f->AddTextarea('preview_news', $lang['common']['preview']);
+							$f->MergeColumns('preview_news');
+						}
+					if ($use_ext_editor)
+						$f->AddHidden('type_news', 1);
+					else
+						$f->AddSelectVL('type_news', $lang['type_content'], Array(0, 1), Array($lang['type_content_simple_text'], $lang['type_content_HTML']));
+					//-- Editors end -------
+					$f->Separator($lang['common']['seo']);
+					$f->AddText('url', $lang['url'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					if (sm_action('edit'))
+						$f->WithValue(sm_fs_url('index.php?m=news&d=view&nid='.intval($item['id_content']), true));
+					$f->AddText('seo_title', $lang['common']['seo_title'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					$f->AddText('keywords_news', $lang['common']['seo_keywords']);
+					$f->AddTextarea('description_news', $lang['common']['seo_description']);
+					if (count($sm['themeinfo']['alttpl']['news'])>0 || intval(sm_settings('news_attachments_count'))>0)
+						$f->Separator($lang['common']['additional_options']);
+					if (count($sm['themeinfo']['alttpl']['news'])>0)
+						{
+							$v=Array('');
+							$l=Array($lang['common']['default']);
+							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['news']); $i++)
+								{
+									$v[]=$sm['themeinfo']['alttpl']['news'][$i]['tpl'];
+									$l[]=$sm['themeinfo']['alttpl']['news'][$i]['name'];
+								}
+							$f->AddSelectVL('tplcontent', $lang['common']['template'].' ('.$lang['common']['page'].')', $v, $l);
+						}
+					if (intval(sm_settings('news_attachments_count'))>0)
+						{
+							$f->Separator($lang['common']['attachments']);
+							if (sm_action('edit'))
+								$attachments=sm_get_attachments('mews', $item['id_news']);
+							else
+								$attachments=Array();
+							for ($i = 0; $i<intval(sm_settings('news_attachments_count')); $i++)
+								{
+									if ($i<count($attachments))
+										$f->AddCheckbox('delete_attachment_'.$attachments[$i]['id'], $lang['number_short'].($i+1).'. '.$lang['delete'].' - '.$attachments[$i]['filename'])
+											->LabelAfterControl();
+									else
+										$f->AddFile('attachment'.$i, $lang['number_short'].($i+1));
+								}
+						}
 					
 					if (sm_action('add'))
 						{
@@ -607,15 +665,20 @@
 							if (!$use_ext_editor)
 								$f->SetValue('type_news', intval(sm_settings('default_news_text_style')));
 						}
-					$ui->AddForm($f);
-					$ui->Output(true);
-
-					if (count($sm['themeinfo']['alttpl']['news'])>0)
+					else
 						{
-							$m['alttpl']['news']=Array(Array('tpl'=>'', 'name'=>$lang['common']['default']));
-							for ($i = 0; $i < count($sm['themeinfo']['alttpl']['news']); $i++)
-								$m['alttpl']['news'][]=$sm['themeinfo']['alttpl']['news'][$i];
+							$f->LoadValuesArray($item);
+							$tmp=sm_load_metadata('news', intval($item['id_news']));
+							$f->SetValue('seo_title', $tmp['seo_title']);
+							$f->SetValue('tplnews', $tmp['news_template']);
 						}
+					$f->LoadValuesArray($_postvars);
+					$ui->AddForm($f);
+					if (sm_action('add'))
+						sm_event('afternewsaddform');
+					else
+						sm_event('afternewseditform', Array($item['id_news']));
+					$ui->Output(true);
 				}
 		}
 
