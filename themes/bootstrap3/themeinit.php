@@ -9,9 +9,5 @@
 	$sm['adminform']['textareaclass']='';
 	$sm['admintable']['globalclass']='';
 	$sm['contenteditor']['controlbuttonsclass']='btn-xs';
-	$sm['themeinfo']['alttpl']['news'][]=Array(
-		'tpl'=>'menu.tpl',
-		'name'=>'Menu'
-	);
 
 ?>

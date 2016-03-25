@@ -115,8 +115,6 @@
 							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
 							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
 							sm_set_metadata('content', $cid, 'seo_title', $sm['p']['seo_title']);
-							sm_set_metadata('content', $cid, 'main_template', $sm['p']['tplmain']);
-							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
 							sm_set_metadata('content', $cid, 'last_updated_time', time());
 							if (sm_action('postedit'))
 								{
