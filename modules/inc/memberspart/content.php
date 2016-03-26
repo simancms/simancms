@@ -81,7 +81,7 @@
 						$error=$lang['messages']['fill_required_fields'];
 					elseif (sm_action('postadd') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']))
 						$error=$lang['messages']['seo_url_exists'];
-					elseif (sm_action('postadd') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']) && strcmp($sm['p']['url'], sm_fs_url('index.php?m=content&d=view&cid='.intval($_getvars['id'])))!=0)
+					elseif (sm_action('postedit') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']) && strcmp($sm['p']['url'], sm_fs_url('index.php?m=content&d=view&cid='.intval($_getvars['id'])))!=0)
 						$error=$lang['messages']['seo_url_exists'];
 					if (empty($error))
 						{
