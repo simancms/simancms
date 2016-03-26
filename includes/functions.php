@@ -129,7 +129,7 @@
 			$q->Add('filename_fs', dbescape($filename));
 			$q->Add('url_fs', dbescape($url));
 			$q->Add('comment_fs', dbescape($comment));
-			$q->Insert();
+			return $q->Insert();
 		}
 
 	function update_filesystem($id, $url, $filename, $comment)
