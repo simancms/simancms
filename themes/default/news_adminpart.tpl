@@ -196,7 +196,7 @@
 </form></div>
 {include file="common_admintable.tpl" table=$modules[$index].table}
 <br>
-<a href="index.php?m=news&d=add&ctg={$sm.g.ctg}">{$lang.add_news}</a>
+<a href="index.php?m=news&d=add&ctg={$sm.g.ctg}">{$lang.common.add}</a>
 (<a href="index.php?m=news&d=add&ctg={$sm.g.ctg}&exteditor=off">{$lang.common.html}</a>)<br>
 <p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_news_lisnews&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
 {include file="pagebar.tpl"}

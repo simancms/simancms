@@ -215,7 +215,7 @@
 					$q->Select();
 					sm_use('admintable');
 					$t=new TGrid('edit');
-					$t->AddCol('date', $lang['date_news'], '10%');
+					$t->AddCol('date', $lang['common']['date'], '10%');
 					$t->AddCol('title', $lang['common']['title'], '90%');
 					$t->AddEdit();
 					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
@@ -226,7 +226,21 @@
 					$have_title = 0;
 					for ($i = 0; $i<count($q->items); $i++)
 						{
-							$t->Label('date', strftime($lang["datemask"], $q->items[$i]['date_news']));
+							if (intval(sm_settings('news_use_time'))==1)
+								{
+									if (strcmp(date('Y-m-d', $q->items[$i]['date_news']), date('Y-m-d', time()))==0)
+										{
+											$t->Label('date', strftime($lang['timemask'], $q->items[$i]['date_news']));
+											$t->Hint('date', strftime($lang['datemask'], $q->items[$i]['date_news']));
+										}
+									else
+										{
+											$t->Label('date', strftime($lang['datemask'], $q->items[$i]['date_news']));
+											$t->Hint('date', strftime($lang['timemask'], $q->items[$i]['date_news']));
+										}
+								}
+							else
+								$t->Label('date', strftime($lang['datemask'], $q->items[$i]['date_news']));
 							$t->Label('title', $q->items[$i]['title_news']);
 							$t->Hint('title', $q->items[$i]['title_news']);
 							if (empty($q->items[$i]['preview_news']))
