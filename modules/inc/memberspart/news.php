@@ -813,7 +813,7 @@
 						{
 							$f->Separator($lang['common']['attachments']);
 							if (sm_action('edit'))
-								$attachments = sm_get_attachments('mews', $item['id_news']);
+								$attachments = sm_get_attachments('news', $item['id_news']);
 							else
 								$attachments = Array();
 							for ($i = 0; $i < intval(sm_settings('news_attachments_count')); $i++)
