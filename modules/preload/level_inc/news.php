@@ -24,9 +24,10 @@
 			if ($type==0)
 				return;
 			sm_extcore();
-			$info=TQuery::ForTable($sm['t'].'news')->Add('id_news', intval($id))->Get();
-			if (empty($info['filename_news']))
+			$url=sm_fs_url('index.php?m=news&d=view&nid='.intval($id), true);
+			if ($url===false)
 				{
+					$info=TQuery::ForTable($sm['t'].'news')->Add('id_news', intval($id))->Get();
 					if ($type==2)
 						$prefix='news/';
 					elseif ($type==3)
@@ -37,8 +38,7 @@
 						$prefix='blog/'.strftime('%Y/%m/%d/', $info['date_news']);
 					else
 						$prefix='';
-					$urlid = register_filesystem('index.php?m=news&d=view&nid='.$id, sm_fs_autogenerate($info['title_news'], '.html', $prefix), $info['title_news']);
-					TQuery::ForTable($sm['t'].'news')->Add('filename_news', intval($urlid))->Update('id_news', intval($id));
+					sm_fs_update($info['title_news'], 'index.php?m=news&d=view&nid='.intval($id), sm_fs_autogenerate($info['title_news'], '.html', $prefix));
 				}
 		}
 

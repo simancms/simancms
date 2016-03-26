@@ -172,6 +172,7 @@
 	$lang['messages']['delete_successful']='Дані видалено';
 	$lang['messages']['nothing_found']='Нічого не знайдено';
 	$lang['messages']['changes_will_be_lost']='Якщо ви залишите цю сторінку, всі не збережені зміни будуть втрачені';
+	$lang['messages']['wrong_date']='Невірна дата';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
@@ -278,13 +279,6 @@
 	//News
 	$lang["list_news"]='Список новин';
 	$lang["all_news"]='Всі новини';
-	$lang["add_news"]='Додати новину';//deprecated
-	$lang["edit_news"]='Редагувати новину';//deprecated
-	$lang["delete_news"]='Видалити новину';//deprecated
-	$lang["text_news"]='Текст';//deprecated
-	$lang["type_news"]='Тип тексту';//deprecated
-	$lang["type_news_HTML"]='HTML текст';//deprecated
-	$lang["type_news_simple_text"]='Звичайний текст';//deprecated
 	$lang["add_news_successful"]='Новину додано';
 	$lang["edit_news_successful"]='Новину відредаговано';
 	$lang["delete_news_successful"]='Новину видалено';
@@ -292,7 +286,6 @@
 	$lang['really_want_delete_news']='Ви дійсно хочете видалити новину';
 	$lang['really_want_delete_category_news']='Ви дійсно хочете видалити цю категорію';
 	$lang['short_news_block']='Короткий блок новин';
-	$lang['news_wrong_date_message']='Ви обрали невірну дату';
 	$lang['module_news']['preview_news']='Анонс';
 	$lang['module_news']['module_news_name']='Новини';
 	$lang['module_news']['list_news']='Список новин';
