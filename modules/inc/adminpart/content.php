@@ -271,10 +271,7 @@
 					for ($i = 0; $i<count($items); $i++)
 						{
 							$t->Label('title', $items[$i]['title_content']);
-							if ($items[$i]['filename_content'] != 0)
-								$items[$i]['url']=$items[$i]['filename_fs'];
-							else
-								$items[$i]['url']='index.php?m=content&d=view&cid='.$items[$i]['id_content'];
+							$items[$i]['url']=sm_fs_url('index.php?m=content&d=view&cid='.$items[$i]['id_content']);
 							$t->URL('title', $items[$i]['url'], true);
 							$t->URL('edit', 'index.php?m=content&d=edit&cid='.$items[$i]['id_content'].'&returnto='.urlencode(sm_this_url()));
 							$t->URL('html', 'index.php?m=content&d=edit&cid='.$items[$i]['id_content'].'&exteditor=off'.'&returnto='.urlencode(sm_this_url()));

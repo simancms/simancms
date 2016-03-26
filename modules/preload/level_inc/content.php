@@ -23,11 +23,11 @@
 			if (intval(sm_get_settings('autogenerate_content_filesystem', 'content'))==0)
 				return;
 			sm_extcore();
-			$info=TQuery::ForTable($sm['t'].'content')->Add('id_content', intval($id))->Get();
-			if (empty($info['filename_content']))
+			$url=sm_fs_url('index.php?m=content&d=view&cid='.intval($id), true);
+			if ($url===false)
 				{
-					$urlid = register_filesystem('index.php?m=content&d=view&cid='.$id, sm_fs_autogenerate($info['title_content'], '.html'), $info['title_content']);
-					TQuery::ForTable($sm['t'].'content')->Add('filename_content', intval($urlid))->Update('id_content', intval($id));
+					$info=TQuery::ForTable($sm['t'].'content')->Add('id_content', intval($id))->Get();
+					sm_fs_update($info['title_content'], 'index.php?m=content&d=view&cid='.intval($id), sm_fs_autogenerate($info['title_content'], '.html'));
 				}
 		}
 
