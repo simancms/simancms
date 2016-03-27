@@ -274,7 +274,7 @@
 								}
 							else
 								{
-									$password = sm_password_hash($password);
+									$password = sm_password_hash($password, $_postvars["p_login"]);
 									$sql = "INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '', '', 3)";
 									$result = database_db_query($nameDB, $sql, $lnkDB);
 									$inst['messages'][0]['text'] = $lang['create_administrator'].'. </b> <font color="#00FF00">'.$lang['OK'].'</font>';

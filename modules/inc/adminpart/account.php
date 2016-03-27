@@ -40,7 +40,7 @@
 						{
 							if (strlen($_postvars['pwd'])>0)
 								{
-									sm_set_userfield($info['id_user'], 'password', sm_password_hash($_postvars['pwd']));
+									sm_set_userfield($info['id_user'], 'password', sm_password_hash($_postvars['pwd'], $info['login']));
 								}
 							sm_set_userfield($info['id_user'], 'email', $_postvars['email']);
 							sm_set_userfield($info['id_user'], 'get_mail', intval($_postvars['get_mail']));
@@ -185,7 +185,7 @@
 								}
 							else
 								{
-									$password = sm_password_hash($_postvars['newpwd']);
+									$password = sm_password_hash($_postvars['newpwd'], $usr['login']);
 									$random_code = md5($id_user.microtime().rand());
 									execsql("UPDATE ".$tableusersprefix."users SET password = '".dbescape($password)."', random_code='".dbescape($random_code)."' WHERE id_user=".intval($usr['id'])." AND id_user>1");
 									sm_notify($lang['module_account']['message_set_password_finish']);

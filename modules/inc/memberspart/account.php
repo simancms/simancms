@@ -50,8 +50,8 @@
 						}
 					else
 						{
-							$password = sm_password_hash($password);
-							$sqlpasswd = ", password = '$password' ";
+							$password = sm_password_hash($password, $userinfo['login']);
+							$sqlpasswd = ", password = '".dbescape($password)."' ";
 						}
 				}
 			if (!is_email($email))
@@ -69,7 +69,7 @@
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = '".intval($userinfo['id'])."'";
 					if (!empty($old_password))
 						{
-							$sql .= " AND password = '".sm_password_hash($old_password)."'";
+							$sql .= " AND password = '".sm_password_hash($old_password, $userinfo['login'])."'";
 						}
 					$result = execsql($sql);
 					$u = 0;
