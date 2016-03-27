@@ -97,5 +97,6 @@
 	$sm['s'] =& $special;
 	$sm['t'] =& $tableprefix;
 	$sm['tu'] =& $tableusersprefix;
+	$sm['s']['page_system_id'] = 'smp'.microtime(true).$sm['s']['rand'];
 
 ?>

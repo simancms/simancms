@@ -9,8 +9,8 @@
 	Module Name: Download
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
-	Version: 1.6.7
-	Revision: 2013-10-17
+	Version: 1.6.10
+	Revision: 2016-03-28
 	Author URI: http://simancms.org/
 	*/
 
@@ -21,7 +21,7 @@
 
 	if (sm_action('attachment', 'showattachedfile'))
 		{
-			$att = getsql("SELECT * FROM ".$tableprefix."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']));
+			$att = getsql("SELECT * FROM ".$tableprefix."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']).' LIMIT 1');
 			if (!empty($att['id_download']) && file_exists('files/download/attachment'.intval($_getvars['id'])))
 				{
 					$m["module"] = 'download';

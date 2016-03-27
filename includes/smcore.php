@@ -1023,6 +1023,7 @@
 			global $sm;
 			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
+			$q->OrderBy('id_fs');
 			$info = $q->Get();
 			if (empty($info['filename_fs']))
 				{
