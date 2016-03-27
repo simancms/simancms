@@ -51,7 +51,7 @@
 	if (empty($_GET['img']) || strpos($_GET['img'], ':') || strpos($_GET['img'], '.') || strpos($_GET['img'], '/') || strpos($_GET['img'], '\\'))
 		{
 			$_GET['img'] = 'noimage';
-			$filepath = $path[0];
+			$filepath = 'ext/';
 			$extpath = '';
 		}
 	if ($_GET['png'] == 1)

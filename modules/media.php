@@ -54,7 +54,12 @@
 					$m['galleries'][$i]['title']=$q->items[$i]['title'];
 					$m['galleries'][$i]['image']='files/img/mediagallery'.$q->items[$i]['id_ctg'].'.jpg';
 					if (!file_exists($m['galleries'][$i]['image']))
-						$m['galleries'][$i]['image']='files/img/noimage.jpg';
+						{
+							if (file_exists('files/img/noimage.jpg'))
+								$m['galleries'][$i]['image'] = 'files/img/noimage.jpg';
+							else
+								$m['galleries'][$i]['image'] = 'ext/showimage.php?img=&width='.sm_settings('gallery_thumb_width').'&height='.sm_settings('gallery_thumb_height');
+						}
 					$m['galleries'][$i]['url']=sm_fs_url('index.php?m=media&d=gallery&ctg='.$q->items[$i]['id_ctg']);
 					if (intval(sm_settings('galleries_view_items_per_row'))>0)
 						if (($i+1) % intval(sm_settings('galleries_view_items_per_row'))==0)
