@@ -9,7 +9,7 @@
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.9
+	Version: 1.6.10
 	Revision: 2015-09-29
 	Author URI: http://simancms.org/
 	*/
@@ -159,7 +159,7 @@
 									$sql2 .= " AND id_category_n = ".intval($ctg_id);
 								}
 						}
-					$sql = "SELECT ".$tableprefix."news.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."news LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."news.filename_news=".$tableprefix."filesystem.id_fs";
+					$sql = "SELECT * FROM ".$tableprefix."news";
 					$sql .= " $sql2 ORDER BY date_news DESC";
 					if ($tmp_short_news == 0)
 						{
