@@ -997,7 +997,11 @@
 				$register_url = sm_getnicename($title).$default_extension;
 			$q = new TQuery($sm['t'].'filesystem');
 			$q->Add('url_fs', dbescape($system_url));
+			$q->OrderBy('id_fs');
 			$info = $q->Get();
+			unset($q);
+			$q = new TQuery($sm['t'].'filesystem');
+			$q->Add('url_fs', dbescape($system_url));
 			$q->Add('comment_fs', dbescape($title));
 			$q->Add('filename_fs', dbescape($register_url));
 			if (empty($info['id_fs']))
