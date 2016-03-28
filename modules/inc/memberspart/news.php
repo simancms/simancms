@@ -239,9 +239,15 @@
 							else
 								sm_notify($lang['messages']['edit_successful']);
 							if (sm_action('postadd'))
-								sm_event('postaddnews', array($id_news));
+								{
+									sm_event('postaddnews', array($id_news));
+									sm_notify($lang['add_news_successful']);
+								}
 							else
-								sm_event('posteditnews', array($id_news));
+								{
+									sm_event('posteditnews', array($id_news));
+									sm_notify($lang['edit_news_successful']);
+								}
 							if (!empty($_getvars['returnto']))
 								sm_redirect($_getvars['returnto']);
 							else
