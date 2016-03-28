@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-05-01
+	//#ver 1.6.10
+	//#revision 2016-03-28
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -17,16 +17,18 @@
 		{
 			if (sm_action('admin'))
 				{
-					$m['title'] = $lang['settings'];
+					sm_title($lang['module_news']['module_news_name'].' - '.$lang['settings']);
 					$m["module"] = 'news';
 					add_path_modules();
+					add_path_current();
 				}
 			if (sm_action('editctg'))
 				{
-					$m['title'] = $lang['edit_category'];
+					sm_title($lang['edit_category']);
 					$m["module"] = 'news';
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+					add_path_current();
 					$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$_getvars['ctgid']."'";
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
@@ -64,10 +66,11 @@
 				}
 			if (sm_action('addctg'))
 				{
-					$m['title'] = $lang['add_category'];
+					sm_title($lang['add_category']);
 					$m["module"] = 'news';
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+					add_path_current();
 					$m['groups_list'] = get_groups_list();
 				}
 			if (sm_actionpost('posteditctg'))
@@ -106,15 +109,6 @@
 					sm_redirect('index.php?m=news&d=listctg');
 					sm_event('posteditctgnews', array($id_ctg));
 				}
-			if (sm_action('deletectg'))
-				{
-					$m["module"] = 'news';
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['delete_category'];
-					$_msgbox['msg'] = $lang['really_want_delete_category_news'];
-					$_msgbox['yes'] = 'index.php?m=news&d=postdeletectg&ctgid='.$_getvars["ctgid"];
-					$_msgbox['no'] = 'index.php?m=news&d=listctg';
-				}
 			if (sm_action('postdeletectg'))
 				{
 					$id_ctg = intval($_getvars['ctgid']);
@@ -142,10 +136,11 @@
 			if (sm_action('listctg'))
 				{
 					sm_extcore();
-					$m['title'] = $lang['list_news_categories'];
+					sm_title($lang['list_news_categories']);
 					$m["module"] = 'news';
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+					add_path_current();
 					$sql = "SELECT * FROM ".$tableprefix."categories_news ORDER BY title_category";
 					$result = execsql($sql);
 					sm_use('admintable');
@@ -165,7 +160,7 @@
 							$t->Label('title', $row['title_category']);
 							$url = sm_fs_url('index.php?m=news&d=listnews&ctg='.$row['id_category']);
 							$t->URL('title', $url);
-							$t->URL('search', 'index.php?m=news&d=listnews&ctg='.$row['id_category']);
+							$t->URL('search', 'index.php?m=news&d=list&ctg='.$row['id_category']);
 							if ($row['id_category'] != 1)
 								$t->URL('delete', 'index.php?m=news&d=postdeletectg&ctgid='.$row['id_category']);
 							$t->URL('edit', 'index.php?m=news&d=editctg&ctgid='.$row['id_category']);

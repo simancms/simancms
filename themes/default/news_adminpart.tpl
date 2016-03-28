@@ -61,7 +61,7 @@
 
 {if $modules[$index].mode eq "admin"}
 {include file="block_begin.tpl"}
-<a href="index.php?m=news&d=add">{$lang.add_news}</a> (<a href="index.php?m=news&d=add&exteditor=off">{$lang.common.html}</a>)<br>
+<a href="index.php?m=news&d=add">{$lang.common.add}</a> (<a href="index.php?m=news&d=add&exteditor=off">{$lang.common.html}</a>)<br>
 <br>
 <a href="index.php?m=news&d=list">{$lang.list_news}</a><br>
 <br>
