@@ -35,7 +35,7 @@
 			global $tableprefix;
 			execsql("INSERT INTO ".$tableprefix."settings (name_settings, value_settings, mode) VALUES  ('".dbescape($settings_name)."', '".dbescape($settings_value)."', '".dbescape($mode)."')");
 			if ($mode=='default')
-				$sm['_s'][$settings_name]=$new_value;
+				$sm['_s'][$settings_name]=$settings_value;
 		}
 
 	function sm_update_settings($settings_name, $new_value, $mode = 'default')
