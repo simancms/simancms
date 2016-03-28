@@ -20,8 +20,8 @@
 <strong class="label label-default">{$modules[$index].alike_news[i].date}</strong> <a href="{$modules[$index].alike_news[i].fullink}">{$modules[$index].alike_news[i].title}</a><br />
 {/section}
 {include file="block_end.tpl"}
-{/if}		   
-{/if}		   
+{/if}
+{/if}
 
 {if $modules[$index].mode eq "listnews"}
 {if $modules[$index].short_news eq "1"}{* SHORT LIST NEWS *}
@@ -36,11 +36,7 @@
 {include file="block_end.tpl"}
 {else}{* FULL LIST NEWS *}
 {section name=i loop=$modules[$index].list}
-		{if $_settings.news_use_title eq "1" and $modules[$index].list[i].title neq ""}
 		<span class="news_datetime_list pull-right label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> <h3 class="news-title"><a href="{$modules[$index].list[i].url}">{$modules[$index].list[i].title}</a></h3>
-		{else}
-			<h3 class="news-title"><a href="{$modules[$index].list[i].url}">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</a></h3>
-		{/if}
 		{if $modules[$index].list[i].image neq ""}
 		<div class="news_image_list thumbnail">
 		<a href="{$modules[$index].list[i].url}"><img src="{$modules[$index].list[i].image}" border="0"></a>

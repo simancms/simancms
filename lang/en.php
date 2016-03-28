@@ -362,7 +362,6 @@ $lang['settings_users_menu_id'] = 'User menu';
 $lang['settings_content_use_preview'] = 'Allow text preview';
 $lang['settings_content_per_page_multiview'] = 'Text per page in multiview';
 $lang['settings_news_use_preview'] = 'Allow news preview';
-$lang['settings_news_use_title'] = 'Use title in news';
 $lang['settings_news_use_image'] = 'Use image for news';
 $lang['settings_menus_use_image'] = 'Use image for menu titles';
 $lang['settings_menuitems_use_image'] = 'Use image for menu items';

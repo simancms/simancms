@@ -381,7 +381,6 @@
 	$lang['settings_content_use_preview']='Використовувати анонсування текстів';
 	$lang['settings_content_per_page_multiview']='Текстів на сторінку';
 	$lang['settings_news_use_preview']='Використовувати анонсування новин';
-	$lang['settings_news_use_title']='Використовувати заголовок у новинах';
 	$lang['settings_news_use_image']='Використовувати малюнок для кожної новини';
 	$lang['settings_menus_use_image']='Використовувати малюнки для заголовків меню';
 	$lang['settings_menuitems_use_image']='Використовувати малюнки для пунктів меню';

@@ -119,7 +119,6 @@
 							sm_update_settings('autogenerate_content_filesystem', intval($_postvars['autogenerate_content_filesystem']), 'content');
 						}
 					//------- News settings ------------------------------------------------------------------------------
-					sm_update_settings('news_use_title', intval($_postvars['p_news_use_title'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('news_use_time', intval($_postvars['p_news_use_time'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('news_use_image', intval($_postvars['p_news_use_image'])==1?1:0, $m['mode_settings']);
 					sm_update_settings('news_image_preview_width', $_postvars['p_news_image_preview_width'], $m['mode_settings']);

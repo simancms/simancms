@@ -31,7 +31,7 @@
 <tr>
 <td valign="top" width="100%">
 <a class="shortnews" href="{$modules[$index].list[i].url}">
-{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}{if $_settings.news_use_title eq "1"} {$modules[$index].list[i].title}<br />{/if}</a>
+{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date} {$modules[$index].list[i].title}<br /></a>
 </td>
 </tr>
 <tr>
@@ -49,11 +49,7 @@
 {section name=i loop=$modules[$index].list}
 <tr>
 	<td valign="top" class="news_title">
-		{if $_settings.news_use_title eq "1" and $modules[$index].list[i].title neq ""}
-			<span class="news_datetime_list">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> {$modules[$index].list[i].title}
-		{else}
-			{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}
-		{/if}
+		<span class="news_datetime_list">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> {$modules[$index].list[i].title}
 	</td>
 </tr>
 <tr>

@@ -218,7 +218,6 @@
 					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'stick.gif');
 					$t->AddMenuInsert();
 					$result = execsql($sql);
-					$have_title = 0;
 					for ($i = 0; $i<count($q->items); $i++)
 						{
 							if (intval(sm_settings('news_use_time'))==1)
@@ -250,13 +249,7 @@
 							$t->URL('delete', 'index.php?m=news&d=postdelete&nid='.$q->items[$i]['id_news'].'&ctg='.$q->items[$i]['id_category_n']);
 							$t->URL('tomenu', sm_tomenuurl(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news']), $url, sm_this_url()));
 							$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$q->items[$i]['id_news'].'&db=view&c='.(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news'])));
-							if (!empty($q->items[$i]['title_news']))
-								$have_title = 1;
 							$t->NewRow();
-						}
-					if ($have_title != 1)
-						{
-							$t->HeaderHideCol('title');
 						}
 					$m['table']=$t->Output();
 					$m['pages']['records'] = $q->Find();

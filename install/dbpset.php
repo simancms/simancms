@@ -1,6 +1,6 @@
 <?php
 
-//-------------[Налаштування]-[Settings]-----------------------
+//-------------[пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]-[Settings]-----------------------
 
 $sql="
 INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('install_not_erased','1');
@@ -133,10 +133,6 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('bot
 execsql($sql);
 $sql="
 INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('news_use_preview', '1')
-";
-execsql($sql);
-$sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('news_use_title', '1')
 ";
 execsql($sql);
 $sql="

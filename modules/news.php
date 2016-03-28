@@ -281,19 +281,15 @@
 										sm_meta_title($tmp['seo_title']);
 									if (!empty($tmp['news_template']))
 										$m['module']=$tmp['news_template'];
-									if ($_settings['news_use_title'])
+									if (empty($row['title_news']))
 										{
-											if (empty($row['title_news']))
-												{
-													$m["title"] = strftime($lang["datemask"], $row['date_news']);
-													if ($_settings['news_use_time'] == '1')
-														$m["title"] = strftime($lang["timemask"], $row['date_news']).' '.$m["title"];
-												}
+											if ($_settings['news_use_time'] == '1')
+												sm_title(strftime($lang['datetimemask'], $row['date_news']));
 											else
-												$m["title"] = $row['title_news'];
+												sm_title(strftime($lang['datemask'], $row['date_news']));
 										}
 									else
-										$m["title"] = $lang['news'].' :: '.strftime($lang["datemask"], $row['date_news']);
+										sm_title($row['title_news']);
 									$m["date"] = $row['date_news'];
 									$m["news_time"] = strftime($lang["timemask"], $row['date_news']);
 									$m["news_date"] = strftime($lang["datemask"], $row['date_news']);

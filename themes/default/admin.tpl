@@ -446,13 +446,6 @@
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.news_settings}</td>
 </tr>
-	{if $modules[$index].show_settings.news_use_title eq 1}
-		<tr>
-			<td colspan="2"><input type="checkbox" name="p_news_use_title" value="1" {if $modules[$index].edit_settings.news_use_title eq "1"}checked{/if}>{$lang.settings_news_use_title}</td>
-			<td></td>
-			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_title&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
-		</tr>
-	{/if}
 	{if $modules[$index].show_settings.news_use_time eq 1}
 	<tr>
 		<td colspan="2"><input type="checkbox" name="p_news_use_time" value="1" {if $modules[$index].edit_settings.news_use_time eq "1"}checked{/if}>{$lang.settings_news_use_time}</td>
