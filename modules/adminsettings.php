@@ -80,7 +80,7 @@
 					$t->AddCol('html', '', '16', $lang['common']['edit'].' ('.$lang['common']['html'].')', '', 'edit_html.gif');
 					$t->AddDelete();
 					$sql = "SELECT * FROM ".$tableprefix."settings ORDER BY if(mode='default', 0, 1), mode, name_settings";
-					$result = database_db_query($nameDB, $sql, $lnkDB);
+					$result = database_query($sql, $lnkDB);
 					$i = 0;
 					while ($row = database_fetch_assoc($result))
 						{

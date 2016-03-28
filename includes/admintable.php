@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-12-31
+	//#revision 2016-03-28
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -56,7 +56,7 @@
 							return $this;
 						}
 
-					function AddCol($name, $title, $width = '', $hint = '', $replace_text = '', $replace_image = '', $messagebox = 0, $messagebox_text = '', $to_menu = 0)
+					function AddCol($name, $title, $width = '', $hint = '', $replace_text = '', $replace_image = '', $messagebox = 0, $messagebox_text = '')
 						{
 							global $sm;
 							if (strlen($replace_image)>0 && strpos($replace_image, '://') === false && strpos($replace_image, '.') === false)
@@ -76,7 +76,6 @@
 							$this->table['columns'][$name]['replace_image'] = $replace_image;
 							$this->table['columns'][$name]['messagebox'] = $messagebox;
 							$this->table['columns'][$name]['messagebox_text'] = $messagebox_text;
-							$this->table['columns'][$name]['to_menu'] = $to_menu; //Deprecated
 							return $this;
 						}
 
@@ -183,18 +182,6 @@
 							global $lang;
 							$this->AddCol($name, '', '', $lang['module_menu']['add_to_menu'], $lang['module_menu']['add_to_menu']);
 							$this->table['columns'][$name]['nobr'] = 1;
-							return $this;
-						}
-
-					function OneLine($name)//Deprecated. Use SingleLineLabel instead
-						{
-							$this->table['rows'][$this->rownumber][$name]['colspan'] = count($this->table['columns']);
-							if (!empty($this->table['columns']))
-								while (list($key, $val) = each($this->table['columns']))
-									{
-										if ($key != $name)
-											$this->table['rows'][$this->rownumber][$key]['hide'] = 1;
-									}
 							return $this;
 						}
 

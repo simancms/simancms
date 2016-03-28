@@ -12,14 +12,14 @@
 
 	function execsql($sql)
 		{
-			global $nameDB, $lnkDB;
-			return database_db_query($nameDB, $sql, $lnkDB);
+			global $lnkDB;
+			return database_query($sql, $lnkDB);
 		}
 
 	function insertsql($sql)
 		{
 			global $nameDB, $lnkDB;
-			database_db_query($nameDB, $sql, $lnkDB);
+			database_query($sql, $lnkDB);
 			return database_insert_id('', $nameDB, $lnkDB);
 		}
 

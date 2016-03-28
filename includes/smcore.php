@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.10
-	//#revision 2016-02-13
+	//#revision 2016-03-28
 	//==============================================================================
 
 
@@ -347,17 +347,6 @@
 	function sm_event($eventname, $paramsarray = Array())
 		{
 			global $sm;
-			$listeners = nllistToArray($sm['_s']['autoload_modules']);
-			for ($i = 0; $i<count($listeners); $i++)
-				{
-					$eventfn = 'event_'.$eventname.'_'.$listeners[$i];
-					if (function_exists($eventfn))
-						{
-							if (!is_array($paramsarray))
-								$paramsarray = array($paramsarray);
-							call_user_func_array($eventfn, $paramsarray);
-						}
-				}
 			for ($i = 0; $i<count($sm['eventlisteners'][$eventname]); $i++)
 				{
 					$eventfn = $sm['eventlisteners'][$eventname][$i];

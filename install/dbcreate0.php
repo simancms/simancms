@@ -31,7 +31,7 @@ CREATE TABLE ".$tableprefix."blocks (
   PRIMARY KEY  (`id_block`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][0]['result']=$result;
 
 $sql="
@@ -51,7 +51,7 @@ CREATE TABLE ".$tableprefix."categories (
   PRIMARY KEY  (`id_category`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][1]['result']=$result;
 
 $sql="
@@ -70,7 +70,7 @@ CREATE TABLE ".$tableprefix."content (
   PRIMARY KEY  (`id_content`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][2]['result']=$result;
 
 $sql="
@@ -89,7 +89,7 @@ CREATE TABLE ".$tableprefix."menu_lines (
   PRIMARY KEY  (`id_ml`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][3]['result']=$result;
 
 $sql="
@@ -99,7 +99,7 @@ CREATE TABLE ".$tableprefix."menus (
   PRIMARY KEY  (`id_menu_m`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][4]['result']=$result;
 
 $sql="
@@ -117,7 +117,7 @@ CREATE TABLE ".$tableprefix."modules (
   PRIMARY KEY  (`id_module`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][5]['result']=$result;
 
 $sql="
@@ -139,7 +139,7 @@ CREATE TABLE ".$tableusersprefix."users (
   INDEX ( `random_code` )
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][6]['result']=$result;
 
 $sql="
@@ -152,7 +152,7 @@ CREATE TABLE ".$tableprefix."categories_news (
   PRIMARY KEY  (`id_category`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][7]['result']=$result;
 
 $sql="
@@ -162,7 +162,7 @@ CREATE TABLE ".$tableprefix."settings (
   `mode` VARCHAR( 50 ) NULL DEFAULT 'default'
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][8]['result']=$result;
 
 $sql="
@@ -182,7 +182,7 @@ CREATE TABLE ".$tableprefix."news (
   PRIMARY KEY  (`id_news`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][9]['result']=$result;
 
 $sql="
@@ -197,19 +197,19 @@ CREATE TABLE ".$tableprefix."downloads (
   PRIMARY KEY  (`id_download`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][10]['result']=$result;
 
 $sql="
 CREATE TABLE ".$tableprefix."filesystem ( `id_fs` int(11) unsigned NOT NULL auto_increment,   `filename_fs` varchar(255) NULL,   `url_fs` varchar(255) NULL,   `comment_fs` varchar(255) NULL,   PRIMARY KEY (`id_fs`))
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][11]['result']=$result;
 
 $sql="
 CREATE TABLE ".$tableprefix."groups (`id_group` int(10) unsigned NOT NULL auto_increment, `title_group` varchar(255) NULL, `description_group` text NULL, `autoaddtousers_group` TINYINT NOT NULL DEFAULT '0',  PRIMARY KEY (`id_group`));
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][12]['result']=$result;
 
 $sql="
@@ -220,7 +220,7 @@ CREATE TABLE ".$tableprefix."filesystem_regexp (
   PRIMARY KEY (`id_fsr`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][13]['result']=$result;
 
 $sql="
@@ -236,7 +236,7 @@ CREATE TABLE ".$tableusersprefix."privmsg (
   PRIMARY KEY (`id_privmsg`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][14]['result']=$result;
 
 $sql="
@@ -252,7 +252,7 @@ CREATE TABLE ".$tableprefix."log (
   PRIMARY KEY (`id_log`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][15]['result']=$result;
 
 $sql="
@@ -265,10 +265,10 @@ CREATE TABLE ".$tableprefix."tempdata (
  KEY `type_td` (`type_td`,`identifier_td`)
 );
 ";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][16]['result']=$result;
 $sql="ALTER  TABLE ".$tableprefix."tempdata ADD INDEX ( `deleteafter_td` ) ;";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 
 $sql="CREATE TABLE ".$tableprefix."metadata (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -279,7 +279,7 @@ $sql="CREATE TABLE ".$tableprefix."metadata (
 	PRIMARY KEY (`id`),
 	KEY `object_name` (`object_name`,`object_id`,`key_name`,`val`(50))
 )";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][17]['result']=$result;
 
 $sql="CREATE TABLE ".$tableprefix."taxonomy (
@@ -288,7 +288,7 @@ $sql="CREATE TABLE ".$tableprefix."taxonomy (
 					`rel_id` int(11) unsigned NOT NULL DEFAULT '0',
 					PRIMARY KEY (`object_name`,`object_id`,`rel_id`)
 				)";
-$result=database_db_query($nameDB, $sql, $lnkDB);
+$result=database_query($sql, $lnkDB);
 $inst['tables'][18]['result']=$result;
 
 	$sql=("CREATE TABLE ".$tableprefix."media (
@@ -302,7 +302,7 @@ $inst['tables'][18]['result']=$result;
 					`description` text,
 					PRIMARY KEY (`id`)
 				)");
-	$result=database_db_query($nameDB, $sql, $lnkDB);
+	$result=database_query($sql, $lnkDB);
 	$inst['tables'][19]['result']=$result;
 
 	$sql=("CREATE TABLE ".$tableprefix."categories_media (
@@ -315,7 +315,7 @@ $inst['tables'][18]['result']=$result;
 					`lastupdate` int(11) unsigned NOT NULL DEFAULT '0',
 					PRIMARY KEY (`id_ctg`)
 				)");
-	$result=database_db_query($nameDB, $sql, $lnkDB);
+	$result=database_query($sql, $lnkDB);
 	$inst['tables'][20]['result']=$result;
 
 }

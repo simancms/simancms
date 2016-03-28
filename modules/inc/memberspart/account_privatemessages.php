@@ -35,7 +35,7 @@
 					$result['inbox']['unread'] = 0;
 					$result['outbox']['all'] = 0;
 					$sql = "SELECT count(*), sum(unread_privmsg), sum(folder_privmsg) FROM ".$tableusersprefix."privmsg WHERE folder_privmsg=1 AND id_sender_privmsg=$user OR folder_privmsg=0 AND id_recipient_privmsg=$user";
-					$rezult = database_db_query($nameDB, $sql, $lnkDB);
+					$rezult = database_query($sql, $lnkDB);
 					while ($row = database_fetch_row($rezult))
 						{
 							$result['inbox']['all'] = $row[0];

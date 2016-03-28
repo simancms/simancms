@@ -43,7 +43,7 @@
 			sm_title($lang['module_download']['downloads']);
 			$sql = "SELECT * FROM ".$tableprefix."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]);
 			$i = 0;
-			$result = database_db_query($nameDB, $sql, $lnkDB);
+			$result = database_query($sql, $lnkDB);
 			while ($row = database_fetch_assoc($result))
 				{
 					$m['files'][$i]['id'] = $row['id_download'];

@@ -33,11 +33,6 @@
 
 	function database_query($sql, $lnkDB)
 		{
-			return database_db_query('', $sql, $lnkDB);
-		}
-
-	function database_db_query($nameDB /*UNUSED*/, $sql, $lnkDB)
-		{
 			global $special, $_settings;
 			if ($_settings['show_script_info'] == 'on')
 				{

@@ -20,7 +20,7 @@
 	if ($lnkDB != false)
 		{
 			if (!empty($initialStatementDB))
-				$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
+				$result = database_query($initialStatementDB, $lnkDB);
 			$replaced = 0;
 			if (strcmp($_GET['rewrittenquery'], 'robots.txt') == 0)
 				{

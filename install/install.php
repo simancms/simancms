@@ -91,7 +91,7 @@
 			else
 				{
 					if (!empty($initialStatementDB))
-						$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
+						$result = database_query($initialStatementDB, $lnkDB);
 					if ($inst['step'] == 1)
 						{
 							$inst['title'] = $lang['step1_title'];
@@ -276,10 +276,10 @@
 								{
 									$password = sm_password_hash($password, $_postvars["p_login"]);
 									$sql = "INSERT INTO ".$tableusersprefix."users (login, password, email, question, answer, user_status) VALUES  ('$login', '$password', '$email', '', '', 3)";
-									$result = database_db_query($nameDB, $sql, $lnkDB);
+									$result = database_query($sql, $lnkDB);
 									$inst['messages'][0]['text'] = $lang['create_administrator'].'. </b> <font color="#00FF00">'.$lang['OK'].'</font>';
 									$sql = "UPDATE ".$tableprefix."settings SET value_settings='".$email."' WHERE name_settings='administrators_email'";
-									$result = database_db_query($nameDB, $sql, $lnkDB);
+									$result = database_query($sql, $lnkDB);
 									$inst['messages'][1]['text'] = $lang['addadm']['add_settings_admin_email'].'. </b> <font color="#00FF00">'.$lang['OK'].'</font>';
 								}
 						}

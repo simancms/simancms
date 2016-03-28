@@ -38,7 +38,7 @@
 			$special['page']['parsed_url'] = @parse_url($special['page']['url']);
 			$special['page']['scheme'] = $special['page']['parsed_url']['scheme'];
 			if (!empty($initialStatementDB))
-				$result = database_db_query($nameDB, $initialStatementDB, $lnkDB);
+				$result = database_query($initialStatementDB, $lnkDB);
 			require("includes/config.php");
 			$sm['_s'] =& $_settings;
 			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($_settings['resource_url'], strpos($_settings['resource_url'], '/')).'index.php')

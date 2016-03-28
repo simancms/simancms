@@ -28,7 +28,7 @@
 	
 	//Static blocks out
 	$sql = "SELECT * FROM ".$tableprefix."blocks ORDER BY position_block ASC";
-	$pnlresult = database_db_query($nameDB, $sql, $lnkDB);
+	$pnlresult = database_query($sql, $lnkDB);
 	while ($pnlrow = database_fetch_object($pnlresult))
 		{
 			$dont_show_high_priority = 0;

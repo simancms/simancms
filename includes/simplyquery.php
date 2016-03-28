@@ -349,7 +349,7 @@
 							$sql = "SELECT * FROM ".$this->tableprefix.$this->tablename;
 							if (!empty($conditionWhere))
 								$sql .= " WHERE ".$conditionWhere;
-							$result = database_db_query($nameDB, $sql, $lnkDB);
+							$result = database_query($sql, $lnkDB);
 							$cnt = 0;
 							$q = new TQuery($destinationTable);
 							while ($row = database_fetch_array($result))
