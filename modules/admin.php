@@ -95,6 +95,10 @@
 					sm_update_settings('image_generation_type', ($_postvars['p_image_generation_type'] == 'static') ? 'static' : 'dynamic', $m['mode_settings']);
 					sm_update_settings('title_delimiter', $_postvars['p_title_delimiter'], $m['mode_settings']);
 					sm_update_settings('meta_resource_title_position', intval($_postvars['p_meta_resource_title_position']), $m['mode_settings']);
+					if ($m['mode_settings'] == 'default')
+						{
+							sm_update_settings('hide_generator_meta', intval($_postvars['hide_generator_meta']));
+						}
 					//------- Menu settings ------------------------------------------------------------------------------
 					sm_update_settings('upper_menu_id', $_postvars['p_uppermenu'], $m['mode_settings']);
 					sm_update_settings('bottom_menu_id', $_postvars['p_bottommenu'], $m['mode_settings']);

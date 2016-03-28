@@ -46,7 +46,7 @@
 	{/if}
 	{if $modules[$index].show_settings.resource_url_rewrite eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="resource_url_rewrite" value="1" {if $modules[$index].edit_settings.resource_url_rewrite eq "1"}checked{/if}>{$lang.settings_resource_url_rewrite}</td>
+			<td colspan="2"><input type="checkbox" name="resource_url_rewrite" value="1" {if $modules[$index].edit_settings.resource_url_rewrite eq "1"}checked{/if}> {$lang.settings_resource_url_rewrite}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=resource_url_rewrite&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -199,7 +199,7 @@
 	{/if}
 	{if $modules[$index].show_settings.blocks_use_image eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_blocks_use_image" value="1" {if $modules[$index].edit_settings.blocks_use_image eq "1"}checked{/if}>{$lang.settings_blocks_use_image}</td>
+			<td colspan="2"><input type="checkbox" name="p_blocks_use_image" value="1" {if $modules[$index].edit_settings.blocks_use_image eq "1"}checked{/if}> {$lang.settings_blocks_use_image}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='blocks_use_image'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_blocks_use_image&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -267,6 +267,13 @@
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_meta_resource_title_position&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
+	{if $modules[$index].show_settings.hide_generator_meta eq 1}
+		<tr>
+			<td colspan="2"><input type="checkbox" name="hide_generator_meta" value="1" {if $modules[$index].edit_settings.hide_generator_meta eq "1"}checked{/if}> {$lang.settings_hide_generator_meta}</td>
+			<td></td>
+			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_hide_generator_meta&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
+		</tr>
+	{/if}
 <tr>
 	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.menu_settings}</td>
 </tr>
@@ -311,14 +318,14 @@
 	{/if}
 	{if $modules[$index].show_settings.menus_use_image eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_menus_use_image" value="1" {if $modules[$index].edit_settings.menus_use_image eq "1"}checked{/if}>{$lang.settings_menus_use_image}</td>
+			<td colspan="2"><input type="checkbox" name="p_menus_use_image" value="1" {if $modules[$index].edit_settings.menus_use_image eq "1"}checked{/if}> {$lang.settings_menus_use_image}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='menus_use_image'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_menus_use_image&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.menuitems_use_image eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_menuitems_use_image" value="1" {if $modules[$index].edit_settings.menuitems_use_image eq "1"}checked{/if}>{$lang.settings_menuitems_use_image}</td>
+			<td colspan="2"><input type="checkbox" name="p_menuitems_use_image" value="1" {if $modules[$index].edit_settings.menuitems_use_image eq "1"}checked{/if}> {$lang.settings_menuitems_use_image}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='menuitems_use_image'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_menuitems_use_image&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -328,7 +335,7 @@
 </tr>
 	{if $modules[$index].show_settings.content_use_preview eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_content_use_preview" value="1" {if $modules[$index].edit_settings.content_use_preview eq "1"}checked{/if}>{$lang.settings_content_use_preview}</td>
+			<td colspan="2"><input type="checkbox" name="p_content_use_preview" value="1" {if $modules[$index].edit_settings.content_use_preview eq "1"}checked{/if}> {$lang.settings_content_use_preview}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_use_preview&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -348,7 +355,7 @@
 	{/if}
 	{if $modules[$index].show_settings.allow_alike_content eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_allow_alike_content" value="1" {if $modules[$index].edit_settings.allow_alike_content eq "1"}checked{/if}>{$lang.settings_allow_alike_content}</td>
+			<td colspan="2"><input type="checkbox" name="p_allow_alike_content" value="1" {if $modules[$index].edit_settings.allow_alike_content eq "1"}checked{/if}> {$lang.settings_allow_alike_content}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_alike_content&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -363,7 +370,7 @@
 	{/if}
 	{if $modules[$index].show_settings.content_use_path eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_content_use_path" value="1" {if $modules[$index].edit_settings.content_use_path eq "1"}checked{/if}>{$lang.settings_content_use_path}</td>
+			<td colspan="2"><input type="checkbox" name="p_content_use_path" value="1" {if $modules[$index].edit_settings.content_use_path eq "1"}checked{/if}> {$lang.settings_content_use_path}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='content_use_path'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_use_path&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -383,7 +390,7 @@
 	{/if}
 	{if $modules[$index].show_settings.content_use_image eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_content_use_image" value="1" {if $modules[$index].edit_settings.content_use_image eq "1"}checked{/if}>{$lang.settings_content_use_image}</td>
+			<td colspan="2"><input type="checkbox" name="p_content_use_image" value="1" {if $modules[$index].edit_settings.content_use_image eq "1"}checked{/if}> {$lang.settings_content_use_image}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='content_use_image'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_content_use_image&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -448,14 +455,14 @@
 </tr>
 	{if $modules[$index].show_settings.news_use_time eq 1}
 	<tr>
-		<td colspan="2"><input type="checkbox" name="p_news_use_time" value="1" {if $modules[$index].edit_settings.news_use_time eq "1"}checked{/if}>{$lang.settings_news_use_time}</td>
+		<td colspan="2"><input type="checkbox" name="p_news_use_time" value="1" {if $modules[$index].edit_settings.news_use_time eq "1"}checked{/if}> {$lang.settings_news_use_time}</td>
 		<td></td>
 		<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=news_use_time&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 	</tr>
 	{/if}
 	{if $modules[$index].show_settings.news_use_image eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_news_use_image" value="1" {if $modules[$index].edit_settings.news_use_image eq "1"}checked{/if}>{$lang.settings_news_use_image}</td>
+			<td colspan="2"><input type="checkbox" name="p_news_use_image" value="1" {if $modules[$index].edit_settings.news_use_image eq "1"}checked{/if}> {$lang.settings_news_use_image}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='news_use_image'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_image&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -507,7 +514,7 @@
 	{/if}
 	{if $modules[$index].show_settings.news_use_preview eq 1}
 	<tr>
-		<td colspan="2"><input type="checkbox" name="p_news_use_preview" value="1" {if $modules[$index].edit_settings.news_use_preview eq "1"}checked{/if}>{$lang.settings_news_use_preview}</td>
+		<td colspan="2"><input type="checkbox" name="p_news_use_preview" value="1" {if $modules[$index].edit_settings.news_use_preview eq "1"}checked{/if}> {$lang.settings_news_use_preview}</td>
 		<td></td>
 		<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_news_use_preview&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 	</tr>
@@ -565,7 +572,7 @@
 	{/if}
 	{if $modules[$index].show_settings.allow_alike_news eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_allow_alike_news" value="1" {if $modules[$index].edit_settings.allow_alike_news eq "1"}checked{/if}>{$lang.settings_allow_alike_news}</td>
+			<td colspan="2"><input type="checkbox" name="p_allow_alike_news" value="1" {if $modules[$index].edit_settings.allow_alike_news eq "1"}checked{/if}> {$lang.settings_allow_alike_news}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_alike_news&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
@@ -634,49 +641,49 @@
 </tr>
 	{if $modules[$index].show_settings.allow_register eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_allowregister" value="1" {if $modules[$index].edit_settings.allow_register eq "1"}checked{/if}>{$lang.settings_allow_register}</td>
+			<td colspan="2"><input type="checkbox" name="p_allowregister" value="1" {if $modules[$index].edit_settings.allow_register eq "1"}checked{/if}> {$lang.settings_allow_register}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_register&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.allow_forgot_password eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_allowforgotpass" value="1" {if $modules[$index].edit_settings.allow_forgot_password eq "1"}checked{/if}>{$lang.settings_allow_forgot_password}</td>
+			<td colspan="2"><input type="checkbox" name="p_allowforgotpass" value="1" {if $modules[$index].edit_settings.allow_forgot_password eq "1"}checked{/if}> {$lang.settings_allow_forgot_password}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_forgot_password&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.user_activating_by_admin eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_adminactivating" value="1" {if $modules[$index].edit_settings.user_activating_by_admin eq "1"}checked{/if}>{$lang.settings_user_activating_by_admin}</td>
+			<td colspan="2"><input type="checkbox" name="p_adminactivating" value="1" {if $modules[$index].edit_settings.user_activating_by_admin eq "1"}checked{/if}> {$lang.settings_user_activating_by_admin}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_user_activating_by_admin&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.return_after_login eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_return_after_login" value="1" {if $modules[$index].edit_settings.return_after_login eq "1"}checked{/if}>{$lang.settings_return_after_login}</td>
+			<td colspan="2"><input type="checkbox" name="p_return_after_login" value="1" {if $modules[$index].edit_settings.return_after_login eq "1"}checked{/if}> {$lang.settings_return_after_login}</td>
 			<td>{include file='admin_settings_extctrls.tpl' name_settings='return_after_login'}</td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_return_after_login&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.allow_private_messages eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_allow_private_messages" value="1" {if $modules[$index].edit_settings.allow_private_messages eq "1"}checked{/if}>{$lang.settings_allow_private_messages}</td>
+			<td colspan="2"><input type="checkbox" name="p_allow_private_messages" value="1" {if $modules[$index].edit_settings.allow_private_messages eq "1"}checked{/if}> {$lang.settings_allow_private_messages}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_allow_private_messages&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.use_email_as_login eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="p_use_email_as_login" value="1" {if $modules[$index].edit_settings.use_email_as_login eq "1"}checked{/if}>{$lang.settings_use_email_as_login}</td>
+			<td colspan="2"><input type="checkbox" name="p_use_email_as_login" value="1" {if $modules[$index].edit_settings.use_email_as_login eq "1"}checked{/if}> {$lang.settings_use_email_as_login}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=settings_use_email_as_login&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>
 	{/if}
 	{if $modules[$index].show_settings.signinwithloginandemail eq 1}
 		<tr>
-			<td colspan="2"><input type="checkbox" name="signinwithloginandemail" value="1" {if $modules[$index].edit_settings.signinwithloginandemail eq "1"}checked{/if}>{$lang.settings_signinwithloginandemail}</td>
+			<td colspan="2"><input type="checkbox" name="signinwithloginandemail" value="1" {if $modules[$index].edit_settings.signinwithloginandemail eq "1"}checked{/if}> {$lang.settings_signinwithloginandemail}</td>
 			<td></td>
 			<td>{if $_settings.show_help eq "on"}<a target="_blank" href="http://{$modules[$index].edit_settings.help_resource}/index.php?m=help&q=signinwithloginandemail&lang={$modules[$index].edit_settings.default_language}">[?]</a>{/if}</td>
 		</tr>

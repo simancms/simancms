@@ -396,6 +396,7 @@ $lang['settings_resource_url_tablet'] = 'Site URL (for tablet devices)';
 $lang['settings_redirect_on_success_change_usrdata']='Redirect after account data successfull changes made';
 $lang['settings_signinwithloginandemail']='Allow to use login or email for signing in';
 $lang['settings_editor_level']='Editor level';
+$lang['settings_hide_generator_meta']='Hide \'generator\' meta-tag';
 $lang['module_admin']['optimize_database'] = 'Optimize database';
 $lang['module_admin']['message_no_tables_in_DB'] = 'Tables of the database are missing or yours DBMS is not supported this operation ';
 $lang['module_admin']['optimize_tables'] = 'Optimize the tables';

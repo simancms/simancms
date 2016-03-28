@@ -97,6 +97,7 @@
 	if (intval(sm_settings('database_date'))<20160330)//1.6.10
 		{
 			sm_update_settings('news_use_title', '1');
+			sm_add_settings('hide_generator_meta', '');
 			sm_update_settings('database_date', '20160330');
 		}
 

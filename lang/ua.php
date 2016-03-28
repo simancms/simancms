@@ -415,6 +415,7 @@
 	$lang['settings_redirect_on_success_change_usrdata']='Перенаправити після редагування даних облікового запису';
 	$lang['settings_signinwithloginandemail']='Дозволити вхід з використанням логіну та e-mail';
 	$lang['settings_editor_level']='Редакторські права';
+	$lang['settings_hide_generator_meta']='Приховати meta-тег generator';
 	$lang['module_admin']['optimize_database']='Оптимізувати базу даних';
 	$lang['module_admin']['message_no_tables_in_DB']='У базі даних відсутні таблиці або дана операція не підтримується для Вашої СУБД';
 	$lang['module_admin']['optimize_tables']='Оптимізувати таблиці';

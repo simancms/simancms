@@ -71,7 +71,7 @@ INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('all
 ";
 execsql($sql);
 $sql="
-INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('admin_items_by_page', '10');
+INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('admin_items_by_page', '30');
 ";
 execsql($sql);
 $sql="
@@ -414,6 +414,9 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('notifierlib', 'alertify', 'default');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_content_filesystem', '1', 'content');");
 execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('autogenerate_news_filesystem', '1', 'news');");
+
+//version 1.6.10
+execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`, `mode`) VALUES ('hide_generator_meta', '', 'default');");
 
 
 //---------[DATABASE DATE]------------------------------------

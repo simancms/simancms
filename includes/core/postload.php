@@ -63,6 +63,8 @@
 	$sm['s']['document']['headdef'].='<base href="'.$sm['s']['page']['scheme'].'://'.$sm['s']['resource_url'].'">';
 	if (!empty($refresh_url))
 		$sm['s']['document']['headdef'].='<script type="text/javascript">setTimeout(function() { document.location.href = "'.$refresh_url.'"; }, 3000)</script>';
+	if (intval(sm_settings('hide_generator_meta'))!=1)
+		$sm['s']['document']['headdef'].='<meta name="generator" content="SiMan CMS">';
 	for ($i = 0; $i < count($sm['s']['customjs']); $i++)
 		$sm['s']['document']['headend'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
 	for ($i = 0; $i < count($sm['s']['cssfiles']); $i++)
