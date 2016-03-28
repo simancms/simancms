@@ -25,6 +25,7 @@
 		{
 			$m["module"] = 'account';
 			sm_title($lang["register"]);
+			sm_extcore();
 			$login = $_postvars["p_login"];
 			$password = $_postvars["p_password"];
 			$password2 = $_postvars["p_password2"];
@@ -108,6 +109,7 @@
 				{
 					$m["module"] = 'account';
 					sm_title($lang["get_password"]);
+					sm_extcore();
 					$usr_name = dbescape(strtolower($_getvars["login"]));
 					$usr_answer = dbescape($_postvars["p_answ"]);
 					$usr_newpwd = dbescape(sm_password_hash($_postvars["p_newpwd"], $_getvars["login"]));
@@ -115,7 +117,7 @@
 					$info = getsql($sql);
 					if (!empty($info['id_user']))
 						{
-							$sql = "UPDATE ".$tableusersprefix."users SET password='$usr_newpwd' WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
+							$sql = "UPDATE ".$tableusersprefix."users SET password='$usr_newpwd', random_code='".dbescape(md5($usr_name.microtime(true).rand()))."' WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
 							$result = execsql($sql);
 							log_write(LOG_LOGIN, $lang['get_password'].' - '.$lang['common']['ok']);
 							sm_event('onchangepassword', Array('login' => $_getvars["login"], 'newpassword' => $_postvars["p_newpwd"]));

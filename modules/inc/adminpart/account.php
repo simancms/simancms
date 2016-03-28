@@ -38,10 +38,6 @@
 						}
 					elseif (!empty($info['id_user']) && intval($info['id_user'])!=1)
 						{
-							if (strlen($_postvars['pwd'])>0)
-								{
-									sm_set_userfield($info['id_user'], 'password', sm_password_hash($_postvars['pwd'], $info['login']));
-								}
 							sm_set_userfield($info['id_user'], 'email', $_postvars['email']);
 							sm_set_userfield($info['id_user'], 'get_mail', intval($_postvars['get_mail']));
 							sm_extcore();
@@ -78,8 +74,6 @@
 								$ui->NotificationError($lang['messages']['wrong_email']);
 							$f = new TForm('index.php?m=account&d=postedituser&id='.$info['id_user'].'&returnto='.urlencode($_getvars['returnto']));
 							$f->AddStatictext('login', $lang['login_str']);
-							$f->AddText('pwd', $lang['password']);
-							$f->SetFieldBottomText('pwd', $lang['set_passwords_if_want_to_change']);
 							$f->AddText('email', $lang['email']);
 							$f->AddCheckbox('get_mail', $lang['module_account']['get_mail_from_admin']);
 							$f->LabelAfterControl();
@@ -185,6 +179,7 @@
 								}
 							else
 								{
+									sm_extcore();
 									$password = sm_password_hash($_postvars['newpwd'], $usr['login']);
 									$random_code = md5($id_user.microtime().rand());
 									execsql("UPDATE ".$tableusersprefix."users SET password = '".dbescape($password)."', random_code='".dbescape($random_code)."' WHERE id_user=".intval($usr['id'])." AND id_user>1");

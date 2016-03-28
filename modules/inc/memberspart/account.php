@@ -17,6 +17,7 @@
 		include('modules/inc/memberspart/account_privatemessages.php');
 	if (sm_action('postchange'))
 		{
+			sm_extcore();
 			$m["module"] = 'account';
 			$m["title"] = $lang['change'];
 			$old_password = dbescape($_postvars["p_old_password"]);
@@ -51,7 +52,8 @@
 					else
 						{
 							$password = sm_password_hash($password, $userinfo['login']);
-							$sqlpasswd = ", password = '".dbescape($password)."' ";
+							$random_code = md5($userinfo['id'].microtime().rand());
+							$sqlpasswd = ", password = '".dbescape($password)."', random_code='".dbescape($random_code)."' ";
 						}
 				}
 			if (!is_email($email))
