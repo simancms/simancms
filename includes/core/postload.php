@@ -38,6 +38,19 @@
 	sm_event('afterpostload', Array());
 	//Postload modules end
 
+	if (is_array($sm['session']['notifications']))
+		foreach ($sm['session']['notifications'] as $key=>$val)
+			{
+				if ($val['time']<time()-intval(sm_settings('notifications_time')))
+					unset($sm['session']['notifications'][$key]);
+				else
+					{
+						$sm['s']['notifications'][]=$val;
+					}
+			}
+	if (strlen(sm_settings('notifierlib'))>0 && file_exists('ext/notifiers/'.sm_settings('notifierlib').'/siman_config.php'))
+		include('ext/notifiers/'.sm_settings('notifierlib').'/siman_config.php');
+
 	//Head section generation start
 	if (!$sm['s']['headgen']['custom_encoding'])
 		$sm['s']['document']['headdef'].='<meta content="text/html; charset='.$sm['s']['charset'].'" http-equiv=Content-Type>';
