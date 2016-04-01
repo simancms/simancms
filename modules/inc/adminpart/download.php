@@ -310,7 +310,7 @@
 					if ($t->RowCount()==0)
 						$t->SingleLineLabel($lang['messages']['nothing_found']);
 					$ui->AddGrid($t);
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}

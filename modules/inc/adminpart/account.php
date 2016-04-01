@@ -163,7 +163,7 @@
 						}
 					$ui->AddGrid($t);
 					$ui->div('<form action="index.php"><input type="hidden" name="m" value="account"><input type="hidden" name="d" value="usrlist">'.$lang['search'].': <input type="text" name="sellogin" value="'.htmlescape($sm['g']['sellogin']).'"></form>');
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
@@ -290,7 +290,7 @@
 					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
 					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
 					if (sm_action('editgroup'))
-						$f->LoadValues('SELECT * FROM '.$sm['t'].'groups WHERE id_group='.intval($_getvars['id']));
+						$f->LoadValuesArray(TQuery::ForTable($sm['t'].'groups')->AddWhere('id_group', intval($_getvars['id']))->Get());
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);

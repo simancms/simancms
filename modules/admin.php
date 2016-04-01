@@ -810,7 +810,7 @@
 					$ui->AddButtons($b);
 					$ui->AddGrid($t);
 					$ui->AddButtons($b);
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->Output(true);
 				}
 			if (sm_action('postdeletefilesystem'))
@@ -993,7 +993,7 @@
 							$t->NewRow();
 						}
 					$ui->AddGrid($t);
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->Output(true);
 				}
 			if (sm_action('postpackage') && $_settings['packages_upload_allowed'])

@@ -252,7 +252,7 @@
 							$t->NewRow();
 						}
 					$m['table']=$t->Output();
-					$m['pages']['records'] = $q->Find();
+					$m['pages']['records'] = $q->TotalCount();
 					$m['pages']['pages'] = ceil($m['pages']['records'] / $_settings['admin_items_by_page']);
 					$m['short_news'] = 0;
 				}

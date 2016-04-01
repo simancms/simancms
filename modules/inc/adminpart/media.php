@@ -19,7 +19,7 @@
 					global $sm;
 					if ($id_ctg==0)
 						return;
-					$count=TQuery::ForTable($sm['t'].'media')->Add('id_ctg', intval($id_ctg))->Find();
+					$count=TQuery::ForTable($sm['t'].'media')->Add('id_ctg', intval($id_ctg))->TotalCount();
 					TQuery::ForTable($sm['t'].'categories_media')->Add('items_count', intval($count))->Update('id_ctg', intval($id_ctg));
 				}
 			function siman_notemptyuintwithdefault($int, $default)
@@ -267,7 +267,7 @@
 							$t->NewRow();
 						}
 					$ui->AddGrid($t);
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
@@ -439,7 +439,7 @@
 							$t->NewRow();
 						}
 					$ui->AddGrid($t);
-					$ui->AddPagebarParams($q->Find(), $limit, $offset);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
 					$ui->AddButtons($b);
 					$ui->Output(true);
 				}
