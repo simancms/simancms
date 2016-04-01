@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.10
+	//#revision 2016-03-31
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -261,14 +261,19 @@
 				}
 			if (sm_actionpost('posteditgroup'))
 				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['common']['edit'];
-					$q = new TQuery($sm['t'].'groups');
-					$q->AddPost('title_group');
-					$q->AddPost('description_group');
-					$q->Add('autoaddtousers_group', intval($_postvars['autoaddtousers_group']));
-					$q->Update('id_group', intval($_getvars['id']));
-					sm_redirect('index.php?m=account&d=listgroups');
+					if (empty($_postvars['title_group']))
+						$error_message=$lang['messages']['fill_required_fields'];
+					if (empty($error_message))
+						{
+							$q = new TQuery($sm['t'].'groups');
+							$q->AddPost('title_group');
+							$q->AddPost('description_group');
+							$q->Add('autoaddtousers_group', intval($_postvars['autoaddtousers_group']));
+							$q->Update('id_group', intval($_getvars['id']));
+							sm_redirect('index.php?m=account&d=listgroups');
+						}
+					else
+						sm_set_action(Array('postaddgroup'=>'addgroup', 'posteditgroup'=>'editgroup'));
 				}
 			if (sm_action('addgroup', 'editgroup'))
 				{
@@ -282,11 +287,13 @@
 					add_path_control();
 					add_path($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups');
 					add_path_current();
+					if (!empty($error_message))
+						$ui->NotificationError($error_message);
 					if (sm_action('addgroup'))
 						$f = new TForm('index.php?m=account&d=postaddgroup');
 					else
 						$f = new TForm('index.php?m=account&d=posteditgroup&id='.$_getvars['id']);
-					$f->AddText('title_group', $lang['module_account']['title_group']);
+					$f->AddText('title_group', $lang['module_account']['title_group'], true);
 					$f->AddTextarea('description_group', $lang['module_account']['description_group']);
 					$f->AddCheckbox('autoaddtousers_group', $lang['module_account']['add_to_new_users'], 1);
 					if (sm_action('editgroup'))
