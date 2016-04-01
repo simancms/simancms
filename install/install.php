@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.4
-	//#revision 2013-03-31
+	//#ver 1.6.10
+	//#revision 2016-03-31
 	//==============================================================================
 
 	session_start();
@@ -238,7 +238,7 @@
 							if ($inst['settings']['default_module'] == 'news')
 								$inst['settings']['news_use_time'] = 1;
 							include('dbpset.php');
-							if ($inst['settings']['theme'] == 'bootstrap' || $inst['settings']['theme'] == 'bootstrap3')
+							if ($inst['settings']['theme'] == 'bootstrap3')
 								{
 									execsql("UPDATE ".$tableprefix."blocks SET panel_block=1, position_block=3 WHERE name_block='account'");
 								}

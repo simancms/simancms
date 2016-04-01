@@ -1,6 +1,6 @@
 <?php
 
-//-------------[������������]-[Settings]-----------------------
+//--------------[Settings]-----------------------
 
 $sql="
 INSERT INTO ".$tableprefix."settings(name_settings, value_settings) VALUES ('install_not_erased','1');
@@ -421,7 +421,7 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20150930');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20160330');
 ";
 execsql($sql);
 
