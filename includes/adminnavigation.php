@@ -115,7 +115,7 @@
 						{
 							if (!empty($name))
 								$this->SetActiveItem($name);
-							$this->currentitem['target']='_blank';
+							$this->currentitem['attrs']['target']='_blank';
 							return $this;
 						}
 					
