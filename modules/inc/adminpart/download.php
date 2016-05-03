@@ -36,7 +36,7 @@
 				}
 			if (sm_action('postdelete'))
 				{
-					$q=new TQuery('sm_downloads');
+					$q=new TQuery($sm['t'].'downloads');
 					$q->Add('id_download', intval($_getvars['id']));
 					$info=$q->Get();
 					$filename='files/download/'.basename($info['file_download']);
