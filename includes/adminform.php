@@ -422,6 +422,8 @@
 						{
 							if (!is_array($value))
 								$this->form['data'][$name] = htmlescape($value);
+							else
+								$this->form['data'][$name] = $value;
 							return $this;
 						}
 
@@ -499,6 +501,27 @@
 													if (!empty($this->form['fields'][$name]['tooltip_url']))
 														$this->form['fields'][$name]['column'][2] .= '</a>';
 													$this->form['fields'][$name]['column'][2] .= '</div>';
+												}
+											if ($this->form['fields'][$name]['type'] == 'select')
+												{
+													for ($i = 0; $i < count($this->form['fields'][$name]['values']); $i++)
+														{
+															if (strlen($this->form['fields'][$name]['labels'][$i])==0)
+																$this->form['fields'][$name]['options'][$i]['label']=htmlescape($this->form['fields'][$name]['values'][$i]);
+															else
+																$this->form['fields'][$name]['options'][$i]['label']=htmlescape($this->form['fields'][$name]['labels'][$i]);
+															$this->form['fields'][$name]['options'][$i]['attrs']['value']=htmlescape($this->form['fields'][$name]['values'][$i]);
+															if (is_array($this->form['data'][$name]))
+																{
+																	if (in_array($this->form['fields'][$name]['values'][$i], $this->form['data'][$name]))
+																		$this->form['fields'][$name]['options'][$i]['attrs']['selected']='selected';
+																}
+															else
+																{
+																	if (strcmp($this->form['data'][$name], $this->form['fields'][$name]['values'][$i])==0)
+																		$this->form['fields'][$name]['options'][$i]['attrs']['selected']='selected';
+																}
+														}
 												}
 											if (is_array($this->form['fields'][$name]['checkbox_toggle']))
 												for ($i = 0; $i<count($this->form['fields'][$name]['checkbox_toggle']); $i++)

@@ -71,8 +71,8 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 			<textarea name="{$form.prefix}{$field.name}" cols="30" rows="5" name="1" id="{$field.id}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>{$form.data.$field_db}</textarea>
 		{elseif $field.type eq "select"}
 			<select name="{$form.prefix}{$field.name}" size="1" id="{$field.id}"{foreach name=form_field_attr_index from=$field.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>
-				{section name=form_vaule_index loop=$field.values}
-				<option value="{$field.values[form_vaule_index]}"{if $field.values[form_vaule_index] eq $form.data.$field_db or $form.data.$field_db eq "" and $smarty.section.form_vaule_index.index eq 0} SELECTED{/if}>{if $field.labels[form_vaule_index] eq ""}{$field.values[form_vaule_index]}{else}{$field.labels[form_vaule_index]}{/if}</option>
+				{section name=form_option_index loop=$field.options}
+					<option{foreach name=form_field_attr_index from=$field.options[form_option_index].attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>{$field.options[form_option_index].label}</option>
 				{/section}
 			</select>
 		{elseif $field.type eq "editor"}
