@@ -476,6 +476,7 @@
 						{
 							$f->LoadValuesArray($item);
 							$tmp = sm_load_metadata('news', intval($item['id_news']));
+							$f->SetValue('id_category', $item['id_category_n']);
 							$f->SetValue('seo_title', $tmp['seo_title']);
 							$f->SetValue('tplnews', $tmp['news_template']);
 							$f->SetValue('url', $item['url']);
