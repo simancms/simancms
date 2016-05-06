@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-03-28
+	//#ver 1.6.11
+	//#revision 2016-05-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -29,17 +29,18 @@
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					add_path_current();
-					$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='".$_getvars['ctgid']."'";
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
+					$info=TQuery::ForTable($sm['t'].'categories_news')
+						->AddWhere('id_category', intval($sm['g']['ctgid']))
+						->Get();
+					if (!empty($info['id_category']))
 						{
-							$m["id_ctg"] = $row->id_category;
-							$m["title_category"] = $row->title_category;
-							$m['modify_groups_category'] = get_array_groups($row->groups_modify);
-							$m['category_no_alike_news'] = $row->no_alike_news;
-							if (!empty($row->filename_category))
+							$m["id_ctg"] = $info['id_category'];
+							$m["title_category"] = $info['title_category'];
+							$m['modify_groups_category'] = get_array_groups($info['groups_modify']);
+							$m['category_no_alike_news'] = $info['no_alike_news'];
+							if (!empty($info['filename_category']))
 								{
-									$m['filesystem'] = get_filesystem($row->filename_category);
+									$m['filesystem'] = get_filesystem($info['filename_category']);
 									$m["filename_category"] = $m['filesystem']['filename'];
 								}
 						}
