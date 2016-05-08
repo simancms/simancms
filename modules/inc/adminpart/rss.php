@@ -80,7 +80,7 @@
 					$t->Label('url', sm_homepage().sm_fs_url('index.php?m=rss'));
 					$t->URL('url', sm_homepage().sm_fs_url('index.php?m=rss'), true);
 					$t->Label('add_to_menu', $lang['add_to_menu']);
-					$t->URL('url', sm_tomenuurl('RSS - '.$lang['news'], sm_fs_url('index.php?m=rss')));
+					$t->URL('add_to_menu', sm_tomenuurl('RSS - '.$lang['news'], sm_fs_url('index.php?m=rss')));
 					$t->NewRow();
 					$newsctgs = getsqlarray("SELECT * FROM ".$sm['t']."categories_news ORDER BY title_category");
 					for ($i = 0; $i < count($newsctgs); $i++)
@@ -89,7 +89,7 @@
 							$t->Label('url', sm_homepage().sm_fs_url('index.php?m=rss&ctg='.$newsctgs[$i]['id_category']));
 							$t->URL('url', sm_homepage().sm_fs_url('index.php?m=rss&ctg='.$newsctgs[$i]['id_category']), true);
 							$t->Label('add_to_menu', $lang['add_to_menu']);
-							$t->URL('url', sm_tomenuurl('RSS - '.$newsctgs[$i]['title_category'], sm_fs_url('index.php?m=rss&ctg='.$newsctgs[$i]['id_category'])));
+							$t->URL('add_to_menu', sm_tomenuurl('RSS - '.$newsctgs[$i]['title_category'], sm_fs_url('index.php?m=rss&ctg='.$newsctgs[$i]['id_category'])));
 							$t->NewRow();
 						}
 					$ui->AddGrid($t);
