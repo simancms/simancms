@@ -25,7 +25,7 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
-			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular'))
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons'))
 				sm_delayed_action('demo', 'footercode');
 			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
@@ -59,6 +59,28 @@
 					$ui->Output(true);
 				}
 			//end-htmlshortcuts
+			//start-buttons
+			if (sm_action('buttons'))
+				{
+					sm_title('UI Buttons');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					$ui = new TInterface();
+					$b=new TButtons();
+					$b->Button('Regular Button', 'index.php?m=demo&d=buttons');
+					$b->MessageBox('Confirmarion (default)', 'index.php?m=demo&d=buttons');
+					$b->MessageBox('Confirmarion (custom)', 'index.php?m=demo&d=buttons', 'Are you sure you want to visit this page?');
+					$b->Button('Bold', 'index.php?m=demo&d=buttons')->Bold();
+					$b->Button('Custom Class', 'index.php?m=demo&d=buttons')->AddClassname('btn-danger');
+					$b->AddButton('cst', 'Custom Style', 'index.php?m=demo&d=buttons');
+					$b->Style('cst', 'text-decoration:underline; color:#00aa00;');
+					$ui->Add($b);
+					$ui->Output(true);
+				}
+			//end-buttons
 			//start-forms
 			if (sm_action('forms'))
 				{
@@ -253,6 +275,7 @@
 					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
+					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
