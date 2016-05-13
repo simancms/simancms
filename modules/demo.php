@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.9
+	Version: 1.6.11
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -25,7 +25,7 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
-			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons'))
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal'))
 				sm_delayed_action('demo', 'footercode');
 			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
@@ -81,6 +81,41 @@
 					$ui->Output(true);
 				}
 			//end-buttons
+			//start-modal
+			if (sm_action('modal'))
+				{
+					sm_title('UI Modal Helper');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					sm_use('ui.modal');
+					$ui = new TInterface();
+					$b=new TButtons();
+					//--------------------------------
+					$modal1=new TModalHelper();
+					$modal1->SetAJAXSource('index.php?m=demo&d=ajaxresponder&ajax=1');
+					$b->Button('Modal with AJAX');
+					$b->OnClick($modal1->GetJSCode());
+					//--------------------------------
+					$modal2=new TModalHelper();
+					$modal2->SetContent('Hardocded HTML content, custom with and height');
+					$modal2->SetWidth('200px');
+					$modal2->SetHeight('10%');
+					$b->Button('Modal with Hardocded Content');
+					$b->OnClick($modal2->GetJSCode());
+					//--------------------------------
+					$modal3=new TModalHelper();
+					$modal3->SetContentDOMSource('#hiddendiv');
+					$b->Button('Modal with DOM Content');
+					$b->OnClick($modal3->GetJSCode());
+					//--------------------------------
+					$ui->Add($b);
+					$ui->div('Hidden DOM-element used as content for modal', 'hiddendiv', '', 'display:none;');
+					$ui->Output(true);
+				}
+			//end-modal
 			//start-forms
 			if (sm_action('forms'))
 				{
@@ -276,6 +311,7 @@
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
 					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
+					$nav->AddItem('UI TForm - Modal Helper', 'index.php?m=demo&d=modal');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
