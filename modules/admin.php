@@ -613,10 +613,26 @@
 			if (sm_action('listimg'))
 				{
 					sm_title($lang['module_admin']['images_list']);
-					$m["module"] = 'admin';
+					sm_use('ui.interface');
 					sm_use('ui.grid');
+					sm_use('ui.buttons');
+					sm_use('ui.form');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
+					$ui=new TInterface();
+					$ui->div_open('searchimg', '', empty($_getvars['filter'])?'display:none;':'');
+					$f=new TForm('index.php');
+					$f->SetMethodGet();
+					$f->AddHidden('m', 'admin');
+					$f->AddHidden('d', 'listimg');
+					$f->AddText('filter', $lang['search']);
+					$f->SaveButton($lang['search']);
+					$f->LoadValuesArray($_getvars);
+					$ui->AddForm($f);
+					$ui->div_close();
+					$b=new TButtons();
+					$b->Button($lang['upload_image'], 'index.php?m=admin&d=uplimg&returnto='.urlencode(sm_this_url()));
+					$b->AddToggle('searchb', $lang['search'], Array('searchimg', 'filter'));
 					$t=new TGrid();
 					$t->AddCol('thumb', $lang['common']['thumbnail'], '10');
 					$t->AddCol('title', $lang['module_admin']['image_file_name'], '85%');
@@ -634,7 +650,7 @@
 							$j++;
 							$entry = $files[$j];
 							if (!empty($_getvars['filter']))
-								if (strpos($entry, $_getvars['filter']) !== 0)
+								if (strpos($entry, $_getvars['filter']) === false)
 									continue;
 							if (strcmp($entry, '.') != 0 && strcmp($entry, '..') != 0 && strcmp($entry, 'index.html') != 0)
 								{
@@ -654,12 +670,11 @@
 						}
 					if ($t->RowCount()==0)
 						$t->SingleLineLabel($lang['messages']['nothing_found']);
-					$m['table']=$t->Output();
-					$m['pages']['url'] = sm_this_url('from', '');
-					$m['pages']['interval'] = $limit;
-					$m['pages']['selected'] = ceil(($offset+1)/$m['pages']['interval']);
-					$m['pages']['records']=$i;
-					$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
+					$ui->Add($b);
+					$ui->Add($t);
+					$ui->Add($b);
+					$ui->AddPagebarParams($i, $limit, $offset);
+					$ui->Output(true);
 				}
 			if (sm_action('postdelimg'))
 				{

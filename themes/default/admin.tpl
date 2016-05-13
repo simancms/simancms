@@ -812,32 +812,6 @@
 {include file="block_end.tpl"}
 {/if}
 
-{if $modules[$index].mode eq 'listimg'}
-{include file="block_begin.tpl"}
-<table width="100%">
-	<tr>
-		<td width="50%">
-			<form action="index.php">
-				<input type="hidden" name="m" value="admin">
-				<input type="hidden" name="d" value="listimg">
-				{$lang.search}: <input type="text" name="filter" value="{$sm.g.filter}">
-				<input type="submit" value="{$lang.common.ok}">
-			</form>
-		</td>
-		<td align="right">
-			<a href="index.php?m=admin&d=uplimg">{$lang.upload_image}</a><br />
-		</td>
-	</tr>
-</table>
-{include file="common_admintable.tpl" table=$modules[$index].table}
-{include file="pagebar.tpl"}
-<br /><br />
-<a href="index.php?m=admin&d=uplimg">{$lang.upload_image}</a><br />
-<br />
-{if $_settings.show_help eq "on"}<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_list_images&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>{/if}
-{include file="block_end.tpl"}
-{/if}
-
 {*
 {if $modules[$index].mode eq 'filesystemexp'}
 {include file="block_begin.tpl"}
