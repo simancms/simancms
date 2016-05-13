@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-02-24
+	//#ver 1.6.11
+	//#revision 2016-05-13
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -61,7 +61,6 @@
 
 	if ($userinfo['level'] == 3)
 		{
-			$m["module"] = 'admin';
 			if (sm_actionpost('postsettings'))
 				{
 					if (!empty($_getvars['viewmode']))
@@ -439,6 +438,7 @@
 				}
 			if (sm_action('settings'))
 				{
+					$m["module"] = 'admin';
 					$m["title"] = $lang['settings'];
 					if (!empty($_getvars['viewmode']))
 						$m['mode_settings'] = $_getvars['viewmode'];
@@ -613,6 +613,7 @@
 			if (sm_action('listimg'))
 				{
 					sm_title($lang['module_admin']['images_list']);
+					$m["module"] = 'admin';
 					sm_use('ui.grid');
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
