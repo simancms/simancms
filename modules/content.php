@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.10
-	Revision: 2016-02-10
+	Version: 1.6.11
+	Revision: 2016-05-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -136,6 +136,7 @@
 					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category AND id_content=".intval($content_id);
 					if ($modules_index == 0)
 						$sql .= " AND refuse_direct_show <> 1";
+					$sql .= " LIMIT 1";
 				}
 			if ($_settings['allow_alike_content'] != 1)
 				$tmp_no_alike_content = 1;
@@ -154,7 +155,7 @@
 			else
 				$sql .= " ORDER BY ".$tableprefix."content.id_content ASC LIMIT 1";
 			$m["mode"] = 'view';
-			if ($_settings['allow_alike_content'] != 1)
+			if (sm_settings('allow_alike_content')!=1)
 				$tmp_no_alike_content = 1;
 		}
 
