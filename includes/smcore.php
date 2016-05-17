@@ -1257,4 +1257,14 @@
 			return "\$('".$dom_selector."').load('".$url."');";
 		}
 
+	/**
+	 * Unique page ID. Differs for the same URLs'.
+	 * @return string
+	 */
+	function sm_pageid()
+		{
+			global $sm;
+			return $sm['s']['page_system_id'];
+		}
+
 ?>
