@@ -930,6 +930,7 @@
 			if ($libname=='ui.dashboard') $libname='admindashboard';
 			if ($libname=='ui.tabs') $libname='admintabs';
 			if ($libname=='ui.modal') $libname='ui/modal';
+			if ($libname=='ui.exchange') $libname='ui/exchange';
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
 			elseif (strcmp($libname, 'autocomplete')==0)

@@ -31,7 +31,7 @@ function sm_ls_add_listen_key(key)
 function sm_ls_init_listener(page_id)
 	{
 		sm_ls_listener_page_id = page_id;
-		setTimeout(sm_ls_listen, 250);
+		setTimeout(sm_ls_listen, 0);
 	}
 
 function sm_ls_send_to_listener(listener_page_id, key, val)
