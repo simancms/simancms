@@ -25,7 +25,7 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
-			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal'))
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal', 'exchangelistener', 'exchangesender'))
 				sm_delayed_action('demo', 'footercode');
 			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
@@ -296,6 +296,50 @@
 					$m['module'] = 'demo';
 				}
 			//end-regular
+			//start-exchangesender
+			if (sm_action('exchangesender'))
+				{
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					sm_use('ui.exchange');
+					sm_title('Modal');
+					$ui = new TInterface();
+					$b=new TButtons();
+					$b->Button('Send Values and Close');
+					$sender=new TExchangeSender($_getvars['listener']);
+					$sender->Add('field1', 'Test 1');
+					$sender->Add('field2', 'Test 2');
+					$sender->Add('field3', 'Test 3');
+					$sender->SetCloseWindowRequest();
+					$b->OnClick($sender->GetJSCode());
+					$ui->Add($b);
+					$ui->Output(true);
+				}
+			//end-exchangesender
+			//start-exchangelistener
+			if (sm_action('exchangelistener'))
+				{
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.exchange');
+					sm_title('UI Exchange Listener');
+					$ui = new TInterface();
+					$f = new TForm(false);
+					$f->AddText('field1', 'Field 1');
+					$f->AddText('field2', 'Field 2');
+					$f->AddText('field3', 'Field 3');
+					$ui->Add($f);
+					$listener=new TExchangeListener();
+					$listener->Add('field1');
+					$listener->Add('field2');
+					$listener->Add('field3');
+					$ui->javascript($listener->GetJSCode());
+					unset($listener);
+					$ui->AddBlock('Exchange');
+					$ui->a('index.php?m=demo&d=exchangesender&listener='.sm_pageid(), 'Open Page with Sender', '', 'btn btn-default', '', '', 'target="_blank"');
+					$ui->Output(true);
+				}
+			//end-exchangelistener
 			//start-demos
 			if (sm_action('demos'))
 				{
@@ -312,6 +356,7 @@
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
 					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
 					$nav->AddItem('UI TForm - Modal Helper', 'index.php?m=demo&d=modal');
+					$nav->AddItem('UI TExchangeListener/TExchangeSender - Exchange values between pages', 'index.php?m=demo&d=exchangelistener');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
