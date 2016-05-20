@@ -9,8 +9,8 @@
 	Module Name: Navigation
 	Module URI: http://simancms.org/modules/menu/
 	Description: Navigation management module. Base CMS module
-	Version: 1.6.10
-	Revision: 2016-03-28
+	Version: 1.6.11
+	Revision: 2016-05-20
 	Author URI: http://simancms.org/
 	*/
 

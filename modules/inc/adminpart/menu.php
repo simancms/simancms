@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2015-11-23
+	//#ver 1.6.11
+	//#revision 2016-05-20
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -18,19 +18,17 @@
 			function siman_delete_menu_line($line_id)
 				{
 					global $tableprefix, $_settings;
-					$sql = "SELECT id_ml FROM ".$tableprefix."menu_lines WHERE submenu_from=".intval($line_id);
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
+					$result = execsql("SELECT id_ml FROM ".$tableprefix."menu_lines WHERE submenu_from=".intval($line_id));
+					while ($row = database_fetch_assoc($result))
 						{
-							siman_delete_menu_line($row->id_ml);
+							siman_delete_menu_line($row['id_ml']);
 						}
-					$sql = "DELETE FROM ".$tableprefix."menu_lines WHERE id_ml=".intval($line_id);
-					if ($_settings['menuitems_use_image'] == 1)
+					if (intval(sm_settings('menuitems_use_image'))==1)
 						{
 							if (file_exists('./files/img/menuitem'.intval($line_id).'.jpg'))
 								unlink('./files/img/menuitem'.intval($line_id).'.jpg');
 						}
-					execsql($sql);
+					execsql("DELETE FROM ".$tableprefix."menu_lines WHERE id_ml=".intval($line_id));
 				}
 
 			define("MENU_ADMINPART_FUNCTIONS_DEFINED", 1);
@@ -93,9 +91,10 @@
 				{
 					$m["module"] = 'menu';
 					sm_title($lang["add_menu"]);
-					$sql = "INSERT INTO ".$sm['t']."menus (caption_m) VALUES ('".dbescape($_postvars["p_caption"])."')";
-					$id_menu = insertsql($sql);
-					if ($_settings['menus_use_image'] == 1)
+					$id_menu = TQuery::ForTable($sm['t']."menus")
+						->Add('caption_m', dbescape($_postvars["p_caption"]))
+						->Insert();
+					if (sm_settings('menus_use_image')>0)
 						{
 							siman_upload_image($id_menu, 'menu');
 						}
@@ -104,6 +103,23 @@
 					$_msgbox['msg'] = $lang['you_want_add_line'];
 					$_msgbox['yes'] = 'index.php?m=menu&d=addline&mid='.$id_menu;
 					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
+				}
+			if (sm_action('add'))
+				{
+					add_path($lang['control_panel'], "index.php?m=admin");
+					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
+					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_title($lang["add_menu"]);
+					$ui = new TInterface();
+					$f = new TForm('index.php?m='.sm_current_module().'&d=postadd');
+					$f->AddText('p_caption', $lang['caption'])->SetFocus();
+					if (intval(sm_settings('menus_use_image'))>0)
+						$f->AddFile('userfile', $lang['common']['image']);
+					$ui->Add($f);
+					$ui->Output(true);
 				}
 			if (sm_action('postdeleteline'))
 				{
@@ -162,11 +178,7 @@
 					$alt_ml = dbescape($_postvars["p_alt"]);
 					$attr_ml = dbescape($_postvars["attr_ml"]);
 					$newpage_ml = intval($_postvars["p_newpage"]);
-					if (empty($lposition))
-						{
-							//Нічого не робимо
-						}
-					elseif ($lposition == -1)
+					if ($lposition == -1)
 						{
 							$sql = "SELECT max(position) FROM ".$tableprefix."menu_lines WHERE id_menu_ml=".$menu_id;
 							$lposition = 1;
@@ -176,7 +188,7 @@
 									$lposition = $row[0] + 1;
 								}
 						}
-					else
+					elseif (!empty($lposition))
 						{
 							$sql = "UPDATE ".$tableprefix."menu_lines SET position=position+1 WHERE position>=".$lposition;
 							$result = execsql($sql);
@@ -369,14 +381,6 @@
 					$q->Add('id_menu_ml', $menu_id);
 					$q->Remove();
 					sm_redirect('index.php?m=menu&d=listmenu');
-				}
-			if (sm_action('add'))
-				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang["add_menu"];
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
-					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
 				}
 			if (sm_action('listmenu'))
 				{
