@@ -1,27 +1,3 @@
-{if $modules[$index].mode eq 'add'}
-{include file="block_begin.tpl"}
-<form action="index.php?m=menu&d=postadd" method="post" enctype="multipart/form-data">
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
-<tr>
-    <td width="50%">{$lang.caption}</td>
-    <td width="50%"><input type="text" name="p_caption" size="30"></td>
-</tr>
-{if $_settings.menus_use_image eq "1"}
-<tr>
-    <td width="50%">{$lang.common.image}</td>
-    <td width="50%">{include file="upload_image.tpl" no_use_foto_lang="1"}</td>
-</tr>
-{/if}
-{$modules[$index].formadditionalhtml}
-<tr>
-    <td colspan="2" align="center"><input type="submit" value="{$lang.submit}"></td>
-</tr>
-</table>
-</form>
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=admin_menu_addeditmenu&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq 'editmenu'}
 {include file="block_begin.tpl"}
 <form action="index.php?m=menu&d=postedit&mid={$modules[$index].id}" method="post" enctype="multipart/form-data">
