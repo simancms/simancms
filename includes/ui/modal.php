@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-03-17
+	//#revision 2016-05-26
 	//==============================================================================
 
 	if (!defined("ui_modal_DEFINED"))
@@ -87,6 +87,11 @@
 					public static function ModalDOMSelector()
 						{
 							return '#modal-content';
+						}
+
+					public static function GetCloseJSCode()
+						{
+							return 'Modal.close()';
 						}
 
 				}

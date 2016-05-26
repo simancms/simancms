@@ -103,16 +103,16 @@
 					$modal2->SetContent('Hardocded HTML content, custom with and height');
 					$modal2->SetWidth('200px');
 					$modal2->SetHeight('10%');
-					$b->Button('Modal with Hardocded Content');
+					$b->Button('Modal with Hardocded Content/Dimensions');
 					$b->OnClick($modal2->GetJSCode());
 					//--------------------------------
 					$modal3=new TModalHelper();
 					$modal3->SetContentDOMSource('#hiddendiv');
-					$b->Button('Modal with DOM Content');
+					$b->Button('Modal with DOM Content and Close Helper');
 					$b->OnClick($modal3->GetJSCode());
 					//--------------------------------
 					$ui->Add($b);
-					$ui->div('Hidden DOM-element used as content for modal', 'hiddendiv', '', 'display:none;');
+					$ui->div('Hidden DOM-element used as content for modal. Click to <a href="javascript:;" onclick="'.TModalHelper::GetCloseJSCode().'">close</a>', 'hiddendiv', '', 'display:none;');
 					$ui->Output(true);
 				}
 			//end-modal
