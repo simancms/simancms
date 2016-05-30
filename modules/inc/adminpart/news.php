@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.11
-	//#revision 2016-05-06
+	//#revision 2016-05-30
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -46,7 +46,7 @@
 						}
 					$m['groups_list'] = get_groups_list();
 				}
-			if (sm_actionpost('postaddctg'))
+			/*if (sm_actionpost('postaddctg'))
 				{
 					$title_category = dbescape($_postvars["p_title_category"]);
 					$filename = dbescape($_postvars["p_filename"]);
@@ -73,6 +73,85 @@
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					add_path_current();
 					$m['groups_list'] = get_groups_list();
+				}*/
+			if (sm_actionpost('postaddctg'))
+				{
+					sm_extcore();
+					if (empty($sm['p']['title_category']))
+						{
+							$error_message=$lang['messages']['fill_required_fields'];
+						}
+					elseif (!empty($sm['p']['url']))
+						{
+							if (sm_action('postaddctg'))
+								{
+									if (sm_fs_exists($sm['p']['url']))
+										$error_message=$lang['messages']['seo_url_exists'];
+								}
+						}
+					if (empty($error_message))
+						{
+							$groups=get_groups_list();
+							for ($i = 0; $i < count($groups); $i++)
+								{
+									if (!empty($sm['p']['group_'.$groups[$i]['id']]))
+										$groupsenabled[]=$groups[$i]['id'];
+								}
+							$groupsenabled=Array();
+							$q = new TQuery($sm['t'].'categories_news');
+							$q->Add('title_category', dbescape($sm['p']['title_category']));
+							$q->Add('groups_modify', dbescape(create_groups_str($groupsenabled)));
+							$q->Add('no_alike_news', empty($sm['ps']['no_alike_news'])?0:1);
+							$ctgid=$q->Insert();
+							if (!empty($sm['p']['url']))
+								sm_fs_update($sm['p']['title_category'], 'index.php?m=news&d=listnews&ctg='.$ctgid, $sm['p']['url']);
+							if (sm_action('postadd'))
+								sm_notify($lang['add_content_category_successful']);
+							if (!empty($_getvars['returnto']))
+								sm_redirect($_getvars['returnto']);
+							else
+								sm_redirect('index.php?m=news&d=listctg');
+							sm_event('postaddctgnews', Array($ctgid));
+						}
+					if (!empty($error_message))
+						sm_set_action(Array('postaddctg'=>'addctg', 'posteditctg'=>'editctg'));
+				}
+			if (sm_action('addctg'))
+				{
+					$m['groups_list'] = get_groups_list();
+					sm_title($lang['add_category']);
+					add_path_modules();
+					add_path($lang['module_news']['module_news_name'], 'index.php?m=news&d=admin');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					$ui = new TInterface();
+					if (!empty($error_message))
+						$ui->NotificationError($error_message);
+					$f = new TForm('index.php?m='.sm_current_module().'&d=postaddctg');
+					$f->Separator($lang['common']['general']);
+					$f->AddText('title_category', $lang['caption_category'], true)
+						->SetFocus();
+					$f->AddText('url', $lang['common']['url'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					if (intval(sm_settings('allow_alike_news'))==1)
+						{
+							$f->Separator($lang['common']['extended_parameters']);
+							$f->AddCheckbox('no_alike_news', $lang['module_news']['dont_show_alike_news']);
+						}
+					$groups=get_groups_list();
+					if (count($groups)>0)
+						{
+							$f->Separator($lang['common']['groups_can_modify']);
+							for ($i = 0; $i < count($groups); $i++)
+								{
+									$f->AddCheckbox('group_'.$groups[$i]['id'], $groups[$i]['title']);
+								}
+						}
+					if (!empty($sm['p']))
+						$f->LoadAllValues($sm['p']);
+					$ui->Output(true);
+					$ui->Add($f);
 				}
 			if (sm_actionpost('posteditctg'))
 				{

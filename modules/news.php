@@ -9,8 +9,8 @@
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.10
-	Revision: 2015-09-29
+	Version: 1.6.11
+	Revision: 2016-05-30
 	Author URI: http://simancms.org/
 	*/
 
@@ -43,14 +43,13 @@
 
 			if ($m["bid"] == 1 && empty($m["mode"]))
 				{
-					$m["mode"] = 'shortnews';
-					$m["bid"] = '';
+					sm_set_action('shortnews');
+					$m['bid'] = '';
 				}
 
-			if (empty($m["mode"])) $m["mode"] = 'listnews';
+			sm_default_action('listnews');
 
 			$tmp_short_news = 0;
-
 
 			if (sm_action('listnews') || sm_action('listdate'))
 				{
