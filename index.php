@@ -28,6 +28,8 @@
 	require_once("includes/core/init.php");
 	require_once("includes/functions.php");
 	require_once("includes/smcore.php");
+	if ($sm['afterinit_usr'] && file_exists("includes/core/afterinit_usr.php"))
+		require_once("includes/core/afterinit_usr.php");
 	require_once('Smarty/libs/Smarty.class.php');
 
 	if (!isset($lnkDB))
