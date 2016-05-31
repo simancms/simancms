@@ -461,9 +461,9 @@
 						{
 							$m['type_news'] = $_settings['default_news_text_style'];
 							$f->SetValue('id_category', intval($_getvars['ctg']));
-							$f->SetValue('date_day', date('d'));
-							$f->SetValue('date_month', date('m'));
-							$f->SetValue('date_year', date('Y'));
+							$f->SetValue('date_day', intval(date('d')));
+							$f->SetValue('date_month', intval(date('m')));
+							$f->SetValue('date_year', intval(date('Y')));
 							if (intval(sm_settings('news_use_time')) == 1)
 								{
 									$f->SetValue('time_hours', date('H'));
@@ -480,9 +480,9 @@
 							$f->SetValue('seo_title', $tmp['seo_title']);
 							$f->SetValue('tplnews', $tmp['news_template']);
 							$f->SetValue('url', $item['url']);
-							$f->SetValue('date_day', date('d', $item['date_news']));
-							$f->SetValue('date_month', date('m', $item['date_news']));
-							$f->SetValue('date_year', date('Y', $item['date_news']));
+							$f->SetValue('date_day', intval(date('d', $item['date_news'])));
+							$f->SetValue('date_month', intval(date('m', $item['date_news'])));
+							$f->SetValue('date_year', intval(date('Y', $item['date_news'])));
 							if (intval(sm_settings('news_use_time')) == 1)
 								{
 									$f->SetValue('time_hours', date('H', $item['date_news']));
