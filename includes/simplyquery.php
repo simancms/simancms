@@ -382,12 +382,16 @@
 
 					function OrderBy($orderbyfileds)
 						{
+							if (is_array($orderbyfileds))
+								$orderbyfileds=implode(', ', $orderbyfileds);
 							$this->orderby = $orderbyfileds;
 							return $this;
 						}
 
 					function GroupBy($groupbyfileds)
 						{
+							if (is_array($groupbyfileds))
+								$groupbyfileds=implode(', ', $groupbyfileds);
 							$this->groupby = $groupbyfileds;
 							return $this;
 						}
@@ -400,6 +404,8 @@
 
 					function SelectFields($list = '*')
 						{
+							if (is_array($list))
+								$list=implode(', ', $list);
 							$this->selectfields = $list;
 							return $this;
 						}
