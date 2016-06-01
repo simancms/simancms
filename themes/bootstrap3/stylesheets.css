@@ -228,3 +228,9 @@ textarea[name=show_on_viewids]
 {
 	clear:both;
 }
+
+.content_image
+{
+	float:left;
+	margin-right:10px;
+}
