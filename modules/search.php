@@ -9,8 +9,8 @@
 	Module Name: Search
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
-	Version: 1.6.10
-	Revision: 2016-03-28
+	Version: 1.6.11
+	Revision: 2016-06-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -37,22 +37,20 @@
 						$m['title'] = $lang['module_search']['search'];
 					else
 						{
-							$m['title'] = $lang['module_search']['search_results'];
-
-							$sql = "SELECT * FROM ".$tableprefix."modules";
-							$result = execsql($sql);
+							sm_title($lang['module_search']['search_results']);
+							$result = execsql("SELECT * FROM ".$sm['t']."modules");
 							$srch_elem = 0;
 							$i = 0;
 							while ($row = database_fetch_object($result))
 								{
 									$from_record = abs(intval($_getvars['from']));
 									if (empty($from_record)) $from_record = 0;
-									$from_page = ceil(($from_record+1)/$_settings['search_items_by_page']);
+									$from_page = ceil(($from_record+1)/sm_settings('search_items_by_page'));
 									$m['pages']['url'] = 'index.php?m=search&q='.urlencode($_getvars['q']);
 									$m['pages']['selected'] = $from_page;
-									$m['pages']['interval'] = $_settings['search_items_by_page'];
+									$m['pages']['interval'] = sm_settings('search_items_by_page');
 									if (empty($row->search_doing)) continue;
-									$srch_table = $tableprefix.$row->search_table;
+									$srch_table = $sm['t'].$row->search_table;
 									$srch_module = $row->module_name;
 									$srch_doing = $row->search_doing;
 									$srch_var = $row->search_var;
@@ -84,7 +82,7 @@
 											$filter .= ')';
 										}
 									if (strcmp($srch_module, 'content') == 0)
-										$sql = 'SELECT '.$tableprefix.'content.* FROM '.$tableprefix.'content, '.$tableprefix.'categories WHERE '.$tableprefix.'content.id_category_c='.$tableprefix.'categories.id_category AND '.$tableprefix.'categories.can_view<='.intval($userinfo['level'])." AND ($filter)";
+										$sql = 'SELECT '.$sm['t'].'content.* FROM '.$sm['t'].'content, '.$sm['t'].'categories WHERE '.$sm['t'].'content.id_category_c='.$sm['t'].'categories.id_category AND '.$sm['t'].'categories.can_view<='.intval($userinfo['level'])." AND ($filter)";
 									else
 										$sql = "SELECT * FROM $srch_table WHERE $filter";
 									$srresult = execsql($sql);
@@ -105,7 +103,7 @@
 										}
 									$m['result_count'] = $i;
 									$m['pages']['records'] = $m['result_count'];
-									$m['pages']['pages'] = ceil($m['pages']['records']/$_settings['search_items_by_page']);
+									$m['pages']['pages'] = ceil($m['pages']['records']/sm_settings('search_items_by_page'));
 								}
 						}
 					sm_event('aftersearch', array($_getvars['q']));
@@ -115,7 +113,7 @@
 	if (sm_action('shortview'))
 		{
 			$m["module"] = 'search';
-			$m['title'] = $lang['module_search']['search'];
+			sm_title($lang['module_search']['search']);
 		}
 
 	if ($userinfo['level']==3)
