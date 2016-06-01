@@ -234,3 +234,8 @@ textarea[name=show_on_viewids]
 	float:left;
 	margin-right:10px;
 }
+
+.galleries-container-separator
+{
+	clear:both;
+}

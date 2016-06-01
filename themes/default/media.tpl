@@ -1,5 +1,6 @@
 {if $modules[$index].mode eq 'galleries'}
 {include file="block_begin.tpl"}
+<div class="galleries-container">
 {section name=i loop=$modules[$index].galleries}
 	<div class="gallery-item gallery-{$modules[$index].galleries[i].id}">
 		<div class="gallery-image-container"><a href="{$modules[$index].galleries[i].url}"><img src="{$modules[$index].galleries[i].image}" class="gallery-image" border="0" /></a></div>
@@ -7,6 +8,9 @@
 	</div>
 	{if $modules[$index].galleries[i].newrow}<div style="clear:both;"></div>{/if}
 {/section}
+</div>
+<div class="galleries-container-separator"></div>
+{include file="pagebar.tpl"}
 {include file="block_end.tpl"}
 {/if}
 
