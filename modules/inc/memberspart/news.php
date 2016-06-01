@@ -215,6 +215,30 @@
 							sm_set_metadata('news', $id_news, 'last_updated_time', time());
 							sm_set_metadata('news', $id_news, 'news_template', $_postvars['tplnews']);
 							sm_set_metadata('news', $id_news, 'seo_title', $_postvars['seo_title']);
+							if (sm_settings('news_use_image') == 1)
+								{
+									if (sm_settings('image_generation_type') == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
+										{
+											move_uploaded_file($_uplfilevars['userfile']['tmp_name'], 'files/temp/news'.$id_news.'.jpg');
+											sm_resizeimage(
+												'files/temp/news'.$id_news.'.jpg',
+												'files/thumb/news'.$id_news.'.jpg',
+												sm_settings('news_image_preview_width'),
+												sm_settings('news_image_preview_height'),
+												0, 100, 1);
+											sm_resizeimage(
+												'files/temp/news'.$id_news.'.jpg',
+												'files/fullimg/news'.$id_news.'.jpg',
+												sm_settings('news_image_fulltext_width'),
+												sm_settings('news_image_fulltext_height'),
+												0, 100, 1);
+											unlink('files/temp/news'.$id_news.'.jpg');
+										}
+									else
+										{
+											siman_upload_image($id_news, 'news');
+										}
+								}
 							if (sm_action('postedit'))
 								{
 									$attachments=sm_get_attachments('news', $id_news);
