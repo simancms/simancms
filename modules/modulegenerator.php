@@ -4,8 +4,8 @@
 	Module Name: Code Generator
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
-	Version: 1.6.10
-	Revision: 2016-02-07
+	Version: 1.6.11
+	Revision: 2016-06-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -248,6 +248,7 @@
 				{
 					$modulename = $_postvars['module'];
 					$moduletitle = $_postvars['title'];
+					$author_uri = $_postvars['author_uri'];
 					$sql = $_postvars['sql'];
 					$fields = Array();
 					$info = parse_mysql_create($modulename, $sql);
@@ -266,7 +267,7 @@
 					$info .= "Description: ".$moduletitle."\n";
 					$info .= "Version: 1.0\n";
 					$info .= "Revision: ".date('Y-m-d')."\n";
-					$info .= "Author URI: http://simancms.org/\n";
+					$info .= "Author URI: ".$author_uri."/\n";
 					$info .= "*/\n\n";
 					$info .= '	if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
 					$info .= get_postdelete_code($modulename, $sql, $moduletitle, $fields);
@@ -303,6 +304,7 @@
 						$f = new TForm('index.php?m=modulegenerator&d=prepare&type=fields');
 					$f->AddText('module', 'Module ID')->SetFocus();
 					$f->AddText('title', 'Module Title');
+					$f->AddText('author_uri', 'Author URL')->WithValue(sm_homepage());
 					$f->AddTextarea('sql', 'SQL Create Query');
 					if ($_getvars['type'] == 'fields')
 						{
