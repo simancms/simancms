@@ -116,6 +116,30 @@
 							sm_set_metadata('content', $cid, 'content_template', $sm['p']['tplcontent']);
 							sm_set_metadata('content', $cid, 'seo_title', $sm['p']['seo_title']);
 							sm_set_metadata('content', $cid, 'last_updated_time', time());
+							if (sm_settings('content_use_image') == 1)
+								{
+									if (sm_settings('image_generation_type') == 'static' && file_exists($_uplfilevars['userfile']['tmp_name']))
+										{
+											move_uploaded_file($_uplfilevars['userfile']['tmp_name'], 'files/temp/content'.$cid.'.jpg');
+											sm_resizeimage(
+												'files/temp/content'.$cid.'.jpg',
+												'files/thumb/content'.$cid.'.jpg',
+												sm_settings('content_image_preview_width'),
+												sm_settings('content_image_preview_height'),
+												0, 100, 1);
+											sm_resizeimage(
+												'files/temp/content'.$cid.'.jpg',
+												'files/fullimg/content'.$cid.'.jpg',
+												sm_settings('content_image_fulltext_width'),
+												sm_settings('content_image_fulltext_height'),
+												0, 100, 1);
+											unlink('files/temp/content'.$cid.'.jpg');
+										}
+									else
+										{
+											siman_upload_image($cid, 'content');
+										}
+								}
 							if (sm_action('postedit'))
 								{
 									$attachments=sm_get_attachments('content', $cid);
