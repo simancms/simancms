@@ -9,8 +9,8 @@
 	Module Name: Download
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
-	Version: 1.6.10
-	Revision: 2016-03-28
+	Version: 1.6.11
+	Revision: 2016-06-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -21,7 +21,7 @@
 
 	if (sm_action('attachment', 'showattachedfile'))
 		{
-			$att = getsql("SELECT * FROM ".$tableprefix."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']).' LIMIT 1');
+			$att = getsql("SELECT * FROM ".$sm['t']."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']).' LIMIT 1');
 			if (!empty($att['id_download']) && file_exists('files/download/attachment'.intval($_getvars['id'])))
 				{
 					$m["module"] = 'download';
@@ -41,9 +41,8 @@
 			sm_page_viewid('download-view');
 			$m["module"] = 'download';
 			sm_title($lang['module_download']['downloads']);
-			$sql = "SELECT * FROM ".$tableprefix."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]);
 			$i = 0;
-			$result = database_query($sql, $lnkDB);
+			$result = execsql("SELECT * FROM ".$sm['t']."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]));
 			while ($row = database_fetch_assoc($result))
 				{
 					$m['files'][$i]['id'] = $row['id_download'];

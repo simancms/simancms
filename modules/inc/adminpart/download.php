@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2015-11-23
+	//#ver 1.6.11
+	//#revision 2016-06-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -302,9 +302,9 @@
 							else
 								$t->Label('userlevel_download', $lang['administrators']);
 							$t->Label('upload', $lang['module_download']['upload_file']);
-							$t->Url('upload', 'index.php?m=download&d=upload&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
-							$t->Url('edit', 'index.php?m=download&d=edit&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
-							$t->Url('delete', 'index.php?m=download&d=postdelete&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
+							$t->URL('upload', 'index.php?m=download&d=upload&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
+							$t->URL('edit', 'index.php?m=download&d=edit&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
+							$t->URL('delete', 'index.php?m=download&d=postdelete&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
 							$t->NewRow();
 						}
 					if ($t->RowCount()==0)
