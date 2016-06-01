@@ -36,6 +36,7 @@
 {include file="block_end.tpl"}
 {else}{* FULL LIST NEWS *}
 {section name=i loop=$modules[$index].list}
+	<div class="news_list_item">
 		<span class="news_datetime_list pull-right label label-info">{if $_settings.news_use_time eq "1"}{$modules[$index].list[i].time} {/if}{$modules[$index].list[i].date}</span> <h3 class="news-title"><a href="{$modules[$index].list[i].url}">{$modules[$index].list[i].title}</a></h3>
 		{if $modules[$index].list[i].image neq ""}
 		<div class="news_image_list thumbnail">
@@ -47,7 +48,7 @@
 		{else}
 			{$modules[$index].list[i].preview} <a href="{$modules[$index].list[i].url}">&raquo;</a>
 		{/if}
-		<p></p>
+	</div>
 {/section}
 {include file="pagebar.tpl"}
 {/if}

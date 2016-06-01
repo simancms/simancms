@@ -211,3 +211,20 @@ textarea[name=show_on_viewids]
 	height:75px !important;
 	width:98%;
 }
+
+.news_image_list
+{
+	float:left;
+	margin-right:10px;
+}
+
+.news_image
+{
+	float:left;
+	margin-right:10px;
+}
+
+.news_list_item
+{
+	clear:both;
+}
