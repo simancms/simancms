@@ -22,59 +22,7 @@
 					add_path_modules();
 					add_path_current();
 				}
-			if (sm_action('editctg'))
-				{
-					sm_title($lang['edit_category']);
-					$m["module"] = 'news';
-					add_path_modules();
-					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
-					add_path_current();
-					$info=TQuery::ForTable($sm['t'].'categories_news')
-						->AddWhere('id_category', intval($sm['g']['ctgid']))
-						->Get();
-					if (!empty($info['id_category']))
-						{
-							$m["id_ctg"] = $info['id_category'];
-							$m["title_category"] = $info['title_category'];
-							$m['modify_groups_category'] = get_array_groups($info['groups_modify']);
-							$m['category_no_alike_news'] = $info['no_alike_news'];
-							if (!empty($info['filename_category']))
-								{
-									$m['filesystem'] = get_filesystem($info['filename_category']);
-									$m["filename_category"] = $m['filesystem']['filename'];
-								}
-						}
-					$m['groups_list'] = get_groups_list();
-				}
-			/*if (sm_actionpost('postaddctg'))
-				{
-					$title_category = dbescape($_postvars["p_title_category"]);
-					$filename = dbescape($_postvars["p_filename"]);
-					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
-					$no_alike_news = intval($_postvars['p_no_alike_news']);
-					$sql = "INSERT INTO ".$tableprefix."categories_news (title_category, groups_modify, no_alike_news) VALUES ('$title_category', '$groups_modify', '$no_alike_news')";
-					$result = execsql($sql);
-					$ctgid = database_insert_id('categories_news', $nameDB, $lnkDB);
-					if (!empty($filename))
-						{
-							$urlid = register_filesystem('index.php?m=news&d=listnews&ctg='.$ctgid, $filename, $title_category);
-							$sql = "UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$ctgid;
-							$result = execsql($sql);
-						}
-					sm_notify($lang['add_content_category_successful']);
-					sm_redirect('index.php?m=news&d=listctg');
-					sm_event('postaddctgnews', array($ctgid));
-				}
-			if (sm_action('addctg'))
-				{
-					sm_title($lang['add_category']);
-					$m["module"] = 'news';
-					add_path_modules();
-					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
-					add_path_current();
-					$m['groups_list'] = get_groups_list();
-				}*/
-			if (sm_actionpost('postaddctg'))
+			if (sm_actionpost('postaddctg', 'posteditctg'))
 				{
 					sm_extcore();
 					if (empty($sm['p']['title_category']))
@@ -92,17 +40,23 @@
 					if (empty($error_message))
 						{
 							$groups=get_groups_list();
+							$groupsenabled=Array();
 							for ($i = 0; $i < count($groups); $i++)
 								{
 									if (!empty($sm['p']['group_'.$groups[$i]['id']]))
 										$groupsenabled[]=$groups[$i]['id'];
 								}
-							$groupsenabled=Array();
 							$q = new TQuery($sm['t'].'categories_news');
 							$q->Add('title_category', dbescape($sm['p']['title_category']));
 							$q->Add('groups_modify', dbescape(create_groups_str($groupsenabled)));
-							$q->Add('no_alike_news', empty($sm['ps']['no_alike_news'])?0:1);
-							$ctgid=$q->Insert();
+							$q->Add('no_alike_news', empty($sm['p']['no_alike_news'])?0:1);
+							if (sm_actionpost('postaddctg'))
+								$ctgid=$q->Insert();
+							else
+								{
+									$ctgid = intval($sm['g']['ctgid']);
+									$q->Update('id_category', intval($sm['g']['ctgid']));
+								}
 							if (!empty($sm['p']['url']))
 								sm_fs_update($sm['p']['title_category'], 'index.php?m=news&d=listnews&ctg='.$ctgid, $sm['p']['url']);
 							if (sm_action('postadd'))
@@ -116,10 +70,13 @@
 					if (!empty($error_message))
 						sm_set_action(Array('postaddctg'=>'addctg', 'posteditctg'=>'editctg'));
 				}
-			if (sm_action('addctg'))
+			if (sm_action('addctg', 'editctg'))
 				{
 					$m['groups_list'] = get_groups_list();
-					sm_title($lang['add_category']);
+					if (sm_action('editctg'))
+						sm_title($lang['edit_category']);
+					else
+						sm_title($lang['add_category']);
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], 'index.php?m=news&d=admin');
 					add_path_current();
@@ -128,7 +85,10 @@
 					$ui = new TInterface();
 					if (!empty($error_message))
 						$ui->NotificationError($error_message);
-					$f = new TForm('index.php?m='.sm_current_module().'&d=postaddctg');
+					if (sm_action('editctg'))
+						$f = new TForm('index.php?m='.sm_current_module().'&d=posteditctg&ctgid='.intval($sm['g']['ctgid']));
+					else
+						$f = new TForm('index.php?m='.sm_current_module().'&d=postaddctg');
 					$f->Separator($lang['common']['general']);
 					$f->AddText('title_category', $lang['caption_category'], true)
 						->SetFocus();
@@ -148,46 +108,24 @@
 									$f->AddCheckbox('group_'.$groups[$i]['id'], $groups[$i]['title']);
 								}
 						}
+					if (sm_action('editctg'))
+						{
+							$info=TQuery::ForTable($sm['t'].'categories_news')
+								->AddWhere('id_category', intval($sm['g']['ctgid']))
+								->Get();
+							$f->LoadValuesArray($info);
+							if ($url=sm_fs_url('index.php?m=news&d=listnews&ctg='.$info['id_category'], true))
+								$f->SetValue('url', $url);
+							$selected_groups=get_array_groups($info['groups_modify']);
+							for ($i = 0; $i < count($selected_groups); $i++)
+								{
+									$f->SetValue('group_'.$selected_groups[$i], 1);
+								}
+						}
 					if (!empty($sm['p']))
 						$f->LoadAllValues($sm['p']);
 					$ui->Output(true);
 					$ui->Add($f);
-				}
-			if (sm_actionpost('posteditctg'))
-				{
-					$title_category = dbescape($_postvars["p_title_category"]);
-					$filename = dbescape($_postvars["p_filename"]);
-					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
-					$id_ctg = intval($_getvars['ctgid']);
-					$no_alike_news = intval($_postvars['p_no_alike_news']);
-					$sql = "UPDATE ".$tableprefix."categories_news SET title_category = '$title_category', groups_modify='$groups_modify', no_alike_news='$no_alike_news' WHERE id_category='$id_ctg'";
-					$result = execsql($sql);
-					$sql = "SELECT * FROM ".$tableprefix."categories_news WHERE id_category='$id_ctg'";
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$fname = $row->filename_category;
-						}
-					if ($fname == 0 && !empty($filename))
-						{
-							$urlid = register_filesystem('index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
-							$sql = "UPDATE ".$tableprefix."categories_news SET filename_category='$urlid' WHERE id_category=".$id_ctg;
-							$result = execsql($sql);
-						}
-					else
-						{
-							if (empty($filename))
-								{
-									$sql = "UPDATE ".$tableprefix."categories_news SET filename_category='0' WHERE id_category=".$id_ctg;
-									$result = execsql($sql);
-									delete_filesystem($fname);
-								}
-							else
-								update_filesystem($fname, 'index.php?m=news&d=listnews&ctg='.$id_ctg, $filename, $title_category);
-						}
-					sm_notify($lang['edit_content_category_successful']);
-					sm_redirect('index.php?m=news&d=listctg');
-					sm_event('posteditctgnews', array($id_ctg));
 				}
 			if (sm_action('postdeletectg'))
 				{
