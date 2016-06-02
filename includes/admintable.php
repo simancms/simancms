@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-03-28
+	//#revision 2016-06-02
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -98,6 +98,12 @@
 										$cols[]=$name;
 								}
 							return $cols;
+						}
+
+					function GetColumnNameByIndex($column_index)
+						{
+							$cols=$this->GetColumnNames();
+							return $cols[$column_index];
 						}
 
 					function GetColumnTitle($colname)
