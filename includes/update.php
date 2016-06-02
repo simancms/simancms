@@ -100,5 +100,9 @@
 			sm_add_settings('hide_generator_meta', '');
 			sm_update_settings('database_date', '20160330');
 		}
+	if (intval(sm_settings('database_date'))<20160602)//1.6.11
+		{
+			sm_update_settings('database_date', '20160602');
+		}
 
 ?>

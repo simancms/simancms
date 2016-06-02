@@ -7,7 +7,7 @@
 	//| [!] Check includes/dbsettings.php to setup system configuration            |
 	//------------------------------------------------------------------------------
 	
-	$_settings['version'] = '1.6.10';
+	$_settings['version'] = '1.6.11';
 
 	$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='default'");
 	while ($row = database_fetch_assoc($result))
