@@ -4,8 +4,8 @@
 {section name=i loop=$modules[$index].files}
 <tr>
     <td width="25%">
-	<a href="files/download/{$modules[$index].files[i].file}">{$modules[$index].files[i].file}</a><br>
-	 <em>[{$modules[$index].files[i].sizeK} K]</em>
+	<a href="{$modules[$index].files[i].download_url}">{$modules[$index].files[i].file}</a><br>
+	 <em>[{$modules[$index].files[i].size_label}]</em>
 	</td>
     <td width="75%">{$modules[$index].files[i].description}</td>
 </tr>

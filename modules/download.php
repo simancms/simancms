@@ -9,8 +9,8 @@
 	Module Name: Download
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
-	Version: 1.6.11
-	Revision: 2016-06-01
+	Version: 1.6.12
+	Revision: 2016-06-06
 	Author URI: http://simancms.org/
 	*/
 
@@ -47,14 +47,17 @@
 				{
 					$m['files'][$i]['id'] = $row['id_download'];
 					$m['files'][$i]['file'] = $row['file_download'];
+					$m['files'][$i]['download_url'] = 'files/download/'.$row['file_download'];
 					$m['files'][$i]['description'] = $row['description_download'];
 					$m['files'][$i]['sizeK'] = round(filesize('./files/download/'.$row['file_download'])/1024, 2);
 					$m['files'][$i]['sizeM'] = round($m['files'][$i]['sizeK']/1024, 2);
+					if ($m['files'][$i]['sizeM']>=1)
+						$m['files'][$i]['size_label']=$m['files'][$i]['sizeM'].' M';
+					else
+						$m['files'][$i]['size_label']=$m['files'][$i]['sizeK'].' K';
 					sm_add_content_modifier($m['files'][$i]['description']);
 					$i++;
 				}
 		}
 	if ($userinfo['level'] == 3 || (intval(sm_settings('perm_downloads_management_level'))>0 && sm_settings('perm_downloads_management_level')<=intval($userinfo['level'])))
 		include('modules/inc/adminpart/download.php');
-
-?>
