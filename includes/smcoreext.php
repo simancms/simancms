@@ -540,4 +540,26 @@
 				return md5(strtolower($login).$password.$siman_salt);
 		}
 
+	/**
+	 * Maximum allowed size to upload (PHP limitations + SiMan CMS limitations)
+	 * @return int
+	 */
+	function sm_maxuploadbytes()
+		{
+			function ini_bytes_val($ini_v)
+				{
+					$ini_v = trim($ini_v);
+					$s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+					return intval($ini_v) * ($s[strtolower(substr($ini_v, -1))] ?: 1);
+				}
+			$max=sm_settings('max_upload_filesize');
+			$maxini = ini_bytes_val(ini_get('post_max_size'));
+			if ($maxini<$max)
+				$max=$maxini;
+			$maxini = ini_bytes_val(ini_get('upload_max_filesize'));
+			if ($maxini<$max)
+				$max=$maxini;
+			return $max;
+		}
+
 ?>
