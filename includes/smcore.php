@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-03-28
+	//#ver 1.6.12
+	//#revision 2016-06-09
 	//==============================================================================
 
 
@@ -934,6 +934,8 @@
 			if ($libname=='ui.fa' || $libname=='ui.fontawesome') $libname='ui/fontawesome';
 			if (file_exists('includes/'.$libname.'.php'))
 				include_once('includes/'.$libname.'.php');
+			elseif (file_exists('includes/lib/'.$libname.'.php'))
+				include_once('includes/lib/'.$libname.'.php');
 			elseif (strcmp($libname, 'autocomplete')==0)
 				include_once('ext/autocomplete/siman_config.php');
 		}
