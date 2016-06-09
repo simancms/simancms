@@ -128,6 +128,7 @@ $lang['messages']['delete_successful']='Delete successful';
 $lang['messages']['nothing_found']='Nothing found';
 $lang['messages']['changes_will_be_lost']='If you leave before saving, your changes will be lost';
 $lang['messages']['wrong_date']='Wrong date';
+$lang['messages']['max_upload_filesize']='Maximum upload file size %s';
 $lang['register'] = 'Register';
 $lang['email'] = 'E-mail';
 $lang['upload'] = 'Upload';

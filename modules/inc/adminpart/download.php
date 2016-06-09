@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.11
-	//#revision 2016-06-01
+	//#ver 1.6.12
+	//#revision 2016-06-09
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -15,6 +15,7 @@
 
 	if ($userinfo['level'] == 3 || (intval(sm_settings('perm_downloads_management_level'))>0 && sm_settings('perm_downloads_management_level')<=intval($userinfo['level'])))
 		{
+			sm_add_cssfile('stylesheetsadmin.css');
 			if (sm_action('deleteattachment'))
 				{
 					$m["module"] = 'download';
@@ -165,7 +166,7 @@
 						$ui->div($error, '', 'errormessage error-message');
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postupload&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
-					$f->AddFile('userfile', $lang['file_name'], true);
+					$f->AddFile('userfile', $lang['common']['file'], true);
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);
@@ -245,12 +246,15 @@
 					add_path_current();
 					sm_use('admininterface');
 					sm_use('adminform');
+					sm_use('smformatter');
+					sm_extcore();
 					$ui = new TInterface();
 					if (!empty($error))
 						$ui->div($error, '', 'errormessage error-message');
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postadd&returnto='.urlencode($_getvars['returnto']));
-					$f->AddFile('userfile', $lang['file_name'], true);
+					$f->AddFile('userfile', $lang['common']['file'], true);
+					$f->Tooltip('userfile', sprintf($lang['messages']['max_upload_filesize'], SMFormatter::FileSize(sm_maxuploadbytes())));
 					$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
 					$f->AddSelectVL('userlevel_download', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
 					$f->AddText('optional_name', $lang['optional_file_name']);
