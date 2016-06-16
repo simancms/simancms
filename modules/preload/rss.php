@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-05-08
+	//#revision 2016-06-16
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -51,7 +51,7 @@
 		}
 	sm_event_handler('generaterss', 'event_generaterss_rss');
 
-	sm_html_headend('<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://'.$_settings['resource_url'].'index.php?m=rss">');
+	sm_html_headend('<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="'.sm_homepage().'index.php?m=rss">');
 	if (sm_settings('rss_shownewsctgs') == 1)
 		{
 			$tmpnewsctgs = getsqlarray("SELECT * FROM ".$sm['t']."categories_news ORDER BY title_category");

@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-02-13
+	//#ver 1.6.12
+	//#revision 2016-06-16
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -43,7 +43,11 @@
 				$result = database_query($initialStatementDB, $lnkDB);
 			require("includes/config.php");
 			$sm['_s'] =& $_settings;
-			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($_settings['resource_url'], strpos($_settings['resource_url'], '/')).'index.php')
+			if (intval(sm_settings('resource_url_rewrite')) == 1)
+				$special['resource_url'] = $special['page']['parsed_url']['host'].substr($_settings['resource_url'], strpos($_settings['resource_url'], '/'));
+			else
+				$special['resource_url'] = $_settings['resource_url'];
+			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($special['resource_url'], strpos($special['resource_url'], '/')).'index.php')
 				sm_redirect_now(sm_homepage(), 301);
 			if (!empty($_settings['default_timezone']))
 				date_default_timezone_set($_settings['default_timezone']);
@@ -58,30 +62,22 @@
 
 	if (!$special['dberror'])
 		{
-			if ($_settings['resource_url_rewrite'] == 1)
-				{
-					$special['resource_url'] = $special['page']['parsed_url']['host'].substr($_settings['resource_url'], strpos($_settings['resource_url'], '/'));
-				}
-			else
-				{
-					$special['resource_url'] = $_settings['resource_url'];
-				}
 			if ($special['deviceinfo']['is_mobile'])
 				{
-					if (!empty($_settings['resource_url_mobile']) && $special['resource_url'] == $_settings['resource_url'])
+					if (!empty($_settings['resource_url_mobile']) && $special['resource_url'] == sm_settings('resource_url'))
 						{
 							$_getvars["m"] = 'refresh';
 							$_getvars["d"] = 'view';
-							$refresh_url = $special['page']['scheme'].'://'.$_settings['resource_url_mobile'];
+							$refresh_url = $special['page']['scheme'].'://'.sm_settings('resource_url_mobile');
 						}
 				}
 			if ($special['deviceinfo']['is_tablet'])
 				{
-					if (!empty($_settings['resource_url_tablet']) && $special['resource_url'] == $_settings['resource_url'])
+					if (!empty($_settings['resource_url_tablet']) && $special['resource_url'] == sm_settings('resource_url'))
 						{
 							$_getvars["m"] = 'refresh';
 							$_getvars["d"] = 'view';
-							$refresh_url = $special['page']['scheme'].'://'.$_settings['resource_url_tablet'];
+							$refresh_url = $special['page']['scheme'].'://'.sm_settings('resource_url_tablet');
 						}
 				}
 

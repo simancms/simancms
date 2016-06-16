@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2015-12-16
+	//#ver 1.6.12
+	//#revision 2016-06-16
 	//==============================================================================
 
 	function is_email($string)
@@ -344,7 +344,7 @@
 	function add_path_home()
 		{
 			global $lang, $_settings;
-			add_path($lang['common']['home'], 'http://'.$_settings['resource_url']);
+			add_path($lang['common']['home'], sm_homepage());
 		}
 
 	function add_path_control()

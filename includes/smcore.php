@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-06-09
+	//#revision 2016-06-16
 	//==============================================================================
 
 
@@ -910,7 +910,7 @@
 			global $sm;
 			if (intval(sm_settings('resource_url_rewrite'))==1)
 				{
-					$url=$sm['s']['page']['parsed_url']['scheme'].'://'.sm_settings('resource_url');
+					$url=$sm['s']['page']['parsed_url']['scheme'].'://'.$sm['s']['resource_url'];
 					$parts=@parse_url($url);
 					return $parts['scheme'].'://'.$sm['s']['page']['parsed_url']['host'].(empty($parts['path'])?'/':$parts['path']);
 				}

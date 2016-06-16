@@ -9,8 +9,8 @@
 	Module Name: RSS-Feed
 	Module URI: http://simancms.org/modules/content/
 	Description: RSS-Export module
-	Version: 1.6.11
-	Revision: 2016-05-08
+	Version: 1.6.12
+	Revision: 2016-06-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -55,7 +55,7 @@
 							$rss['items'][$i]['fulltext'] = preg_replace('/&#?[a-z0-9]+;/i', '', $rss['items'][$i]['fulltext']);
 							$rss['items'][$i]['fulltext'] = str_replace('&', '&amp;', $rss['items'][$i]['fulltext']);
 							$rss['items'][$i]['title'] = $row['title_news'];
-							$rss['items'][$i]['link'] = 'http://'.$_settings['resource_url'].'index.php?m=news&amp;d=view&amp;nid='.$row['id_news'];
+							$rss['items'][$i]['link'] = sm_homepage().'index.php?m=news&amp;d=view&amp;nid='.$row['id_news'];
 							$rss['items'][$i]['category'] = $row['title_category'];
 							if (empty($rss['items'][$i]['title']))
 								$rss['items'][$i]['title'] = $rss['items'][$i]['description'];
