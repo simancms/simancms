@@ -4,8 +4,8 @@
 	Module Name: Code Generator
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
-	Version: 1.6.11
-	Revision: 2016-06-01
+	Version: 1.6.12
+	Revision: 2016-06-24
 	Author URI: http://simancms.org/
 	*/
 
@@ -194,8 +194,8 @@
 						{
 							$str .= "\t\t\t\t\t\t\t\$t->Label('".$fields[$i]['name']."', \$q->items[\$i]['".$fields[$i]['name']."']);\n";
 						}
-					$str .= "\t\t\t\t\t\t\t\$t->Url('edit', 'index.php?m='.sm_current_module().'&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
-							\$t->Url('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
+					$str .= "\t\t\t\t\t\t\t\$t->URL('edit', 'index.php?m='.sm_current_module().'&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
+							\$t->URL('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->NewRow();
 						}
 					if (\$t->RowCount()==0)
