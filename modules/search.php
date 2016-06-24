@@ -9,8 +9,8 @@
 	Module Name: Search
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
-	Version: 1.6.11
-	Revision: 2016-06-01
+	Version: 1.6.12
+	Revision: 2016-06-24
 	Author URI: http://simancms.org/
 	*/
 
@@ -91,7 +91,7 @@
 											if ($from_record<=$i && $i<$from_record+$_settings['search_items_by_page'])
 												{
 													$m['search'][$srch_elem]['title'] = $srrow[$srch_title];
-													$m['search'][$srch_elem]['url'] = 'index.php?m='.$srch_module.'&d='.$srch_doing.'&'.$srch_var.'='.$srrow[$srch_idfield];
+													$m['search'][$srch_elem]['url'] = sm_fs_url('index.php?m='.$srch_module.'&d='.$srch_doing.'&'.$srch_var.'='.$srrow[$srch_idfield]);
 													$m['search'][$srch_elem]['text'] = strip_tags($srrow[$srch_text]);
 													if (strlen($m['search'][$srch_elem]['text'])>250)
 														$m['search'][$srch_elem]['text'] = substr($m['search'][$srch_elem]['text'], 0, 250).'...';
@@ -118,5 +118,3 @@
 
 	if ($userinfo['level']==3)
 		include('modules/inc/adminpart/search.php');
-
-?>
