@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.11
+	Version: 1.6.12
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -25,7 +25,7 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
-			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal', 'exchangelistener', 'exchangesender'))
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal', 'exchangelistener', 'exchangesender', 'fa'))
 				sm_delayed_action('demo', 'footercode');
 			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
@@ -59,6 +59,30 @@
 					$ui->Output(true);
 				}
 			//end-htmlshortcuts
+			//start-fa
+			if (sm_action('fa'))
+				{
+					sm_title('UI Font Awesome Helper');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.fa');
+					$ui = new TInterface();
+					$ui->p(FA::EmbedCodeFor('star').' - Star');
+					$icon=FA::Icon('database');
+					$ui->p($icon->Code());
+					$icon->Size('2x');
+					$ui->p($icon->Code());
+					$icon->Size('3x');
+					$ui->p($icon->Code());
+					$icon->Size('4x');
+					$ui->p($icon->Code());
+					$icon->Size('5x');
+					$ui->p($icon->Code());
+					$ui->Output(true);
+				}
+			//end-fa
 			//start-buttons
 			if (sm_action('buttons'))
 				{
@@ -357,6 +381,7 @@
 					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
 					$nav->AddItem('UI TForm - Modal Helper', 'index.php?m=demo&d=modal');
 					$nav->AddItem('UI TExchangeListener/TExchangeSender - Exchange values between pages', 'index.php?m=demo&d=exchangelistener');
+					$nav->AddItem('UI Font Awesome Helper', 'index.php?m=demo&d=fa');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
