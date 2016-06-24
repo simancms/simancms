@@ -9,7 +9,7 @@
 	Module Name: Replacers
 	Module URI: http://simancms.org/
 	Description: Template replacers for custom themes
-	Version: 2014-02-13
+	Version: 2016-06-24
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -81,7 +81,8 @@
 					$b->AddButton('', $lang['common']['add'], 'index.php?m=replacers&d=add');
 					$ui->AddButtons($b);
 					$t = new TGrid();
-					$t->AddCol('key_r', 'Key', '100%');
+					$t->AddCol('key_r', 'Key', '50%');
+					$t->AddCol('tag', 'Template Tag', '50%');
 					$t->AddEdit();
 					$t->AddDelete();
 					$q = new TQuery($sm['t']."replacers");
@@ -89,6 +90,7 @@
 					for ($i = 0; $i < $q->Count(); $i++)
 						{
 							$t->Label('key_r', $q->items[$i]['key_r']);
+							$t->Label('tag', '{$sm.s.replacers.'.$q->items[$i]['key_r'].'}');
 							$t->Url('edit', 'index.php?m=replacers&d=edit&id='.$q->items[$i]['id_r']);
 							$t->Url('delete', 'index.php?m=replacers&d=postdelete&id='.$q->items[$i]['id_r']);
 							$t->NewRow();
