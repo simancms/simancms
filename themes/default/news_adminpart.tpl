@@ -18,3 +18,23 @@
 {include file="pagebar.tpl"}
 {include file="block_end.tpl"}
 {/if}
+
+{if $modules[$index].mode eq "admin"}
+{include file="block_begin.tpl"}
+<a href="index.php?m=news&d=add">{$lang.common.add}</a> (<a href="index.php?m=news&d=add&exteditor=off">{$lang.common.html}</a>)<br>
+<br>
+<a href="index.php?m=news&d=list">{$lang.list_news}</a><br>
+<br>
+<a href="index.php?m=news&d=listctg">{$lang.list_news_categories}</a><br>
+<br>
+<a href="index.php?m=news&d=addctg">{$lang.add_category}</a><br>
+<br>
+<a href="index.php?m=blocks&d=add&b=news&id=1&c={$lang.short_news_block}">{$lang.set_as_block} "{$lang.short_news_block}"</a>
+<br>
+<form action="index.php?m=menu&d=addouter" method="post">
+<input type="hidden" name="p_url" value="index.php?m=news&d=listnews">
+<input type="hidden" name="p_caption" value="{$lang.news}">
+<input type="submit" value="{$lang.add_to_menu} - {$lang.news}">
+</form>
+{include file="block_end.tpl"}
+{/if}
