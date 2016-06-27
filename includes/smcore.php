@@ -1079,11 +1079,24 @@
 			$sm['s']['document']['block'][$blockindex]['afterblock'].=$html;
 		}
 
-	//Dummy function for further implementation
 	function sm_notify($message, $title='', $type='success')
 		{
 			global $sm;
-			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time(), 'type'=>$type, 'frompage'=>sm_relative_url(sm_this_url()));
+			$frompage=sm_relative_url(sm_this_url());
+			for ($i = 0; $i < count($sm['session']['notifications']); $i++)
+				{
+					if (strcmp($sm['session']['notifications'][$i]['message'], $message)!=0)
+						break;
+					if (strcmp($sm['session']['notifications'][$i]['title'], $title)!=0)
+						break;
+					if (strcmp($sm['session']['notifications'][$i]['type'], $type)!=0)
+						break;
+					if (strcmp($sm['session']['notifications'][$i]['frompage'], $frompage)!=0)
+						break;
+					$sm['session']['notifications'][$i]['time']=time();
+					return;
+				}
+			$sm['session']['notifications'][]=Array('message'=>$message, 'title'=>$title, 'time'=>time(), 'type'=>$type, 'frompage'=>$frompage);
 		}
 	
 	function sm_change_language($langname)
