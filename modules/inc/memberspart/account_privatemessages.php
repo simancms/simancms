@@ -80,7 +80,7 @@
 					$t = new TGrid('edit');
 					$t->AddCol('ico', '', '16');
 					$t->AddCol('title', $lang['common']['title'], '80%');
-					$t->AddCol('time', $lang['module_account']['sended'], '10%');
+					$t->AddCol('time', $lang['module_account']['sent'], '10%');
 					$t->AddCol('user', $lang['user'], '10%');
 					$t->AddDelete();
 					$result = execsql($sql);

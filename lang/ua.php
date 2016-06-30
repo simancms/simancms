@@ -245,7 +245,7 @@
 	$lang['module_account']['message_theme']='Тема повідомлення';
 	$lang['module_account']['message_text']='Текст';
 	$lang['module_account']['error_message_recipient']='Вкажіть вірного отримувача повідомлення';
-	$lang['module_account']['sended']='Надіслано';
+	$lang['module_account']['sent']='Надіслано';
 	$lang['module_account']['reply']='Відповісти';
 	$lang['module_account']['last_login'] = 'Останній логін';
 	$lang['module_account']['log']['user_registered']='Зареєстровано користувача';
