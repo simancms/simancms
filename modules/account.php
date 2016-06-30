@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2015-12-04
+	//#ver 1.6.12
+	//#revision 2016-06-30
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -39,32 +39,32 @@
 			if (empty($login) || empty($password) || empty($password2) || empty($email) || (intval(sm_settings('account_disable_secret_question')!=1) && (empty($question) || empty($answer))) || !empty($special['postregistercheckdataerror']))
 				{
 					$m['message'] = $lang["message_set_all_fields"].(empty($special['postregistercheckdataerror']) ? '' : '. '.$special['postregistercheckdataerror']);
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			elseif (!is_email($email))
 				{
 					$m['message'] = $lang["message_bad_email"];
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			elseif (strcmp($password, $password2) != 0)
 				{
 					$m['message'] = $lang["message_passwords_not_equal"];
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			elseif (intval(sm_settings('use_protect_code')) == 1 && (strcmp($_sessionvars['protect_code'], $_postvars['p_protect_code']) != 0 || empty($_postvars['p_protect_code'])))
 				{
 					$m['message'] = $lang['module_account']['wrong_protect_code'];
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('login', dbescape($login))->GetField('id_user'))>0)
 				{
 					$m['message'] = $lang["message_this_login_present_try_another"];
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('email', dbescape($email))->GetField('id_user'))>0)
 				{
 					$m['message'] = $lang["message_bad_email"];
-					$m['mode'] = 'register';
+					sm_set_action('register');
 				}
 			else
 				{
@@ -83,7 +83,7 @@
 						{
 							sm_redirect('index.php?m=account&d=usrlist');
 						}
-					$m['mode'] = 'successregister';
+					sm_set_action('successregister');
 					log_write(LOG_LOGIN, $lang['module_account']['log']['user_registered'].': '.$login.'. '.$lang['email'].': '.$email);
 				}
 		}
@@ -226,12 +226,12 @@
 						}
 				}
 			else
-				$m['mode'] = 'show';
+				sm_set_action('show');
 		}
 	if (sm_action('show'))
 		{
 			if ($modules_index == 0 && !empty($userinfo['id']))
-				$m['mode'] = 'cabinet';
+				sm_set_action('cabinet');
 			else
 				{
 					sm_title($lang["login_caption"]);
