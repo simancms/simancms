@@ -115,7 +115,8 @@
 					$t = new TGrid();
 					$limit = sm_settings('admin_items_by_page');
 					$offset = abs(intval($_getvars['from']));
-					$t->AddCol('user', $lang['user'], '60%');
+					$t->AddCol('user', $lang['user'], '40%');
+					$t->AddCol('lastlogin', $lang['module_account']['last_login'], '20%');
 					$t->AddCol('status', $lang['status'], '20%');
 					$t->AddCol('action', $lang['action'], '20%');
 					$q=new TQuery($tableusersprefix."users");
@@ -151,6 +152,8 @@
 								$t->DropDownItem('status', $lang['privileged_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=2&returnto='.urlencode(sm_this_url()));
 							if ($row['user_status'] != 3 && $row['id_user']!=1)
 								$t->DropDownItem('status', $lang['super_user'], 'index.php?m=account&d=setstatus&uid='.$row['id_user'].'&status=3&returnto='.urlencode(sm_this_url()));
+							if ($row['last_login']>0)
+								$t->Label('lastlogin', strftime($lang['datetimemask'], $row['last_login']));
 							$t->Label('action', $lang['details']);
 							if ($row['id_user']!=1)
 								{

@@ -248,6 +248,7 @@
 	$lang['module_account']['error_message_recipient']='Вкажіть вірного отримувача повідомлення';
 	$lang['module_account']['sended']='Надіслано';
 	$lang['module_account']['reply']='Відповісти';
+	$lang['module_account']['last_login'] = 'Останній логін';
 	$lang['module_account']['log']['user_registered']='Зареєстровано користувача';
 	$lang['module_account']['log']['user_logged']='Користувач увійшов у систему';
 	$lang['module_account']['log']['user_logout']='Користувач вийшов з системи';

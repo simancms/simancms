@@ -241,6 +241,7 @@ $lang['module_account']['message_text'] = 'Text';
 $lang['module_account']['error_message_recipient'] = 'Specify the correct recipient of the message ';
 $lang['module_account']['sended'] = 'Sent';
 $lang['module_account']['reply'] = 'Reply';
+$lang['module_account']['last_login'] = 'Last login';
 $lang['module_account']['log']['user_registered'] = 'User registered';
 $lang['module_account']['log']['user_logged'] = 'User logged in to the system';
 $lang['module_account']['log']['user_logout'] = 'User logged out';
