@@ -5,7 +5,7 @@
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
 	Version: 1.6.12
-	Revision: 2016-06-24
+	Revision: 2016-07-02
 	Author URI: http://simancms.org/
 	*/
 
@@ -285,7 +285,7 @@
 					$f = new TForm(false);
 					$f->AddTextarea('php', 'PHP Code');
 					$f->SetFieldAttribute('php', 'wrap', 'off');
-					$f->MergeColumns('php', 'wrap', 'off');
+					$f->MergeColumns('php');
 					$f->SetValue('php', $info);
 					$ui->AddForm($f);
 					$ui->style('#php{height:500px;}');
