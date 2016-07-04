@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.11
-	//#revision 2016-05-30
+	//#ver 1.6.12
+	//#revision 2016-07-04
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -196,37 +196,44 @@
 				}
 			if (sm_action('list'))
 				{
-					$m["module"] = 'news';
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					sm_use('ui.grid');
+					sm_use('ui.form');
+					$ui=new TInterface();
 					sm_extcore();
 					add_path_modules();
-					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
+					add_path($lang['module_news']['module_news_name'], 'index.php?m=news&d=admin');
 					add_path_current();
-					$from_record = abs(intval($_getvars['from']));
-					if (empty($from_record)) $from_record = 0;
-					$from_page = ceil(($from_record + 1) / $_settings['admin_items_by_page']);
-					$m['pages']['url'] = 'index.php?m=news&d=list';
-					$m['pages']['selected'] = $from_page;
-					$m['pages']['interval'] = $_settings['admin_items_by_page'];
-					$ctg_id = $_getvars['ctg'];
-					$m['ctg_id'] = $ctg_id;
-					$sql = "SELECT * FROM ".$tableprefix."categories_news";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['ctg'][$i]['title'] = $row->title_category;
-							$m['ctg'][$i]['id'] = $row->id_category;
-							$i++;
-						}
 					sm_title($lang['list_news']);
-					$q=new TQuery($sm['t']."news");
-					if (!empty($ctg_id))
-						$q->Add('id_category_n', intval($ctg_id));
-					$q->OrderBy('date_news DESC');
-					$q->Limit($_settings['admin_items_by_page']);
-					$q->Offset($from_record);
+					$b=new TButtons();
+					$b->Button($lang['common']['add'], 'index.php?m=news&d=add&ctg='.$sm['g']['ctg']);
+					$b->Button(sprintf('%s (%s)', $lang['common']['add'], $lang['common']['html']), 'index.php?m=news&d=add&ctg='.$sm['g']['ctg'].'&exteditor=off');
+					$b->AddToggle('btnsearch', $lang['search'], 'admin-search-form');
+					$limit = abs(intval($_settings['admin_items_by_page']));
+					$offset = abs(intval($_getvars['from']));
+					$f=new TForm('index.php');
+					$f->SetMethodGet();
+					$f->AddHidden('m', 'news');
+					$f->AddHidden('d', 'list');
+					$q=new TQuery($sm['t'].'categories_news');
+					$q->OrderBy('title_category');
 					$q->Select();
-					sm_use('admintable');
+					$f->AddSelectVL('ctg', $lang['common']['category'], $q->ColumnValues('id_category'), $q->ColumnValues('title_category'));
+					$f->SelectAddBeginVL('ctg', '', $lang['all_categories']);
+					$f->SetValue('ctg', $sm['g']['ctg']);
+					$f->SaveButton($lang['search']);
+					$ui->div_open('admin-search-form', '', empty($sm['g']['ctg'])?'display:none;':'');
+					$ui->Add($f);
+					$ui->div_close();
+					unset($q);
+					$q=new TQuery($sm['t']."news");
+					if (!empty($sm['g']['ctg']))
+						$q->Add('id_category_n', intval($sm['g']['ctg']));
+					$q->OrderBy('date_news DESC');
+					$q->Limit($limit);
+					$q->Offset($offset);
+					$q->Select();
 					$t=new TGrid('edit');
 					$t->AddCol('date', $lang['common']['date'], '10%');
 					$t->AddCol('title', $lang['common']['title'], '90%');
@@ -269,10 +276,13 @@
 							$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$q->items[$i]['id_news'].'&db=view&c='.(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news'])));
 							$t->NewRow();
 						}
-					$m['table']=$t->Output();
-					$m['pages']['records'] = $q->TotalCount();
-					$m['pages']['pages'] = ceil($m['pages']['records'] / $_settings['admin_items_by_page']);
-					$m['short_news'] = 0;
+					if ($b->Count()>0)
+						$ui->Add($b);
+					$ui->Add($t);
+					if ($b->Count()>0)
+						$ui->Add($b);
+					$ui->AddPagebarParams($q->TotalCount(), $limit, $offset);
+					$ui->Output(true);
 				}
 		}
 

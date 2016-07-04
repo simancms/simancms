@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-03-26
+	//#ver 1.6.12
+	//#revision 2016-07-04
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -328,7 +328,7 @@
 						}
 					else
 						{
-							$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor' => '')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+							$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_ext_editor'], sm_this_url(Array('exteditor' => '')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
 							$use_ext_editor=false;
 						}
 					if (!empty($error))
