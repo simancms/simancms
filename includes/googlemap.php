@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-06-18
+	//#revision 2015-07-04
 	//==============================================================================
 
 
@@ -14,34 +14,46 @@
 		{
 			class TGooglemapLoader
 				{
-					var $centerXY;
+					var $center_lat=0;
+					var $center_lng=0;
 					var $markers;
+					var $addressmarkers;
 					var $type;
-					var $usegeocoder;
+					var $usegeocoder=false;
 					var $canvas;
 					var $zoom;
 					var $suffix;
-					var $usenumbermarkers;
+					var $lang;
+					var $usenumbermarkers=false;
 					var $numbermarkerssize;
 					var $numbermarkersanchor;
 					var $numbermarkersfileprefix;
 					var $savegeoposition;
 					var $savegeopositionaddr;
-					var $useroaddirections;
+					var $useroaddirections=false;
 					var $roaddirectionsfromid;
 					var $roaddirectionstoid;
 					var $roaddirectionsout;
+					var $apikey;
 
 					function TGooglemapLoader($initcanv = 'map_canvas', $initzoom = '13', $inittype = 'ROADMAP')
 						{
 							$this->type = $inittype;
 							$this->canvas = $initcanv;
-							$this->usegeocoder = 0;
-							$this->savegeoposition = 0;
+							$this->savegeoposition = '';
 							$this->zoom = $initzoom;
-							$this->usenumbermarkers = 0;
-							$this->useroaddirections = 0;
 							$this->suffix = '';
+							$this->SetAPIKey(sm_settings('googlemap_api_key'));
+						}
+
+					function SetAPIKey($key)
+						{
+							$this->apikey=$key;
+						}
+
+					function SetLanguage($key)
+						{
+							$this->lang=$key;
 						}
 
 					function SetRoadDirections($useRoadDir = 1, $fromId = 'from', $toId = 'to')
@@ -56,7 +68,7 @@
 							$this->roaddirectionsout = $idOutTo;
 						}
 
-					function SetNumberMarkers($useNumbers = 1, $defImageFilePrefix = 'marker', $defSize = '20, 34', $defAnchor = '9, 0')
+					function SetNumberMarkers($useNumbers = true, $defImageFilePrefix = 'marker', $defSize = '20, 34', $defAnchor = '9, 0')
 						{
 							$this->usenumbermarkers = $useNumbers;
 							$this->numbermarkerssize = $defSize;
@@ -68,11 +80,13 @@
 						{
 							$this->savegeoposition = $ajaxurl;
 							$this->savegeopositionaddr = $address;
+							$this->SetGeocoder(true);
 						}
 
 					function SetCenter($lat, $lng)
 						{
-							$this->centerXY = $lat.', '.$lng;
+							$this->center_lat = $lat;
+							$this->center_lng = $lng;
 						}
 
 					function SetCenterMarkers()
@@ -132,7 +146,7 @@
 							$this->zoom = $initzoom;
 						}
 
-					function SetGeocoder($use = 1)
+					function SetGeocoder($use = true)
 						{
 							$this->usegeocoder = $use;
 						}
@@ -142,6 +156,18 @@
 							$i = count($this->markers);
 							$this->markers[$i]['lat'] = $lat;
 							$this->markers[$i]['lng'] = $lng;
+						}
+
+					function AddAddressMarker($address)
+						{
+							$i = count($this->addressmarkers);
+							$this->addressmarkers[$i]['address'] = jsescape($address);
+							$this->SetGeocoder();
+						}
+
+					function AddCenterPointMarker()
+						{
+							$this->AddMarker($this->center_lat, $this->center_lng);
 						}
 
 					function AddNumMarker($lat, $lng, $number)
@@ -156,15 +182,13 @@
 							$special['body_onload'] .= 'GMInitialise'.$this->suffix.'();';
 							$special['use_googlemap'] = 1;
 							$s = '
-				<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true&amp;key='.sm_settings('googlemap_api_key').'" type="text/javascript"></script>
-				<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 				<script type="text/javascript">
 					var map'.$this->suffix.';';
-							if ($this->useroaddirections == 1)
+							if ($this->useroaddirections)
 								$s .= "
 					 var directionDisplay".$this->suffix.";
 					";
-							if ($this->usegeocoder == 1)
+							if ($this->usegeocoder)
 								$s .= "
 					var geocoder".$this->suffix.";";
 							if (!empty($this->savegeopositionaddr))
@@ -173,18 +197,18 @@
 							$s .= "
 					function GMInitialise".$this->suffix."()
 						{
-							var latlng = new google.maps.LatLng(".$this->centerXY.");
+							var latlng = new google.maps.LatLng(".$this->center_lat.','.$this->center_lng.");
 							var myOptions = {
 								zoom: ".$this->zoom.",
 								center: latlng,
 								mapTypeId: google.maps.MapTypeId.ROADMAP
 							};";
-							if ($this->usegeocoder == 1)
+							if ($this->usegeocoder)
 								$s .= "
 							geocoder".$this->suffix." = new google.maps.Geocoder();";
 							$s .= "
 							map".$this->suffix." = new google.maps.Map(document.getElementById('".$this->canvas."'), myOptions);";
-							if ($this->usenumbermarkers == 1)
+							if ($this->usenumbermarkers)
 								$s .= "
 							var iconSize = new google.maps.Size(".$this->numbermarkerssize.");
 							var iconPosition = new google.maps.Point(0, 0);
@@ -192,7 +216,7 @@
 							for ($i = 0; $i < count($this->markers); $i++)
 								{
 									//var markerImage = new google.maps.MarkerImage(iconImageUrl, iconSize, iconPosition, iconHotSpotOffset);
-									if ($this->usenumbermarkers == 1)
+									if ($this->usenumbermarkers)
 										$s .= "
 							var markerImage".$i." = new google.maps.MarkerImage('http://".sm_settings('resource_url')."themes/default/markers/".$this->numbermarkersfileprefix.((empty($this->markers[$i]['number'])) ? $i + 1 : $this->markers[$i]['number']).".png', iconSize, iconPosition, iconHotSpotOffset);";
 									$s .= "
@@ -200,14 +224,14 @@
 							marker".$i." = new google.maps.Marker({
 									      position: markerlatlng".$i.",
 										  visible: true,";
-									if ($this->usenumbermarkers == 1)
+									if ($this->usenumbermarkers)
 										$s .= "
 										  icon: markerImage".$i.",";
 									$s .= "
 										  map: map".$this->suffix."
 									    });";
 								}
-							if ($this->useroaddirections == 1)
+							if ($this->useroaddirections)
 								{
 									$s .= "
 							directionService".$this->suffix." = new google.maps.DirectionsService();
@@ -223,14 +247,14 @@
 									$s .= "
 							geocoder.geocode( { 'address': address}, function(results, status)
 										  	{
-										        if (status == google.maps.GeocoderStatus.OK) 
+										        if (status == google.maps.GeocoderStatus.OK)
 													{
 												      map".$this->suffix.".setCenter(results[0].geometry.location);
 													    var tmplatlng = results[0].geometry.location;
 													    markerAdmin = new google.maps.Marker({
 															      position: tmplatlng,
 																  visible: true,
-																  map: map".$this->suffix." 
+																  map: map".$this->suffix."
 															    });
 													  	var x = [
 															    	tmplatlng.lat(),
@@ -245,10 +269,30 @@
 																 //alert( msg );
 															   }
 														});
-											        } 
-												else 
+											        }
+												else
 													{
-											          //alert('Geocode was not successful for the following reason: ' + status);
+														//console.log('Geocode was not successful for the following reason: ' + status);
+											        }
+									       });";
+								}
+							for ($i = 0; $i < count($this->addressmarkers); $i++)
+								{
+									$s .= "
+							geocoder.geocode( { 'address': '".$this->addressmarkers[$i]['address']."'}, function(results, status)
+										  	{
+										        if (status == google.maps.GeocoderStatus.OK)
+													{
+													    var tmplatlng = results[0].geometry.location;
+													    markerAdmin = new google.maps.Marker({
+															      position: tmplatlng,
+																  visible: true,
+																  map: map".$this->suffix."
+															    });
+											        }
+												else
+													{
+														//console.log('Geocode was not successful for the following reason: ' + status);
 											        }
 									       });";
 								}
@@ -256,7 +300,7 @@
 							$s .= "
 						}
 					";
-							if ($this->useroaddirections == 1)
+							if ($this->useroaddirections)
 								$s .= "
 					function route".$this->suffix."()
 						{
@@ -281,7 +325,9 @@
 						}
 				";
 							$s .= "
-				</script>";
+				</script>
+				<script src=\"https://maps.googleapis.com/maps/api/js?key=".$this->apikey."&callback=GMInitialise".$this->suffix.(empty($this->lang)?'':'&language='.$this->lang)."\" async defer></script>
+				";
 							if ($outputtostr) return $s;
 							sm_html_headend($s);
 						}
