@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.11
-	//#revision 2016-05-13
+	//#ver 1.6.12
+	//#revision 2016-07-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -282,6 +282,8 @@
 					$t->AddCol('title', $lang['module'], '20%');
 					$t->AddCol('information', $lang['common']['information'], '25%');
 					$t->AddCol('description', $lang['common']['description'], '50%');
+					$t->AddCol('url', '', '16', $lang['common']['url']);
+					$t->SetHeaderImage('url', 'url');
 					$t->AddCol('action', $lang['action'], '5%');
 					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
 					$dir = dir('./modules/');
@@ -295,13 +297,7 @@
 									if (in_array(substr($entry, 0, -4), nllistToArray(sm_settings('installed_packages'))))
 										continue;
 									$info = sm_get_module_info('./modules/'.$entry);
-									if (
-										!file_exists('./themes/'.$_settings['default_theme'].'/'.substr($entry, 0, -4).'.tpl')
-										&&
-										!file_exists('./themes/default/'.substr($entry, 0, -4).'.tpl')
-										&&
-										$info == false
-									)
+									if ($info === false)
 										continue;
 									if (!empty($info[sm_getnicename('Module Name')]))
 										$t->Label('title', $info[sm_getnicename('Module Name')]);
@@ -316,9 +312,11 @@
 									if (!empty($info[sm_getnicename('Description')]))
 										$t->Label('description', $info[sm_getnicename('Description')]);
 									if (!empty($info[sm_getnicename('Author URI')]))
-										$t->URL('title', $info[sm_getnicename('Author URI')], true);
+										$t->DropDownItem('url', $lang['module_admin']['author'], $info[sm_getnicename('Author URI')]);
 									if (!empty($info[sm_getnicename('Module URI')]))
-										$t->URL('description', $info[sm_getnicename('Module URI')], true);
+										$t->DropDownItem('url', $lang['module'], $info[sm_getnicename('Module URI')]);
+									if ($t->DropDownItemsCount('url')>0)
+										$t->Image('url', 'url');
 									$t->Label('action', $lang['common']['install']);
 									$t->URL('action', 'index.php?m='.substr($entry, 0, -4).'&d=install');
 									$t->NewRow();
@@ -344,6 +342,7 @@
 					$t->AddCol('title', $lang['module']);
 					$t->AddCol('information', $lang['common']['information'], '25%');
 					$t->AddCol('description', $lang['common']['description'], '50%');
+					$t->AddCol('url', '', '16', $lang['common']['url']);
 					$t->AddEdit();
 					$t->AddCol('delete', '', '16');
 					$t->SetHeaderImage('delete', 'transparent.gif');
@@ -370,8 +369,12 @@
 							$t->Label('information', $information);
 							if (!empty($info[sm_getnicename('Description')]))
 								$t->Label('description', $info[sm_getnicename('Description')]);
+							if (!empty($info[sm_getnicename('Author URI')]))
+								$t->DropDownItem('url', $lang['module_admin']['author'], $info[sm_getnicename('Author URI')]);
 							if (!empty($info[sm_getnicename('Module URI')]))
-								$t->URL('description', $info[sm_getnicename('Module URI')], true);
+								$t->DropDownItem('url', $lang['module'], $info[sm_getnicename('Module URI')]);
+							if ($t->DropDownItemsCount('url')>0)
+								$t->Image('url', 'url');
 							if (!empty($row['module_title']))
 								$t->Label('title', $row['module_title']);
 							$t->Url('title', 'index.php?m='.$row['module_name'].'&d=admin');
