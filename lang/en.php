@@ -257,7 +257,6 @@ $lang['type_content_simple_text'] = 'Plain text';
 $lang['add_content_category_successful'] = 'Category was added successfully';
 $lang['edit_content_category_successful'] = 'Category was edited successfully';
 $lang['delete_content_category_successful'] = 'Category was deleted successfully';
-$lang['list_content_categories'] = 'List of categories';
 $lang['really_want_delete_category'] = 'Do you really want to delete this category';
 $lang['set_as_block_random_text'] = 'Set random text as static block';
 $lang['module_content']['view_full'] = 'View full';

@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2015-10-29
+	//#ver 1.6.12
+	//#revision 2016-07-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -17,10 +17,22 @@
 		{
 			if (sm_action('admin'))
 				{
-					$m['title'] = $lang['settings'];
-					$m["module"] = 'content';
+					sm_title($lang['module_content_name'].' - '.$lang['settings']);
+					sm_extcore();
 					add_path_modules();
-					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.navigation');
+					$ui = new TInterface();
+					$nav=new TNavigation();
+					$nav->AddItem($lang['common']['add'], 'index.php?m=content&d=add');
+					$nav->AddItem(sprintf('%s (%s)', $lang['common']['add'], $lang['common']['html']), 'index.php?m=content&d=add&exteditor=off');
+					$nav->AddItem($lang['list_content'], 'index.php?m=content&d=list');
+					$nav->AddItem($lang['common']['categories'], 'index.php?m=content&d=listctg');
+					$nav->AddItem($lang['add_category'], 'index.php?m=content&d=addctg');
+					$nav->AddItem(sprintf('%s "%s - %s"', $lang['set_as_block'], $lang['list_content'], $lang['common']['category']), 'index.php?m=blocks&d=add&b=content&id=1&db=blockctgview&c='.urlencode($lang['list_content'].' - '.$lang['common']['category']));
+					$ui->Add($nav);
+					$ui->Output(true);
 				}
 			if (sm_action('editctg'))
 				{
@@ -163,7 +175,7 @@
 			if (sm_action('listctg'))
 				{
 					sm_extcore();
-					sm_title($lang['list_content_categories']);
+					sm_title($lang['module_content_name'].' - '.$lang['common']['categories']);
 					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					add_path_current();

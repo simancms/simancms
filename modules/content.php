@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.11
-	Revision: 2016-05-16
+	Version: 1.6.12
+	Revision: 2016-07-06
 	Author URI: http://simancms.org/
 	*/
 
