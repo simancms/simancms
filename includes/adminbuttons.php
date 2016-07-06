@@ -27,6 +27,13 @@
 							return $this;
 						}
 
+					function HasButton($name)
+						{
+							if (!is_array($this->bar['buttons']))
+								return false;
+							return array_key_exists($name, $this->bar['buttons']);
+						}
+
 					function AddButton($name, $title, $url = '', $type = 'button', $style = '', $messagebox_message = '', $javascript = '')
 						{
 							if (empty($name))
