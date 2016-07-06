@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-07-04
+	//#revision 2016-07-06
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -18,9 +18,22 @@
 			if (sm_action('admin'))
 				{
 					sm_title($lang['module_news']['module_news_name'].' - '.$lang['settings']);
-					$m["module"] = 'news';
+					sm_extcore();
 					add_path_modules();
 					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.navigation');
+					$ui = new TInterface();
+					$nav=new TNavigation();
+					$nav->AddItem($lang['common']['add'], 'index.php?m=news&d=add');
+					$nav->AddItem(sprintf('%s (%s)', $lang['common']['add'], $lang['common']['html']), 'index.php?m=news&d=add&exteditor=off');
+					$nav->AddItem($lang['list_news'], 'index.php?m=news&d=list');
+					$nav->AddItem($lang['common']['categories'], 'index.php?m=news&d=listctg');
+					$nav->AddItem($lang['add_category'], 'index.php?m=news&d=addctg');
+					$nav->AddItem(sprintf('%s "%s"', $lang['set_as_block'], $lang['short_news_block']), 'index.php?m=blocks&d=add&b=news&id=1&c='.urlencode($lang['short_news_block']));
+					$nav->AddItem(sprintf('%s - %s', $lang['add_to_menu'], $lang['news']), sm_tomenuurl($lang['news'], sm_fs_url('index.php?m=news&d=listnews')));
+					$ui->Add($nav);
+					$ui->Output(true);
 				}
 			if (sm_actionpost('postaddctg', 'posteditctg'))
 				{
@@ -154,8 +167,7 @@
 			if (sm_action('listctg'))
 				{
 					sm_extcore();
-					sm_title($lang['list_news_categories']);
-					$m["module"] = 'news';
+					sm_title($lang['news'].' - '.$lang['common']['categories']);
 					add_path_modules();
 					add_path($lang['module_news']['module_news_name'], "index.php?m=news&d=admin");
 					add_path_current();

@@ -149,6 +149,7 @@
 	$lang['common']['public']='Загальнодоступний';
 	$lang['common']['uncategorized']='Без категорії';
 	$lang['common']['category']='Категорія';
+	$lang['common']['categories']='Категорії';
 	$lang['common']['alt_text']='Альтернативний текст';
 	$lang['common']['auto']='Автоматично';
 	$lang['common']['autogeneration']='Автоматична генерація';
@@ -284,7 +285,6 @@
 	$lang["add_news_successful"]='Новину додано';
 	$lang["edit_news_successful"]='Новину відредаговано';
 	$lang["delete_news_successful"]='Новину видалено';
-	$lang['list_news_categories']='Список категорій новин';
 	$lang['really_want_delete_news']='Ви дійсно хочете видалити новину';
 	$lang['really_want_delete_category_news']='Ви дійсно хочете видалити цю категорію';
 	$lang['short_news_block']='Короткий блок новин';

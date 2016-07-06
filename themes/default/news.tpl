@@ -74,7 +74,3 @@
 
 {include file="block_end.tpl"}
 {/if}
-
-{if $userinfo.level gt 0}
-{include file="news_adminpart.tpl"}
-{/if}
