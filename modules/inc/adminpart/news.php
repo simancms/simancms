@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-07-06
+	//#revision 2016-07-07
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -17,7 +17,7 @@
 		{
 			if (sm_action('admin'))
 				{
-					sm_title($lang['module_news']['module_news_name'].' - '.$lang['settings']);
+					sm_title($lang['control_panel'].' - '.$lang['module_news']['module_news_name']);
 					sm_extcore();
 					add_path_modules();
 					add_path_current();

@@ -323,7 +323,7 @@
 					add_path_modules();
 					add_path_current();
 					sm_extcore();
-					sm_title($lang['control_panel'].' :: '.$lang['module_download']['downloads']);
+					sm_title($lang['control_panel'].' - '.$lang['module_download']['downloads']);
 					sm_use('admininterface');
 					$ui = new TInterface();
 					$ui->a('index.php?m=download&d=list', $lang['module_download']['downloads']);

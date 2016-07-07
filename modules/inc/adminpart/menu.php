@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.11
-	//#revision 2016-05-20
+	//#ver 1.6.12
+	//#revision 2016-06-07
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -39,16 +39,16 @@
 		{
 			if (sm_action('admin'))
 				{
-					$m["module"] = 'menu';
-					sm_title($lang['module_menu']['module_menu_name'].': '.$lang["settings"]);
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
-					sm_use('admininterface');
+					add_path_modules();
+					add_path_current();
+					sm_title($lang['control_panel'].' - '.$lang['module_menu']['module_menu_name']);
+					sm_use('ui.interface');
+					sm_use('ui.navigation');
 					$ui = new TInterface();
-					$ui->a('index.php?m=menu&d=listmenu', $lang['list_menus']);
-					$ui->br();
-					$ui->br();
-					$ui->a('index.php?m=menu&d=add', $lang['add_menu']);
+					$nav=new TNavigation();
+					$nav->AddItem($lang['list_menus'], 'index.php?m=menu&d=listmenu');
+					$nav->AddItem($lang['add_menu'], 'index.php?m=menu&d=add');
+					$ui->Add($nav);
 					$ui->Output(true);
 				}
 			if (sm_action('addouter'))

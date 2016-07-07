@@ -324,6 +324,8 @@
 								}
 						}
 					$dir->close();
+					if ($t->RowCount()==0)
+						$t->SingleLineLabel($lang['messages']['nothing_found']);
 					$ui->AddGrid($t);
 					$ui->Output(true);
 				}

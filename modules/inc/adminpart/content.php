@@ -17,7 +17,7 @@
 		{
 			if (sm_action('admin'))
 				{
-					sm_title($lang['module_content_name'].' - '.$lang['settings']);
+					sm_title($lang['control_panel'].' - '.$lang['module_content_name']);
 					sm_extcore();
 					add_path_modules();
 					add_path_current();
