@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-12-28
+	//#revision 2016-07-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -169,6 +169,7 @@
 					if (!empty($image['id']))
 						{
 							add_path_modules();
+							sm_add_cssfile('css/adminpart/media-detailinfo.css');
 							add_path($lang['module_galleies']['media_files'], 'index.php?m=media&d=admin');
 							add_path($lang['module_galleies']['galleries'], 'index.php?m=media&d=libraries');
 							$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($image['id_ctg']))->Get();
@@ -180,10 +181,31 @@
 							sm_title($lang['common']['image'].' - '.$image['title']);
 							sm_use('ui.interface');
 							sm_use('ui.form');
+							sm_use('ui.buttons');
 							$ui = new TInterface();
+							$b=new TButtons();
+							$b->Button($lang['common']['small'], sm_this_url('size', 'small'));
+							if ($_getvars['size']=='small')
+								$b->Bold();
+							$b->Button($lang['common']['medium'], sm_this_url('size', 'medium'));
+							if ($_getvars['size']=='medium' || empty($_getvars['size']))
+								$b->Bold();
+							$b->Button($lang['common']['big'], sm_this_url('size', 'big'));
+							if ($_getvars['size']=='big')
+								$b->Bold();
+							$ui->Add($b);
 							$ui->div_open('image-detail-'.$image['id'], 'image-detail');
-							$ui->img($image['filepath']);
+							if ($_getvars['size']=='big')
+								$img=$image['filepath'];
+							elseif ($_getvars['size']=='small')
+								$img=siman_thumb_for_media($image['filepath']);
+							else
+								$img=siman_medium_for_media($image['filepath']);
+							$ui->img($img);
 							$ui->div_close();
+							$f=new TForm(false);
+							$f->AddText('url', $lang['url'])->WithValue(sm_homepage().$img);
+							$ui->Add($f);
 							$ui->Output(true);
 						}
 				}
@@ -433,6 +455,7 @@
 							$t->Label('public', $q->items[$i]['public']==1?$lang['yes']:$lang['no']);
 							$t->Label('items_count', $q->items[$i]['items_count']);
 							$t->Label('action', $lang['action']);
+							$t->DropDownItem('action', $lang['common']['view'], 'index.php?m=media&d=list&ctg='.$q->items[$i]['id_ctg']);
 							$t->DropDownItem('action', $lang['module_menu']['add_to_menu'], sm_tomenuurl($q->items[$i]['title'], sm_fs_url('index.php?m=media&d=gallery&ctg='.$q->items[$i]['id_ctg']), sm_this_url()));
 							$t->Url('edit', 'index.php?m=media&d=editctg&id='.$q->items[$i]['id_ctg'].'&returnto='.urlencode(sm_this_url()));
 							$t->Url('delete', 'index.php?m=media&d=postdeletectg&id='.$q->items[$i]['id_ctg'].'&returnto='.urlencode(sm_this_url()));

@@ -165,6 +165,10 @@
 	$lang['common']['additional_options']='Додаткові опції';
 	$lang['common']['text']='Текст';
 	$lang['common']['back']='Назад';
+	$lang['common']['view']='Переглянути';
+	$lang['common']['small']='Малий';
+	$lang['common']['medium']='Середній';
+	$lang['common']['big']='Великий';
 
 	$lang['messages']['fill_required_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';

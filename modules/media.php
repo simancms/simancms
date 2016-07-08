@@ -9,8 +9,8 @@
 	Module Name: Media
 	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
-	Version: 1.6.11
-	Revision: 2016-06-01
+	Version: 1.6.12
+	Revision: 2016-07-08
 	Author URI: http://simancms.org/
 	*/
 
