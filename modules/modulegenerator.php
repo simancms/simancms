@@ -249,6 +249,8 @@
 					$modulename = $_postvars['module'];
 					$moduletitle = $_postvars['title'];
 					$author_uri = $_postvars['author_uri'];
+					$module_uri = $_postvars['module_uri'];
+					$description = $_postvars['description'];
 					$sql = $_postvars['sql'];
 					$fields = Array();
 					$info = parse_mysql_create($modulename, $sql);
@@ -263,11 +265,11 @@
 					$info = '<'.'?'."php\n\n";
 					$info .= "/*\n";
 					$info .= "Module Name: ".$moduletitle."\n";
-					$info .= "Module URI: http://simancms.org/\n";
-					$info .= "Description: ".$moduletitle."\n";
+					$info .= "Module URI: ".$module_uri."\n";
+					$info .= "Description: ".$description."\n";
 					$info .= "Version: 1.0\n";
 					$info .= "Revision: ".date('Y-m-d')."\n";
-					$info .= "Author URI: ".$author_uri."/\n";
+					$info .= "Author URI: ".$author_uri."\n";
 					$info .= "*/\n\n";
 					$info .= '	if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
 					$info .= get_postdelete_code($modulename, $sql, $moduletitle, $fields);
@@ -304,7 +306,9 @@
 						$f = new TForm('index.php?m=modulegenerator&d=prepare&type=fields');
 					$f->AddText('module', 'Module ID')->SetFocus();
 					$f->AddText('title', 'Module Title');
+					$f->AddText('description', 'Module Description');
 					$f->AddText('author_uri', 'Author URL')->WithValue(sm_homepage());
+					$f->AddText('module_uri', 'Module URL')->WithValue(sm_homepage());
 					$f->AddTextarea('sql', 'SQL Create Query');
 					if ($_getvars['type'] == 'fields')
 						{
