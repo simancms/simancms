@@ -1284,4 +1284,16 @@
 			return $sm['s']['page_system_id'];
 		}
 
-?>
+	/**
+	 * Safely close the session
+	 */
+	function sm_session_close()
+		{
+			global $_sessionvars, $session_prefix;
+			if (!empty($_sessionvars))
+				while (list($key, $val) = each($_sessionvars))
+					{
+						$_SESSION[$session_prefix.$key] = $val;
+					}
+			session_write_close();
+		}

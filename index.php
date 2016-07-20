@@ -274,12 +274,7 @@
 					if (!$sm['s']['nosmarty'])
 						$smarty->assign_by_ref('special', $special);
 
-					if (!empty($_sessionvars))
-						while (list($key, $val) = each($_sessionvars))
-							{
-								$_SESSION[$session_prefix.$key] = $val;
-							}
-					session_write_close();
+					sm_session_close();
 
 					//Send headers before output
 					if (!headers_sent())
