@@ -385,6 +385,40 @@
 							return $this;
 						}
 
+					function SetCellHeaderHTML($name, $value)
+						{
+							$this->table['rows'][$this->rownumber][$name]['html_start'] = $value;
+							return $this;
+						}
+
+					function SetCellFooterHTML($name, $value)
+						{
+							$this->table['rows'][$this->rownumber][$name]['html_end'] = $value;
+							return $this;
+						}
+
+					function AppendCellHeaderHTML($name, $value)
+						{
+							$this->table['rows'][$this->rownumber][$name]['html_start'] .= $value;
+							return $this;
+						}
+
+					function AppendCellFooterHTML($name, $value)
+						{
+							$this->table['rows'][$this->rownumber][$name]['html_end'] .= $value;
+							return $this;
+						}
+
+					function CellHeaderHTML($name, $value)
+						{
+							return $this->table['rows'][$this->rownumber][$name]['html_start'];
+						}
+
+					function CellFooterHTML($name, $value)
+						{
+							return $this->table['rows'][$this->rownumber][$name]['html_end'];
+						}
+
 					function Image($name, $replace_image)
 						{
 							if (empty($replace_image))
