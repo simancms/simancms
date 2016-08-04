@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-06-30
+	//#revision 2016-08-04
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -68,7 +68,7 @@
 				}
 			else
 				{
-					include('includes/smcoreext.php');
+					sm_extcore();
 					if (intval(sm_settings('user_activating_by_admin')) == 1)
 						$user_status = '0';
 					else
