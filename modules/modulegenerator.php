@@ -5,7 +5,7 @@
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
 	Version: 1.6.12
-	Revision: 2016-07-02
+	Revision: 2016-08-06
 	Author URI: http://simancms.org/
 	*/
 
@@ -42,7 +42,7 @@
 			if (sm_action('postdelete'))
 				{
 					\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');
-					\$q->Add('".$info['id']."', intval(\$_getvars['id']));
+					\$q->AddWhere('".$info['id']."', intval(\$_getvars['id']));
 					\$q->Remove();
 					sm_extcore();
 					sm_saferemove('index.php?m='.sm_current_module().'&d=view&id='.intval(\$_getvars['id']));
@@ -68,11 +68,11 @@
 					$str = "
 			if (sm_action('postadd', 'postedit'))
 				{
-					\$error='';\n";
+					\$error_message='';\n";
 					if (!empty($req))
 						$str .= "\t\t\t\t\tif (".$req.")
-						\$error=\$lang['messages']['fill_required_fields'];\n";
-					$str .= "\t\t\t\t\tif (empty(\$error))
+						\$error_message=\$lang['messages']['fill_required_fields'];\n";
+					$str .= "\t\t\t\t\tif (empty(\$error_message))
 						{
 							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');\n";
 					for ($i = 0; $i < count($fields); $i++)
@@ -113,8 +113,8 @@
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					\$ui = new TInterface();
-					if (!empty(\$error))
-						\$ui->NotificationError(\$error);
+					if (!empty(\$error_message))
+						\$ui->NotificationError(\$error_message);
 					if (sm_action('edit'))
 						{
 							sm_title(\$lang['common']['edit']);
@@ -145,7 +145,7 @@
 					$str .= "\t\t\t\t\tif (sm_action('edit'))
 						{
 							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');
-							\$q->Add('".$info['id']."', intval(\$_getvars['id']));
+							\$q->AddWhere('".$info['id']."', intval(\$_getvars['id']));
 							\$f->LoadValuesArray(\$q->Get());
 							unset(\$q);
 						}
