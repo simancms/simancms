@@ -427,6 +427,11 @@
 							return $this;
 						}
 
+					function SetNotEscapedValue($name, $value)
+						{
+							$this->form['data'][$name] = $value;
+						}
+
 					function ToggleFor($element_name_or_array, $name = NULL)
 						{
 							if ($name === NULL)
