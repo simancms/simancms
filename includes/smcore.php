@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-06-16
+	//#revision 2016-09-02
 	//==============================================================================
 
 
@@ -757,7 +757,13 @@
 			for ($i = 0; $i<func_num_args(); $i++)
 				{
 					$param = func_get_arg($i);
-					if (strcmp($m["mode"], $param) == 0)
+					if (is_array($param))
+						{
+							foreach ($param as $val)
+								if (sm_actionpost($val))
+									return true;
+						}
+					elseif (strcmp($m['mode'], $param) == 0)
 						return true;
 				}
 			return false;
