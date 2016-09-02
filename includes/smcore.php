@@ -581,6 +581,8 @@
 				}
 			else
 				$refresh_url = $url;
+			if (strpos($refresh_url, '://')===false && substr($refresh_url, 0, 1)!='/')
+				$refresh_url=sm_homepage().$refresh_url;
 			for ($i = 0; $i < count($sm['session']['notifications']); $i++)
 				if (!empty($sm['session']['notifications'][$i]['frompage']) && strcmp(sm_relative_url($sm['session']['notifications'][$i]['frompage']), sm_relative_url(sm_this_url()))==0 && empty($sm['session']['notifications'][$i]['onpage']))
 					$sm['session']['notifications'][$i]['onpage']=sm_relative_url($refresh_url);
@@ -599,12 +601,15 @@
 					for ($i = 0; $i<count($url); $i++)
 						if (!empty($url[$i]))
 							{
-								@header('Location: '.$url[$i]);
+								$refresh_url=$url[$i];
 								break;
 							}
 				}
 			else
-				@header('Location: '.$url);
+				$refresh_url=$url;
+			if (strpos($refresh_url, '://')===false && substr($refresh_url, 0, 1)!='/')
+				$refresh_url=sm_homepage().$refresh_url;
+			@header('Location: '.$refresh_url);
 			if (!empty($header_http_code))
 				@header($sm['server']['SERVER_PROTOCOL']." ".$header_http_code);
 			exit;
