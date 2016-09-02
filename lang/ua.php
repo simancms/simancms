@@ -168,6 +168,10 @@
 	$lang['common']['small']='Малий';
 	$lang['common']['medium']='Середній';
 	$lang['common']['big']='Великий';
+	$lang['common']['enabled']='Ввімкнуто';
+	$lang['common']['disabled']='Вимкнуто';
+	$lang['common']['on']='Ввімкнуто';
+	$lang['common']['off']='Вимкнуто';
 
 	$lang['messages']['fill_required_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';
@@ -179,6 +183,7 @@
 	$lang['messages']['changes_will_be_lost']='Якщо ви залишите цю сторінку, всі не збережені зміни будуть втрачені';
 	$lang['messages']['wrong_date']='Невірна дата';
 	$lang['messages']['max_upload_filesize']='Максимальний розмір для файлу становить %s';
+	$lang['messages']['settings_updated']='Налаштування оновлено';
 
 	$lang['error404']['title']='Сторінку не знайдено';
 	$lang['error404']['text']='Сторінку, яку Ви шукаєте, не знайдено. Спробуйте увійти на головну сторінку сайту або перевірте, чи правильно Ви ввели адресу сторінки.';
