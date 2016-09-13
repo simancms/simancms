@@ -740,6 +740,17 @@
 								}
 							return $this;
 						}
+					function SetLabels()
+						{
+							if (func_num_args()==0)
+								return $this;
+							$columns=$this->GetColumnNames();
+							for ($i = 0; $i < count($columns) && $i<func_num_args(); $i++)
+								{
+									$this->Label($columns[$i], func_get_arg($i));
+								}
+							return $this;
+						}
 
 				//-----------------------------
 					function RowAddClass($classname, $rownumber = NULL)
