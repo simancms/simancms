@@ -113,6 +113,13 @@
 							return $this;
 						}
 
+					function Label($title, $labeltext)
+						{
+							$name='tmpfrmlbl'.count($this->form['fields']).'-'.md5(microtime());
+							$this->AddLabel($name, $title, $labeltext);
+							return $this;
+						}
+
 					function AddText($name, $title, $required = false)
 						{
 							global $sm;
