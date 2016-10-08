@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-06-02
+	//#revision 2016-10-08
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -27,6 +27,7 @@
 						{
 							global $sm;
 							$this->rownumber = 0;
+							$this->table['columns']=Array();
 							$this->table['default_column'] = '';
 							$this->SetWidth('100%');
 							if (strlen($postfix) == 0)
@@ -324,28 +325,28 @@
 							return $this;
 						}
 
-					//Data type should be used in export 
+					//Data type should be used in export
 					function SetDataTypeInteger($name)
 						{
 							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'integer';
 							return $this;
 						}
-					
-					//Data type should be used in export 
+
+					//Data type should be used in export
 					function SetDataTypeMoney($name)
 						{
 							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'money';
 							return $this;
 						}
 
-					//Data type should be used in export 
+					//Data type should be used in export
 					function SetDataTypeFloat($name)
 						{
 							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'float';
 							return $this;
 						}
 
-					//Data type should be used in export 
+					//Data type should be used in export
 					function SetDataTypeText($name)
 						{
 							$this->table['rows'][$this->rownumber][$name]['datatype'] = '';
@@ -820,9 +821,20 @@
 						{
 							$this->CellAddStyle($name, 'text-align:center;');
 						}
-					function NoBR($name)
+					function NoBR($name=NULL)
 						{
-							$this->CellAddClass($name, 'at-nobr');
+							if ($name===NULL)
+								{
+									foreach ($this->table['columns'] as $name => $columnval)
+										$this->NoBR($name);
+								}
+							elseif (is_array($name))
+								{
+									foreach ($name as $colname)
+										$this->NoBR($colname);
+								}
+							else
+								$this->CellAddClass($name, 'at-nobr');
 						}
 
 					//====================================================
@@ -911,5 +923,3 @@
 
 			define("admintable_DEFINED", 1);
 		}
-
-?>
