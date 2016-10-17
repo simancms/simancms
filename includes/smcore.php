@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.12
-	//#revision 2016-09-02
+	//#revision 2016-10-17
 	//==============================================================================
 
 
@@ -97,28 +97,36 @@
 
 	function sm_add_cssfile($fname, $includeAsIs = false)
 		{
-			global $special, $sm;
-			if (empty($fname)) return false;
-			if ($includeAsIs === 1 || $includeAsIs === true)
-				$special['customcss'][count($special['customcss'])] = $fname;
-			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
-				$special['customcss'][count($special['customcss'])] = 'themes/'.sm_current_theme().'/'.$fname;
-			else
-				$special['customcss'][count($special['customcss'])] = 'themes/default/'.$fname;
-			return $special['customcss'][count($special['customcss'])-1];
+			global $sm;
+			if (empty($fname))
+				return false;
+			if ($includeAsIs !== 1 && $includeAsIs !== true && strpos($fname, '://') === false)
+				{
+					if (file_exists('themes/'.sm_current_theme().'/'.$fname))
+						$fname = 'themes/'.sm_current_theme().'/'.$fname;
+					else
+						$fname = 'themes/default/'.$fname;
+				}
+			if (!is_array($sm['s']['customcss']) || !in_array($fname, $sm['s']['customcss']))
+				$sm['s']['customcss'][]=$fname;
+			return $sm['s']['customcss'][count($sm['s']['customcss']) - 1];
 		}
 
 	function sm_add_jsfile($fname, $includeAsIs = false)
 		{
-			global $special, $sm;
-			if (empty($fname)) return false;
-			if ($includeAsIs === 1 || $includeAsIs === true)
-				$special['customjs'][count($special['customjs'])] = $fname;
-			elseif (file_exists('themes/'.sm_current_theme().'/'.$fname))
-				$special['customjs'][count($special['customjs'])] = 'themes/'.sm_current_theme().'/'.$fname;
-			else
-				$special['customjs'][count($special['customjs'])] = 'themes/default/'.$fname;
-			return $special['customjs'][count($special['customjs'])-1];
+			global $sm;
+			if (empty($fname))
+				return false;
+			if ($includeAsIs !== 1 && $includeAsIs !== true && strpos($fname, '://') === false)
+				{
+					if (file_exists('themes/'.sm_current_theme().'/'.$fname))
+						$fname = 'themes/'.sm_current_theme().'/'.$fname;
+					else
+						$fname = 'themes/default/'.$fname;
+				}
+			if (!is_array($sm['s']['customjs']) || !in_array($fname, $sm['s']['customjs']))
+				$sm['s']['customjs'][]=$fname;
+			return $sm['s']['customjs'][count($sm['s']['customjs']) - 1];
 		}
 
 	function sm_userinfo($id, $srchfield = 'id_user')
