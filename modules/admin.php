@@ -15,6 +15,7 @@
 
 	if (!defined("ADMIN_FUNCTIONS_DEFINED"))
 		{
+			sm_include_lang('admin');
 			function sm_get_module_info($filename)
 				{
 					if (!file_exists($filename))
@@ -218,6 +219,14 @@
 					sm_use('ui.interface');
 					$ui = new TInterface();
 					sm_event('onadmindashboardstart');
+					sm_event('onshortcutsdashboardstart');
+					$shortcutsdashboard=new TDashBoard();
+					if ($shortcutsdashboard->Count()>0)
+						{
+							$ui->AddBlock($lang['module_admin']['shortcuts']);
+							$ui->AddDashboard($shortcutsdashboard);
+						}
+					sm_event('onshortcutsdashboardend');
 					$ui->AddBlock($lang['control_panel']);
 					$dashboard=new TDashBoard();
 					sm_event('onadmindashboardcommonstart');
