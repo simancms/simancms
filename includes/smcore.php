@@ -1316,3 +1316,13 @@
 					}
 			session_write_close();
 		}
+
+	/**
+	 * Current encoding
+	 * @return string
+	 */
+	function sm_encoding()
+		{
+			global $sm;
+			return $sm['s']['charset'];
+		}

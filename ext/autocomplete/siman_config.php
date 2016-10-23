@@ -30,10 +30,16 @@
 					sm_nocache();
 					if (!is_array($array))
 						$array=Array($array);
+					if (sm_encoding()!='utf-8')
+						{
+							for ($i = 0; $i < count($array); $i++)
+								if (is_string($array[$i]))
+									$array[$i]=mb_convert_encoding($array[$i], 'utf-8', sm_encoding());
+						}
 					$array=Array('suggestions'=>$array);
 					if ($return_instead_print)
 						return(json_encode($array));
-					@header('Content-type: text/html; charset='.$sm['s']['charset']);
+					@header('Content-type: text/html; charset='.sm_encoding());
 					print(json_encode($array));
 					exit;
 				}
