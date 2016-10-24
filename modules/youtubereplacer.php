@@ -29,8 +29,8 @@
 							sm_add_settings('youtubereplacershowyturl', intval($_postvars['youtubereplacershowyturl']));
 							sm_add_settings('youtubereplacerwidth', intval($_postvars['youtubereplacerwidth']));
 							sm_add_settings('youtubereplacerheight', intval($_postvars['youtubereplacerheight']));
-							sm_add_settings('youtubereplacerstarthtml', dbescape($_postvars['youtubereplacerstarthtml']));
-							sm_add_settings('youtubereplacerendhtml', dbescape($_postvars['youtubereplacerendhtml']));
+							sm_add_settings('youtubereplacerstarthtml', $_postvars['youtubereplacerstarthtml']);
+							sm_add_settings('youtubereplacerendhtml', $_postvars['youtubereplacerendhtml']);
 							sm_notify($lang['messages']['settings_updated']);
 							sm_redirect('index.php?m='.sm_current_module().'&d=admin');
 						}
