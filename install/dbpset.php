@@ -421,7 +421,7 @@ execsql("INSERT INTO ".$tableprefix."settings (`name_settings`, `value_settings`
 
 //---------[DATABASE DATE]------------------------------------
 $sql="
-INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20160602');
+INSERT INTO ".$tableprefix."settings  (`name_settings`, `value_settings`) VALUES  ('database_date', '20161025');
 ";
 execsql($sql);
 
