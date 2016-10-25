@@ -320,12 +320,12 @@
 		{
 			global $lang;
 			$nice = '';
-			if ($lang['charset']=='utf-8')
+			if (sm_encoding()=='utf-8')
 				{
-					$str = mb_strtolower($str, $lang['charset']);
-					for ($i = 0; $i<mb_strlen($str, $lang['charset']); $i++)
+					$str = mb_strtolower($str, sm_encoding());
+					for ($i = 0; $i<mb_strlen($str, sm_encoding()); $i++)
 						{
-							$c=mb_substr($str, $i, 1, $lang['charset']);
+							$c=mb_substr($str, $i, 1, sm_encoding());
 							if ($c>='a' && $c<='z' || $c>='0' && $c<='9' || $c == '.' || $c == '_' || $c == '-')
 								$nice .= $c;
 							elseif (!empty($lang['translitmap'][$c]))

@@ -53,7 +53,7 @@
 
 	//Head section generation start
 	if (!$sm['s']['headgen']['custom_encoding'])
-		$sm['s']['document']['headdef'].='<meta content="text/html; charset='.$sm['s']['charset'].'" http-equiv=Content-Type>';
+		$sm['s']['document']['headdef'].='<meta content="text/html; charset='.sm_encoding().'" http-equiv=Content-Type>';
 	$sm['s']['document']['headdef'].='<title>';
 	if (intval(sm_settings('meta_resource_title_position'))==1 || intval(sm_settings('meta_resource_title_position'))==0 && strcmp($sm['s']['pagetitle'], "")==0)
 		{

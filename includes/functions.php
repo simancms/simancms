@@ -52,11 +52,10 @@
 
 	function send_mail($from, $to, $subject, $message, $attachment_files = Array(), $attachment_names = Array())
 		{
-			global $lang;
 			$eol = "\r\n";
 			$boundary = '----=_Part_'.md5(uniqid(time()));
 			if ($from and $a = strpos($from, '<') and strpos($from, '>', $a))
-				$from = "=?".$lang["charset"]."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
+				$from = "=?".sm_encoding()."?B?".base64_encode(trim(substr($from, 0, $a)))."?= ".trim(substr($from, $a));
 			$headers =
 				($from ? "From: $from$eol" : '').
 					"Content-Type: multipart/mixed; boundary=\"$boundary\"$eol".
@@ -65,7 +64,7 @@
 					"MIME-Version: 1.0$eol";
 			$body =
 				"$eol--$boundary$eol".
-					"Content-Type: text/html; charset=\"".$lang["charset"]."\"; format=\"flowed\"$eol".
+					"Content-Type: text/html; charset=\"".sm_encoding()."\"; format=\"flowed\"$eol".
 					"Content-Disposition: inline$eol".
 					"Content-Transfer-Encoding: 8bit$eol$eol".
 					$message.$eol;
@@ -89,7 +88,7 @@
 						}
 				}
 			$body .= "--$boundary--$eol";
-			return mail($to, "=?".$lang["charset"]."?B?".base64_encode($subject)."?=", $body, $headers);
+			return mail($to, "=?".sm_encoding()."?B?".base64_encode($subject)."?=", $body, $headers);
 		}
 
 	// load_file_list('./files/img/', 'jpg|gif|bmp')

@@ -240,7 +240,7 @@
 						{
 							if ($row['type_content'] == 2)
 								{
-									@header('Content-type: text/plain; charset='.$lang["charset"]);
+									@header('Content-type: text/plain; charset='.sm_encoding());
 									print($row['text_content']);
 									exit();
 								}

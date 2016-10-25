@@ -285,7 +285,7 @@
 								@header($_servervars['SERVER_PROTOCOL']." ".$special['header_error_code']);
 							elseif (empty($modules[0]['module']) || $modules[0]['module'] == '404')
 								@header("HTTP/1.0 404 Not Found");
-							@header('Content-type: text/html; charset='.$sm['s']['charset']);
+							@header('Content-type: text/html; charset='.sm_encoding());
 						}
 
 					//Output page

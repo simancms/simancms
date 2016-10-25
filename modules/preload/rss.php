@@ -18,7 +18,7 @@
 			$special['ajax'] = 1;
 			$special['main_tpl'] = 'simpleout';
 			$singleWindow = 1;
-			out('<?xml version="1.0" encoding="'.$lang["charset"].'"?>');
+			out('<?xml version="1.0" encoding="'.sm_encoding().'"?>');
 			out('<rss version="2.0"'.sm_settings('rss_channel_exra_params').'>');
 			out('<channel>'."\n");
 			if (!empty($feed['title']))
