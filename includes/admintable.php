@@ -330,6 +330,12 @@
 							return $this;
 						}
 
+					function LabelAppend($name, $value)
+						{
+							$this->table['rows'][$this->rownumber][$name]['data'] .= $value;
+							return $this;
+						}
+
 					//Data type should be used in export
 					function SetDataTypeInteger($name)
 						{
