@@ -41,6 +41,15 @@
 						}
 
 					/**
+					 * Deletes the sting at selected index
+					 */
+					function DeleteByIndex($index)
+						{
+							if ($index<$this->Count())
+								array_splice($this->items, $index, 1);
+						}
+
+					/**
 					 * Returns the number of strings in the list
 					 * @return int
 					 */
@@ -63,6 +72,16 @@
 						}
 
 					/**
+					 * Return true if at leas one the strings matching the given string
+					 * @param string $str
+					 * @return bool
+					 */
+					function Contains($str)
+						{
+							return $this->IndexOf($str)!==false;
+						}
+
+					/**
 					 * Populates the list form the string. Using both \n or \r\n as delimiter
 					 * @param string $str
 					 * @return int
@@ -74,13 +93,16 @@
 						}
 
 					/**
-					 * Returns the item with the index $index
+					 * Returns the item with the index $index or all items as array if no $index used
 					 * @param int $index
 					 * @return string
 					 */
-					function Strings($index)
+					function Strings($index=NULL)
 						{
-							return $this->items[$index];
+							if ($index===NULL)
+								return $this->items;
+							else
+								return $this->items[$index];
 						}
 
 					/**
@@ -97,4 +119,3 @@
 
 			define("TStringList_DEFINED", 1);
 		}
-?>
