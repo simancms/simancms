@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 	
 	//==============================================================================
-	//#revision 2016-05-18
+	//#revision 2016-10-14
 	//==============================================================================
 	
 	if (!defined("ui_exchange_DEFINED"))
@@ -60,6 +60,14 @@
 									$js .= "sm_ls_add_listen_key('".$this->info['fields'][$i]."');";
 								}
 							return $js;
+						}
+
+				/**
+				 * @return string - listener ID (initiated in __construct)
+				 */
+					function ListenerID()
+						{
+							return $this->info['id'];
 						}
 				}
 			
@@ -118,9 +126,15 @@
 								$js .= 'window.close();';
 							return $js;
 						}
+
+				/**
+				 * @return string - listener ID (initiated in __construct)
+				 */
+					function ListenerID()
+						{
+							return $this->info['id'];
+						}
 				}
 			
 			define("ui_exchange_DEFINED", 1);
 		}
-
-?>
