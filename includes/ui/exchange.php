@@ -7,13 +7,13 @@
 	//------------------------------------------------------------------------------
 	
 	//==============================================================================
-	//#revision 2016-10-14
+	//#revision 2016-10-15
 	//==============================================================================
-	
+
 	if (!defined("ui_exchange_DEFINED"))
 		{
 			sm_add_jsfile('ext/smuiexchange.js', true);
-			
+
 			/**
 			 * Class TExchangeListener
 			 *
@@ -24,7 +24,7 @@
 			class TExchangeListener
 				{
 					protected $info;
-				
+
 				/**
 				 * TExchangeListener constructor.
 				 * @param mixed $listener_id - use NULL for using sm_pageid() as listener ID
@@ -36,7 +36,7 @@
 							$this->info['id'] = $listener_id;
 							$this->info['fields'] = Array();
 						}
-				
+
 				/**
 				 * Ad an element to listen.
 				 * @param $id - DOM-element identoifier
@@ -48,7 +48,7 @@
 								$this->info['fields'][] = $id;
 							return $this;
 						}
-				
+
 				/**
 				 * @return string - javascript code for listener
 				 */
@@ -57,7 +57,7 @@
 							$js = "sm_ls_init_listener('".$this->info['id']."');";
 							for ($i = 0; $i < count($this->info['fields']); $i++)
 								{
-									$js .= "sm_ls_add_listen_key('".$this->info['fields'][$i]."');";
+									$js .= "sm_ls_add_listen_key('".$this->ListenerID()."', '".$this->info['fields'][$i]."');";
 								}
 							return $js;
 						}
@@ -70,7 +70,7 @@
 							return $this->info['id'];
 						}
 				}
-			
+
 			/**
 			 * Class TExchangeSender
 			 *
@@ -79,7 +79,7 @@
 			class TExchangeSender
 				{
 					protected $info;
-				
+
 				/**
 				 * TExchangeSender constructor.
 				 * @param $listener_id - destination listener ID
@@ -89,7 +89,7 @@
 							$this->info['id'] = $listener_id;
 							$this->info['fields'] = Array();
 						}
-				
+
 				/**
 				 * Send a value to listener.
 				 * @param $id - destination DOM id from TExchangeListener::Add
@@ -101,7 +101,7 @@
 							$this->info['fields'][$id] = $value;
 							return $this;
 						}
-				
+
 				/**
 				 * Add a window.close(); for javascript code
 				 * @return $this
@@ -111,7 +111,7 @@
 							$this->info['close'] = true;
 							return $this;
 						}
-				
+
 				/**
 				 * @return string - javascript code for sender
 				 */
