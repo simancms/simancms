@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-03-31
+	//#revision 2016-11-15
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -616,13 +616,46 @@
 
 					function SetFieldAttribute($name, $attribute, $value)
 						{
-							$this->form['fields'][$name]['attrs'][$attribute] = $value;
+							if ($name === NULL)
+								$name = $this->currentname;
+							if ($value===NULL)
+								unset($this->form['fields'][$name]['attrs'][$attribute]);
+							else
+								$this->form['fields'][$name]['attrs'][$attribute] = $value;
 							return $this;
+						}
+
+					function WithFieldAttribute($attribute, $value, $name=NULL)
+						{
+							$this->SetFieldAttribute($name, $attribute, $value);
+							return $this;
+						}
+
+					function UnsetFieldAttribute($attribute, $name=NULL)
+						{
+							$this->SetFieldAttribute($name, $attribute, NULL);
+							return $this;
+						}
+
+					function GetFieldAttribute($name, $attribute)
+						{
+							return $this->form['fields'][$name]['attrs'][$attribute];
 						}
 
 					function SetFieldRowAttribute($name, $attribute, $value)
 						{
-							$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
+							if ($name === NULL)
+								$name = $this->currentname;
+							if ($value===NULL)
+								$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
+							else
+								unset($this->form['fields'][$name]['rowattrs'][$attribute]);
+							return $this;
+						}
+
+					function WithFieldRowAttribute($attribute, $value, $name=NULL)
+						{
+							$this->SetFieldRowAttribute($name, $attribute, $value);
 							return $this;
 						}
 
@@ -763,6 +796,11 @@
 							return $this;
 						}
 
+					function Readonly($name = NULL)
+						{
+							$this->SetFieldAttribute($name, 'readonly', 'readonly');
+						}
+
 				//-------------------------------------------------------------
 					function SaveButton($text)
 						{
@@ -896,5 +934,3 @@
 
 			define("adminform_DEFINED", 1);
 		}
-
-?>
