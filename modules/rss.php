@@ -9,8 +9,8 @@
 	Module Name: RSS-Feed
 	Module URI: http://simancms.org/modules/content/
 	Description: RSS-Export module
-	Version: 1.6.12
-	Revision: 2016-06-16
+	Version: 1.6.13
+	Revision: 2016-11-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -24,7 +24,7 @@
 			if (sm_action('news'))
 				{
 					$m['module'] = 'system_empty_block';
-					$rss['title'] = sm_settings('resource_title');
+					$rss['title'] = sm_website_title();
 					$rss['link'] = 'http://'.sm_settings('resource_url');
 					$rss['description'] = sm_settings('logo_text');
 					$ctg = intval($_getvars['ctg']);
@@ -67,5 +67,3 @@
 
 	if ($userinfo['level'] == 3)
 		include('modules/inc/adminpart/rss.php');
-
-?>

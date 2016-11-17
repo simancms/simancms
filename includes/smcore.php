@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-10-17
+	//#ver 1.6.13
+	//#revision 2016-11-17
 	//==============================================================================
 
 
@@ -1325,4 +1325,17 @@
 		{
 			global $sm;
 			return $sm['s']['charset'];
+		}
+
+	/**
+	 * Website title
+	 * @return string
+	 */
+	function sm_website_title()
+		{
+			global $sm;
+			if (!empty($sm['s']['resource_title']))
+				return $sm['s']['resource_title'];
+			else
+				return sm_settings('resource_title');
 		}

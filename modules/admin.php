@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-07-06
+	//#ver 1.6.13
+	//#revision 2016-11-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -759,7 +759,7 @@
 							$result = execsql("SELECT * FROM ".$sm['tu']."users WHERE get_mail=1");
 							while ($row = database_fetch_assoc($result))
 								{
-									send_mail($_settings['resource_title']." <".$_settings['administrators_email'].">", $row['email'], $_postvars['subject'], $_postvars['message']);
+									send_mail(sm_website_title()." <".$_settings['administrators_email'].">", $row['email'], $_postvars['subject'], $_postvars['message']);
 								}
 							sm_notify($lang['module_admin']['message_mass_email_successfull']);
 							sm_redirect('index.php?m=admin');

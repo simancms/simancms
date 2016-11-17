@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-05-31
+	//#ver 1.6.13
+	//#revision 2016-11-17
 	//==============================================================================
 
 	//System cleanup
@@ -57,7 +57,7 @@
 	$sm['s']['document']['headdef'].='<title>';
 	if (intval(sm_settings('meta_resource_title_position'))==1 || intval(sm_settings('meta_resource_title_position'))==0 && strcmp($sm['s']['pagetitle'], "")==0)
 		{
-			$sm['s']['document']['headdef'].=sm_settings('resource_title');
+			$sm['s']['document']['headdef'].=sm_website_title();
 			if (strcmp($sm['s']['pagetitle'], "")!=0)
 				$sm['s']['document']['headdef'].=sm_settings('title_delimiter');
 		}
@@ -66,7 +66,7 @@
 		{
 			if (strcmp($sm['s']['pagetitle'], "")!=0)
 				$sm['s']['document']['headdef'].=sm_settings('title_delimiter');
-			$sm['s']['document']['headdef'].=sm_settings('resource_title');
+			$sm['s']['document']['headdef'].=sm_website_title();
 		}
 	$sm['s']['document']['headdef'].='</title>';
 	if (!empty($sm['s']['meta']['description']))
@@ -105,4 +105,3 @@
 			sm_tempdata_clean();
 		}
 
-?>
