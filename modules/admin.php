@@ -477,7 +477,7 @@
 						add_path($lang['common']['mobile_device'], 'index.php?m=admin&d=settings&viewmode=mobile');
 					elseif ($m['mode_settings'] == 'tablet')
 						add_path($lang['common']['tablet_device'], 'index.php?m=admin&d=settings&viewmode=tablet');
-					$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='".$m['mode_settings']."'";
+					$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='".dbescape($m['mode_settings'])."'";
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
@@ -486,7 +486,7 @@
 						}
 					for ($i = 0; $i < count($m['available_modes']); $i++)
 						{
-							$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='".$m['available_modes'][$i]['mode']."'";
+							$sql = "SELECT * FROM ".$tableprefix."settings WHERE mode='".dbescape($m['available_modes'][$i]['mode'])."'";
 							$result = execsql($sql);
 							while ($row = database_fetch_object($result))
 								{
