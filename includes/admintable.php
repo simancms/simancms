@@ -60,8 +60,6 @@
 					function AddCol($name, $title, $width = '', $hint = '', $replace_text = '', $replace_image = '', $messagebox = 0, $messagebox_text = '')
 						{
 							global $sm;
-							if (strlen($replace_image)>0 && strpos($replace_image, '://') === false && strpos($replace_image, '.') === false)
-								$replace_image .= '.gif';
 							$this->table['columns'][$name]['caption'] = $title;
 							$this->table['columns'][$name]['width'] = $width;
 							if (empty($hint))
@@ -70,13 +68,7 @@
 							$this->table['columns'][$name]['replace_text'] = $replace_text;
 							$this->table['columns'][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
 							if (!empty($replace_image) && strpos($replace_image, '/') === false)
-								{
-									if (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
-										$replace_image = 'themes/'.sm_current_theme().'/images/admintable/'.$replace_image;
-									else
-										$replace_image = 'themes/default/images/admintable/'.$replace_image;
-								}
-							$this->table['columns'][$name]['replace_image'] = $replace_image;
+								$this->table['columns'][$name]['replace_image'] = TGrid::ImageURL($replace_image);
 							$this->table['columns'][$name]['messagebox'] = $messagebox;
 							$this->table['columns'][$name]['messagebox_text'] = $messagebox_text;
 							return $this;
@@ -131,15 +123,7 @@
 
 					function SetHeaderImage($name, $image)
 						{
-							if (strpos($image, '.') === false && strpos($image, '://') === false)
-								$image .= '.gif';
-							if (strpos($image, '://') !== false || file_exists($image))
-								$img = $image;
-							elseif (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image))
-								$img = 'themes/'.sm_current_theme().'/images/admintable/'.$image;
-							else
-								$img = 'themes/default/images/admintable/'.$image;
-							$this->table['columns'][$name]['html'] .= '<img src="'.$img.'" class="adminform_header_image" />';
+							$this->table['columns'][$name]['html'] .= '<img src="'.TGrid::ImageURL($image).'" class="adminform_header_image" />';
 							return $this;
 						}
 
@@ -431,37 +415,33 @@
 							return $this->table['rows'][$this->rownumber][$name]['html_end'];
 						}
 
+					public static function ImageURL($image_name)
+						{
+							if (strpos($image_name, '.') === false && strpos($image_name, '://') === false)
+								$image_name .= '.gif';
+							if (strpos($image_name, '/') === false)
+								{
+									if (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image_name))
+										$image_name = 'themes/'.sm_current_theme().'/images/admintable/'.$image_name;
+									else
+										$image_name = 'themes/default/images/admintable/'.$image_name;
+								}
+							return $image_name;
+						}
+
 					function Image($name, $replace_image)
 						{
 							if (empty($replace_image))
 								return $this;
-							if (strpos($replace_image, '.') === false && strpos($replace_image, '://') === false)
-								$replace_image .= '.gif';
 							$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
-							if (strpos($replace_image, '/') === false)
-								{
-									if (file_exists('themes/'.sm_current_theme().'/images/admintable/'.$replace_image))
-										$replace_image = 'themes/'.sm_current_theme().'/images/admintable/'.$replace_image;
-									else
-										$replace_image = 'themes/default/images/admintable/'.$replace_image;
-								}
-							$this->table['rows'][$this->rownumber][$name]['image'] = $replace_image;
+							$this->table['rows'][$this->rownumber][$name]['image'] = TGrid::ImageURL($replace_image);
 							return $this;
 						}
 
 					function InlineImage($name, $image, $url='', $onclick_javascript='')
 						{
 							$i=count($this->table['rows'][$this->rownumber][$name]['inlineimages']);
-							if (strpos($image, '.') === false && strpos($image, '://') === false)
-								$image .= '.gif';
-							if (!empty($image) && strpos($image, '/') === false)
-								{
-									if (!file_exists('themes/'.sm_current_theme().'/images/admintable/'.$image))
-										{
-											$image = 'themes/default/images/admintable/'.$image;
-										}
-								}
-							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['image'] = $image;
+							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['image'] = TGrid::ImageURL($image);
 							if (!empty($onclick_javascript) && empty($url))
 								$url='javascript:;';
 							$this->table['rows'][$this->rownumber][$name]['inlineimages'][$i]['url'] = $url;
