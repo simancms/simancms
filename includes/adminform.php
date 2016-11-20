@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-11-15
+	//#revision 2016-11-21
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -396,6 +396,19 @@
 							return $this->form['fields'][$name]['caption'];
 						}
 
+					function GetType($name)
+						{
+							return $this->form['fields'][$name]['type'];
+						}
+
+					function GetFieldNames()
+						{
+							$list=Array();
+							foreach ($this->form['fields'] as $name => &$value)
+								$list[]=$name;
+							return $list;
+						}
+
 					function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel = '', $required = false)
 						{
 							global $sm;
@@ -642,6 +655,11 @@
 							return $this->form['fields'][$name]['attrs'][$attribute];
 						}
 
+					function HasFieldAttribute($name, $attribute)
+						{
+							return is_array($this->form['fields'][$name]['attrs']) && array_key_exists($attribute, $this->form['fields'][$name]['attrs']);
+						}
+
 					function SetFieldRowAttribute($name, $attribute, $value)
 						{
 							if ($name === NULL)
@@ -841,7 +859,14 @@
 									$( "#'.$this->form['prefix'].$name.'" ).datepicker({format:"'.jsescape($format).'", autoclose: true});
 								});
 							</script>';
+							$this->form['fields'][$name]['is_calendar']=true;
+							$this->form['fields'][$name]['calendar_format']=$format;
 							return $this;
+						}
+
+					function isSubtypeCalendar($name)
+						{
+							return $this->form['fields'][$name]['is_calendar']===true;
 						}
 
 					function NoHighlight($turn_off = true)
@@ -937,6 +962,51 @@
 					function javascriptCode($jscode)
 						{
 							$this->form['html_end'].='<script type="text/javascript">'.$jscode.'</script>';
+						}
+
+					public static function FieldTypeTagText()
+						{
+							return 'text';
+						}
+
+					public static function FieldTypeTagSeparator()
+						{
+							return 'separator';
+						}
+
+					public static function FieldTypeTagLabel()
+						{
+							return 'label';
+						}
+
+					public static function FieldTypeTagPassword()
+						{
+							return 'password';
+						}
+
+					public static function FieldTypeTagFile()
+						{
+							return 'file';
+						}
+
+					public static function FieldTypeTagStaticText()
+						{
+							return 'statictext';
+						}
+
+					public static function FieldTypeTagStaticHidden()
+						{
+							return 'hidden';
+						}
+
+					public static function FieldTypeTagStaticTextarea()
+						{
+							return 'textarea';
+						}
+
+					public static function FieldTypeTagSelect()
+						{
+							return 'select';
 						}
 				}
 
