@@ -821,16 +821,24 @@
 						}
 
 				//-------------------------------------------------------------
-					function Calendar($name = NULL)
+					function Calendar($name = NULL, $format='')
 						{
-							global $sm;
+							global $sm, $lang;
+							sm_use('datepicker');
+							if (empty($format))
+								{
+									if (sm_current_language()=='ukr' || sm_current_language()=='ua')
+										$format='dd.mm.yyyy';
+									else
+										$format='mm/dd/yyyy';
+								}
 							if ($name === NULL)
 								$name = $this->currentname;
 							$sm['s']['document']['headend'] .= '
 							<script type="text/javascript">
 							$(function()
 								{
-									$( "#'.$this->form['prefix'].$name.'" ).datepicker();
+									$( "#'.$this->form['prefix'].$name.'" ).datepicker({format:"'.jsescape($format).'", autoclose: true});
 								});
 							</script>';
 							return $this;

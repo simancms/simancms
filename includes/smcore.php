@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-11-17
+	//#revision 2016-11-20
 	//==============================================================================
 
 
@@ -957,6 +957,8 @@
 				include_once('includes/lib/'.$libname.'.php');
 			elseif (strcmp($libname, 'autocomplete')==0)
 				include_once('ext/autocomplete/siman_config.php');
+			elseif (strcmp($libname, 'datepicker')==0)
+				include_once('ext/tools/datepicker/siman_config.php');
 		}
 
 	function sm_setfocus($dom_element, $noservicesymbol_as_id=true)
@@ -1140,6 +1142,12 @@
 		{
 			global $sm;
 			return $sm['s']['theme'];
+		}
+
+	function sm_current_language()
+		{
+			global $sm;
+			return $sm['s']['lang'];
 		}
 
 	function sm_set_metadata($object_name, $object_id, $key_name, $val)
