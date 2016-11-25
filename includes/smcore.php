@@ -1277,6 +1277,16 @@
 			$sm['s']['main_tpl'] = 'indexprint';
 		}
 	
+	/**
+	 * Return true if print mode active
+	 * @return bool
+	 */
+	function sm_is_printmode()
+		{
+			global $sm;
+			return ($sm['s']['printmode'] == 'on');
+		}
+
 	function sm_add_body_class($add_classname)
 		{
 			global $sm;
