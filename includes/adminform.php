@@ -631,7 +631,7 @@
 						{
 							if ($name === NULL)
 								$name = $this->currentname;
-							if ($value===NULL)
+							if ($value!==NULL)
 								unset($this->form['fields'][$name]['attrs'][$attribute]);
 							else
 								$this->form['fields'][$name]['attrs'][$attribute] = $value;
@@ -664,7 +664,7 @@
 						{
 							if ($name === NULL)
 								$name = $this->currentname;
-							if ($value===NULL)
+							if ($value!==NULL)
 								$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
 							else
 								unset($this->form['fields'][$name]['rowattrs'][$attribute]);
