@@ -924,10 +924,10 @@
 			return intval($sm['s']['is_index_page'])==1;
 		}
 	
-	function sm_homepage()
+	function sm_homepage($use_base_resource_url=false)
 		{
 			global $sm;
-			if (intval(sm_settings('resource_url_rewrite'))==1)
+			if (intval(sm_settings('resource_url_rewrite'))==1 && !$use_base_resource_url)
 				{
 					$url=$sm['s']['page']['parsed_url']['scheme'].'://'.$sm['s']['resource_url'];
 					$parts=@parse_url($url);
