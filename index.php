@@ -66,18 +66,14 @@
 				{
 					if (!empty($_settings['resource_url_mobile']) && $special['resource_url'] == sm_settings('resource_url'))
 						{
-							$_getvars["m"] = 'refresh';
-							$_getvars["d"] = 'view';
-							$refresh_url = $special['page']['scheme'].'://'.sm_settings('resource_url_mobile');
+							sm_redirect($special['page']['scheme'].'://'.sm_settings('resource_url_mobile'));
 						}
 				}
 			if ($special['deviceinfo']['is_tablet'])
 				{
 					if (!empty($_settings['resource_url_tablet']) && $special['resource_url'] == sm_settings('resource_url'))
 						{
-							$_getvars["m"] = 'refresh';
-							$_getvars["d"] = 'view';
-							$refresh_url = $special['page']['scheme'].'://'.sm_settings('resource_url_tablet');
+							sm_redirect($special['page']['scheme'].'://'.sm_settings('resource_url_tablet'));
 						}
 				}
 
@@ -85,8 +81,8 @@
 
 			sm_change_theme($_settings['default_theme']);
 
-			$module = $_getvars["m"];
-			$mode = $_getvars["d"];
+			$module = $_getvars['m'];
+			$mode = $_getvars['d'];
 
 			$special['sql']['count'] = 0;
 
@@ -97,7 +93,7 @@
 				{
 					$module = $_settings['default_module'];
 					$mode = '';
-					$_getvars["d"] = '';
+					unset($_getvars['d']);
 				}
 			if (!file_exists('modules/'.$module.'.php'))
 				{
@@ -194,7 +190,7 @@
 			if ($singleWindow == 1)
 				{
 					$modules_index = 0;
-					$modules[$modules_index]["mode"] = $_getvars["d"];
+					$modules[$modules_index]['mode'] = $_getvars['d'];
 					$sm['modules'] =& $modules;
 					$sm['index'] =& $modules_index;
 					$m =& $modules[$modules_index];
@@ -218,8 +214,8 @@
 					//Main module loading begin
 					$modules_index = 0;
 					$special['categories']['getctg'] = 1;
-					$modules[$modules_index]["panel"] = "center";
-					$modules[$modules_index]["mode"] = $_getvars["d"];
+					$modules[$modules_index]['panel'] = 'center';
+					$modules[$modules_index]['mode'] = $_getvars['d'];
 					$sm['modules'] =& $modules;
 					$sm['index'] =& $modules_index;
 					$m =& $modules[$modules_index];
@@ -243,7 +239,7 @@
 					if (!empty($_msgbox["mode"]))
 						{
 							$module = 'msgbox';
-							include($module.".php");
+							include($module.'.php');
 						}
 					$special['categories']['getctg'] = 0;
 					//Main module loading end
