@@ -404,8 +404,9 @@
 					function GetFieldNames()
 						{
 							$list=Array();
-							foreach ($this->form['fields'] as $name => &$value)
-								$list[]=$name;
+							if (is_array($this->form['fields']))
+								foreach ($this->form['fields'] as $name => &$value)
+									$list[]=$name;
 							return $list;
 						}
 
