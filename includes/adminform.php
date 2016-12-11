@@ -102,7 +102,7 @@
 							return $this;
 						}
 
-					function AddLabel($name, $title, $labeltext)
+					function AddLabel($name, $title='', $labeltext='')
 						{
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
@@ -120,7 +120,7 @@
 							return $this;
 						}
 
-					function AddText($name, $title, $required = false)
+					function AddText($name, $title='', $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -135,7 +135,7 @@
 							return $this;
 						}
 
-					function AddPassword($name, $title, $required = false)
+					function AddPassword($name, $title='', $required = false)
 						{
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
@@ -147,7 +147,7 @@
 							return $this;
 						}
 
-					function AddFile($name, $title, $required = false)
+					function AddFile($name, $title='', $required = false)
 						{
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
@@ -159,7 +159,7 @@
 							return $this;
 						}
 
-					function AddStatictext($name, $title, $required = false)
+					function AddStatictext($name, $title='', $required = false)
 						{
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
@@ -192,7 +192,7 @@
 							return $this;
 						}
 
-					function AddTextarea($name, $title, $required = false)
+					function AddTextarea($name, $title='', $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -264,7 +264,7 @@
 							return $this;
 						}
 
-					function AddEditor($name, $title, $required = false)
+					function AddEditor($name, $title='', $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -282,7 +282,7 @@
 							return $this;
 						}
 
-					function AddCheckbox($name, $title, $checkedvalue = 1, $required = false)
+					function AddCheckbox($name, $title='', $checkedvalue = 1, $required = false)
 						{
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
@@ -295,7 +295,7 @@
 							return $this;
 						}
 
-					function AddSelectNLList($name, $title, $nllist_values, $required = false)
+					function AddSelectNLList($name, $title='', $nllist_values, $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -311,7 +311,7 @@
 							return $this;
 						}
 
-					function AddSelect($name, $title, $array_values, $required = false)
+					function AddSelect($name, $title='', $array_values=Array(), $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -327,7 +327,7 @@
 							return $this;
 						}
 
-					function AddSelectVL($name, $title, $array_values, $array_labels, $required = false)
+					function AddSelectVL($name, $title='', $array_values=Array(), $array_labels=Array(), $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -344,7 +344,7 @@
 							return $this;
 						}
 
-					function AddSelectNLListVL($name, $title, $nllist_values, $nllist_labels, $required = false)
+					function AddSelectNLListVL($name, $title='', $nllist_values='', $nllist_labels='', $required = false)
 						{
 							global $sm;
 							$this->currentname = $name;
@@ -410,6 +410,7 @@
 							return $list;
 						}
 
+					//Deprecated
 					function AddSelectSQL($name, $title, $sql, $fiedvalue, $fieldlabel = '', $required = false)
 						{
 							global $sm;
@@ -685,7 +686,7 @@
 
 					function AppendFieldRowAttribute($name, $attribute, $value, $delimiter=' ')
 						{
-							$attr=$this->GetFieldRowAttribute($name, $attribute, $value);
+							$attr=$this->GetFieldRowAttribute($name, $attribute);
 							if (!empty($attr))
 								$attr.=$delimiter;
 							$attr.=$value;
@@ -698,11 +699,23 @@
 							return $this;
 						}
 
+					function WithTitle($title)
+						{
+							$this->SetTitleText($this->currentname, $title);
+							return $this;
+						}
+
 					function SetFieldTopText($name, $text, $classname = '', $style = '')
 						{
 							$this->form['fields'][$name]['toptext'] = $text;
 							$this->form['fields'][$name]['toptext_classname'] = $classname;
 							$this->form['fields'][$name]['toptext_style'] = $style;
+							return $this;
+						}
+
+					function WithFieldTopText($text, $classname = '', $style = '')
+						{
+							$this->SetFieldTopText($this->currentname, $text, $classname, $style);
 							return $this;
 						}
 
@@ -714,6 +727,12 @@
 							return $this;
 						}
 
+					function WithFieldBeginText($text, $classname = '', $style = '')
+						{
+							$this->SetFieldBeginText($this->currentname, $text, $classname, $style);
+							return $this;
+						}
+
 					function SetFieldEndText($name, $text, $classname = '', $style = '')
 						{
 							$this->form['fields'][$name]['endtext'] = $text;
@@ -722,11 +741,23 @@
 							return $this;
 						}
 
+					function WithFieldEndText($text, $classname = '', $style = '')
+						{
+							$this->SetFieldEndText($this->currentname, $text, $classname, $style);
+							return $this;
+						}
+
 					function SetFieldBottomText($name, $text, $classname = '', $style = '')
 						{
 							$this->form['fields'][$name]['bottomtext'] = $text;
 							$this->form['fields'][$name]['bottomtext_classname'] = $classname;
 							$this->form['fields'][$name]['bottomtext_style'] = $style;
+							return $this;
+						}
+
+					function WithFieldBottomText($text, $classname = '', $style = '')
+						{
+							$this->SetFieldBottomText($this->currentname, $text, $classname, $style);
 							return $this;
 						}
 
@@ -761,7 +792,7 @@
 							return $this;
 						}
 
-					function AddProtectCode($name, $title)
+					function AddProtectCode($name, $title='')
 						{
 							siman_generate_protect_code();
 							$this->AddText($name, $title, true);
