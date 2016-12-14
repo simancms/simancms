@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-11-17
+	//#revision 2016-12-15
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -774,7 +774,7 @@
 					sm_use('ui.form');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'errormessage error-message');
+						$ui->NotificationError($error);
 					$f = new TForm('index.php?m=admin&d=postmassemail');
 					$f->AddText('subject', $lang['module_admin']['mass_email_theme']);
 					$f->AddEditor('message', $lang['module_admin']['mass_email_message']);

@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-06-09
+	//#ver 1.6.13
+	//#revision 2016-12-15
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -93,7 +93,7 @@
 							$q->Add('description_download', dbescape($_postvars['description_download']));
 							$q->Add('userlevel_download', intval($_postvars['userlevel_download']));
 							$q->Insert();
-							//sm_notify($lang['operation_complete']);
+							sm_notify($lang['operation_complete']);
 							if (!empty($_getvars['returnto']))
 								sm_redirect($_getvars['returnto']);
 							else
@@ -163,7 +163,7 @@
 					sm_use('adminform');
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'errormessage error-message');
+						$ui->NotificationError($error);
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postupload&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
 					$f->AddFile('userfile', $lang['common']['file'], true);
@@ -225,7 +225,7 @@
 							sm_use('adminform');
 							$ui = new TInterface();
 							if (!empty($error))
-								$ui->div($error, '', 'errormessage error-message');
+								$ui->NotificationError($error);
 							sm_title($lang['edit']);
 							$f=new TForm('index.php?m=download&d=postedit&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
 							$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
@@ -250,7 +250,7 @@
 					sm_extcore();
 					$ui = new TInterface();
 					if (!empty($error))
-						$ui->div($error, '', 'errormessage error-message');
+						$ui->NotificationError($error);
 					sm_title($lang['module_download']['upload_file']);
 					$f=new TForm('index.php?m=download&d=postadd&returnto='.urlencode($_getvars['returnto']));
 					$f->AddFile('userfile', $lang['common']['file'], true);

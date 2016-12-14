@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-02-01
+	//#ver 1.6.13
+	//#revision 2016-12-15
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -546,11 +546,14 @@
 	 */
 	function sm_maxuploadbytes()
 		{
-			function ini_bytes_val($ini_v)
+			if (!function_exists('ini_bytes_val'))
 				{
-					$ini_v = trim($ini_v);
-					$s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
-					return intval($ini_v) * ($s[strtolower(substr($ini_v, -1))] ?: 1);
+					function ini_bytes_val($ini_v)
+						{
+							$ini_v = trim($ini_v);
+							$s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+							return intval($ini_v) * ($s[strtolower(substr($ini_v, -1))] ?: 1);
+						}
 				}
 			$max=sm_settings('max_upload_filesize');
 			$maxini = ini_bytes_val(ini_get('post_max_size'));
@@ -561,5 +564,3 @@
 				$max=$maxini;
 			return $max;
 		}
-
-?>
