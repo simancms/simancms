@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-11-21
+	//#revision 2016-12-16
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -22,6 +22,8 @@
 					var $firsteditor = true;
 					private $currentname;
 
+					static $forms_used=0;
+
 					function TForm($action, $prefix = '', $method = 'POST')
 						{
 							global $sm;
@@ -34,18 +36,32 @@
 							$this->form['send_fields_info'] = false;
 							$this->currentTab = 0;
 							$this->form['tabs'][0]['title'] = '';
-							$this->form['postfix'] = mt_rand(1000, 9999);
+							$this->form['postfix'] = TForm::$forms_used;
 							$this->form['tooltip_present'] = false;
 							if ($sm['adminform']['nohighlight'] === true)
 								$this->NoHighlight();
+							$this->AddClassnameGlobal('adminform_form');
 							if (!empty($sm['adminform']['globalclass']))
 								$this->AddClassnameGlobal($sm['adminform']['globalclass']);
+							$this->SetFormAttribute('enctype', 'multipart/form-data');
+							$this->SetDOMID('uiform-'.TForm::$forms_used);
+							TForm::$forms_used++;
 						}
 
 					public static function withAction($action, $method = 'POST')
 						{
 							$form = new TForm($action, '', $method);
 							return $form;
+						}
+
+					function SetDOMID($id)
+						{
+							$this->SetFormAttribute('id', $id);
+						}
+
+					function GetDOMID()
+						{
+							return $this->GetFormAttribute('id');
 						}
 
 					function AddTab($title)
@@ -574,6 +590,12 @@
 													}
 										}
 								}
+							if (!empty($this->form['action']))
+								$this->SetFormAttribute('action', $this->form['action']);
+							if (!empty($this->form['method']))
+								$this->SetFormAttribute('method', $this->form['method']);
+							else
+								$this->SetFormAttribute('method', 'post');
 							return $this->form;
 						}
 
@@ -610,6 +632,42 @@
 						}
 
 				//-------------------------------------------------------------
+					function SetFormAttribute($attribute, $value)
+						{
+							if ($value===NULL)
+								unset($this->form['attrs'][$attribute]);
+							else
+								$this->form['attrs'][$attribute] = $value;
+							return $this;
+						}
+
+					function AppendFormAttribute($attribute, $value, $delimiter=' ')
+						{
+							$attrval=$this->GetFormAttribute($attribute);
+							if (!empty($attrval))
+								$attrval.=$delimiter;
+							$attrval.=$value;
+							$this->SetFormAttribute($attribute, $attrval);
+							return $this;
+						}
+
+					function UnsetFormAttribute($attribute)
+						{
+							$this->SetFormAttribute($attribute, NULL);
+							return $this;
+						}
+
+					function GetFormAttribute($attribute)
+						{
+							return $this->form['attrs'][$attribute];
+						}
+
+					function HasFormAttribute($attribute)
+						{
+							return is_array($this->form['attrs']) && array_key_exists($attribute, $this->form['attrs']);
+						}
+
+				//-------------------------------------------------------------
 					function SetFieldId($name, $id)
 						{
 							$this->form['fields'][$name]['id'] = $id;
@@ -633,7 +691,7 @@
 						{
 							if ($name === NULL)
 								$name = $this->currentname;
-							if ($value!==NULL)
+							if ($value===NULL)
 								unset($this->form['fields'][$name]['attrs'][$attribute]);
 							else
 								$this->form['fields'][$name]['attrs'][$attribute] = $value;
@@ -666,10 +724,10 @@
 						{
 							if ($name === NULL)
 								$name = $this->currentname;
-							if ($value!==NULL)
-								$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
-							else
+							if ($value===NULL)
 								unset($this->form['fields'][$name]['rowattrs'][$attribute]);
+							else
+								$this->form['fields'][$name]['rowattrs'][$attribute] = $value;
 							return $this;
 						}
 
