@@ -443,6 +443,15 @@
 			return htmlspecialchars($html, ENT_COMPAT | ENT_HTML401, $charset);
 		}
 
+	function htmlencode($html)
+		{
+			global $lang;
+			$charset=sm_settings('htmlescapecharset');
+			if (empty($charset))
+				$charset=$lang['charset'];
+			return htmlentities($html, ENT_COMPAT | ENT_HTML401, $charset);
+		}
+
 	//Escape for using in javascripts assignment operator x='text'
 	function jsescape($text)
 		{
