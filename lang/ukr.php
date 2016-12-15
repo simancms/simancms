@@ -175,6 +175,7 @@
 	$lang['common']['off']='Вимкнуто';
 	$lang['common']['width'] = 'Ширина';
 	$lang['common']['height'] = 'Висота';
+	$lang['common']['size'] = 'Розмір';
 
 	$lang['messages']['fill_required_fields']='Заповніть необхідні поля';
 	$lang['messages']['wrong_email']='Невірний email';

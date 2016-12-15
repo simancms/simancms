@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-12-15
+	//#revision 2016-12-16
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -269,6 +269,7 @@
 					sm_use('adminform');
 					sm_use('admintable');
 					sm_use('adminbuttons');
+					sm_use('smformatter');
 					add_path_modules();
 					add_path($lang['module_download']['downloads'], 'index.php?m=download&d=admin');
 					add_path($lang['common']['list'], 'index.php?m=download&d=list');
@@ -282,6 +283,7 @@
 					$t=new TGrid();
 					$t->AddCol('file_download', $lang['file_name']);
 					$t->AddCol('description_download', $lang['common']['description']);
+					$t->AddCol('size', $lang['common']['size']);
 					$t->AddCol('userlevel_download', $lang['can_view']);
 					$t->AddCol('upload', $lang['module_download']['upload_file']);
 					$t->AddEdit();
@@ -296,6 +298,8 @@
 						{
 							$t->Label('file_download', $q->items[$i]['file_download']);
 							$t->URL('file_download', 'files/download/'.$q->items[$i]['file_download'], true);
+							if (file_exists('files/download/'.$q->items[$i]['file_download']))
+								$t->Label('size', SMFormatter::FileSize(filesize('files/download/'.$q->items[$i]['file_download'])));
 							$t->Label('description_download', $q->items[$i]['description_download']);
 							if ($q->items[$i]['userlevel_download']==0)
 								$t->Label('userlevel_download', $lang['all_users']);
