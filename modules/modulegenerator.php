@@ -110,6 +110,7 @@
 				{
 					add_path_modules();
 					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
+					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					\$ui = new TInterface();
@@ -278,7 +279,6 @@
 					$info .= get_list_code($modulename, $sql, $moduletitle, $fields);
 					$info .= get_admin_code($modulename, $sql, $moduletitle, $fields);
 					$info .= "\n\t\t}\n";
-					$info .= "\n?".'>';
 					sm_title('Code Generator');
 					sm_use('ui.interface');
 					sm_use('ui.form');
