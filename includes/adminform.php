@@ -465,6 +465,11 @@
 							return $this;
 						}
 
+					function GetValue($name)
+						{
+							return $this->form['data'][$name];
+						}
+
 					function SetNotEscapedValue($name, $value)
 						{
 							$this->form['data'][$name] = $value;
