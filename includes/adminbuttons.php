@@ -19,6 +19,12 @@
 					function TButtons($buttonbar_title = '')
 						{
 							$this->bar['buttonbar_title'] = $buttonbar_title;
+							$this->SetButtonsSeparatorHTML('');
+						}
+
+					function SetButtonsSeparatorHTML($html)
+						{
+							$this->bar['buttons_separator'] = $html;
 						}
 
 					function Button($title, $url = '')
@@ -189,6 +195,22 @@
 							return $this;
 						}
 
+					function WithBeginHTML($html, $buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->bar['buttons'][$buttonname]['htmlbegin'] = $html;
+							return $this;
+						}
+
+					function WithEndHTML($html, $buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->bar['buttons'][$buttonname]['htmlend'] = $html;
+							return $this;
+						}
+
 					function Output()
 						{
 							if (is_array($this->bar['buttons']))
@@ -221,6 +243,8 @@
 														$buttonparams['onclick'] = "location.href='".$buttonparams['url']."'";
 												}
 											$buttonparams['html'] = $buttonparams['caption'];
+											if (!empty($buttonparams['image']))
+												$buttonparams['html']='<img class="ab-btn-image" src="'.$buttonparams['image'].'" />'.$buttonparams['html'];
 											$buttonparams['attrs']['style'] = $buttonparams['style'];
 											$buttonparams['attrs']['onclick'] = $buttonparams['onclick'];
 											$buttonparams['attrs']['class'] = $buttonparams['class'];
@@ -233,5 +257,3 @@
 
 			define("adminbuttons_DEFINED", 1);
 		}
-
-?>
