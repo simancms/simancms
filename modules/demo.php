@@ -25,7 +25,7 @@
 	if (sm_is_installed(sm_current_module()) && ($userinfo['level'] > 0 || intval(sm_settings('demo_public')) > 0))
 		{
 			sm_default_action('demos');
-			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal', 'exchangelistener', 'exchangesender', 'fa'))
+			if (sm_action('htmlshortcuts', 'forms', 'grid', 'regular', 'buttons', 'modal', 'exchangelistener', 'exchangesender', 'fa', 'uitabs'))
 				sm_delayed_action('demo', 'footercode');
 			//start-htmlshortcuts
 			if (sm_action('htmlshortcuts'))
@@ -59,6 +59,26 @@
 					$ui->Output(true);
 				}
 			//end-htmlshortcuts
+			//start-uitabs
+			if (sm_action('uitabs'))
+				{
+					sm_title('UI Tabs');
+					add_path_home();
+					add_path('Demos', 'index.php?m=demo');
+					add_path_current();
+					sm_use('ui.interface');
+					sm_use('ui.tabs');
+					$ui = new TInterface();
+					$tabs=new TTabs();
+					$tabs->Tab('Tab 1');
+					$tabs->p('First tab');
+					$tabs->Tab('Tab 2');
+					$tabs->p('Second tab');
+					$tabs->Tab('Tab With URL', 'index.php?m=demo');
+					$ui->Add($tabs);
+					$ui->Output(true);
+				}
+			//end-uitabs
 			//start-fa
 			if (sm_action('fa'))
 				{
@@ -379,6 +399,7 @@
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
 					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
+					$nav->AddItem('UI TForm - Tabs', 'index.php?m=demo&d=uitabs');
 					$nav->AddItem('UI TForm - Modal Helper', 'index.php?m=demo&d=modal');
 					$nav->AddItem('UI TExchangeListener/TExchangeSender - Exchange values between pages', 'index.php?m=demo&d=exchangelistener');
 					$nav->AddItem('UI Font Awesome Helper', 'index.php?m=demo&d=fa');
