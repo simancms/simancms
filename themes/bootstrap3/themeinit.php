@@ -10,4 +10,10 @@
 	$sm['admintable']['globalclass']='';
 	$sm['contenteditor']['controlbuttonsclass']='btn-xs';
 
-?>
+	$sm['adminbuttons']['htmlbegin']='';
+	$sm['adminbuttons']['htmlend']='';
+	$sm['adminbuttons']['globalclass']='';
+	$sm['adminbuttons']['buttonseparator']='';
+	$sm['adminbuttons']['buttonclass']='';
+	$sm['adminbuttons']['buttonbegin']='';
+	$sm['adminbuttons']['buttonend']='';

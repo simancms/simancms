@@ -18,13 +18,48 @@
 
 					function TButtons($buttonbar_title = '')
 						{
+							global $sm;
 							$this->bar['buttonbar_title'] = $buttonbar_title;
 							$this->SetButtonsSeparatorHTML('');
+							$this->AddClassnameGlobal('adminbuttons');
+							if (!empty($sm['adminbuttons']['globalclass']))
+								$this->AddClassnameGlobal($sm['adminbuttons']['globalclass']);
+							if (!empty($sm['adminbuttons']['buttonseparator']))
+								$this->SetButtonsSeparatorHTML($sm['adminbuttons']['buttonseparator']);
+							if (!empty($sm['adminbuttons']['htmlbegin']))
+								$this->SetBeginHTML($sm['adminbuttons']['htmlbegin']);
+							if (!empty($sm['adminbuttons']['htmlend']))
+								$this->SetEndHTML($sm['adminbuttons']['htmlend']);
+						}
+
+					function SetBeginHTML($html)
+						{
+							$this->bar['htmlbegin'] = $html;
+						}
+
+					function GetBeginHTML()
+						{
+							return $this->bar['htmlbegin'];
+						}
+
+					function SetEndHTML($html)
+						{
+							$this->bar['htmlend'] = $html;
+						}
+
+					function GetEndHTML()
+						{
+							return $this->bar['htmlend'];
 						}
 
 					function SetButtonsSeparatorHTML($html)
 						{
 							$this->bar['buttons_separator'] = $html;
+						}
+
+					function GetButtonsSeparatorHTML()
+						{
+							return $this->bar['buttons_separator'];
 						}
 
 					function Button($title, $url = '')
@@ -42,6 +77,7 @@
 
 					function AddButton($name, $title, $url = '', $type = 'button', $style = '', $messagebox_message = '', $javascript = '')
 						{
+							global $sm;
 							if (empty($name))
 								$name = md5(rand(1, 999999));
 							$this->currentbuttonname = $name;
@@ -53,6 +89,12 @@
 							$this->bar['buttons'][$name]['style'] = $style;
 							$this->bar['buttons'][$name]['message'] = addslashes($messagebox_message);
 							$this->SetAttr('type', 'button');
+							if (!empty($sm['adminbuttons']['buttonclass']))
+								$this->AddClassname($sm['adminbuttons']['buttonclass']);
+							if (!empty($sm['adminbuttons']['buttonbegin']))
+								$this->WithBeginHTML($sm['adminbuttons']['buttonbegin']);
+							if (!empty($sm['adminbuttons']['buttonend']))
+								$this->WithEndHTML($sm['adminbuttons']['buttonend']);
 							return $this;
 						}
 
