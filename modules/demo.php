@@ -398,11 +398,11 @@
 					$nav->AddItem('UI HTML-shortcuts', 'index.php?m=demo&d=htmlshortcuts');
 					$nav->AddItem('UI TGrid - Table', 'index.php?m=demo&d=grid');
 					$nav->AddItem('UI TForm - From', 'index.php?m=demo&d=forms');
-					$nav->AddItem('UI TForm - Buttons', 'index.php?m=demo&d=buttons');
-					$nav->AddItem('UI TForm - Tabs', 'index.php?m=demo&d=uitabs');
-					$nav->AddItem('UI TForm - Modal Helper', 'index.php?m=demo&d=modal');
+					$nav->AddItem('UI TButtons - Buttons', 'index.php?m=demo&d=buttons');
+					$nav->AddItem('UI TTabs - Tabs', 'index.php?m=demo&d=uitabs');
+					$nav->AddItem('UI TModalHelper - Modal Helper', 'index.php?m=demo&d=modal');
 					$nav->AddItem('UI TExchangeListener/TExchangeSender - Exchange values between pages', 'index.php?m=demo&d=exchangelistener');
-					$nav->AddItem('UI Font Awesome Helper', 'index.php?m=demo&d=fa');
+					$nav->AddItem('UI FA - Font Awesome Helper', 'index.php?m=demo&d=fa');
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
