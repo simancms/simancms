@@ -7,8 +7,6 @@
 	//| [!] Check includes/dbsettings.php to setup system configuration            |
 	//------------------------------------------------------------------------------
 	
-	$_settings['version'] = '1.6.12';
-
 	$result = execsql("SELECT * FROM ".$tableprefix."settings WHERE mode='default'");
 	while ($row = database_fetch_assoc($result))
 		{
@@ -38,5 +36,3 @@
 	include(dirname(__FILE__).'/config_def.php');
 	if (file_exists(dirname(__FILE__).'/config_usr.php'))
 		include(dirname(__FILE__).'/config_usr.php');
-
-?>

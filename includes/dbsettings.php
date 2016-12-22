@@ -14,7 +14,7 @@
 	$hostNameDB = 'localhost';
 
 	//Database name
-	$nameDB = 'siman_1612';
+	$nameDB = 'siman_1613';
 
 	//Database user name
 	$userNameDB = 'root';
@@ -34,7 +34,7 @@
 	$tableusersprefix = '';
 
 	//Session prefix. You need to change it for your site to prevent hacks
-	$session_prefix = 'needchange1612_';
+	$session_prefix = 'needchange1613_';
 
 	//Salt. You need to change it before installation to prevent hacks
 	// Do not change it after installation - all passwords will be lost
@@ -45,6 +45,3 @@
 
 	//Don't change code below
 	if (empty($tableusersprefix)) $tableusersprefix = $tableprefix;
-
-
-?>

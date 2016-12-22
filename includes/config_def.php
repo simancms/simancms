@@ -4,6 +4,11 @@
 	//|            Content Management System SiMan CMS                             |
 	//|                http://www.simancms.org                                     |
 	//------------------------------------------------------------------------------
+	//|                                                                            |
+	//| Config defaults. Do not edit or delete this file.                          |
+	//| Use config_usr.php to define or rewrite them                               |
+	//|                                                                            |
+	//------------------------------------------------------------------------------
 
 	//Use protect code (captcha). 1 - on, 0 - off
 	$_settings['use_protect_code']=1;
@@ -14,6 +19,8 @@
 
 	$_settings['show_script_info'] = 'off';
 	
+	$_settings['version'] = '1.6.13';
+
 	if (empty($_settings['htmlescapecharset']))
 		{
 			if (strpos($initialStatementDB, '1251'))
@@ -23,5 +30,3 @@
 			else
 				$_settings['htmlescapecharset']='UTF-8';
 		}
-
-?>
