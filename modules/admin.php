@@ -263,7 +263,7 @@
 				}
 			if (sm_action('uplimg'))
 				{
-					$m["title"] = $lang['upload_image'];
+					sm_title($lang['upload_image']);
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
 					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
@@ -277,6 +277,7 @@
 					$f->AddText('p_optional', $lang['optional_file_name']);
 					$f->SaveButton($lang['upload']);
 					$ui->AddForm($f);
+					$ui->NotificationInfo($lang['module_admin']['images_media_notification']);
 					$ui->Output(true);
 				}
 			if (sm_action('addmodule'))
@@ -688,6 +689,7 @@
 					$ui->Add($t);
 					$ui->Add($b);
 					$ui->AddPagebarParams($i, $limit, $offset);
+					$ui->NotificationInfo($lang['module_admin']['images_media_notification']);
 					$ui->Output(true);
 				}
 			if (sm_action('postdelimg'))
