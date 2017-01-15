@@ -927,7 +927,7 @@
 	function sm_homepage($use_base_resource_url=false)
 		{
 			global $sm;
-			if (intval(sm_settings('resource_url_rewrite'))==1 && !$use_base_resource_url)
+			if (intval(sm_settings('resource_url_rewrite'))==1 && !$use_base_resource_url && !$sm['s']['cli'])
 				{
 					$url=$sm['s']['page']['parsed_url']['scheme'].'://'.$sm['s']['resource_url'];
 					$parts=@parse_url($url);
