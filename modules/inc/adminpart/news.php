@@ -254,8 +254,7 @@
 					$t->AddDelete();
 					$t->AddCol('stick', '', '16', $lang["set_as_block"], '', 'stick.gif');
 					$t->AddMenuInsert();
-					$result = execsql($sql);
-					for ($i = 0; $i<count($q->items); $i++)
+					for ($i = 0; $i<$q->Count(); $i++)
 						{
 							if (intval(sm_settings('news_use_time'))==1)
 								{
