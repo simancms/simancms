@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-12-15
+	//#revision 2017-01-15
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -561,7 +561,7 @@
 					sm_use('ui.interface');
 					sm_use('ui.grid');
 					$ui = new TInterface();
-					if ($serverDB == 0)
+					if ($serverDB == 0 || $serverDB == 3)
 						{
 							$t = new TGrid();
 							$t->AddCol('table_name', $lang['module_admin']['table_name'], '25%');
@@ -595,9 +595,8 @@
 				}
 			if (sm_action('optimize'))
 				{
-					$m["title"] = $lang['module_admin']['optimize_database'];
 					$tc = $_postvars['p_table_count'];
-					if ($serverDB == 0)
+					if ($serverDB == 0 || $serverDB == 3)
 						{
 							for ($i = 0; $i < $tc; $i++)
 								{
@@ -1142,5 +1141,3 @@
 					$ui->Output(true);
 				}
 		}
-
-?>
