@@ -8,7 +8,7 @@
 	//Database server type:
 	// MySQL=0
 	// SQLite=2
-	$serverDB = 0;
+	$serverDB = 3;
 
 	//Database server name (usually localhost)
 	$hostNameDB = 'localhost';
