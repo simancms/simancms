@@ -7,21 +7,21 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-10-07
+	//#revision 2017-01-18
 	//==============================================================================
 
 	if (!defined("admininterface_DEFINED"))
 		{
 			sm_add_cssfile('common_admininterface.css');
 
-			class TInterface
+			class TGenericInterface
 				{
 					var $blocks;
 					var $currentblock;
 					var $items;
 					var $item;
 
-					function TInterface($title = '', $showborders = 1)
+					function __construct($title = '', $showborders = 1)
 						{
 							$this->currentblock = -1;
 							$this->AddBlock($title, $showborders);
@@ -262,6 +262,21 @@
 							$this->div($message, '', 'aui-message aui-message-success');
 						}
 
+					function Output()
+						{
+							return $this->blocks;
+						}
+
+					function AJAXLoader($url)
+						{
+							$id='uial-'.md5(rand().microtime().rand());
+							$this->html('<div id="'.$id.'" class="ui-ajax-loading">Loading...</div>');
+							$this->javascript('$(document).ready(function(){$("#'.$id.'").load( "'.$url.'");});');
+						}
+				}
+
+			class TInterface extends TGenericInterface
+				{
 					function Output($replace_template = false)
 						{
 							global $modules, $modules_index;
@@ -275,18 +290,11 @@
 							else
 								return $this->blocks;
 						}
-					
-					function AJAXLoader($url)
-						{
-							$id='uial-'.md5(rand().microtime().rand());
-							$this->html('<div id="'.$id.'" class="ui-ajax-loading">Loading...</div>');
-							$this->javascript('$(document).ready(function(){$("#'.$id.'").load( "'.$url.'");});');
-						}
 				}
 
-			class TPanel extends TInterface
+			class TPanel extends TGenericInterface
 				{
-					function TPanel($width = '', $height = '', $style = '', $class = '', $id = '')
+					function __construct($width = '', $height = '', $style = '', $class = '', $id = '')
 						{
 							$this->TInterface('', 0);
 							if (!empty($width))
@@ -305,5 +313,3 @@
 
 			define("admininterface_DEFINED", 1);
 		}
-
-?>
