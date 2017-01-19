@@ -296,7 +296,7 @@
 				{
 					function __construct($width = '', $height = '', $style = '', $class = '', $id = '')
 						{
-							$this->TInterface('', 0);
+							parent::__construct('', 0);
 							if (!empty($width))
 								$style .= 'width:'.$width.';';
 							if (!empty($height))

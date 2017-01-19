@@ -5,16 +5,16 @@
 			sm_use('ui.interface');
 			sm_add_cssfile('common_admintabs.css');
 
-			class TTabs extends TInterface
+			class TTabs extends TGenericInterface
 				{
 					var $activeindex;
 
-					function TTabs($activeindex = 0)
+					function __construct($activeindex = 0)
 						{
-							$this->TInterface('', 0);
+							parent::__construct('', 0);
 							$this->activeindex = $activeindex;
 						}
-					
+
 					function Tab($title, $tab_url='')
 						{
 							$this->AddBlock($title);
@@ -44,5 +44,3 @@
 
 			define("admintabs_DEFINED", 1);
 		}
-
-?>
