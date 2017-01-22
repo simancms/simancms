@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-11-20
+	//#revision 2017-01-21
 	//==============================================================================
 
 
@@ -1356,4 +1356,13 @@
 				return $sm['s']['resource_title'];
 			else
 				return sm_settings('resource_title');
+		}
+
+	/**
+	 * CMS root directory path
+	 * @return string
+	 */
+	function sm_cms_rootdir()
+		{
+			return dirname(dirname(__FILE__)).'/';
 		}
