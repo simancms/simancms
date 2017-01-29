@@ -328,7 +328,6 @@
 							$q->Add('public', intval($_postvars['public']));
 							$q->Add('keywords', dbescape($_postvars['keywords']));
 							$q->Add('description', dbescape($_postvars['description']));
-							$q->Add('items_count', dbescape($_postvars['items_count']));
 							$q->Add('lastupdate', time());
 							if (sm_action('postaddctg'))
 								$id=$q->Insert();
