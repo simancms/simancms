@@ -108,5 +108,9 @@
 		{
 			sm_update_settings('database_date', '20161025');
 		}
+	if (intval(sm_settings('database_date'))<20170210)//1.6.13
+		{
+			execsql("ALTER TABLE `".$sm['t']."blocks` CHANGE `show_on_viewids` `show_on_viewids` TEXT NULL DEFAULT NULL;");
+			sm_update_settings('database_date', '20170210');
+		}
 
-?>
