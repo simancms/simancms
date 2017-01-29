@@ -161,7 +161,10 @@
 							$inst['tables'][18]['name'] = 'taxonomy';
 							$inst['tables'][19]['name'] = 'media';
 							$inst['tables'][20]['name'] = 'categories_media';
-							include('dbcreate'.$serverDB.'.php');
+							if ($serverDB==0 || $serverDB==3)
+								include('dbcreate0.php');
+							else
+								include('dbcreate'.$serverDB.'.php');
 							for ($i = 0; $i < count($inst['tables']); $i++)
 								{
 									if ($inst['tables'][$i]['result'])
