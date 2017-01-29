@@ -57,7 +57,7 @@
 					sm_extcore();
 					$descr = dbescape($_postvars['p_shortdesc']);
 					$fs = $_uplfilevars['userfile']['tmp_name'];
-					if (empty($_postvars['p_optional']))
+					if (empty($_postvars['optional_name']))
 						{
 							$fd = basename($_uplfilevars['userfile']['name']);
 						}
