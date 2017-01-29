@@ -22,7 +22,7 @@
 				  `groups_view` text NULL,
 				  `thislevelonly` TINYINT NOT NULL DEFAULT '0',
 				  `show_on_device` VARCHAR( 255 ) NULL,
-				  `show_on_viewids` TEXT NOT NULL,
+				  `show_on_viewids` TEXT NULL DEFAULT NULL,
 				  `classname_block` VARCHAR( 255 ) NULL DEFAULT NULL,
 				  `text_block` TEXT NULL DEFAULT NULL,
 				  `editsource_block` VARCHAR( 255 ) NULL DEFAULT NULL,
