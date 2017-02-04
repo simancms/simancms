@@ -16,7 +16,7 @@
 					var $bar;
 					private $currentbuttonname;
 
-					function TButtons($buttonbar_title = '')
+					function __construct($buttonbar_title = '')
 						{
 							global $sm;
 							$this->bar['buttonbar_title'] = $buttonbar_title;

@@ -36,7 +36,7 @@
 					var $roaddirectionsout;
 					var $apikey;
 
-					function TGooglemapLoader($initcanv = 'map_canvas', $initzoom = '13', $inittype = 'ROADMAP')
+					function __construct($initcanv = 'map_canvas', $initzoom = '13', $inittype = 'ROADMAP')
 						{
 							$this->type = $inittype;
 							$this->canvas = $initcanv;

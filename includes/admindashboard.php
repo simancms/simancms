@@ -15,7 +15,7 @@
 					var $board;
 					private $currentitem;
 
-					function TDashBoard()
+					function __construct()
 						{
 						}
 

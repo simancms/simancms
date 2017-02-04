@@ -24,7 +24,7 @@
 					public $sql;
 					private $result;
 
-					function TQuery($tablename, $tableprefix = '')
+					function __construct($tablename, $tableprefix = '')
 						{
 							$this->tableprefix = $tableprefix;
 							$this->tablename = $tablename;

@@ -23,7 +23,7 @@
 
 					private $sort_statement = '';
 
-					function TGrid($default_column = '', $postfix = '')
+					function __construct($default_column = '', $postfix = '')
 						{
 							global $sm;
 							$this->rownumber = 0;

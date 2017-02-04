@@ -16,7 +16,7 @@
 					var $rownumber;
 					var $shownumber;
 
-					function TBoardMessages($initialnumber = 0)
+					function __construct($initialnumber = 0)
 						{
 							$this->rownumber = -1;
 							$this->shownumber = $initialnumber;

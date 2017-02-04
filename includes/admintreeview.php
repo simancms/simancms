@@ -17,7 +17,7 @@
 					var $prefix;
 					private $currentitem;
 
-					function TTreeView($prefix=NULL)
+					function __construct($prefix=NULL)
 						{
 							global $sm;
 							$sm['admintreeview_count']++;

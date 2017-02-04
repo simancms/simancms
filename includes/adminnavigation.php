@@ -15,7 +15,7 @@
 					var $board;
 					private $currentitem;
 
-					function TNavigation()
+					function __construct()
 						{
 							global $sm;
 							if (!empty($sm['adminnavigation']['globalclass']))

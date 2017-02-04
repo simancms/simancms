@@ -24,7 +24,7 @@
 
 					static $forms_used=0;
 
-					function TForm($action, $prefix = '', $method = 'POST')
+					function __construct($action, $prefix = '', $method = 'POST')
 						{
 							global $sm;
 							$this->form['action'] = $action;
