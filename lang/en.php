@@ -514,4 +514,3 @@ $lang['special']['executed_queries_count'] = 'Queries executed';
 $lang['ext']['editors']['switch_to_ext_editor'] = 'Switch to external editor';
 $lang['ext']['editors']['switch_to_standard_editor'] = 'Switch to the internal editor';
 
-?>

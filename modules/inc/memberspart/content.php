@@ -226,7 +226,7 @@
 								->OnClick($modal->GetJSCode());
 						}
 					else
-						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_ext_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
 					if (!empty($error))
 						$ui->NotificationError($error);
 					if (sm_action('add'))
