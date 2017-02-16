@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-06-13
+	//#ver 1.6.13
+	//#revision 2016-02-16
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -149,6 +149,33 @@
 				}
 			if (sm_action('postadd'))
 				{
+					sm_use('smblock');
+					$block=SMBlock::CreateNonVisibleBlock($_postvars['p_block']);
+					$block->SetModuleName($_postvars["p_block"]);
+					$block->SetActionIDValue($_postvars["p_id"]);
+					$block->SetCaption($_postvars["p_caption"]);
+					$block->SetLevel($_postvars["p_level"]);
+					$block->SetDontShowModifier(!empty($_postvars["p_dont_show"]));
+					$block->SetActionValue($_postvars["p_doing"]);
+					$block->SetNoBorders(!empty($_postvars["p_no_borders"]));
+					$block->SetRewriteTitleTo($_postvars["p_rewrite_title"]);
+					$block->SetShowOnDevice($_postvars["show_on_device"]);
+					$block->SetGroupsView(create_groups_str($_postvars['p_groups']));
+					$block->SetThisLevelOnlyValue(intval($_postvars['p_thislevelonly']));
+					$block->SetShowOnViewIDs($_postvars["show_on_viewids"]);
+					$arr_show_on = explode('|', $_postvars['p_show_on']);
+					$block->SetShowOnModule($arr_show_on[0]);
+					$block->SetShowOnAction($arr_show_on[2]);
+					$block->SetShowOnCtgID($arr_show_on[1]);
+					if (sm_settings('blocks_use_image') == 1)
+						{
+							siman_upload_image($block->ID(), 'block');
+						}
+					sm_redirect('index.php?m=blocks&d=view');
+				}
+			/*
+			if (sm_action('postadd'))
+				{
 					$id_block = $_postvars["p_id"];
 					$name_block = $_postvars["p_block"];
 					$caption_block = dbescape($_postvars["p_caption"]);
@@ -183,6 +210,7 @@
 						}
 					sm_redirect('index.php?m=blocks&d=view');
 				}
+			*/
 			if (sm_action('postdelete'))
 				{
 					execsql("DELETE FROM ".$tableprefix."blocks  WHERE id_block=".intval($_getvars['id']));
