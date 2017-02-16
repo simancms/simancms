@@ -1376,3 +1376,14 @@
 			global $sm;
 			return $sm['t'];
 		}
+
+	/*
+	 * Is script running in CLI mode
+	 * @return bool
+	 */
+	function sm_is_cli()
+		{
+			global $sm;
+			return $sm['s']['cli']===true;
+		}
+
