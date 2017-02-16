@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2017-01-21
+	//#revision 2017-02-16
 	//==============================================================================
 
 
@@ -1365,4 +1365,14 @@
 	function sm_cms_rootdir()
 		{
 			return dirname(dirname(__FILE__)).'/';
+		}
+
+	/**
+	 * CMS regular tables prefix
+	 * @return string
+	 */
+	function sm_table_prefix()
+		{
+			global $sm;
+			return $sm['t'];
 		}
