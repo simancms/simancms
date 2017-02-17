@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.12
-	Revision: 2016-07-06
+	Version: 1.6.13
+	Revision: 2017-02-17
 	Author URI: http://simancms.org/
 	*/
 
@@ -125,7 +125,7 @@
 				}
 			if (empty($content_id))
 				{
-					$m['title'] = $lang['error'];
+					sm_title($lang['error']);
 					$m['text'] = $lang['messages']['nothing_found'];
 					$content_error = 1;
 				}
@@ -138,7 +138,7 @@
 						$sql .= " AND refuse_direct_show <> 1";
 					$sql .= " LIMIT 1";
 				}
-			if ($_settings['allow_alike_content'] != 1)
+			if (intval(sm_settings('allow_alike_content')) != 1)
 				$tmp_no_alike_content = 1;
 		}
 
@@ -189,7 +189,7 @@
 			if (!empty($ctg_id))
 				$sql .= ' AND '.$tableprefix.'content.id_category_c='.intval($ctg_id);
 			$sql .= ' ORDER BY '.$tableprefix.'content.priority_content DESC"';
-			if ($_settings['content_multiview'] == 'off')
+			if (sm_settings('content_multiview') == 'off')
 				{
 					$sql .= ' LIMIT 1';
 				}
@@ -200,11 +200,11 @@
 							if (is_numeric($_getvars['count']))
 								$sql .= ' LIMIT '.intval($_getvars['count']);
 							else
-								$sql .= ' LIMIT '.intval($_settings['content_per_page_multiview']);
+								$sql .= ' LIMIT '.intval(sm_settings('content_per_page_multiview'));
 						}
 					else
 						{
-							$sql .= ' LIMIT '.intval($_settings['content_per_page_multiview']);
+							$sql .= ' LIMIT '.intval(sm_settings('content_per_page_multiview'));
 						}
 				}
 			$tmp_dont_set_title = 1;
@@ -250,7 +250,7 @@
 							$m['content'][$i]["title"] = $row['title_content'];
 							sm_add_title_modifier($m['content'][$i]["title"]);
 							if ($tmp_dont_set_title != 1)
-								$m["title"] = $m['content'][$i]["title"];
+								sm_title($m['content'][$i]["title"]);
 							if ($tmp_load_preview_only == 1)
 								{
 									$m['content'][$i]["text"] = $row['preview_content'];
@@ -268,7 +268,7 @@
 							if ($special['categories']['getctg'] == 1)
 								$special['categories']['id'] = $row['id_category_c'];
 							$m['content'][$i]["title_category"] = $row['title_category'];
-							if ($modules_index == 0 && $i == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1 && !sm_is_index_page())
+							if ($modules_index == 0 && $i == 0 && sm_settings('content_use_path') == 1 && $row['no_use_path'] != 1 && !sm_is_index_page())
 								{
 									$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row['id_category_c']);
 									add_path_home();
@@ -319,7 +319,7 @@
 										}
 								}
 							$m['content'][$i]["cid"] = $content_id;
-							if ($_settings['content_use_image'] == 1)
+							if (sm_settings('content_use_image') == 1)
 								{
 									if (file_exists('files/fullimg/content'.$content_id.'.jpg'))
 										{
@@ -333,17 +333,17 @@
 											$m['content'][$i]['image'] = 'ext/showimage.php?img=content'.$content_id;
 											if ($tmp_load_preview_only == 1)
 												{
-													if (!empty($_settings['content_image_preview_width']))
-														$m['content'][$i]['image'] .= '&width='.$_settings['content_image_preview_width'];
-													if (!empty($_settings['content_image_preview_height']))
-														$m['content'][$i]['image'] .= '&height='.$_settings['content_image_preview_height'];
+													if (!sm_empty_settings('content_image_preview_width'))
+														$m['content'][$i]['image'] .= '&width='.sm_settings('content_image_preview_width');
+													if (!sm_empty_settings('content_image_preview_height'))
+														$m['content'][$i]['image'] .= '&height='.sm_settings('content_image_preview_height');
 												}
 											else
 												{
-													if (!empty($_settings['content_image_fulltext_width']))
-														$m['content'][$i]['image'] .= '&width='.$_settings['content_image_fulltext_width'];
-													if (!empty($_settings['content_image_fulltext_height']))
-														$m['content'][$i]['image'] .= '&height='.$_settings['content_image_fulltext_height'];
+													if (!sm_empty_settings('content_image_fulltext_width'))
+														$m['content'][$i]['image'] .= '&width='.sm_settings('content_image_fulltext_width');
+													if (!sm_empty_settings('content_image_fulltext_height'))
+														$m['content'][$i]['image'] .= '&height='.sm_settings('content_image_fulltext_height');
 												}
 										}
 								}
@@ -366,8 +366,8 @@
 								}
 							if ($tmp_no_alike_content != 1 && $modules_index == 0 && $m['panel'] == 'center' && $m['content'][$i]["can_view"] != 0 && !sm_is_index_page())
 								{
-									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>".intval($m['content'][$i]["cid"])." AND id_category_c=".intval($m['content'][$i]['id_category'])." ORDER BY priority_content DESC LIMIT ".intval($_settings['alike_content_count']);
-									$tmpresult = database_query($tmpsql, $lnkDB);
+									$tmpsql = "SELECT * FROM ".$tableprefix."content WHERE id_content<>".intval($m['content'][$i]["cid"])." AND id_category_c=".intval($m['content'][$i]['id_category'])." ORDER BY priority_content DESC LIMIT ".intval(sm_settings('alike_content_count'));
+									$tmpresult = execsql($tmpsql);
 									$j = 0;
 									while ($tmprow = database_fetch_assoc($tmpresult))
 										{
@@ -418,7 +418,7 @@
 			while ($row = database_fetch_assoc($result))
 				{
 					sm_event('onbeforecontentcategoriespathprocessing', $i);
-					if ($modules_index == 0 && $_settings['content_use_path'] == 1 && $row['no_use_path'] != 1)
+					if ($modules_index == 0 && sm_settings('content_use_path') == 1 && $row['no_use_path'] != 1)
 						{
 							$tmppath = sm_get_path_tree($tableprefix."categories", 'id_category', 'id_maincategory', $row['id_maincategory']);
 							add_path_home();
@@ -430,7 +430,7 @@
 						}
 					if ($special['categories']['getctg'] == 1)
 						$special['categories']['id'] = $row['id_category'];
-					$m['title'] = $row['title_category'];
+					sm_title($row['title_category']);
 					$m['preview_category'] = $row['preview_category'];
 					$m['sorting_category'] = $row['sorting_category'];
 					if ($row['can_view'] <= $userinfo['level'])
@@ -447,7 +447,7 @@
 							else
 								$m['category']['can_view'] = 0;
 							if ($m['category']['can_view'] == 0)
-								$m['title'] = $lang['access_denied'];
+								sm_title($lang['access_denied']);
 						}
 					$m['subcategories'] = siman_load_ctgs_content($row['id_category']);
 					sm_add_title_modifier($m['title']);
@@ -478,11 +478,11 @@
 						{
 							$m['category']['ctg'][$i]['url'] = 'index.php?m=content&d=view&cid='.$row['id_content'];
 						}
-					if ($_settings['content_use_preview'] == 1)
+					if (sm_settings('content_use_preview') == 1)
 						{
 							$m['category']['ctg'][$i]['preview'] = $row['preview_content'];
 						}
-					if ($_settings['content_use_image'] == 1)
+					if (sm_settings('content_use_image') == 1)
 						{
 							if (file_exists('files/thumb/content'.$m['category']['ctg'][$i]['id'].'.jpg'))
 								{
@@ -491,10 +491,10 @@
 							elseif (file_exists('files/img/content'.$m['category']['ctg'][$i]['id'].'.jpg'))
 								{
 									$m['category']['ctg'][$i]['image'] = 'ext/showimage.php?img=content'.$m['category']['ctg'][$i]['id'];
-									if (!empty($_settings['content_image_preview_width']))
-										$m['category']['ctg'][$i]['image'] .= '&width='.$_settings['content_image_preview_width'];
-									if (!empty($_settings['content_image_preview_height']))
-										$m['category']['ctg'][$i]['image'] .= '&height='.$_settings['content_image_preview_height'];
+									if (!sm_empty_settings('content_image_preview_width'))
+										$m['category']['ctg'][$i]['image'] .= '&width='.sm_settings('content_image_preview_width');
+									if (!sm_empty_settings('content_image_preview_height'))
+										$m['category']['ctg'][$i]['image'] .= '&height='.sm_settings('content_image_preview_height');
 								}
 						}
 					sm_add_title_modifier($m['category']['ctg'][$i]['title']);
@@ -516,7 +516,7 @@
 					while ($row = database_fetch_assoc($result))
 						{
 							sm_event('onbeforeblockctgviewcontentprocessing', $i);
-							$m['title'] = $row['title_category'];
+							sm_title($row['title_category']);
 							$m['sorting_category'] = $row['sorting_category'];
 							if ($row['can_view'] <= $userinfo['level'])
 								$m['category']['can_view'] = 1;
@@ -577,4 +577,3 @@
 	if ($userinfo['level']>0)
 		include('modules/inc/memberspart/content.php');
 
-?>
