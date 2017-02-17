@@ -150,7 +150,7 @@
 			if (sm_action('postadd'))
 				{
 					sm_use('smblock');
-					$block=SMBlock::CreateNonVisibleBlock($_postvars['p_block']);
+					$block=SMBlock::CreateNonVisibleBlock($_postvars['p_panel']);
 					$block->SetModuleName($_postvars["p_block"]);
 					$block->SetActionIDValue($_postvars["p_id"]);
 					$block->SetCaption($_postvars["p_caption"]);
