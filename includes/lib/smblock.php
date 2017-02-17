@@ -372,6 +372,25 @@
 							$block=new SMBlock($q->Insert());
 							return $block;
 						}
+
+					function MoveToPanel($panel_index)
+						{
+							if (intval($panel_index)==0)
+								$panel_index='c';
+							if ($this->Panel()!=$panel_index)
+								{
+									$old_index=$this->Panel();
+									$old_position=$this->Position();
+									$this->SetPosition(intval(TQuery::ForTable(sm_table_prefix().'blocks')->AddWhere('panel_block', dbescape($panel_index))->SelectFields('max(position_block) as mp')->Limit(1)->Select()->items[0]['mp'])+1);
+									$this->SetPanel($panel_index);
+									TQuery::ForTable(sm_table_prefix().'blocks')
+										->Add('position_block=position_block-1')
+										->AddWhere('panel_block', dbescape($old_index))
+										->AddWhere('position_block>='.$old_position)
+										->Update();
+								}
+							return $this;
+						}
 					
 				}
 			

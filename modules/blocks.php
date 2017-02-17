@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.13
-	//#revision 2016-02-16
+	//#revision 2016-02-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -104,65 +104,52 @@
 				}
 			if (sm_action('postedit'))
 				{
-					$id_block = intval($_postvars["p_id"]);
-					$old_panel = $_postvars["p_old_pnl"];
-					$old_position = $_postvars["p_old_pos"];
-					$caption_block = dbescape($_postvars["p_caption"]);
-					$panel_block = $_postvars["p_panel"];
-					$level = $_postvars["p_level"];
-					$arr_show_on = explode('|', $_postvars['p_show_on']);
-					$module_block = $arr_show_on[0];
-					$show_doing_block = $arr_show_on[2];
-					$ctg_block = $arr_show_on[1];
-					$no_borders = $_postvars['p_no_borders'];
-					$dont_show_modif = $_postvars['p_dont_show'];
-					$rewrite_title = $_postvars["p_rewrite_title"];
-					$groups_view = create_groups_str($_postvars['p_groups']);
-					$thislevelonly = intval($_postvars['p_thislevelonly']);
-					$show_on_device = $_postvars['show_on_device'];
-					$show_on_viewids = $_postvars['show_on_viewids'];
-					if ($panel_block != $old_panel)
+					sm_use('smblock');
+					$block=new SMBlock(intval($_postvars['p_id']));
+					if ($block->Exists())
 						{
-							$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='".dbescape($panel_block)."'";
-							$result = execsql($sql);
-							$pos_block = 0;
-							while ($row = database_fetch_row($result))
+							$old_panel = $block->Panel();
+							$block->SetCaption($_postvars['p_caption']);
+							$block->SetLevel($_postvars['p_level']);
+							$block->SetDontShowModifier(!empty($_postvars['p_dont_show']));
+							$block->SetNoBorders(!empty($_postvars['p_no_borders']));
+							$block->SetRewriteTitleTo($_postvars['p_rewrite_title']);
+							$block->SetShowOnDevice($_postvars['show_on_device']);
+							$block->SetThisLevelOnlyValue(intval($_postvars['p_thislevelonly']));
+							$block->SetGroupsView(create_groups_str($_postvars['p_groups']));
+							$block->SetShowOnViewIDs($_postvars['show_on_viewids']);
+							$arr_show_on = explode('|', $_postvars['p_show_on']);
+							$block->SetShowOnModule($arr_show_on[0]);
+							$block->SetShowOnAction($arr_show_on[2]);
+							$block->SetShowOnCtgID($arr_show_on[1]);
+							if ($block->Panel()!=$_postvars['p_panel'])
 								{
-									$pos_block = $row[0];
+									$block->MoveToPanel($_postvars['p_panel']);
 								}
-							$pos_block++;
-							$sql = "UPDATE ".$tableprefix."blocks SET level = '$level', panel_block='$panel_block', position_block='$pos_block', caption_block='$caption_block', show_on_module='$module_block', show_on_doing='$show_doing_block', show_on_ctg='$ctg_block', no_borders='$no_borders', dont_show_modif ='$dont_show_modif', rewrite_title = '$rewrite_title', groups_view = '$groups_view', thislevelonly='$thislevelonly', show_on_device='$show_on_device', show_on_viewids='$show_on_viewids' WHERE id_block = '$id_block'";
-							$result = execsql($sql);
-							$sql = "UPDATE ".$tableprefix."blocks SET position_block=position_block-1 WHERE position_block>='".($old_position)."' AND panel_block='$old_panel'";
-							$result = execsql($sql);
+							if (sm_settings('blocks_use_image') == 1)
+								{
+									siman_upload_image($block->ID(), 'block');
+								}
+							sm_notify($lang['messages']['edit_successful']);
+							sm_redirect('index.php?m=blocks&d=view');
 						}
-					else
-						{
-							$sql = "UPDATE ".$tableprefix."blocks SET level = '$level', caption_block = '$caption_block', show_on_module='$module_block', show_on_doing='$show_doing_block', show_on_ctg='$ctg_block', no_borders='$no_borders', dont_show_modif ='$dont_show_modif', rewrite_title = '$rewrite_title', groups_view = '$groups_view', thislevelonly='$thislevelonly', show_on_device='$show_on_device', show_on_viewids='$show_on_viewids'  WHERE id_block = '$id_block'";
-							$result = execsql($sql);
-						}
-					if (sm_settings('blocks_use_image') == 1)
-						{
-							siman_upload_image($id_block, 'block');
-						}
-					sm_redirect('index.php?m=blocks&d=view');
 				}
 			if (sm_action('postadd'))
 				{
 					sm_use('smblock');
 					$block=SMBlock::CreateNonVisibleBlock($_postvars['p_panel']);
-					$block->SetModuleName($_postvars["p_block"]);
-					$block->SetActionIDValue($_postvars["p_id"]);
-					$block->SetCaption($_postvars["p_caption"]);
-					$block->SetLevel($_postvars["p_level"]);
-					$block->SetDontShowModifier(!empty($_postvars["p_dont_show"]));
-					$block->SetActionValue($_postvars["p_doing"]);
-					$block->SetNoBorders(!empty($_postvars["p_no_borders"]));
-					$block->SetRewriteTitleTo($_postvars["p_rewrite_title"]);
-					$block->SetShowOnDevice($_postvars["show_on_device"]);
+					$block->SetModuleName($_postvars['p_block']);
+					$block->SetActionIDValue($_postvars['p_id']);
+					$block->SetCaption($_postvars['p_caption']);
+					$block->SetLevel($_postvars['p_level']);
+					$block->SetDontShowModifier(!empty($_postvars['p_dont_show']));
+					$block->SetActionValue($_postvars['p_doing']);
+					$block->SetNoBorders(!empty($_postvars['p_no_borders']));
+					$block->SetRewriteTitleTo($_postvars['p_rewrite_title']);
+					$block->SetShowOnDevice($_postvars['show_on_device']);
 					$block->SetGroupsView(create_groups_str($_postvars['p_groups']));
 					$block->SetThisLevelOnlyValue(intval($_postvars['p_thislevelonly']));
-					$block->SetShowOnViewIDs($_postvars["show_on_viewids"]);
+					$block->SetShowOnViewIDs($_postvars['show_on_viewids']);
 					$arr_show_on = explode('|', $_postvars['p_show_on']);
 					$block->SetShowOnModule($arr_show_on[0]);
 					$block->SetShowOnAction($arr_show_on[2]);
@@ -171,46 +158,9 @@
 						{
 							siman_upload_image($block->ID(), 'block');
 						}
+					sm_notify($lang['messages']['add_successful']);
 					sm_redirect('index.php?m=blocks&d=view');
 				}
-			/*
-			if (sm_action('postadd'))
-				{
-					$id_block = $_postvars["p_id"];
-					$name_block = $_postvars["p_block"];
-					$caption_block = dbescape($_postvars["p_caption"]);
-					$panel_block = $_postvars["p_panel"];
-					$level = $_postvars["p_level"];
-					$arr_show_on = explode('|', $_postvars['p_show_on']);
-					$dont_show_modif = $_postvars["p_dont_show"];
-					$doing_block = $_postvars["p_doing"];
-					$rewrite_title = $_postvars["p_rewrite_title"];
-					$module_block = $arr_show_on[0];
-					$show_doing_block = $arr_show_on[2];
-					$ctg_block = $arr_show_on[1];
-					$no_borders = $_postvars['p_no_borders'];
-					$show_on_device = $_postvars['show_on_device'];
-					$groups_view = create_groups_str($_postvars['p_groups']);
-					$thislevelonly = intval($_postvars['p_thislevelonly']);
-					$show_on_viewids = $_postvars['show_on_viewids'];
-					$sql = "SELECT max(position_block) FROM ".$tableprefix."blocks WHERE panel_block='$panel_block'";
-					$result = execsql($sql);
-					$pos_block = 0;
-					while ($row = database_fetch_row($result))
-						{
-							$pos_block = $row[0];
-						}
-					$pos_block++;
-					$sql = "INSERT INTO ".$tableprefix."blocks (level, panel_block, position_block, name_block, caption_block, showed_id, show_on_module, show_on_doing, show_on_ctg, dont_show_modif, doing_block, no_borders, rewrite_title, groups_view, thislevelonly, show_on_device, show_on_viewids) VALUES ('$level', '$panel_block', '$pos_block', '$name_block', '$caption_block', '$id_block', '$module_block', '$show_doing_block', '$ctg_block', '$dont_show_modif', '$doing_block', '$no_borders', '$rewrite_title', '$groups_view', '$thislevelonly', '$show_on_device', '$show_on_viewids')";
-					$result = execsql($sql);
-					if (sm_settings('blocks_use_image') == 1)
-						{
-							$id_block = database_insert_id('blocks', $nameDB, $lnkDB);
-							siman_upload_image($id_block, 'block');
-						}
-					sm_redirect('index.php?m=blocks&d=view');
-				}
-			*/
 			if (sm_action('postdelete'))
 				{
 					execsql("DELETE FROM ".$tableprefix."blocks  WHERE id_block=".intval($_getvars['id']));
