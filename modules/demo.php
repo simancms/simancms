@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.12
+	Version: 1.6.13
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -187,10 +187,15 @@
 					$f->AddCheckbox('checkbox3', 'Checkbox 3 (custom value)', '+');
 					$f->Separator('Separator');
 					$f->AddEditor('editor', 'Editor');
+					$f->SetSaveButtonHelperText('Some submit buutton note (optional)');
 					$f->SaveButton('Custom Submit Button Title');
 					$f->LoadValuesArray($values);
 					$f->SetValue('textarea', 'Custom value');
 					$ui->Add($f);
+					$ui->h(2, 'Form without action and submission');
+					$f2=new TForm(false);
+					$f2->AddText('dummy_field', 'Some Field')->WithValue('Some value');
+					$ui->Add($f2);
 					$ui->Output(true);
 				}
 			//end-forms
@@ -461,5 +466,3 @@
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}
-
-?>

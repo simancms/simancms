@@ -38,7 +38,7 @@
 					else
 						{
 							sm_title($lang['module_search']['search_results']);
-							$result = execsql("SELECT * FROM ".$sm['t']."modules");
+							$result = execsql("SELECT * FROM ".sm_table_prefix()."modules");
 							$srch_elem = 0;
 							$i = 0;
 							while ($row = database_fetch_object($result))
@@ -50,7 +50,7 @@
 									$m['pages']['selected'] = $from_page;
 									$m['pages']['interval'] = sm_settings('search_items_by_page');
 									if (empty($row->search_doing)) continue;
-									$srch_table = $sm['t'].$row->search_table;
+									$srch_table = sm_table_prefix().$row->search_table;
 									$srch_module = $row->module_name;
 									$srch_doing = $row->search_doing;
 									$srch_var = $row->search_var;
@@ -82,13 +82,13 @@
 											$filter .= ')';
 										}
 									if (strcmp($srch_module, 'content') == 0)
-										$sql = 'SELECT '.$sm['t'].'content.* FROM '.$sm['t'].'content, '.$sm['t'].'categories WHERE '.$sm['t'].'content.id_category_c='.$sm['t'].'categories.id_category AND '.$sm['t'].'categories.can_view<='.intval($userinfo['level'])." AND ($filter)";
+										$sql = 'SELECT '.sm_table_prefix().'content.* FROM '.sm_table_prefix().'content, '.sm_table_prefix().'categories WHERE '.sm_table_prefix().'content.id_category_c='.sm_table_prefix().'categories.id_category AND '.sm_table_prefix().'categories.can_view<='.intval($userinfo['level'])." AND ($filter)";
 									else
 										$sql = "SELECT * FROM $srch_table WHERE $filter";
 									$srresult = execsql($sql);
 									while ($srrow = database_fetch_array($srresult))
 										{
-											if ($from_record<=$i && $i<$from_record+$_settings['search_items_by_page'])
+											if ($from_record<=$i && $i<$from_record+sm_settings('search_items_by_page'))
 												{
 													$m['search'][$srch_elem]['title'] = $srrow[$srch_title];
 													$m['search'][$srch_elem]['url'] = sm_fs_url('index.php?m='.$srch_module.'&d='.$srch_doing.'&'.$srch_var.'='.$srrow[$srch_idfield]);

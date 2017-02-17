@@ -9,7 +9,7 @@
 	Module Name: Navigation
 	Module URI: http://simancms.org/modules/menu/
 	Description: Navigation management module. Base CMS module
-	Version: 1.6.12
+	Version: 1.6.13
 	Revision: 2016-06-07
 	Author URI: http://simancms.org/
 	*/
@@ -38,5 +38,3 @@
 
 	if ($userinfo['level'] == 3)
 		include('modules/inc/adminpart/menu.php');
-
-?>
