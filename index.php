@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-06-16
+	//#ver 1.6.13
+	//#revision 2017-02-18
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -44,14 +44,14 @@
 			require("includes/config.php");
 			$sm['_s'] =& $_settings;
 			if (intval(sm_settings('resource_url_rewrite')) == 1)
-				$special['resource_url'] = $special['page']['parsed_url']['host'].substr($_settings['resource_url'], strpos($_settings['resource_url'], '/'));
+				$special['resource_url'] = $special['page']['parsed_url']['host'].substr(sm_settings('resource_url'), strpos(sm_settings('resource_url'), '/'));
 			else
-				$special['resource_url'] = $_settings['resource_url'];
+				$special['resource_url'] = sm_settings('resource_url');
 			if ($_SERVER['REQUEST_URI'] == '/index.php' || $_SERVER['REQUEST_URI'] == substr($special['resource_url'], strpos($special['resource_url'], '/')).'index.php')
 				sm_redirect_now(sm_homepage(), 301);
-			if (!empty($_settings['default_timezone']))
-				date_default_timezone_set($_settings['default_timezone']);
-			if (empty($_settings['database_date']))
+			if (!sm_empty_settings('default_timezone'))
+				date_default_timezone_set(sm_settings('default_timezone'));
+			if (sm_empty_settings('database_date'))
 				$special['dberror'] = true;
 		}
 	else
@@ -64,22 +64,22 @@
 		{
 			if ($special['deviceinfo']['is_mobile'])
 				{
-					if (!empty($_settings['resource_url_mobile']) && $special['resource_url'] == sm_settings('resource_url'))
+					if (!sm_empty_settings('resource_url_mobile') && $special['resource_url'] == sm_settings('resource_url'))
 						{
 							sm_redirect($special['page']['scheme'].'://'.sm_settings('resource_url_mobile'));
 						}
 				}
 			if ($special['deviceinfo']['is_tablet'])
 				{
-					if (!empty($_settings['resource_url_tablet']) && $special['resource_url'] == sm_settings('resource_url'))
+					if (!sm_empty_settings('resource_url_tablet') && $special['resource_url'] == sm_settings('resource_url'))
 						{
 							sm_redirect($special['page']['scheme'].'://'.sm_settings('resource_url_tablet'));
 						}
 				}
 
-			sm_change_language($_settings['default_language']);
+			sm_change_language(sm_settings('default_language'));
 
-			sm_change_theme($_settings['default_theme']);
+			sm_change_theme(sm_settings('default_theme'));
 
 			$module = $_getvars['m'];
 			$mode = $_getvars['d'];
@@ -91,7 +91,7 @@
 
 			if (empty($module) || strpos($module, ':') || strpos($module, '.') || strpos($module, '/') || strpos($module, '\\'))
 				{
-					$module = $_settings['default_module'];
+					$module = sm_settings('default_module');
 					$mode = '';
 					unset($_getvars['d']);
 				}
@@ -100,9 +100,9 @@
 					$module = '404';
 				}
 
-			if (!empty($_settings['banned_ip']))
+			if (!sm_empty_settings('banned_ip'))
 				{
-					$banip = explode(' ', $_settings['banned_ip']);
+					$banip = explode(' ', sm_settings('banned_ip'));
 					for ($i = 0; $i < count($banip); $i++)
 						{
 							if (strcmp($banip[$i], $_servervars['REMOTE_ADDR']) == 0)
@@ -116,9 +116,9 @@
 								}
 						}
 				}
-			if (!empty($_settings['autoban_ips']))
+			if (!sm_empty_settings('autoban_ips'))
 				{
-					$banip = nllistToArray($_settings['autoban_ips']);
+					$banip = nllistToArray(sm_settings('autoban_ips'));
 					for ($i = 0; $i < count($banip); $i++)
 						{
 							if (strcmp($banip[$i], $_servervars['REMOTE_ADDR']) == 0)
@@ -142,14 +142,14 @@
 								}
 						}
 				}
-			if (!empty($_settings['install_not_erased']))
+			if (!sm_empty_settings('install_not_erased'))
 				{
 					if (file_exists('./install') || file_exists('./upgrade') || file_exists('./includes/update.php'))
 						{
 							if (!$sm['s']['nosmarty'])
 								{
 									$smarty->assign('errorname', 'noterasedinstall');
-									$smarty->assign('lang', $_settings['default_language']);
+									$smarty->assign('lang', sm_settings('default_language'));
 									$smarty->display('error.tpl');
 								}
 							exit;
@@ -163,9 +163,9 @@
 			require("includes/userinfo.php");
 			$sm['u'] =& $userinfo;
 			//Autologin feature
-			if ($userinfo['level'] < 1 && !empty($_cookievars[$_settings['cookprefix'].'simanautologin']))
+			if ($userinfo['level'] < 1 && !empty($_cookievars[sm_settings('cookprefix').'simanautologin']))
 				{
-					$tmpusrinfo = getsql("SELECT * FROM ".$tableusersprefix."users WHERE md5(concat('".$session_prefix."', random_code, id_user))='".dbescape($_cookievars[$_settings['cookprefix'].'simanautologin'])."' AND user_status>0 LIMIT 1");
+					$tmpusrinfo = getsql("SELECT * FROM ".$tableusersprefix."users WHERE md5(concat('".$session_prefix."', random_code, id_user))='".dbescape($_cookievars[sm_settings('cookprefix').'simanautologin'])."' AND user_status>0 LIMIT 1");
 					if (!empty($tmpusrinfo['id_user']) && ($tmpusrinfo['user_status']<3 || $tmpusrinfo['user_status']==3 && $tmpusrinfo['id_user']!=1 && intval(sm_settings('disable_level3_autologin'))!=1 || $tmpusrinfo['id_user']==1 && intval(sm_settings('superuser_autologin_enabled'))==1))
 						{
 							sm_login($tmpusrinfo['id_user'], $tmpusrinfo);
@@ -175,16 +175,16 @@
 						}
 					else
 						{
-							setcookie($_settings['cookprefix'].'simanautologin', '');
+							setcookie(sm_settings('cookprefix').'simanautologin', '');
 						}
 					unset($tmpusrinfo);
 				}
 
-			if ($userinfo['level'] == 3 && !empty($_settings['ext_editor']))
-				require('ext/editors/'.$_settings['ext_editor'].'/siman_config.php');
+			if ($userinfo['level'] == 3 && !sm_empty_settings('ext_editor'))
+				require('ext/editors/'.sm_settings('ext_editor').'/siman_config.php');
 
-			$special['meta']['keywords'] = $_settings['meta_keywords'];
-			$special['meta']['description'] = $_settings['meta_description'];
+			$special['meta']['keywords'] = sm_settings('meta_keywords');
+			$special['meta']['description'] = sm_settings('meta_description');
 
 			include('includes/core/preload.php');
 			if ($singleWindow == 1)
@@ -234,8 +234,8 @@
 						}
 					if ($special['dont_take_a_title'] != 1)
 						$special['pagetitle'] = $modules[$modules_index]['title'];
-					if (sm_is_index_page() && !empty($_settings['rewrite_index_title']))
-						$special['pagetitle'] = $_settings['rewrite_index_title'];
+					if (sm_is_index_page() && !sm_empty_settings('rewrite_index_title'))
+						$special['pagetitle'] = sm_settings('rewrite_index_title');
 					if (!empty($_msgbox["mode"]))
 						{
 							$module = 'msgbox';
@@ -329,7 +329,3 @@
 			$smarty->assign('errorname', 'dberror');
 			$smarty->display('error.tpl');
 		}
-
-	//print(memory_get_peak_usage(true));
-
-?>
