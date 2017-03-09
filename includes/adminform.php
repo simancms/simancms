@@ -1048,6 +1048,12 @@
 							return $this;
 						}
 
+					function WithNotEscapedValue($value)
+						{
+							$this->SetNotEscapedValue($this->currentname, $value);
+							return $this;
+						}
+
 					function AddClassnameGlobal($classname)
 						{
 							$this->form['class'] .= ' '.$classname;
