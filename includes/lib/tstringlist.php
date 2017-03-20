@@ -115,6 +115,18 @@
 							return implode($rn?"\r\n":"\n", $this->items);
 						}
 
+					/**
+					 * Create a TStringList object from text with lines that are separated with newline.
+					 * @param string $text
+					 * @return TStringList
+					 */
+					public static function CreateFromText($text)
+						{
+							$object=new TStringList();
+							$object->Load($text);
+							return $object;
+						}
+
 				}
 
 			define("TStringList_DEFINED", 1);
