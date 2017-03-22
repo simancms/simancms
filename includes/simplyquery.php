@@ -185,7 +185,7 @@
 										$sqlv .= '\''.$this->values[$i].'\'';
 								}
 							$this->sql = "INSERT INTO ".$this->tableprefix.$this->tablename." (".$sqlf.") VALUES (".$sqlv.")";
-							if ($execute || !$this->sqlgenerationmode)
+							if ($execute && !$this->sqlgenerationmode)
 								return insertsql($this->sql);
 						}
 
@@ -220,7 +220,7 @@
 								return;
 							if (!empty($this->limit))
 								$this->sql .= ' LIMIT '.$this->limit;
-							if ($execute || !$this->sqlgenerationmode)
+							if ($execute && !$this->sqlgenerationmode)
 								execsql($this->sql);
 						}
 
@@ -234,7 +234,7 @@
 								$this->sql = "DELETE FROM ".$this->tableprefix.$this->tablename;
 							if (!empty($addsql))
 								$this->sql .= ' '.$addsql;
-							if ($execute || !$this->sqlgenerationmode)
+							if ($execute && !$this->sqlgenerationmode)
 								execsql($this->sql);
 						}
 
@@ -526,4 +526,3 @@
 
 			define("simplyquery_DEFINED", 1);
 		}
-?>
