@@ -142,6 +142,13 @@
 							return $this;
 						}
 
+					function AddActions($name = 'actions')
+						{
+							global $lang;
+							$this->AddCol($name, '', '16', $lang['common']['actions'], $lang['common']['actions'], 'actions');
+							return $this;
+						}
+
 					function AddDelete($msg = '', $name = 'delete')
 						{
 							global $lang;
