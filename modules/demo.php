@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.13
+	Version: 1.6.14
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -121,6 +121,12 @@
 					$b->Button('Custom Class', 'index.php?m=demo&d=buttons')->AddClassname('btn-danger');
 					$b->AddButton('cst', 'Custom Style', 'index.php?m=demo&d=buttons');
 					$b->Style('cst', 'text-decoration:underline; color:#00aa00;');
+					$b->Button('Dropdown');
+					$b->DropDownItem('Dropdown URL', 'http://simancms.org/');
+					$b->DropDownItem('Dropdown URL target=_blank', 'http://simancms.org/', true);
+					$b->DropDownSeparator();
+					$b->DropDownOnClick('Dropdown OnClick', "alert('OnClick');");
+					$b->DropDownMessageBox('Dropdown Confirmation', 'http://simancms.org/');
 					$ui->Add($b);
 					$ui->Output(true);
 				}

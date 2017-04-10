@@ -6,6 +6,10 @@
 	//|                                                                            |
 	//------------------------------------------------------------------------------
 
+	//==============================================================================
+	//#revision 2017-04-10
+	//==============================================================================
+
 	if (!defined("adminbuttons_DEFINED"))
 		{
 			sm_add_cssfile('common_adminbuttons.css');
@@ -253,6 +257,53 @@
 							return $this;
 						}
 
+					function DropDownItem($title, $url='', $open_in_new_window=false, $buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->bar['buttons'][$buttonname]['is_dropdown']=true;
+							$this->bar['buttons'][$buttonname]['dropdown_items'][] = Array(
+								'caption'=>$title,
+								'href'=>$url,
+								'target'=>$open_in_new_window?'_blank':'',
+								'class'=>'btn-dropdown-item'
+							);
+							return $this;
+						}
+
+					function DropDownOnClick($title, $javascript, $buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->bar['buttons'][$buttonname]['is_dropdown']=true;
+							$this->bar['buttons'][$buttonname]['dropdown_items'][] = Array(
+								'caption'=>$title,
+								'onclick'=>$javascript,
+								'class'=>'btn-dropdown-item'
+							);
+							return $this;
+						}
+
+					function DropDownMessageBox($title, $url='', $messagebox_message = NULL, $buttonname = NULL)
+						{
+							global $lang;
+							if ($messagebox_message === NULL)
+								$messagebox_message = $lang['common']['are_you_sure'];
+							$this->DropDownOnClick($title, "button_msgbox('".$url."', '".jsescape($messagebox_message)."');", $buttonname);
+							return $this;
+						}
+
+					function DropDownSeparator($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->bar['buttons'][$buttonname]['is_dropdown']=true;
+							$this->bar['buttons'][$buttonname]['dropdown_items'][] = Array(
+								'separator'=>true
+							);
+							return $this;
+						}
+
 					function Output()
 						{
 							if (is_array($this->bar['buttons']))
@@ -290,6 +341,37 @@
 											$buttonparams['attrs']['style'] = $buttonparams['style'];
 											$buttonparams['attrs']['onclick'] = $buttonparams['onclick'];
 											$buttonparams['attrs']['class'] = $buttonparams['class'];
+											if ($this->bar['buttons'][$buttonname]['is_dropdown'])
+												{
+													$buttonparams['htmlbegin'].='<div class="btn-group">';
+													$buttonparams['attrs']['class'] .= ' dropdown-toggle';
+													$buttonparams['attrs']['data-toggle'] = 'dropdown';
+													$buttonparams['attrs']['aria-haspopup'] = 'true';
+													$buttonparams['attrs']['aria-expanded'] = 'false';
+													$dropdownhtml='<ul class="dropdown-menu">';
+													for ($i = 0; $i < count($buttonparams['dropdown_items']); $i++)
+														{
+															if ($buttonparams['dropdown_items'][$i]['separator'])
+																$dropdownhtml.='<li role="separator" class="divider"></li>';
+															else
+																{
+																	$dropdownhtml .= '<li><a';
+																	foreach ($buttonparams['dropdown_items'][$i] as $dropdown_attr => $dropdown_attr_value)
+																		{
+																			if ($dropdown_attr == 'caption' || strlen($dropdown_attr_value) == 0)
+																				continue;
+																			elseif ($dropdown_attr == 'title')
+																				$dropdown_attr_value = strip_tags($dropdown_attr_value);
+																			$dropdown_attr_value = str_replace('"', '&quot;', $dropdown_attr_value);
+																			$dropdownhtml .= ' '.$dropdown_attr.'="'.$dropdown_attr_value.'"';
+																		}
+																	$dropdownhtml .= '>'.$buttonparams['dropdown_items'][$i]['caption'].'</a></li>';
+																}
+														}
+													$dropdownhtml.='</ul>';
+													$dropdownhtml.='</div>';
+													$buttonparams['htmlend']=$dropdownhtml.$buttonparams['htmlend'];
+												}
 										}
 								}
 							$this->bar['count'] = count($this->bar['buttons']);
