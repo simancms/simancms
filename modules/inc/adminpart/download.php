@@ -265,6 +265,7 @@
 				}
 			if (sm_action('list'))
 				{
+					sm_extcore();
 					sm_use('admininterface');
 					sm_use('adminform');
 					sm_use('admintable');
@@ -286,6 +287,7 @@
 					$t->AddCol('size', $lang['common']['size']);
 					$t->AddCol('userlevel_download', $lang['can_view']);
 					$t->AddCol('upload', $lang['module_download']['upload_file']);
+					$t->AddActions();
 					$t->AddEdit();
 					$t->AddDelete();
 					$q=new TQuery($sm['t'].'downloads');
@@ -310,6 +312,7 @@
 							else
 								$t->Label('userlevel_download', $lang['administrators']);
 							$t->Label('upload', $lang['module_download']['upload_file']);
+							$t->DropDownItem('actions', $lang['add_to_menu'], sm_tomenuurl($q->items[$i]['file_download'], 'files/download/'.$q->items[$i]['file_download']));
 							$t->URL('upload', 'index.php?m=download&d=upload&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
 							$t->URL('edit', 'index.php?m=download&d=edit&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
 							$t->URL('delete', 'index.php?m=download&d=postdelete&id='.$q->items[$i]['id_download'].'&returnto='.urlencode(sm_this_url()));
