@@ -962,6 +962,8 @@
 				include_once('ext/autocomplete/siman_config.php');
 			elseif (strcmp($libname, 'datepicker')==0)
 				include_once('ext/tools/datepicker/siman_config.php');
+			elseif (strcmp($libname, 'maskedinput')==0)
+				include_once('ext/tools/maskedinput/siman_config.php');
 		}
 
 	function sm_setfocus($dom_element, $noservicesymbol_as_id=true)

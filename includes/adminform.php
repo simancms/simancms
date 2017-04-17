@@ -972,6 +972,29 @@
 							return $this->form['fields'][$name]['is_calendar']===true;
 						}
 
+					function WithMask($mask='', $placeholder='', $name = NULL)
+						{
+							global $sm, $lang;
+							sm_use('maskedinput');
+							if ($name === NULL)
+								$name = $this->currentname;
+							$sm['s']['document']['headend'] .= '
+							<script type="text/javascript">
+							$(function()
+								{
+									$( "#'.$this->form['prefix'].$name.'" ).mask("'.$mask.'"'.(strlen($placeholder)>0?', {placeholder:"'.$placeholder.'"}':'').');
+								});
+							</script>';
+							$this->form['fields'][$name]['is_maskedinput']=true;
+							$this->form['fields'][$name]['maskedinput_mask']=$mask;
+							return $this;
+						}
+
+					function isMaskedInput($name)
+						{
+							return $this->form['fields'][$name]['maskedinput_mask']===true;
+						}
+
 					function NoHighlight($turn_off = true)
 						{
 							if ($turn_off)

@@ -185,6 +185,10 @@
 					$f = new TForm('index.php?m=demo&d=forms');
 					$f->AddText('text', 'Text field')->SetFocus();
 					$f->AddText('calendar', 'Text field with calendar')->Calendar();
+					$f->AddText('maskedinput1', 'Text field with phone mask XXX-XXX-XXXX')
+						->WithMask('999-999-9999');
+					$f->AddText('maskedinput2', 'Text field with date mask mm/dd/yyyy')
+						->WithMask('99/99/9999', 'mm/dd/yyyy');
 					$f->AddSelectVL('select', 'Select field', Array(1, 2, 3), Array('Label 1', 'Label 2', 'Label 3'));
 					$f->AddTextarea('textarea', 'Textarea field');
 					$f->Separator('Checkboxes');
