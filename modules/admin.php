@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.13
-	//#revision 2017-01-15
+	//#ver 1.6.14
+	//#revision 2017-04-17
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -358,8 +358,7 @@
 					$t->AddEdit();
 					$t->AddCol('delete', '', '16');
 					$t->SetHeaderImage('delete', 'transparent.gif');
-					$sql = "SELECT * FROM ".$sm['t'].'modules';
-					$result = execsql($sql);
+					$result = execsql('SELECT * FROM '.$sm['t'].'modules');
 					$i = 0;
 					while ($row = database_fetch_assoc($result))
 						{
@@ -391,7 +390,7 @@
 								$t->Label('title', $row['module_title']);
 							$t->Url('title', 'index.php?m='.$row['module_name'].'&d=admin');
 							$t->Url('edit', 'index.php?m=admin&d=chgttl&mid='.$row['id_module']);
-							if (!in_array($row['module_name'], Array('content', 'news', 'download', 'menu', 'search', 'media')))
+							if (!in_array($row['module_name'], Array('content', 'news', 'download', 'menu', 'search', 'media')) && sm_is_installed($row['module_name']))
 								{
 									$t->Image('delete', 'delete.gif');
 									$t->Url('delete', 'index.php?m='.$row['module_name'].'&d=uninstall');
