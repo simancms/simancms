@@ -184,6 +184,7 @@
 					$ui = new TInterface();
 					$f = new TForm('index.php?m=demo&d=forms');
 					$f->AddText('text', 'Text field')->SetFocus();
+					$f->AddText('calendar', 'Text field with calendar')->Calendar();
 					$f->AddSelectVL('select', 'Select field', Array(1, 2, 3), Array('Label 1', 'Label 2', 'Label 3'));
 					$f->AddTextarea('textarea', 'Textarea field');
 					$f->Separator('Checkboxes');

@@ -941,9 +941,17 @@
 							if (empty($format))
 								{
 									if (sm_current_language()=='ukr' || sm_current_language()=='ua')
-										$format='dd.mm.yyyy';
+										{
+											$format = 'dd.mm.yyyy';
+											$weekStart = 1;
+											$language = 'uk';
+										}
 									else
-										$format='mm/dd/yyyy';
+										{
+											$format = 'mm/dd/yyyy';
+											$weekStart = 0;
+											$language = 'en';
+										}
 								}
 							if ($name === NULL)
 								$name = $this->currentname;
@@ -951,7 +959,7 @@
 							<script type="text/javascript">
 							$(function()
 								{
-									$( "#'.$this->form['prefix'].$name.'" ).datepicker({format:"'.jsescape($format).'", autoclose: true});
+									$( "#'.$this->form['prefix'].$name.'" ).datepicker({format:"'.jsescape($format).'", autoclose: true, todayHighlight:true, weekStart:'.$weekStart.', language:"'.$language.'"});
 								});
 							</script>';
 							$this->form['fields'][$name]['is_calendar']=true;

@@ -112,7 +112,7 @@
 			return $sm['s']['customcss'][count($sm['s']['customcss']) - 1];
 		}
 
-	function sm_add_jsfile($fname, $includeAsIs = false)
+	function sm_add_jsfile($fname, $includeAsIs = false, $params=Array())
 		{
 			global $sm;
 			if (empty($fname))
@@ -125,7 +125,10 @@
 						$fname = 'themes/default/'.$fname;
 				}
 			if (!is_array($sm['s']['customjs']) || !in_array($fname, $sm['s']['customjs']))
-				$sm['s']['customjs'][]=$fname;
+				{
+					$sm['s']['customjs'][] = $fname;
+					$sm['s']['customjs_params'][] = $params;
+				}
 			return $sm['s']['customjs'][count($sm['s']['customjs']) - 1];
 		}
 

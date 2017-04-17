@@ -79,7 +79,15 @@
 	if (intval(sm_settings('hide_generator_meta'))!=1)
 		$sm['s']['document']['headdef'].='<meta name="generator" content="SiMan CMS">';
 	for ($i = 0; $i < count($sm['s']['customjs']); $i++)
-		$sm['s']['document']['headend'].='<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"></script>';
+		{
+			$sm['s']['document']['headend'] .= '<script type="text/javascript" src="'.$sm['s']['customjs'][$i].'"';
+			if (is_array($sm['s']['customjs_params'][$i]))
+				foreach ($sm['s']['customjs_params'][$i] as $param=>$val)
+					{
+						$sm['s']['document']['headend'] .= ' '.$param.'="'.$val.'"';
+					}
+			$sm['s']['document']['headend'] .= '></script>';
+		}
 	for ($i = 0; $i < count($sm['s']['cssfiles']); $i++)
 		$sm['s']['document']['headend'].='<link href="themes/'.sm_current_theme().'/'.$sm['s']['customjs'][$i].'" type="text/css" rel=stylesheet>';
 	for ($i = 0; $i < count($sm['s']['customcss']); $i++)
