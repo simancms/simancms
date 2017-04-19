@@ -458,6 +458,7 @@
 						{
 							$this->SelectStatement($addsql);
 							$this->result = execsql($this->sql);
+							return $this;
 						}
 
 					function Fetch($type = 'a')
