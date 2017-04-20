@@ -1,5 +1,15 @@
 <?php
 
+	//------------------------------------------------------------------------------
+	//|                                                                            |
+	//|            Content Management System SiMan CMS                             |
+	//|                                                                            |
+	//------------------------------------------------------------------------------
+
+	//==============================================================================
+	//#revision 2017-04-20
+	//==============================================================================
+
 	if (!defined("admintabs_DEFINED"))
 		{
 			sm_use('ui.interface');
@@ -21,6 +31,16 @@
 							if (!empty($tab_url))
 								$this->blocks[$this->currentblock]['taburl'] = $tab_url;
 							return $this;
+						}
+
+					function SetTitleForIndex($title, $index)
+						{
+							$this->blocks[$index]['title']=$title;
+						}
+
+					function TitleForIndex($index)
+						{
+							return $this->blocks[$index]['title'];
 						}
 
 					function SetActiveIndex($activeindex)
