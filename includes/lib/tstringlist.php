@@ -127,6 +127,22 @@
 							return $object;
 						}
 
+					/**
+					 * Remove the strings with zero length from list
+					 * @return TStringList $this
+					 */
+					function RemoveEmptyStrings()
+						{
+							$items=Array();
+							for ($i = 0; $i < $this->Count(); $i++)
+								{
+									if (strlen($this->Strings($i))>0)
+										$items[]=$this->Strings($i);
+								}
+							$this->items=$items;
+							return $this;
+						}
+
 				}
 
 			define("TStringList_DEFINED", 1);
