@@ -97,7 +97,6 @@
 	$lang['common']['time']='Час';
 	$lang['common']['see_also']='Перегляньте також';
 	$lang['common']['description']='Опис';
-	$lang['common']['description']='Опис';
 	$lang['common']['show_all']='Показати все';
 	$lang['common']['sorting']='Сортування';
 	$lang['common']['priority']='Пріоритет';
