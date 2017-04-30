@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.14
-	//#revision 2017-04-17
+	//#revision 2017-04-30
 	//==============================================================================
 
 
@@ -1224,6 +1224,8 @@
 				return false;
 			if (strpos($parsed['path'], $parsed_src['path'])!=0)
 				return false;
+			if (strcmp($parsed['path'], $parsed_src['path'])==0)
+				return 'index.php';
 			$r=substr($parsed['path'], strlen($parsed_src['path']));
 			if (!empty($parsed['query']))
 				$r.='?'.$parsed['query'];
