@@ -103,7 +103,7 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 </div>{* closed element for tabs div *}
 <div class="clear"></div>
 {/if}
-{if $form.dont_use_form_tag neq 1}
+{if $form.dont_use_form_tag neq 1 and not $form.nosubmitbutton}
 <div class="adminform_savebutton adminform_savebutton_{$form.postfix}">{if $form.savebutton_helper.text neq ""}<span class="adminform_savebutton_helper adminform_savebutton_helper_{$form.postfix} {$form.savebutton_helper.class}">{$form.savebutton_helper.text}</span>{/if}<input type="submit" value="{if $form.savetitle neq ""}{$form.savetitle}{else}{$lang.save}{/if}"></div>
 </form>
 {/if}
