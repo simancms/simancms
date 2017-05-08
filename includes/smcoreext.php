@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.14
-	//#revision 2017-04-04
+	//#revision 2017-05-08
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -277,7 +277,11 @@
 			$_sessionvars['userinfo_groups'] = '';
 			$_sessionvars['userinfo_allinfo'] = '';
 		}
-	
+
+	/**
+	 * Process login and execute Success Login Events
+	 * @param $user_id
+	 */
 	function sm_process_login($user_id)
 		{
 			global $userinfo, $_sessionvars;

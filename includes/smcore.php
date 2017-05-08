@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.14
-	//#revision 2017-04-30
+	//#revision 2017-05-08
 	//==============================================================================
 
 
@@ -656,6 +656,12 @@
 				}
 		}
 
+	/**
+	 * Initialize required vars on login
+	 * @param $userid
+	 * @param array $usrinfo
+	 * @return bool
+	 */
 	function sm_login($userid, $usrinfo = Array())
 		{
 			global $tableusersprefix, $_sessionvars;
@@ -680,7 +686,7 @@
 					unset($usrinfo['question']);
 					unset($usrinfo['answer']);
 					$_sessionvars['userinfo_allinfo'] = serialize($usrinfo);
-					execsql("UPDATE ".$tableusersprefix."users SET id_session='".session_id()."', last_login='".time()."' WHERE id_user='".intval($usrinfo['id_user'])."'");
+					execsql("UPDATE ".$tableusersprefix."users SET id_session='".dbescape(session_id())."', last_login='".time()."' WHERE id_user=".intval($usrinfo['id_user']));
 					return true;
 				}
 			else
