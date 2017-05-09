@@ -9,6 +9,7 @@
  * License: http://www.opensource.org/licenses/mit-license.php
  *
  * Date: 2013-7-11
+ * SiMan CMS Update: 2017-05-09
  */
 
 var Modal = (function () {
@@ -39,6 +40,7 @@ var Modal = (function () {
                 closeAfter: 0,
                 openCallback: false,
                 closeCallback: false,
+                ajaxSuccessCallback: false,
                 hideOverlay: false
             };
 
@@ -51,6 +53,7 @@ var Modal = (function () {
             settings.draggable = parameters.draggable || defaultSettings.draggable;
             settings.closeAfter = parameters.closeAfter || defaultSettings.closeAfter;
             settings.closeCallback = parameters.closeCallback || defaultSettings.closeCallback;
+            settings.ajaxSuccessCallback = parameters.ajaxSuccessCallback || defaultSettings.ajaxSuccessCallback;
             settings.openCallback = parameters.openCallback || defaultSettings.openCallback;
             settings.hideOverlay = parameters.hideOverlay || defaultSettings.hideOverlay;
 
@@ -64,6 +67,9 @@ var Modal = (function () {
                 modalContainer.className = 'modal-loading';
                 method.ajax(parameters.ajaxContent, function insertAjaxResult(ajaxResult) {
                     modalContent.innerHTML = ajaxResult;
+                    if (settings.ajaxSuccessCallback) {
+                        settings.ajaxSuccessCallback();
+                    }
                 });
             } else {
                 modalContent.innerHTML = '';

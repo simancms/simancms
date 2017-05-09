@@ -7,13 +7,13 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-05-26
+	//#revision 2017-05-09
 	//==============================================================================
 
 	if (!defined("ui_modal_DEFINED"))
 		{
 			sm_add_cssfile('ext/modal/jsmodal/css/jsmodal-siman.css', true);
-			sm_add_jsfile('ext/modal/jsmodal/js/jsmodal-1.0d.min.js', true);
+			sm_add_jsfile('ext/modal/jsmodal/js/jsmodal-1.0d.js', true);
 
 			class TModalHelper
 				{
@@ -45,6 +45,12 @@
 							return $this;
 						}
 					
+					function SetAJAXSourceCallback($ajaxSuccessCallback)
+						{
+							$this->info['ajaxSuccessCallback']=$ajaxSuccessCallback;
+							return $this;
+						}
+
 					function SetWidth($width)
 						{
 							$this->info['width']=$width;
@@ -76,6 +82,8 @@
 								$js.="content:$('".$this->info['content_dom']."').html(),";
 							if (!empty($this->info['openCallback']))
 								$js.="openCallback:".$this->info['openCallback'].",";
+							if (!empty($this->info['ajaxSuccessCallback']))
+								$js.="ajaxSuccessCallback:".$this->info['ajaxSuccessCallback'].",";
 							if ($this->info['draggable'])
 								$js.="draggable: true";
 							else
@@ -98,5 +106,3 @@
 
 			define("ui_modal_DEFINED", 1);
 		}
-
-?>
