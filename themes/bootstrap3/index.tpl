@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="{if $special.page.scheme neq ""}{$special.page.scheme}{else}http{/if}://{$special.resource_url}">{$_settings.resource_title}</a>
+			<a class="navbar-brand" href="{$sm.s.home_url}">{$_settings.resource_title}</a>
 		</div>
 		<div class="navbar-collapse collapse">
 			{if $_settings.upper_menu_id neq ""}

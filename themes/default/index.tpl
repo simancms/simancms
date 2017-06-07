@@ -5,7 +5,7 @@
 	<table width="100%" cellspacing="0" cellpadding="0">
 	<tr>
 		<td width="20%">
-			<a href="{if $special.page.scheme neq ""}{$special.page.scheme}{else}http{/if}://{$special.resource_url}"><img src="themes/{$special.theme}/images/logo.gif" border="0" alt="{$_settings.logo_text}"></a>
+			<a href="{$sm.s.home_url}"><img src="themes/{$special.theme}/images/logo.gif" border="0" alt="{$_settings.logo_text}"></a>
 		</td>
 		<td width="80%" valign="top" align="right">
 
@@ -31,7 +31,6 @@
 <tr>
 <td valign="top" width="20%">
 
-<!-- Ліва панель -->
 {$special.document.panel[1].beforepanel}
 {section name=mod_index loop=$modules step=1}
 {if $modules[mod_index].panel eq "1"}
@@ -47,7 +46,6 @@
 	</td>
     <td valign="top" width="60%">
 
-<!-- Середня панель -->
 {$special.document.panel[0].beforepanel}
 {include file="path.tpl"}
 {assign var=loop_center_panel value=1}
@@ -83,7 +81,6 @@
 	</td>
     <td valign="top" width="20%">
 
-<!-- Права панель -->
 {$special.document.panel[2].beforepanel}
 {section name=mod_index loop=$modules step=1}
 {if $modules[mod_index].panel eq "2"}

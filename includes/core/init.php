@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.7
-	//#revision 2014-07-16
+	//#ver 1.6.14
+	//#revision 2017-06-07
 	//==============================================================================
 
 	if (!empty($siman_cache) && file_exists('files/temp/cache_'.md5($_SERVER['REQUEST_URI'])))
@@ -97,6 +97,5 @@
 	$sm['s'] =& $special;
 	$sm['t'] =& $tableprefix;
 	$sm['tu'] =& $tableusersprefix;
-	$sm['s']['page_system_id'] = 'smp'.microtime(true).$sm['s']['rand'];
 
-?>
+	$sm['s']['page_system_id'] = 'smp'.microtime(true).$sm['s']['rand'];

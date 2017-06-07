@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.13
-	//#revision 2017-02-18
+	//#ver 1.6.14
+	//#revision 2017-06-07
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -51,6 +51,7 @@
 				sm_redirect_now(sm_homepage(), 301);
 			if (!sm_empty_settings('default_timezone'))
 				date_default_timezone_set(sm_settings('default_timezone'));
+			$sm['s']['home_url']=sm_homepage();
 			if (sm_empty_settings('database_date'))
 				$special['dberror'] = true;
 		}
