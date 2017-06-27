@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-07-04
+	//#ver 1.6.14
+	//#revision 2017-06-27
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -199,6 +199,7 @@
 							$q->Add('type_news', intval($sm['p']['type_news']));
 							$q->Add('keywords_news', dbescape($sm['p']['keywords_news']));
 							$q->Add('description_news', dbescape($sm['p']['description_news']));
+							$q->Add('disable_search', intval($sm['p']['disable_search']));
 							if (sm_action('postadd'))
 								{
 									$id_news=$q->Insert();
@@ -447,8 +448,9 @@
 						->WithTooltip($lang['common']['leave_empty_for_default']);
 					$f->AddText('keywords_news', $lang['common']['seo_keywords']);
 					$f->AddTextarea('description_news', $lang['common']['seo_description']);
-					if (count($sm['themeinfo']['alttpl']['news']) > 0)
-						$f->Separator($lang['common']['additional_options']);
+					$f->Separator($lang['common']['additional_options']);
+					$f->AddCheckbox('disable_search', $lang['common']['disable_search'])
+						->LabelAfterControl();
 					if (count($sm['themeinfo']['alttpl']['news']) > 0)
 						{
 							$v = Array('');
