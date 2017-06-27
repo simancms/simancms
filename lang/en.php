@@ -132,6 +132,7 @@ $lang['common']['off']='Off';
 $lang['common']['width'] = 'Width';
 $lang['common']['height'] = 'Height';
 $lang['common']['size'] = 'Size';
+$lang['common']['disable_search'] = 'Disable search';
 $lang['messages']['fill_required_fields']='Fill required fields';
 $lang['messages']['wrong_email']='Wrong email';
 $lang['messages']['seo_url_exists']='SEO URL already exists';

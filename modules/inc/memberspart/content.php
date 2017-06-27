@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.10
-	//#revision 2016-02-10
+	//#ver 1.6.14
+	//#revision 2016-06-27
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -99,6 +99,7 @@
 							$q->Add('keywords_content', dbescape($sm['p']['keywords_content']));
 							$q->Add('description_content', dbescape($sm['p']['description_content']));
 							$q->Add('refuse_direct_show', intval($sm['p']['refuse_direct_show']));
+							$q->Add('disable_search', intval($sm['p']['disable_search']));
 							if (sm_action('postadd'))
 								{
 									$cid=$q->Insert();
@@ -293,6 +294,8 @@
 					$f->AddTextarea('description_content', $lang['common']['seo_description']);
 					$f->Separator($lang['common']['additional_options']);
 					$f->AddCheckbox('refuse_direct_show', $lang['module_content']['refuse_direct_show'])
+						->LabelAfterControl();
+					$f->AddCheckbox('disable_search', $lang['common']['disable_search'])
 						->LabelAfterControl();
 					if (count($sm['themeinfo']['alttpl']['main'])>0)
 						{

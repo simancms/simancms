@@ -113,4 +113,10 @@
 			execsql("ALTER TABLE `".$sm['t']."blocks` CHANGE `show_on_viewids` `show_on_viewids` TEXT NULL DEFAULT NULL;");
 			sm_update_settings('database_date', '20170210');
 		}
+	if (intval(sm_settings('database_date'))<20170710)//1.6.14
+		{
+			execsql("ALTER TABLE `".$sm['t']."content` ADD `disable_search` TINYINT(4)  NOT NULL  DEFAULT '0';");
+			execsql("ALTER TABLE `".$sm['t']."news` ADD `disable_search` TINYINT(4)  NOT NULL  DEFAULT '0';");
+			sm_update_settings('database_date', '20170710');
+		}
 

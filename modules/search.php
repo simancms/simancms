@@ -9,8 +9,8 @@
 	Module Name: Search
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
-	Version: 1.6.12
-	Revision: 2016-06-24
+	Version: 1.6.14
+	Revision: 2016-07-27
 	Author URI: http://simancms.org/
 	*/
 
@@ -82,7 +82,9 @@
 											$filter .= ')';
 										}
 									if (strcmp($srch_module, 'content') == 0)
-										$sql = 'SELECT '.sm_table_prefix().'content.* FROM '.sm_table_prefix().'content, '.sm_table_prefix().'categories WHERE '.sm_table_prefix().'content.id_category_c='.sm_table_prefix().'categories.id_category AND '.sm_table_prefix().'categories.can_view<='.intval($userinfo['level'])." AND ($filter)";
+										$sql = 'SELECT '.sm_table_prefix().'content.* FROM '.sm_table_prefix().'content, '.sm_table_prefix().'categories WHERE '.sm_table_prefix().'content.id_category_c='.sm_table_prefix().'categories.id_category AND '.sm_table_prefix().'categories.can_view<='.intval($userinfo['level'])." AND refuse_direct_show=0 AND disable_search=0 AND ($filter)";
+									elseif (strcmp($srch_module, 'news') == 0)
+										$sql = "SELECT * FROM $srch_table WHERE disable_search=0 AND ($filter)";
 									else
 										$sql = "SELECT * FROM $srch_table WHERE $filter";
 									$srresult = execsql($sql);

@@ -67,6 +67,7 @@
 				  `filename_content` int(11) NULL DEFAULT 0,
 				  `priority_content` int(11) NULL DEFAULT 0,
 				  `refuse_direct_show` TINYINT NULL DEFAULT '0',
+				  `disable_search` TINYINT(4) NOT NULL  DEFAULT '0',
 				  PRIMARY KEY  (`id_content`)
 				);
 				";
@@ -179,6 +180,7 @@
 				  `keywords_news` VARCHAR( 255 ) NULL,
 				  `description_news` TEXT NULL,
 				  `filename_news` int(11) NULL DEFAULT 0,
+				  `disable_search` TINYINT(4) NOT NULL  DEFAULT '0',
 				  PRIMARY KEY  (`id_news`)
 				);
 				";

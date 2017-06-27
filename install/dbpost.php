@@ -111,7 +111,7 @@ INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, s
 ";
 $result=database_query($sql, $lnkDB);
 $sql="
-INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('news', '".$lang['p_modules']['news']."', 'text_news', 'view', 'nid', 'news', 'title_news', 'id_news', 'text_news');
+INSERT INTO ".$tableprefix."modules (module_name, module_title, search_fields, search_doing, search_var, search_table, search_title, search_idfield, search_text) VALUES ('news', '".$lang['p_modules']['news']."', 'title_news text_news', 'view', 'nid', 'news', 'title_news', 'id_news', 'text_news');
 ";
 $result=database_query($sql, $lnkDB);
 $sql="
