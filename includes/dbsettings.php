@@ -43,5 +43,9 @@
 	//Caching of pages; 0 - disabled; positive integer - min time for caching in seconds
 	$siman_cache = 0;
 
+	$siman_useragent_blacklist=Array();
+
+	$siman_block_empty_useragent=false;
+
 	//Don't change code below
 	if (empty($tableusersprefix)) $tableusersprefix = $tableprefix;

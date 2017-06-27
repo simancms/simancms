@@ -10,6 +10,21 @@
 	//#revision 2017-06-07
 	//==============================================================================
 
+	if (is_array($siman_useragent_blacklist))
+		for ($i = 0; $i < count($siman_useragent_blacklist); $i++)
+			{
+				if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), strtolower($siman_useragent_blacklist[$i])) !== false)
+					{
+						@header("HTTP/1.0 403 Forbidden");
+						exit('Acceess denied');
+					}
+			}
+	if ($siman_block_empty_useragent && strlen($_SERVER['HTTP_USER_AGENT'])==0)
+		{
+			@header("HTTP/1.0 403 Forbidden");
+			exit('Acceess denied');
+		}
+
 	if (!empty($siman_cache) && file_exists('files/temp/cache_'.md5($_SERVER['REQUEST_URI'])))
 		{
 			if (filectime('files/temp/cache_'.md5($_SERVER['REQUEST_URI']))+$siman_cache<time())
