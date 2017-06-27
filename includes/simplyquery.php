@@ -509,6 +509,7 @@
 						}
 				}
 
+			//DEPRECATED
 			function CheckForNonEmpty($nllist)
 				{
 					$result = true;
