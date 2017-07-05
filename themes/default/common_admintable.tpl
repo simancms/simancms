@@ -95,7 +95,7 @@ function atdropdowncancelclosetime{$postfix}()
 	{if $table.hideheader neq 1}{strip}<tr class="admintable_header" id="admintable_header{$postfix}">
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $column.hideheader neq 1}
-		<td{if $column.hint neq ""} title="{$column.hint}"{elseif $column.caption neq ""} title="{$column.caption}"{/if}{if $column.width neq ""} width="{$column.width}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $column.headercolspan neq ""} colspan="{$column.headercolspan}"{/if}>
+		<td{if $column.hint neq ""} title="{$column.hint}"{elseif $column.caption neq ""} title="{$column.caption|strip_tags}"{/if}{if $column.width neq ""} width="{$column.width}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $column.headercolspan neq ""} colspan="{$column.headercolspan}"{/if}>
 			{if $column.headerurl neq "" or $column.onclick neq ""}<a{if $column.headerurl neq ""} href="{$column.headerurl}"{/if}{if $column.onclick neq ""} onclick="{$column.onclick}"{/if}>{/if}
 				{$column.caption}{$column.html}
 			{if $column.headerurl neq "" or $column.onclick neq ""}</a>{/if}
