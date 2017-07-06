@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.14
-	//#revision 2017-05-08
+	//#revision 2017-07-06
 	//==============================================================================
 
 
@@ -871,6 +871,12 @@
 							$sm['s']['path'][$i]['title']=$title;
 					}
 			sm_add_title_modifier($sm['m']['title']);
+		}
+
+	function sm_get_title()
+		{
+			global $sm;
+			return $sm['m']['title'];
 		}
 
 	function sm_title_append($title_append)
