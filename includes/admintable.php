@@ -422,6 +422,11 @@
 							return $this->table['rows'][$this->rownumber][$name]['html_end'];
 						}
 
+					function CellDOMID($name)
+						{
+							return 'at'.$this->table['postfix'].'-cell-'.$name.'-'.$this->rownumber;
+						}
+
 					public static function ImageURL($image_name)
 						{
 							if (strpos($image_name, '.') === false && strpos($image_name, '://') === false)
