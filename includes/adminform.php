@@ -939,24 +939,30 @@
 						}
 
 				//-------------------------------------------------------------
-					function Calendar($name = NULL, $format='')
+					function Calendar($name = NULL, $format='', $weekStart=NULL, $language = NULL)
 						{
 							global $sm, $lang;
 							sm_use('datepicker');
 							if (empty($format))
 								{
-									if (sm_current_language()=='ukr' || sm_current_language()=='ua')
-										{
-											$format = 'dd.mm.yyyy';
-											$weekStart = 1;
-											$language = 'uk';
-										}
+									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
+										$format = 'dd.mm.yyyy';
 									else
-										{
-											$format = 'mm/dd/yyyy';
-											$weekStart = 0;
-											$language = 'en';
-										}
+										$format = 'mm/dd/yyyy';
+								}
+							if ($weekStart === NULL)
+								{
+									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
+										$weekStart = 1;
+									else
+										$weekStart = 0;
+								}
+							if ($language === NULL)
+								{
+									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
+										$language = 'uk';
+									else
+										$language = 'en';
 								}
 							if ($name === NULL)
 								$name = $this->currentname;
@@ -967,7 +973,7 @@
 									$( "#'.$this->form['prefix'].$name.'" ).datepicker({format:"'.jsescape($format).'", autoclose: true, todayHighlight:true, weekStart:'.$weekStart.', language:"'.$language.'"});
 								});
 							</script>';
-							$this->form['fields'][$name]['is_calendar']=true;
+							$this->form['fields'][$name]['is_calendar'] = true;
 							$this->form['fields'][$name]['calendar_format']=$format;
 							return $this;
 						}
