@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.13
-	//#revision 2017-01-15
+	//#ver 1.6.14
+	//#revision 2017-07-14
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -30,7 +30,7 @@
 					$nav->AddItem($lang['list_news'], 'index.php?m=news&d=list');
 					$nav->AddItem($lang['common']['categories'], 'index.php?m=news&d=listctg');
 					$nav->AddItem($lang['add_category'], 'index.php?m=news&d=addctg');
-					$nav->AddItem(sprintf('%s "%s"', $lang['set_as_block'], $lang['short_news_block']), 'index.php?m=blocks&d=add&b=news&id=1&c='.urlencode($lang['short_news_block']));
+					$nav->AddItem(sprintf('%s "%s"', $lang['set_as_block'], $lang['short_news_block']), sm_addblockurl($lang['short_news_block'], 'news', 1));
 					$nav->AddItem(sprintf('%s - %s', $lang['add_to_menu'], $lang['news']), sm_tomenuurl($lang['news'], sm_fs_url('index.php?m=news&d=listnews')));
 					$ui->Add($nav);
 					$ui->Output(true);
@@ -195,7 +195,7 @@
 								$t->URL('delete', 'index.php?m=news&d=postdeletectg&ctgid='.$row['id_category']);
 							$t->URL('edit', 'index.php?m=news&d=editctg&ctgid='.$row['id_category']);
 							$t->URL('tomenu', sm_tomenuurl($row['title_category'], $url, sm_this_url()));
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$row['id_category'].'&db=shortnews&c='.$row['title_category']);
+							$t->URL('stick', sm_addblockurl($row['title_category'], 'news', $row['id_category'], 'shortnews', 'index.php?m=news&d=list&ctg='.$row['id_category']));
 							$t->NewRow();
 							$i++;
 						}
@@ -284,7 +284,8 @@
 							$t->URL('html', 'index.php?m=news&d=edit&nid='.$q->items[$i]['id_news'].'&exteditor=off');
 							$t->URL('delete', 'index.php?m=news&d=postdelete&nid='.$q->items[$i]['id_news'].'&ctg='.$q->items[$i]['id_category_n']);
 							$t->URL('tomenu', sm_tomenuurl(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news']), $url, sm_this_url()));
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$q->items[$i]['id_news'].'&db=view&c='.(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news'])));
+							//$t->URL('stick', 'index.php?m=blocks&d=add&b=news&id='.$q->items[$i]['id_news'].'&db=view&c='.(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news'])));
+							$t->URL('stick', sm_addblockurl(!empty($q->items[$i]['title_news'])?$q->items[$i]['title_news']:strftime($lang["datemask"], $q->items[$i]['date_news']), 'news', $q->items[$i]['id_news'], 'view', 'index.php?m=news&d=edit&nid='.$q->items[$i]['id_news']));
 							$t->NewRow();
 						}
 					if ($b->Count()>0)

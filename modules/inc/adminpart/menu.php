@@ -394,6 +394,7 @@
 					sm_use('admintable');
 					sm_use('admininterface');
 					sm_use('adminbuttons');
+					sm_extcore();
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -409,7 +410,7 @@
 							$t->URL('title', 'index.php?m=menu&d=listlines&mid='.$q->items[$i]['id_menu_m']);
 							$t->URL('edit', 'index.php?m=menu&d=editmenu&mid='.$q->items[$i]['id_menu_m']);
 							$t->URL('delete', 'index.php?m=menu&d=postdeletemenu&mid='.$q->items[$i]['id_menu_m']);
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=menu&id='.$q->items[$i]['id_menu_m'].'&c='.urlencode($q->items[$i]['caption_m']));
+							$t->URL('stick', sm_addblockurl($q->items[$i]['caption_m'], 'menu', $q->items[$i]['id_menu_m'], 'view', 'index.php?m=menu&d=listlines&mid='.$q->items[$i]['id_menu_m']));
 							$t->NewRow();
 						}
 					$b=new TButtons();

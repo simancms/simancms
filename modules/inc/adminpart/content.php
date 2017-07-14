@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-07-06
+	//#ver 1.6.14
+	//#revision 2017-07-14
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -30,7 +30,7 @@
 					$nav->AddItem($lang['list_content'], 'index.php?m=content&d=list');
 					$nav->AddItem($lang['common']['categories'], 'index.php?m=content&d=listctg');
 					$nav->AddItem($lang['add_category'], 'index.php?m=content&d=addctg');
-					$nav->AddItem(sprintf('%s "%s - %s"', $lang['set_as_block'], $lang['list_content'], $lang['common']['category']), 'index.php?m=blocks&d=add&b=content&id=1&db=blockctgview&c='.urlencode($lang['list_content'].' - '.$lang['common']['category']));
+					$nav->AddItem(sprintf('%s "%s - %s"', $lang['set_as_block'], $lang['list_content'], $lang['common']['category']), sm_addblockurl($lang['list_content'].' - '.$lang['common']['category'], 'content', 1, 'blockctgview'));
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
@@ -207,7 +207,7 @@
 							$t->URL('edit', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&returnto='.urlencode(sm_this_url()));
 							$t->URL('html', 'index.php?m=content&d=editctg&ctgid='.$m['ctg'][$i]['id'].'&exteditor=off'.'&returnto='.urlencode(sm_this_url()));
 							$t->URL('tomenu', sm_tomenuurl($m['ctg'][$i]['title'], $m['ctg'][$i]['filename'], sm_this_url()));
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$m['ctg'][$i]['id'].'&db=rndctgview&c='.$m['ctg'][$i]['title']);
+							$t->URL('stick', sm_addblockurl($m['ctg'][$i]['title'], 'content', $m['ctg'][$i]['id'], 'rndctgview'));
 							$t->NewRow();
 						}
 					$b=new TButtons();
@@ -290,7 +290,7 @@
 							if ($items[$i]['id_content'] != 1)
 								$t->URL('delete', 'index.php?m=content&d=postdelete&cid='.$items[$i]['id_content'].'&ctg='.$items[$i]['id_category_c'].'&returnto='.urlencode(sm_this_url()));
 							$t->URL('tomenu', sm_tomenuurl($items[$i]['title_content'], $items[$i]['url'], sm_this_url()));
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=content&id='.$items[$i]['id_content'].'&c='.urlencode($items[$i]['title_content']));
+							$t->URL('stick', sm_addblockurl($items[$i]['title_content'], 'content', $items[$i]['id_content'], 'view', 'index.php?m=content&d=edit&cid='.$items[$i]['id_content']));
 							if ($sort == 2 || $sort == 3)
 								{
 									if ($i>0)

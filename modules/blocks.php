@@ -28,6 +28,7 @@
 					$m["block"] = $_getvars['b'];
 					$m["doing"] = $_getvars['db'];
 					$m["caption_block"] = $_getvars['c'];
+					$m["editsource_block"] = $_getvars['src'];
 					$sql = "SELECT * FROM ".$tableprefix."modules ORDER BY module_name='content' ASC";
 					$result = execsql($sql);
 					$i = 0;
@@ -148,6 +149,7 @@
 					$block->SetRewriteTitleTo($_postvars['p_rewrite_title']);
 					$block->SetShowOnDevice($_postvars['show_on_device']);
 					$block->SetGroupsView(create_groups_str($_postvars['p_groups']));
+					$block->SetEditSourceURL($_postvars['editsource_block']);
 					$block->SetThisLevelOnlyValue(intval($_postvars['p_thislevelonly']));
 					$block->SetShowOnViewIDs($_postvars['show_on_viewids']);
 					$arr_show_on = explode('|', $_postvars['p_show_on']);
@@ -239,7 +241,7 @@
 							if ($block->HasEditSourceURL())
 								{
 									$t->Label('open', $lang['common']['open']);
-									$t->URL('open', $block->EditSourceURL());
+									$t->URL('open', sm_url($block->EditSourceURL(), Array('returnto'=>sm_this_url())));
 								}
 							else
 								$t->Label('open', '-');
@@ -292,7 +294,7 @@
 									if ($block->HasEditSourceURL())
 										{
 											$t->Label('open', $lang['common']['open']);
-											$t->URL('open', $block->EditSourceURL());
+											$t->URL('open', sm_url($block->EditSourceURL(), Array('returnto'=>sm_this_url())));
 										}
 									else
 										$t->Label('open', '-');

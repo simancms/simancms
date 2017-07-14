@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
 	Version: 1.6.14
-	Revision: 2017-06-27
+	Revision: 2017-07-14
 	Author URI: http://simancms.org/
 	*/
 
