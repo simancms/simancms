@@ -296,7 +296,7 @@
 					$t->SetHeaderImage('url', 'url');
 					$t->AddCol('action', $lang['action'], '5%');
 					$t->SetAsMessageBox('action', $lang['common']['are_you_sure']);
-					$dir = dir('./modules/');
+					$dir = dir(sm_cms_rootdir().'modules/');
 					$i = 0;
 					while ($entry = $dir->read())
 						{
@@ -453,7 +453,8 @@
 			if (sm_action('settings'))
 				{
 					$m["module"] = 'admin';
-					$m["title"] = $lang['settings'];
+					sm_title($lang['settings']);
+					sm_add_cssfile('css/adminpart/admin-settings.css');
 					if (!empty($_getvars['viewmode']))
 						$m['mode_settings'] = $_getvars['viewmode'];
 					else
@@ -493,7 +494,7 @@
 									$m['extmodes'][$m['available_modes'][$i]['mode']]['show_settings'][$row->name_settings] = 1;
 								}
 						}
-					$dir = dir('./lang/');
+					$dir = dir(sm_cms_rootdir().'lang/');
 					$i = 0;
 					while ($entry = $dir->read())
 						{
@@ -504,7 +505,7 @@
 								}
 						}
 					$dir->close();
-					$dir = dir('./themes/');
+					$dir = dir(sm_cms_rootdir().'themes/');
 					$i = 0;
 					while ($entry = $dir->read())
 						{
@@ -516,7 +517,7 @@
 								}
 						}
 					$dir->close();
-					$dir = dir('./ext/editors/');
+					$dir = dir(sm_cms_rootdir().'ext/editors/');
 					$i = 0;
 					while ($entry = $dir->read())
 						{
