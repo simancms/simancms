@@ -361,6 +361,11 @@
 			return 'index.php?m=menu&d=addouter&p_caption='.urlencode($title).'&p_url='.urlencode($url).'&returnto='.urlencode($returnto);
 		}
 	
+	function sm_addblockurl($block_title, $block_module, $block_action_id, $block_action='', $view_source_url='')
+		{
+			return 'index.php?m=blocks&d=add&b='.urlencode($block_module).'&id='.urlencode($block_action_id).'&db='.urlencode($block_action).'&c='.urlencode($block_title).'&src='.urlencode($view_source_url);
+		}
+
 	function sm_saferemove($url)
 		{
 			if (empty($url))

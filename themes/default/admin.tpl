@@ -10,7 +10,7 @@
 <form action="index.php?m=admin&d=postsettings&viewmode={$modules[$index].mode_settings}" method="post">
 <table width="100%" border="0">
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.common_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.common_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.resource_title eq 1}
 		<tr>
@@ -275,7 +275,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.menu_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.module_admin.menu_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.upper_menu_id eq 1}
 		<tr>
@@ -331,7 +331,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.content_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.module_admin.content_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.content_use_preview eq 1}
 		<tr>
@@ -451,7 +451,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.news_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.news_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.news_use_time eq 1}
 	<tr>
@@ -637,7 +637,7 @@
 	</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.user_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.user_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.allow_register eq 1}
 		<tr>
@@ -737,7 +737,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.security_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.security_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.banned_ip eq 1}
 		<tr>
@@ -750,7 +750,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.static_text_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.static_text_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.meta_header_text eq 1}
 		<tr>
@@ -783,7 +783,7 @@
 		</tr>
 	{/if}
 <tr>
-	<td colspan="4" bgcolor="{#cl_admintabletitle_bgcolor#}">{$lang.module_admin.mass_email_settings}</td>
+	<td colspan="4" class="admin-settings-separator">{$lang.module_admin.mass_email_settings}</td>
 </tr>
 	{if $modules[$index].show_settings.administrators_email eq 1}
 		<tr>

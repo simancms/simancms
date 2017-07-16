@@ -4,6 +4,7 @@
 <input type="hidden" name="p_block" value="{$modules[$index].block}">
 <input type="hidden" name="p_id" value="{$modules[$index].id}">
 <input type="hidden" name="p_doing" value="{$modules[$index].doing}">
+<input type="hidden" name="editsource_block" value="{$modules[$index].editsource_block}">
 <table width="100%">
 	<tr>
 		<td width="30%">{$lang.short_block_name}</td>

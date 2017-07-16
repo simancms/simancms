@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-06-07
+	//#ver 1.6.14
+	//#revision 2017-07-14
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -305,6 +305,7 @@
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '40%');
 					$t->AddCol('url', $lang['url'], '60%');
+					$t->AddCol('open', '', '16', $lang['common']['open']);
 					$t->AddEdit();
 					$t->AddDelete();
 					for ($i = 0; $i < count($m['menu']); $i++)
@@ -324,6 +325,8 @@
 							else
 								$t->Label('url', $m['menu'][$i]['url'], 0, 65);
 							$t->URL('title', $m['menu'][$i]['url'], true);
+							$t->Image('open', 'url');
+							$t->URL('open', $m['menu'][$i]['url'], true);
 							$t->URL('edit', 'index.php?m=menu&d=editline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id'].'&sid='.$m['menu'][$i]['submenu_from']);
 							$t->URL('delete', 'index.php?m=menu&d=postdeleteline&mid='.$m['menu'][$i]['mid'].'&lid='.$m['menu'][$i]['id']);
 							$t->NewRow();
@@ -391,6 +394,7 @@
 					sm_use('admintable');
 					sm_use('admininterface');
 					sm_use('adminbuttons');
+					sm_extcore();
 					$ui = new TInterface();
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
@@ -406,7 +410,7 @@
 							$t->URL('title', 'index.php?m=menu&d=listlines&mid='.$q->items[$i]['id_menu_m']);
 							$t->URL('edit', 'index.php?m=menu&d=editmenu&mid='.$q->items[$i]['id_menu_m']);
 							$t->URL('delete', 'index.php?m=menu&d=postdeletemenu&mid='.$q->items[$i]['id_menu_m']);
-							$t->URL('stick', 'index.php?m=blocks&d=add&b=menu&id='.$q->items[$i]['id_menu_m'].'&c='.urlencode($q->items[$i]['caption_m']));
+							$t->URL('stick', sm_addblockurl($q->items[$i]['caption_m'], 'menu', $q->items[$i]['id_menu_m'], 'view', 'index.php?m=menu&d=listlines&mid='.$q->items[$i]['id_menu_m']));
 							$t->NewRow();
 						}
 					$b=new TButtons();

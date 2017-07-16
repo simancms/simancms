@@ -55,6 +55,17 @@
 							$this->SetActiveItem();
 						}
 
+					/**
+					 * @param bool $val
+					 */
+					function SetShowBordersValue($val)
+						{
+							if ($val)
+								$this->blocks[$this->currentblock]['show_borders']=1;
+							else
+								$this->blocks[$this->currentblock]['show_borders']=0;
+						}
+
 					function AddOutputObject($type, $object, $tpl = '', $use_data_as_output = false)
 						{
 							$this->blocks[$this->currentblock]['itemscount']++;

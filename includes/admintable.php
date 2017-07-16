@@ -64,7 +64,7 @@
 							$this->table['columns'][$name]['width'] = $width;
 							if (empty($hint))
 								$hint=$title;
-							$this->table['columns'][$name]['hint'] = strip_tags($hint);
+							$this->table['columns'][$name]['hint'] = htmlescape(strip_tags($hint));
 							$this->table['columns'][$name]['replace_text'] = $replace_text;
 							$this->table['columns'][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
 							if (!empty($replace_image) && strpos($replace_image, '/') === false)
@@ -420,6 +420,11 @@
 					function CellFooterHTML($name, $value)
 						{
 							return $this->table['rows'][$this->rownumber][$name]['html_end'];
+						}
+
+					function CellDOMID($name)
+						{
+							return 'at'.$this->table['postfix'].'-cell-'.$name.'-'.$this->rownumber;
 						}
 
 					public static function ImageURL($image_name)

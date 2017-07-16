@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.13
-	//#revision 2016-02-17
+	//#ver 1.6.14
+	//#revision 2017-07-14
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -28,6 +28,7 @@
 					$m["block"] = $_getvars['b'];
 					$m["doing"] = $_getvars['db'];
 					$m["caption_block"] = $_getvars['c'];
+					$m["editsource_block"] = $_getvars['src'];
 					$sql = "SELECT * FROM ".$tableprefix."modules ORDER BY module_name='content' ASC";
 					$result = execsql($sql);
 					$i = 0;
@@ -148,6 +149,7 @@
 					$block->SetRewriteTitleTo($_postvars['p_rewrite_title']);
 					$block->SetShowOnDevice($_postvars['show_on_device']);
 					$block->SetGroupsView(create_groups_str($_postvars['p_groups']));
+					$block->SetEditSourceURL($_postvars['editsource_block']);
 					$block->SetThisLevelOnlyValue(intval($_postvars['p_thislevelonly']));
 					$block->SetShowOnViewIDs($_postvars['show_on_viewids']);
 					$arr_show_on = explode('|', $_postvars['p_show_on']);
@@ -204,19 +206,21 @@
 			if (sm_action('view'))
 				{
 					$m["module"] = 'blocks';
-					sm_title($lang['static_blocks']);
-					add_path_control();
-					add_path($lang['static_blocks'], "index.php?m=blocks");
+					sm_use('smblock');
 					sm_use('admintable');
 					sm_use('admininterface');
 					sm_use('adminform');
+					sm_title($lang['static_blocks']);
+					add_path_control();
+					add_path($lang['static_blocks'], "index.php?m=blocks");
 					$ui = new TInterface();
 					$q=new TQuery($sm['t']."blocks");
 					$q->Add('panel_block', 'c');
 					$q->OrderBy('panel_block, position_block');
 					$q->Select();
 					$t=new TGrid('edit');
-					$t->AddCol('title', $lang['center_panel'], '100%');
+					$t->AddCol('title', $lang['center_panel'], '95%');
+					$t->AddCol('open', $lang['common']['open'], '5%');
 					$t->AddCol('up', '', '16', $lang['up']);
 					$t->AddCol('down', '', '16', $lang['down']);
 					$t->AddEdit();
@@ -225,27 +229,36 @@
 					$l=Array($lang['first']);
 					for ($i = 0; $i<$q->Count(); $i++)
 						{
+							$block=new SMBlock($q->items[$i]);
 							if (intval(sm_settings('main_block_position'))==$i)
 								{
 									$t->SingleLineLabel($lang['module_blocks']['main_block_position']);
 									$t->NewRow();
 								}
 							$v[]=$i+1;
-							$l[]=$lang['after'].': '.$q->items[$i]['caption_block'];
-							$t->Label('title', $q->items[$i]['caption_block']);
-							$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
+							$l[]=$lang['after'].': '.$block->Caption();
+							$t->Label('title', $block->Caption());
+							if ($block->HasEditSourceURL())
+								{
+									$t->Label('open', $lang['common']['open']);
+									$t->URL('open', sm_url($block->EditSourceURL(), Array('returnto'=>sm_this_url())));
+								}
+							else
+								$t->Label('open', '-');
+							$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$block->ID());
 							if ($i>0)
 								{
-									$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block']);
+									$t->URL('up', 'index.php?m=blocks&d=up&id='.$block->ID());
 									$t->Image('up', 'up.gif');
 								}
 							if ($i+1<$q->Count())
 								{
-									$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block']);
+									$t->URL('down', 'index.php?m=blocks&d=down&id='.$block->ID());
 									$t->Image('down', 'down.gif');
 								}
-							$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+							$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$block->ID().'&pos='.$block->Position().'&pnl='.$block->Panel());
 							$t->NewRow();
+							unset($block);
 						}
 					if (intval(sm_settings('main_block_position')) >= $q->Count())
 						{
@@ -264,7 +277,8 @@
 					for ($panel = 1; $panel < intval(sm_settings('sidepanel_count')) + 1; $panel++)
 						{
 							$t=new TGrid('edit');
-							$t->AddCol('title', $lang['panel'].' '.$panel, '100%');
+							$t->AddCol('title', $lang['panel'].' '.$panel, '95%');
+							$t->AddCol('open', $lang['common']['open'], '5%');
 							$t->AddCol('up', '', '16', $lang['up']);
 							$t->AddCol('down', '', '16', $lang['down']);
 							$t->AddEdit();
@@ -275,21 +289,32 @@
 							$q->Select();
 							for ($i = 0; $i<$q->Count(); $i++)
 								{
-									$t->Label('title', $q->items[$i]['caption_block']);
-									$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$q->items[$i]['id_block']);
+									$block=new SMBlock($q->items[$i]);
+									$t->Label('title', $block->Caption());
+									if ($block->HasEditSourceURL())
+										{
+											$t->Label('open', $lang['common']['open']);
+											$t->URL('open', sm_url($block->EditSourceURL(), Array('returnto'=>sm_this_url())));
+										}
+									else
+										$t->Label('open', '-');
+									$t->URL('edit', 'index.php?m=blocks&d=edit&id='.$block->ID());
 									if ($i>0)
 										{
-											$t->URL('up', 'index.php?m=blocks&d=up&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+											$t->URL('up', 'index.php?m=blocks&d=up&id='.$block->ID().'&pos='.$block->Position().'&pnl='.$block->Panel());
 											$t->Image('up', 'up.gif');
 										}
 									if ($i+1<$q->Count())
 										{
-											$t->URL('down', 'index.php?m=blocks&d=down&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+											$t->URL('down', 'index.php?m=blocks&d=down&id='.$block->ID().'&pos='.$block->Position().'&pnl='.$block->Panel());
 											$t->Image('down', 'down.gif');
 										}
-									$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$q->items[$i]['id_block'].'&pos='.$q->items[$i]['position_block'].'&pnl='.$q->items[$i]['panel_block']);
+									$t->URL('delete', 'index.php?m=blocks&d=postdelete&id='.$block->ID().'&pos='.$block->Position().'&pnl='.$block->Panel());
 									$t->NewRow();
+									unset($block);
 								}
+							if ($t->RowCount()==0)
+								$t->SingleLineLabel($lang['messages']['nothing_found']);
 							$ui->br();
 							$ui->AddGrid($t);
 							unset($t);
@@ -302,5 +327,3 @@
 					sm_redirect('index.php?m=blocks');
 				}
 		}
-
-?>
