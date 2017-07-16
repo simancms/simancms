@@ -629,6 +629,8 @@
 
 					function SortRowsByColumnData($comma_separaded_columns)
 						{
+							if ($this->RowCount()==0)
+								return;
 							$this->sort_statement = $comma_separaded_columns;
 							usort($this->table['rows'], array(
 															 $this,
