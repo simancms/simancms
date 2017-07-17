@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-05-09
+	//#revision 2017-07-17
 	//==============================================================================
 
 	if (!defined("ui_modal_DEFINED"))
@@ -26,6 +26,12 @@
 							$this->SetHeight('50%');
 						}
 					
+					public static function Create()
+						{
+							$modal=new TModalHelper();
+							return $modal;
+						}
+
 					function SetContent($html)
 						{
 							$html=str_replace('"', '&quot;', $html);
