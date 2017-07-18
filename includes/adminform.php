@@ -311,41 +311,23 @@
 							return $this;
 						}
 
-					function AddSelectNLList($name, $title='', $nllist_values, $required = false)
+					/*
+						AddSelect($name, $title='', $array_values=Array(), $required = false)
+						AddSelect($name, $title='', $array_values=Array(), $array_labels=Array(), $required = false)
+					*/
+					function AddSelect($name, $title='', $array_values=Array(), $array_labels=Array(), $required = false)
 						{
 							global $sm;
-							$this->currentname = $name;
-							$this->form['fields'][$name]['name'] = $name;
-							$this->form['fields'][$name]['caption'] = $title;
-							$this->form['fields'][$name]['required'] = $required;
-							$this->form['fields'][$name]['type'] = 'select';
-							$this->form['fields'][$name]['values'] = nllistToArray($nllist_values);
-							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
-							if (!empty($sm['adminform']['selectclass']))
-								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
-							return $this;
-						}
-
-					function AddSelect($name, $title='', $array_values=Array(), $required = false)
-						{
-							global $sm;
-							$this->currentname = $name;
-							$this->form['fields'][$name]['name'] = $name;
-							$this->form['fields'][$name]['caption'] = $title;
-							$this->form['fields'][$name]['required'] = $required;
-							$this->form['fields'][$name]['type'] = 'select';
-							$this->form['fields'][$name]['values'] = $array_values;
-							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
-							if (!empty($sm['adminform']['selectclass']))
-								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
-							return $this;
-						}
-
-					function AddSelectVL($name, $title='', $array_values=Array(), $array_labels=Array(), $required = false)
-						{
-							global $sm;
+							//backward compatibility parameters
+							if (is_array($array_values) && !is_array($array_labels) && is_bool($array_labels))
+								{
+									$required = $array_labels;
+									$array_labels=$array_values;
+								}
+							elseif (is_array($array_values) && is_array($array_labels) && count($array_labels)==0)
+								{
+									$array_labels=$array_values;
+								}
 							$this->currentname = $name;
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
@@ -360,20 +342,17 @@
 							return $this;
 						}
 
+					//Deprecated
+					function AddSelectVL($name, $title='', $array_values=Array(), $array_labels=Array(), $required = false)
+						{
+							$this->AddSelect($name, $title, $array_values, $array_labels, $required);
+							return $this;
+						}
+
+					//Deprecated
 					function AddSelectNLListVL($name, $title='', $nllist_values='', $nllist_labels='', $required = false)
 						{
-							global $sm;
-							$this->currentname = $name;
-							$this->form['fields'][$name]['name'] = $name;
-							$this->form['fields'][$name]['caption'] = $title;
-							$this->form['fields'][$name]['required'] = $required;
-							$this->form['fields'][$name]['type'] = 'select';
-							$this->form['fields'][$name]['values'] = nllistToArray($nllist_values);
-							$this->form['fields'][$name]['labels'] = nllistToArray($nllist_labels);
-							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
-							if (!empty($sm['adminform']['selectclass']))
-								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
+							$this->AddSelect($name, $title, nllistToArray($nllist_values), nllistToArray($nllist_labels), $required);
 							return $this;
 						}
 
