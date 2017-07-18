@@ -88,7 +88,7 @@
 					sm_add_settings('cookiesdirective_extra_container_style', '');
 					sm_add_settings('cookiesdirective_zindex', '65535');
 					sm_register_autoload('cookiesdirective');
-					sm_notify($lang['operation_complete']);
+					sm_notify($lang['operation_completed']);
 					sm_redirect('index.php?m=cookiesdirective&d=admin');
 				}
 			if (strcmp($m["mode"], 'uninstall') == 0)
@@ -106,7 +106,7 @@
 					sm_delete_settings('cookiesdirective_extra_container_style');
 					sm_delete_settings('cookiesdirective_zindex');
 					sm_unregister_autoload('cookiesdirective');
-					sm_notify($lang['operation_complete']);
+					sm_notify($lang['operation_completed']);
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}

@@ -68,7 +68,7 @@
 					sm_add_settings('youtubereplacerstarthtml', '<br />');
 					sm_add_settings('youtubereplacerendhtml', '<br />');
 					sm_register_postload('youtubereplacer');
-					sm_notify($lang['operation_complete']);
+					sm_notify($lang['operation_completed']);
 					sm_redirect('index.php?m=youtubereplacer&d=admin');
 				}
 			if (strcmp($m["mode"], 'uninstall') == 0)
@@ -81,7 +81,7 @@
 					sm_delete_settings('youtubereplacerstarthtml');
 					sm_delete_settings('youtubereplacerendhtml');
 					sm_unregister_postload('youtubereplacer');
-					sm_notify($lang['operation_complete']);
+					sm_notify($lang['operation_completed']);
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}

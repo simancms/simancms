@@ -69,7 +69,7 @@
 	$lang['refresh_message_click']='Якщо Вам набридло чекати, натисніть тут';
 	$lang['set_as_homepage']='зробити домашньою';
 	$lang['add_to_favorites']='додати у вибране';
-	$lang['operation_complete']='Операцію завершено';
+	$lang['operation_completed']='Операцію завершено';
 	$lang['bytes']='байт';
 	$lang['access_denied']='Доступ заблоковано';
 	$lang['message_access_denied']='У Вас недостатньо прав для перегляду даної інформації.';

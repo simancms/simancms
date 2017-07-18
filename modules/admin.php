@@ -200,7 +200,7 @@
 					else
 						{
 							sm_event('afteruploadedimagesaveadmin', array($fd));
-							sm_notify($lang['operation_complete']);
+							sm_notify($lang['operation_completed']);
 							sm_redirect('index.php?m=admin&d=listimg');
 						}
 				}

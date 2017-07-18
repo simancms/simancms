@@ -93,7 +93,7 @@
 							$q->Add('description_download', dbescape($_postvars['description_download']));
 							$q->Add('userlevel_download', intval($_postvars['userlevel_download']));
 							$q->Insert();
-							sm_notify($lang['operation_complete']);
+							sm_notify($lang['operation_completed']);
 							if (!empty($_getvars['returnto']))
 								sm_redirect($_getvars['returnto']);
 							else
@@ -144,7 +144,7 @@
 										{
 											if ($tmp['tmpfilecreated'])
 												unlink($tmp['file']);
-											//sm_notify($lang['operation_complete']);
+											//sm_notify($lang['operation_completed']);
 											if (!empty($_getvars['returnto']))
 												sm_redirect($_getvars['returnto']);
 											else
