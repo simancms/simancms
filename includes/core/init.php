@@ -19,7 +19,7 @@
 						exit('Acceess denied');
 					}
 			}
-	if ($siman_block_empty_useragent && strlen($_SERVER['HTTP_USER_AGENT'])==0)
+	if ($siman_block_empty_useragent && strlen($_SERVER['HTTP_USER_AGENT'])==0 && $special['cli']!==true)
 		{
 			@header("HTTP/1.0 403 Forbidden");
 			exit('Acceess denied');

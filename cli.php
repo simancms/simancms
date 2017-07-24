@@ -67,5 +67,3 @@
 	$special['cli']=true;
 	$special['nosmarty']=true;
 	include('index.php');
-
-?>
