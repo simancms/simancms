@@ -12,8 +12,8 @@
 
 			class TNavigation
 				{
-					var $board;
-					private $currentitem;
+					protected $nav;
+					protected $currentitem;
 
 					function __construct()
 						{
@@ -151,6 +151,11 @@
 							return $this;
 						}
 					
+					function Count()
+						{
+							return count($this->nav['items']);
+						}
+
 					function Output()
 						{
 							if (is_array($this->nav['items']))
