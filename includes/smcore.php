@@ -574,6 +574,7 @@
 			if (empty($modules[$modules_index]['title']))
 				$modules[$modules_index]['title'] = $lang['common']['redirect'];
 			$modules[$modules_index]['module'] = 'refresh';
+			$modules[$modules_index]['mode'] = 'redirect-view-action';
 			if ($message === true)
 				{
 					$message = '';
