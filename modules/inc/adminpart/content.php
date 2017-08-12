@@ -161,16 +161,20 @@
 			if (sm_action('postdeletectg') && intval($_getvars['ctgid'])!=1)
 				{
 					$id_ctg = intval($_getvars['ctgid']);
-					delete_filesystem(getsqlfield("SELECT filename_category FROM ".$tableprefix."categories WHERE id_category=".intval($id_ctg)));
-					sm_extcore();
-					sm_saferemove('index.php?m=content&d=viewctg&ctgid='.intval($id_ctg));
-					execsql("DELETE FROM ".$tableprefix."categories WHERE id_category=".intval($id_ctg)." AND id_category<>1");
-					$q=new TQuery($sm['t'].'content');
-					$q->Add('id_category_c', 1);
-					$q->Update('id_category_c', intval($id_ctg));
-					sm_notify($lang['delete_content_category_successful']);
-					sm_redirect('index.php?m=content&d=listctg');
-					sm_event('postdeletectgcontent', array($id_ctg));
+					if ($id_ctg!=1)
+						{
+							sm_extcore();
+							sm_saferemove('index.php?m=content&d=viewctg&ctgid='.intval($id_ctg));
+							TQuery::ForTable($sm['t'].'categories')
+								->AddWhere('id_category', intval($id_ctg))
+								->Remove();
+							TQuery::ForTable($sm['t'].'content')
+								->Add('id_category_c', 1)
+								->Update('id_category_c', intval($id_ctg));
+							sm_notify($lang['delete_content_category_successful']);
+							sm_redirect('index.php?m=content&d=listctg');
+							sm_event('postdeletectgcontent', array($id_ctg));
+						}
 				}
 			if (sm_action('listctg'))
 				{
