@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-04-10
+	//#revision 2017-08-30
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -311,8 +311,29 @@
 
 					function NewRow()
 						{
-							$this->rownumber++;
+							if (count($this->table['rows'])==0)
+								$this->SetActiveRow(1);
+							else
+								{
+									if ($this->rownumber<count($this->table['rows']))
+										$this->rownumber=count($this->table['rows']);
+									else
+										$this->rownumber++;
+									$this->SetActiveRow($this->rownumber);
+								}
 							return $this;
+						}
+
+					function SetActiveRow($index)
+						{
+							$this->rownumber=$index;
+							while(count($this->table['rows'])<$this->rownumber)
+								$this->table['rows'][]=Array();
+						}
+
+					function NextRow()
+						{
+							$this->SetActiveRow($this->rownumber+1);
 						}
 
 					function Label($name, $value)
