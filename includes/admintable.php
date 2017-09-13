@@ -397,6 +397,17 @@
 							return $this;
 						}
 
+					function CellHasClass($name, $classname, $rownumber=NULL)
+						{
+							if ($rownumber === NULL)
+								$rownumber = $this->rownumber;
+							$classes=explode(' ', $this->table['rows'][$rownumber][$name]['class']);
+							if (in_array($classname, $classes))
+								return true;
+							else
+								return false;
+						}
+
 					function CellAddStyle($name, $style)
 						{
 							$this->table['rows'][$this->rownumber][$name]['style'] .= $style;
