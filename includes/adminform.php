@@ -891,6 +891,15 @@
 					function Readonly($name = NULL)
 						{
 							$this->SetFieldAttribute($name, 'readonly', 'readonly');
+							return $this;
+						}
+
+					function Required($name = NULL, $value = true)
+						{
+							if ($name === NULL)
+								$name = $this->currentname;
+							$this->form['fields'][$name]['required'] = $value;
+							return $this;
 						}
 
 				//-------------------------------------------------------------
