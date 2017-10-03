@@ -235,7 +235,7 @@
 							return $this;
 						}
 
-					function AutoColspanFor($fieldname)
+					function AutoColspanFor($column_name)
 						{
 							if (!empty($this->table['columns']))
 								{
@@ -246,7 +246,7 @@
 										{
 											if (!$found)
 												{
-													if ($key==$fieldname)
+													if ($key==$column_name)
 														$found=true;
 													continue;
 												}
@@ -259,7 +259,39 @@
 												break;
 										}
 									if ($colspan>1)
-										$this->Colspan($fieldname, $colspan);
+										$this->Colspan($column_name, $colspan);
+								}
+							return $this;
+						}
+
+					function AutoRowspanFor($column_name)
+						{
+							$row_index = 0;
+							while ($row_index < $this->RowCount()-1)
+								{
+									$rowspan = 1;
+									$rowspan_index=$row_index;
+									for ($i = $row_index + 1; $i < $this->RowCount(); $i++)
+										{
+											if (
+												strlen($this->table['rows'][$i][$column_name]['data']) == 0
+												&& strlen($this->table['rows'][$i][$column_name]['image']) == 0
+												&& strlen($this->table['rows'][$i][$column_name]['headerurl']) == 0
+												&& intval($this->table['rows'][$i][$column_name]['hide']) != 1
+											)
+												{
+													$this->Hide($column_name, $i);
+													$rowspan++;
+													$row_index++;
+												}
+											else
+												{
+													$row_index++;
+													break;
+												}
+										}
+									if ($rowspan > 1)
+										$this->Rowspan($column_name, $rowspan, $rowspan_index);
 								}
 							return $this;
 						}
@@ -296,6 +328,14 @@
 					function Colspan($name, $value)
 						{
 							$this->table['rows'][$this->rownumber][$name]['colspan'] = $value;
+							return $this;
+						}
+
+					function Rowspan($name, $value, $row_index=NULL)
+						{
+							if ($row_index===NULL)
+								$row_index=$this->rownumber;
+							$this->table['rows'][$row_index][$name]['attrs']['rowspan'] = $value;
 							return $this;
 						}
 
@@ -522,15 +562,18 @@
 							return $this;
 						}
 
-					function Hide($name)
+					function Hide($name, $row_index=NULL)
 						{
-							$this->table['rows'][$this->rownumber][$name]['hide'] = 1;
+							if ($row_index===NULL)
+								$row_index=$this->rownumber;
+							$this->table['rows'][$row_index][$name]['hide'] = 1;
 							return $this;
 						}
 
 					function ExpanderHTML($html)
 						{
 							$this->table['expanders'][$this->rownumber]['html'] = $html;
+							$this->table['expanders'][$this->rownumber]['enabled'] = true;
 							return $this;
 						}
 

@@ -182,11 +182,13 @@ function atdropdowncancelclosetime{$postfix}()
 		{/if}
 		{/foreach}
 	</tr>{/strip}
+	{if $table.expanders[table_row_index].enabled}
 	<tr style="display:none;" id="admintable-expander-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expander">
 		<td colspan="{$table.colcount}" id="admintable-expanderarea-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expanderarea">
 			{$table.expanders[table_row_index].html}
 		</td>
 	</tr>
+	{/if}
 	{/section}
 </table>
 {/strip}
