@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-08-30
+	//#revision 2017-10-03
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -416,7 +416,7 @@
 
 					function Hint($name, $value)
 						{
-							$this->table['rows'][$this->rownumber][$name]['hint'] = $value;
+							$this->table['rows'][$this->rownumber][$name]['hint'] = htmlescape(strip_tags($value));
 							return $this;
 						}
 
@@ -950,6 +950,20 @@
 												{
 													$this->CellAddClass($name, $this->table['columns'][$name]['column_class'], $this->rownumber);
 												}
+											if (!empty($this->table['rows'][$this->rownumber][$name]['colspan']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['colspan']=$this->table['rows'][$this->rownumber][$name]['colspan'];
+											if (!empty($this->table['rows'][$this->rownumber][$name]['hint']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['title']=$this->table['rows'][$this->rownumber][$name]['hint'];
+											elseif (!empty($this->table['columns'][$name]['hint']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['title']=$this->table['columns'][$name]['hint'];
+											if (!empty($this->table['rows'][$this->rownumber][$name]['align']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['align']=$this->table['rows'][$this->rownumber][$name]['align'];
+											if ($this->table['hideheader']==1 && !empty($this->table['columns'][$name]['width']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['width']=$this->table['columns'][$name]['width'];
+											$this->table['rows'][$this->rownumber][$name]['attrs']['id']='at'.$this->table['postfix'].'-cell-'.$name.'-'.$this->rownumber;
+											$this->table['rows'][$this->rownumber][$name]['attrs']['class']='at-cell-'.$name.$this->table['rows'][$this->rownumber][$name]['class'];
+											if (!empty($this->table['rows'][$this->rownumber][$name]['style']))
+												$this->table['rows'][$this->rownumber][$name]['attrs']['style']=$this->table['rows'][$this->rownumber][$name]['style'];
 										}
 								}
 							return $this->table;
