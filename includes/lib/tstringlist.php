@@ -50,6 +50,25 @@
 						}
 
 					/**
+					 * Deletes the stings with selected value
+					 */
+					function DeleteValue($value, $ignore_case=false)
+						{
+							$i=0;
+							if ($ignore_case)
+								$value=strtolower($value);
+							while ($i<$this->Count())
+								{
+									if (strcmp($ignore_case?strtolower($this->Strings($i)):$this->Strings($i), $value)==0)
+										{
+											$this->DeleteByIndex($i);
+											continue;
+										}
+									$i++;
+								}
+						}
+
+					/**
 					 * Returns the number of strings in the list
 					 * @return int
 					 */
