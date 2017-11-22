@@ -9,8 +9,8 @@
 	Module Name: Download
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
-	Version: 1.6.14
-	Revision: 2017-04-10
+	Version: 1.6.15
+	Revision: 2017-11-21
 	Author URI: http://simancms.org/
 	*/
 
@@ -21,18 +21,16 @@
 
 	if (sm_action('attachment', 'showattachedfile'))
 		{
-			$att = getsql("SELECT * FROM ".$sm['t']."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']).' LIMIT 1');
+			$att = getsql("SELECT * FROM ".sm_table_prefix()."downloads WHERE userlevel_download<=".intval($userinfo['id'])." AND id_download=".intval($_getvars['id']).' LIMIT 1');
 			if (!empty($att['id_download']) && file_exists('files/download/attachment'.intval($_getvars['id'])))
 				{
-					$m["module"] = 'download';
-					$special['main_tpl'] = '';
-					$special['no_blocks'] = true;
 					header("Content-type: ".$att['attachment_type']);
 					if (!sm_action('showattachedfile'))
 						header("Content-Disposition: attachment; filename=".basename($att['file_download']));
 					$fp = fopen('files/download/attachment'.intval($_getvars['id']), 'rb');
 					fpassthru($fp);
 					fclose($fp);
+					exit;
 				}
 		}
 
@@ -42,7 +40,7 @@
 			$m["module"] = 'download';
 			sm_title($lang['module_download']['downloads']);
 			$i = 0;
-			$result = execsql("SELECT * FROM ".$sm['t']."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]));
+			$result = execsql("SELECT * FROM ".sm_table_prefix()."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]));
 			while ($row = database_fetch_assoc($result))
 				{
 					$m['files'][$i]['id'] = $row['id_download'];

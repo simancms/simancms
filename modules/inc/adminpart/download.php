@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-04-10
+	//#ver 1.6.15
+	//#revision 2017-11-21
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -18,13 +18,16 @@
 			sm_add_cssfile('stylesheetsadmin.css');
 			if (sm_action('deleteattachment'))
 				{
-					$m["module"] = 'download';
 					sm_title($lang['common']['delete']);
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['common']['delete'];
-					$_msgbox['msg'] = $lang['module_download']['really_want_delete_file'];
-					$_msgbox['yes'] = 'index.php?m=download&d=postdeleteattachment&id='.intval($_getvars["id"]);
-					$_msgbox['no'] = 'index.php?m=download';
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					$ui=new TInterface();
+					$ui->p($lang['module_download']['really_want_delete_file']);
+					$b=new TButtons();
+					$b->Button($lang['no'], 'index.php?m=download');
+					$b->Button($lang['yes'], 'index.php?m=download&d=postdeleteattachment&id='.intval($_getvars["id"]).'&returnto='.urlencode($_getvars['returnto']));
+					$ui->Add($b);
+					$ui->Output(true);
 				}
 			if (sm_action('postdeleteattachment'))
 				{

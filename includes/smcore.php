@@ -455,10 +455,11 @@
 
 	function sm_delete_attachment($id)
 		{
-			global $tableprefix;
 			if (file_exists('files/download/attachment'.intval($id)))
 				unlink('files/download/attachment'.intval($id));
-			deletesql($tableprefix.'downloads', 'id_download', intval($id));
+			TQuery::ForTable(sm_table_prefix().'downloads')
+				->AddWhere('id_download', intval($id))
+				->Remove();
 		}
 
 	function sm_upload_file($upload_var = 'userfile', $upload_path = '', $secondary_index=NULL)
