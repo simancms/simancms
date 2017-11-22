@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-06-07
+	//#ver 1.6.15
+	//#revision 2017-11-21
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -237,11 +237,6 @@
 						$special['pagetitle'] = $modules[$modules_index]['title'];
 					if (sm_is_index_page() && !sm_empty_settings('rewrite_index_title'))
 						$special['pagetitle'] = sm_settings('rewrite_index_title');
-					if (!empty($_msgbox["mode"]))
-						{
-							$module = 'msgbox';
-							include($module.'.php');
-						}
 					$special['categories']['getctg'] = 0;
 					//Main module loading end
 

@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-07-14
+	//#ver 1.6.15
+	//#revision 2017-11-21
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -17,8 +17,7 @@
 		{
 			function siman_delete_menu_line($line_id)
 				{
-					global $tableprefix, $_settings;
-					$result = execsql("SELECT id_ml FROM ".$tableprefix."menu_lines WHERE submenu_from=".intval($line_id));
+					$result = execsql("SELECT id_ml FROM ".sm_table_prefix()."menu_lines WHERE submenu_from=".intval($line_id));
 					while ($row = database_fetch_assoc($result))
 						{
 							siman_delete_menu_line($row['id_ml']);
@@ -28,7 +27,7 @@
 							if (file_exists('./files/img/menuitem'.intval($line_id).'.jpg'))
 								unlink('./files/img/menuitem'.intval($line_id).'.jpg');
 						}
-					execsql("DELETE FROM ".$tableprefix."menu_lines WHERE id_ml=".intval($line_id));
+					execsql("DELETE FROM ".sm_table_prefix()."menu_lines WHERE id_ml=".intval($line_id));
 				}
 
 			define("MENU_ADMINPART_FUNCTIONS_DEFINED", 1);
@@ -89,8 +88,7 @@
 				}
 			if (sm_action('postadd'))
 				{
-					$m["module"] = 'menu';
-					sm_title($lang["add_menu"]);
+					sm_title($lang['module_menu']['add_menu_line']);
 					$id_menu = TQuery::ForTable($sm['t']."menus")
 						->Add('caption_m', dbescape($_postvars["p_caption"]))
 						->Insert();
@@ -98,11 +96,15 @@
 						{
 							siman_upload_image($id_menu, 'menu');
 						}
-					$_msgbox['mode'] = 'yesno';
-					$_msgbox['title'] = $lang['module_menu']['add_menu_line'];
-					$_msgbox['msg'] = $lang['you_want_add_line'];
-					$_msgbox['yes'] = 'index.php?m=menu&d=addline&mid='.$id_menu;
-					$_msgbox['no'] = 'index.php?m=menu&d=listmenu';
+					sm_use('ui.interface');
+					sm_use('ui.buttons');
+					$ui=new TInterface();
+					$ui->p($lang['you_want_add_line']);
+					$b=new TButtons();
+					$b->Button($lang['no'], 'index.php?m=menu&d=listmenu');
+					$b->Button($lang['yes'], 'index.php?m=menu&d=addline&mid='.$id_menu);
+					$ui->Add($b);
+					$ui->Output(true);
 				}
 			if (sm_action('add'))
 				{

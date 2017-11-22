@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-06-27
+	//#ver 1.6.15
+	//#revision 2017-11-21
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -96,15 +96,19 @@
 						}
 					if ($candelete == 1)
 						{
-							$m["module"] = 'news';
-							$_msgbox['mode'] = 'yesno';
-							$_msgbox['title'] = $lang['delete_news'];
-							$_msgbox['msg'] = $lang['really_want_delete_news'];
-							$_msgbox['yes'] = 'index.php?m=news&d=postdelete&nid='.$_getvars["nid"].'&ctg='.$_getvars['ctg'];
+							sm_title($lang['delete_news']);
+							sm_use('ui.interface');
+							sm_use('ui.buttons');
+							$ui=new TInterface();
+							$ui->p($lang['really_want_delete_news']);
+							$b=new TButtons();
 							if ($userinfo['level'] == 3)
-								$_msgbox['no'] = 'index.php?m=news&d=list';
+								$b->Button($lang['no'], 'index.php?m=news&d=list');
 							else
-								$_msgbox['no'] = 'index.php?m=news&d=view&nid='.$_getvars["nid"];
+								$b->Button($lang['no'], 'index.php?m=news&d=view&nid='.intval($_getvars['nid']));
+							$b->Button($lang['yes'], 'index.php?m=news&d=postdelete&nid='.intval($_getvars['nid']).'&ctg='.intval($_getvars['ctg']));
+							$ui->Add($b);
+							$ui->Output(true);
 						}
 				}
 

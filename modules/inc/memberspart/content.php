@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2016-06-27
+	//#ver 1.6.15
+	//#revision 2016-11-21
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -377,15 +377,19 @@
 						}
 					if ($candelete == 1)
 						{
-							$m["module"] = 'content';
-							$_msgbox['mode'] = 'yesno';
-							$_msgbox['title'] = $lang['delete_content'];
-							$_msgbox['msg'] = $lang['module_content']['really_want_delete_text'];
-							$_msgbox['yes'] = 'index.php?m=content&d=postdelete&cid='.$_getvars["cid"].'&ctg='.$_getvars['ctg'];
+							sm_title($lang['delete_content']);
+							sm_use('ui.interface');
+							sm_use('ui.buttons');
+							$ui=new TInterface();
+							$ui->p($lang['module_content']['really_want_delete_text']);
+							$b=new TButtons();
 							if ($sm['u']['level'] < 3)
-								$_msgbox['no'] = 'index.php?m=content&d=viewctg&ctgid='.$_getvars['ctg'];
+								$b->Button($lang['no'], 'index.php?m=content&d=viewctg&ctgid='.intval($_getvars['ctg']));
 							else
-								$_msgbox['no'] = 'index.php?m=content&d=list&ctg='.$_getvars['ctg'];
+								$b->Button($lang['no'], 'index.php?m=content&d=list&ctg='.intval($_getvars['ctg']));
+							$b->Button($lang['yes'], 'index.php?m=content&d=postdelete&cid='.intval($_getvars['cid']).'&ctg='.intval($_getvars['ctg']));
+							$ui->Add($b);
+							$ui->Output(true);
 						}
 				}
 			if (sm_action('postdelete') && ($sm['u']['level']>=intval(sm_settings('content_editor_level')) || !empty($sm['u']['groups'])))
