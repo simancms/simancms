@@ -92,6 +92,7 @@ $lang['common']['auto_login'] = 'Autologin';
 $lang['common']['loading'] = 'Loading';
 $lang['common']['copyright'] = 'Copyright';
 $lang['common']['ok'] = 'OK';
+$lang['common']['cancel']='Cancel';
 $lang['common']['value'] = 'Value';
 $lang['common']['sex'] = 'Sex';
 $lang['common']['birthday'] = 'Birthday';

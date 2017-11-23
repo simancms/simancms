@@ -136,6 +136,7 @@
 	$lang['common']['loading']='Завантаження';
 	$lang['common']['copyright']='Копірайт';
 	$lang['common']['ok']='OK';
+	$lang['common']['cancel']='Скасувати';
 	$lang['common']['value']='Значення';
 	$lang['common']['sex']='Стать';
 	$lang['common']['birthday']='Дата народження';
