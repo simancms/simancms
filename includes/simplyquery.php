@@ -1,5 +1,15 @@
 <?php
 
+	//------------------------------------------------------------------------------
+	//|                                                                            |
+	//|            Content Management System SiMan CMS                             |
+	//|                                                                            |
+	//------------------------------------------------------------------------------
+
+	//==============================================================================
+	//#revision 2017-11-24
+	//==============================================================================
+
 	if (!defined("simplyquery_DEFINED"))
 		{
 
@@ -166,8 +176,7 @@
 							return $this;
 						}
 
-				//$execute - DEPRECATED
-					function Insert($execute = true)
+					function Insert()
 						{
 							$sqlf = '';
 							$sqlv = '';
@@ -185,24 +194,18 @@
 										$sqlv .= '\''.$this->values[$i].'\'';
 								}
 							$this->sql = "INSERT INTO ".$this->tableprefix.$this->tablename." (".$sqlf.") VALUES (".$sqlv.")";
-							if ($execute && !$this->sqlgenerationmode)
+							if (!$this->sqlgenerationmode)
 								return insertsql($this->sql);
 						}
 
-				//Update($keyfield, $keyvalue, $execute=true)
 				//Update($keyfield, $keyvalue)
 				//Update($statement)
-				// $execute - DEPRECATED
 					function Update()
 						{
 							if (func_num_args()>0)
 								$keyfield = func_get_arg(0);
 							if (func_num_args()>1)
 								$keyvalue = func_get_arg(1);
-							if (func_num_args()<3)
-								$execute = true;
-							else
-								$execute = func_get_arg(2);
 							$sql = $this->GetPairs(', ', 'notwhere');
 							$this->sql = "UPDATE ".$this->tableprefix.$this->tablename." SET ".$sql." WHERE ";
 							if (func_num_args() == 1)
@@ -220,12 +223,11 @@
 								return;
 							if (!empty($this->limit))
 								$this->sql .= ' LIMIT '.$this->limit;
-							if ($execute && !$this->sqlgenerationmode)
+							if (!$this->sqlgenerationmode)
 								execsql($this->sql);
 						}
 
-				// $execute - DEPRECATED
-					function Remove($addsql = '', $execute = true)
+					function Remove($addsql = '')
 						{
 							$sql = $this->GetPairs();
 							if (!empty($sql))
@@ -234,7 +236,7 @@
 								$this->sql = "DELETE FROM ".$this->tableprefix.$this->tablename;
 							if (!empty($addsql))
 								$this->sql .= ' '.$addsql;
-							if ($execute && !$this->sqlgenerationmode)
+							if (!$this->sqlgenerationmode)
 								execsql($this->sql);
 						}
 
@@ -507,23 +509,6 @@
 								}
 							return $result;
 						}
-				}
-
-			//DEPRECATED
-			function CheckForNonEmpty($nllist)
-				{
-					$result = true;
-					global $_postvars;
-					$f = nllistToArray($nllist);
-					for ($i = 0; $i<count($f); $i++)
-						{
-							$f[$i] = str_replace("\t", "", $f[$i]);
-							$f[$i] = trim($f[$i]);
-							if (empty($f[$i])) continue;
-							if (empty($_postvars[$f[$i]]))
-								$result = false;
-						}
-					return $result;
 				}
 
 			define("simplyquery_DEFINED", 1);

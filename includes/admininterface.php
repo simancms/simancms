@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-06-16
+	//#revision 2017-11-24
 	//==============================================================================
 
 	if (!defined("admininterface_DEFINED"))
@@ -90,8 +90,6 @@
 								$this->AddOutputObject('bar', $object);
 							elseif (get_class($object) == 'TPanel')
 								$this->AddOutputObject('panel', $object);
-							elseif (get_class($object) == 'TBoardMessages')
-								$this->AddOutputObject('board', $object);
 							elseif (get_class($object) == 'TTabs')
 								$this->AddOutputObject('tabs', $object, 'common_admintabs.tpl', true);
 							elseif (get_class($object) == 'TDashBoard')
@@ -118,11 +116,6 @@
 					function AddGrid($grid)
 						{
 							$this->AddOutputObject('table', $grid);
-						}
-
-					function AddConversation($messages)
-						{
-							$this->AddOutputObject('board', $messages);
 						}
 
 					function AddButtons($buttons)

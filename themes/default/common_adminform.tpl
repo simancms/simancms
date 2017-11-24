@@ -2,38 +2,10 @@
 	{assign var=postfix value=$form.postfix}
 {/if}
 {$form.html_begin}
-<script type="text/javascript">
-{literal}
-function show_admintable_tab{/literal}{$postfix}{literal}(num)
-	{
-		{/literal}
-		{section name=tabsectionindex loop=$form.tabs start=1}{* tab titles *}
-		document.getElementById('adminform-tab-{$smarty.section.tabsectionindex.index}').style.display=({$smarty.section.tabsectionindex.index}==num)?'':'none';
-		document.getElementById('adminform-tabtitle-{$smarty.section.tabsectionindex.index}').style.fontWeight=({$smarty.section.tabsectionindex.index}==num)?'bold':'normal';
-		{/section}
-		{literal}
-	}
-{/literal}
-</script>
 
 {if $form.dont_use_form_tag neq 1}
 <form{foreach name=form_attr_index from=$form.attrs item=attrval key=attrname} {$attrname}="{$attrval}"{/foreach}>
 {/if}
-{if $form.send_fields_info}
-	<input type="hidden" name="adminform_updates_nllist" value="{$form.updates}">
-	<input type="hidden" name="adminform_files_nllist" value="{$form.files}">
-{/if}
-{section name=tabsectionindex loop=$form.tabs}
-{if $smarty.section.tabsectionindex.index eq 1}{* tab definitions *}
-<div id="adminform-tabs-elements" class="adminform-tabs-elements">
-<div id="adminform-tabs-titles">
-	{section name=tabsectionindex2 loop=$form.tabs start=1}{* tab titles *}
-	{if $smarty.section.tabsectionindex2.index gt 1} | {/if}
-		<a id="adminform-tabtitle-{$smarty.section.tabsectionindex2.index}" href="javascript:;" onclick="show_admintable_tab{$postfix}('{$smarty.section.tabsectionindex2.index}')">{$form.tabs[tabsectionindex2].title}</a>
-	{/section}
-</div>
-{/if}
-<div id="adminform-tab-{$smarty.section.tabsectionindex.index}">
 <table width="100%" cellspacing="2" cellpadding="2" id="adminform_table{$postfix}-{$smarty.section.tabsectionindex.index}" class="adminform_table">
 	{foreach name=form_field_index from=$form.fields item=field key=field_name}
 	{if $field.tab eq $smarty.section.tabsectionindex.index}
@@ -97,20 +69,9 @@ function show_admintable_tab{/literal}{$postfix}{literal}(num)
 	{/foreach}
 
 </table>
-</div>
-{/section}
-{if $form.tabscount gt 1}
-</div>{* closed element for tabs div *}
-<div class="clear"></div>
-{/if}
 {if $form.dont_use_form_tag neq 1 and not $form.nosubmitbutton}
 <div class="adminform_savebutton adminform_savebutton_{$form.postfix}">{if $form.savebutton_helper.text neq ""}<span class="adminform_savebutton_helper adminform_savebutton_helper_{$form.postfix} {$form.savebutton_helper.class}">{$form.savebutton_helper.text}</span>{/if}<input type="submit" value="{if $form.savetitle neq ""}{$form.savetitle}{else}{$lang.save}{/if}"></div>
 </form>
 {/if}
 
-<script type="text/javascript">
-{if $form.tabscount gt 1}
-	show_admintable_tab{$postfix}(1);
-{/if}
-</script>
 {$form.html_end}{/strip}

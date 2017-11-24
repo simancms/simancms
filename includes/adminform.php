@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-05-08
+	//#revision 2017-11-24
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -17,8 +17,6 @@
 			class TForm
 				{
 					var $form;
-					var $currentTab;
-					var $tabs;
 					var $firsteditor = true;
 					private $currentname;
 
@@ -33,9 +31,6 @@
 							$this->form['method'] = $method;
 							$this->form['prefix'] = $prefix;
 							$this->form['updates'] = '';
-							$this->form['send_fields_info'] = false;
-							$this->currentTab = 0;
-							$this->form['tabs'][0]['title'] = '';
 							$this->form['postfix'] = TForm::$forms_used;
 							$this->form['tooltip_present'] = false;
 							if ($sm['adminform']['nohighlight'] === true)
@@ -64,14 +59,6 @@
 							return $this->GetFormAttribute('id');
 						}
 
-					function AddTab($title)
-						{
-							$i = count($this->form['tabs']);
-							$this->form['tabs'][$i]['title'] = $title;
-							$this->currentTab = $i;
-							return $this;
-						}
-
 					function SetMethodGet()
 						{
 							$this->form['method'] = 'GET';
@@ -90,7 +77,6 @@
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
 							$this->form['fields'][$name]['type'] = 'separator';
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							$this->SetRowClass('adminform-separator');
 							return $this;
 						}
@@ -125,7 +111,6 @@
 							$this->form['fields'][$name]['caption'] = $title;
 							$this->form['fields'][$name]['labeltext'] = $labeltext;
 							$this->form['fields'][$name]['type'] = 'label';
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -145,7 +130,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'text';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							if (!empty($sm['adminform']['textclass']))
 								$this->SetFieldClass($name, $sm['adminform']['textclass']);
 							return $this;
@@ -159,7 +143,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'password';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -171,7 +154,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'file';
 							$this->form['files'] = addto_nllist($this->form['files'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -183,7 +165,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'statictext';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -194,7 +175,6 @@
 							$this->form['fields'][$name]['type'] = 'hidden';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							$this->SetValue($name, $value);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -204,7 +184,6 @@
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['type'] = 'hidden';
 							$this->SetValue($name, $value);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -217,7 +196,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'textarea';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							if (!empty($sm['adminform']['textareaclass']))
 								$this->SetFieldClass($name, $sm['adminform']['textareaclass']);
 							return $this;
@@ -231,6 +209,12 @@
 							return $this;
 						}
 
+				/**
+				 * @param TButtons $buttons
+				 * @param string|NULL $title
+				 * @param string|NULL $name
+				 * @return $this
+				 */
 					function InsertButtons($buttons, $title = NULL, $name = NULL)
 						{
 							if ($name == NULL)
@@ -289,7 +273,6 @@
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'editor';
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							if (!$this->firsteditor || intval($sm['s']['tinymce_instances_in_tform'])>0)
 								$this->form['fields'][$name]['noinit'] = 1;
 							if ($this->firsteditor)
@@ -307,7 +290,6 @@
 							$this->form['fields'][$name]['type'] = 'checkbox';
 							$this->form['fields'][$name]['checkedvalue'] = $checkedvalue;
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							return $this;
 						}
 
@@ -336,7 +318,6 @@
 							$this->form['fields'][$name]['values'] = $array_values;
 							$this->form['fields'][$name]['labels'] = $array_labels;
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							if (!empty($sm['adminform']['selectclass']))
 								$this->SetFieldClass($name, $sm['adminform']['selectclass']);
 							return $this;
@@ -414,7 +395,6 @@
 							$this->form['fields'][$name]['caption'] = $title;
 							$this->form['fields'][$name]['required'] = $required;
 							$this->form['fields'][$name]['type'] = 'select';
-							$this->form['fields'][$name]['tab'] = $this->currentTab;
 							$list = getsqlarray($sql);
 							for ($i = 0; $i<count($list); $i++)
 								{
@@ -485,7 +465,6 @@
 					function Output()
 						{
 							global $sm;
-							$this->form['tabscount'] = count($this->form['tabs']);
 							$this->form['method'] = strtolower($this->form['method']);
 							if (is_array($this->form['fields']))
 								{
@@ -1049,7 +1028,7 @@
 
 					function SendFieldsInfo()
 						{
-							$this->form['send_fields_info'] = true;
+							//Deprecated
 							return $this;
 						}
 
