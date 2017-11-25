@@ -114,6 +114,12 @@
 							return $this;
 						}
 
+					function Separator($title = ' | ', $style = '')
+						{
+							$this->AddSeparator($title, $style);
+							return $this;
+						}
+
 					function AddToggle($name, $title, $toggle_id_focus, $style = '')
 						{
 							if (!is_array($toggle_id_focus))
