@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-06-30
+	//#ver 1.6.14
+	//#revision 2017-11-25
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -110,7 +110,7 @@
 					sm_use('adminbuttons');
 					$ui = new TInterface();
 					$b = new TButtons();
-					$b->AddButton('add', $lang['register_user'], 'index.php?m=account&d=register');
+					$b->AddButton('add', $lang['register_user'], 'index.php?m=account&d=adminregister');
 					$ui->AddButtons($b);
 					$t = new TGrid();
 					$limit = sm_settings('admin_items_by_page');
@@ -312,6 +312,64 @@
 					sm_delete_group(intval($_getvars['id']));
 					sm_redirect('index.php?m=account&d=listgroups');
 				}
+			if (sm_actionpost('postadminregister'))
+				{
+					if (intval(sm_settings('use_email_as_login'))==0)
+						$login=trim($_postvars['login']);
+					else
+						$login=trim($_postvars['email']);
+					if (intval(sm_settings('use_email_as_login'))==0 && empty($_postvars['login']) || empty($_postvars['password']) || empty($_postvars['email']))
+						$error_message=$lang['messages']['fill_required_fields'];
+					elseif (!is_email($_postvars['email']))
+						{
+							$error_message = $lang['message_bad_email'];
+						}
+					elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('login', dbescape($login))->GetField('id_user'))>0)
+						{
+							$error_message = $lang['message_this_login_present_try_another'];
+						}
+					elseif (intval(TQuery::ForTable($sm['tu'].'users')->Add('email', dbescape($_postvars['email']))->GetField('id_user'))>0)
+						{
+							$error_message = $lang['message_bad_email'];
+						}
+					if (empty($error_message))
+						{
+							sm_extcore();
+							$id_newuser = sm_add_user($login, $_postvars['password'], $_postvars['email'], $_postvars['secret_question'], $_postvars['secret_answer_question'], 1);
+							sm_event('successregister', array($id_newuser));
+							log_write(LOG_LOGIN, $lang['module_account']['log']['user_registered'].': '.$login.'. '.$lang['email'].': '.$email);
+							sm_redirect('index.php?m=account&d=usrlist&sellogin='.urlencode($login));
+						}
+					if (!empty($error_message))
+						sm_set_action('adminregister');
+				}
+			if (sm_action('adminregister'))
+				{
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_title($lang['register']);
+					$ui=new TInterface();
+					if (!empty($error_message))
+						$ui->NotificationError($error_message);
+					$f=new TForm('index.php?m='.sm_current_module().'&d=postadminregister');
+					if (intval(sm_settings('use_email_as_login'))==0)
+						$f->AddText('login', $lang['login_str'], true)
+							->SetFocus();
+					else
+						$f->AddText('email', $lang['common']['email'], true)
+							->SetFocus();
+					$f->AddText('password', $lang['password'], true);
+					if (intval(sm_settings('use_email_as_login'))==0)
+						$f->AddText('email', $lang['common']['email'], true);
+					if (intval(sm_settings('account_disable_secret_question'))!=1)
+						{
+							$f->AddText('secret_question', $lang['secret_question']);
+							$f->AddText('secret_answer_question', $lang['secret_answer_question']);
+						}
+					$f->LoadValuesArray($_postvars);
+					$f->SaveButton($lang['register']);
+					$ui->Add($f);
+					$ui->Output(true);
+				}
 		}
 
-?>

@@ -250,7 +250,7 @@
 					$ui->AddBlock($lang['user_settings']);
 					$dashboard=new TDashBoard();
 					sm_event('onadmindashboardusersstart');
-					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=register', 'useradd');
+					$dashboard->AddItem($lang['register_user'], 'index.php?m=account&d=adminregister', 'useradd');
 					$dashboard->AddItem($lang['user_list'], 'index.php?m=account&d=usrlist', 'user');
 					$dashboard->AddItem($lang['module_account']['groups_management'], 'index.php?m=account&d=listgroups', 'usersettings');
 					$dashboard->AddItem($lang['module_admin']['mass_email'], 'index.php?m=admin&d=massemail', 'email');
