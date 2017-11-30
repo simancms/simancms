@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.12
-	//#revision 2016-08-04
+	//#ver 1.6.15
+	//#revision 2017-11-30
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -21,10 +21,10 @@
 
 	sm_default_action('show');
 
-	if (sm_actionpost("postregister") && (!sm_empty_settings('allow_register') || $userinfo['level']==3))
+	if (sm_actionpost("postregister") && !sm_empty_settings('allow_register'))
 		{
-			$m["module"] = 'account';
-			sm_title($lang["register"]);
+			$m['module'] = 'account';
+			sm_title($lang['register']);
 			sm_extcore();
 			$login = $_postvars["p_login"];
 			$password = $_postvars["p_password"];
@@ -89,7 +89,7 @@
 		}
 	if (sm_action('successregister'))
 		{
-			sm_title($lang["register"]);
+			sm_title($lang['register']);
 			sm_use('admininterface');
 			$ui = new TInterface();
 			$ui->p($lang['success_registration'].'.');
@@ -102,23 +102,21 @@
 		{
 			if (sm_action('getpasswd'))
 				{
-					$m["module"] = 'account';
-					sm_title($lang["get_password"]);
+					$m['module'] = 'account';
+					sm_title($lang['get_password']);
 				}
 			if (sm_action('getpasswd3'))
 				{
-					$m["module"] = 'account';
-					sm_title($lang["get_password"]);
+					$m['module'] = 'account';
+					sm_title($lang['get_password']);
 					sm_extcore();
 					$usr_name = dbescape(strtolower($_getvars["login"]));
 					$usr_answer = dbescape($_postvars["p_answ"]);
 					$usr_newpwd = dbescape(sm_password_hash($_postvars["p_newpwd"], $_getvars["login"]));
-					$sql = "SELECT id_user FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
-					$info = getsql($sql);
+					$info = getsql("SELECT id_user FROM ".$tableusersprefix."users WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''");
 					if (!empty($info['id_user']))
 						{
-							$sql = "UPDATE ".$tableusersprefix."users SET password='$usr_newpwd', random_code='".dbescape(md5($usr_name.microtime(true).rand()))."' WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''";
-							$result = execsql($sql);
+							execsql("UPDATE ".$tableusersprefix."users SET password='$usr_newpwd', random_code='".dbescape(md5($usr_name.microtime(true).rand()))."' WHERE lower(login)='$usr_name' AND answer='$usr_answer' AND answer<>''");
 							log_write(LOG_LOGIN, $lang['get_password'].' - '.$lang['common']['ok']);
 							sm_event('onchangepassword', Array('login' => $_getvars["login"], 'newpassword' => $_postvars["p_newpwd"]));
 							sm_notify($lang['message_forgot_password_finish']);
@@ -127,12 +125,12 @@
 					else
 						{
 							log_write(LOG_LOGIN, $lang['get_password'].' - '.$lang["error"]);
-							$m['mode'] = 'getpasswd2';
+							sm_set_action('getpasswd2');
 						}
 				}
 			if (sm_action('getpasswd2'))
 				{
-					$m["module"] = 'account';
+					$m['module'] = 'account';
 					sm_title($lang["get_password"]);
 					$usr_name = $_getvars["login"];
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login='".dbescape($usr_name)."'";
@@ -143,7 +141,7 @@
 							$m['userdata_login'] = $usr_name;
 						}
 					if (empty($m['secret_question']))
-						$m['mode'] = "wronglogin";
+						sm_set_action('wronglogin');
 				}
 		}
 
@@ -151,8 +149,8 @@
 		{
 			if (!sm_empty_settings('allow_register') || $userinfo['level']==3)
 				{
-					$m["module"] = 'account';
-					sm_title($lang["register"]);
+					$m['module'] = 'account';
+					sm_title($lang['register']);
 					if (intval(sm_settings('use_protect_code')) == 1)
 						siman_generate_protect_code();
 					sm_event('onregister', array(''));
@@ -166,13 +164,13 @@
 		}
 	if (sm_action('login'))
 		{
-			$m["module"] = 'account';
-			sm_title($lang["login_caption"]);
-			if (!empty($_postvars["login_d"]))
+			$m['module'] = 'account';
+			sm_title($lang['login_caption']);
+			if (!empty($_postvars['login_d']))
 				{
 					sm_extcore();
 					sm_event('beforelogincheck');
-					if ($uid=sm_check_user($_postvars["login_d"], $_postvars["passwd_d"]))
+					if ($uid=sm_check_user($_postvars['login_d'], $_postvars['passwd_d']))
 						{
 							sm_event('beforelogin');
 							sm_process_login($uid);
@@ -210,7 +208,7 @@
 						}
 					else
 						{
-							$m['mode'] = "wronglogin";
+							sm_set_action('wronglogin');
 							log_write(LOG_DANGER, $lang['module_account']['log']['user_not_logged'].': '.$usr_name);
 							sm_setfocus('login_d');
 							sm_extcore();
@@ -234,9 +232,9 @@
 				sm_set_action('cabinet');
 			else
 				{
-					sm_title($lang["login_caption"]);
-					$m["module"] = 'account';
-					$m["goto_url"] = $_servervars['REQUEST_URI'];
+					sm_title($lang['login_caption']);
+					$m['module'] = 'account';
+					$m['goto_url'] = $_servervars['REQUEST_URI'];
 					if ($modules_index == 0)
 						sm_setfocus('login_d');
 					if (!empty($userinfo['id']))
@@ -260,5 +258,3 @@
 				else
 					sm_redirect(sm_homepage());
 			}
-
-?>
