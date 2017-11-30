@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.14
-	//#revision 2017-11-25
+	//#revision 2017-11-30
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -100,9 +100,9 @@
 			if (sm_action('usrlist'))
 				{
 					add_path_control();
-					add_path($lang["user_list"], 'index.php?m=account&d=usrlist');
+					add_path($lang['user_list'], 'index.php?m=account&d=usrlist');
 					$m["module"] = 'account';
-					$m["title"] = $lang["user_list"];
+					$m["title"] = $lang['user_list'];
 					if (empty($_getvars['sellogin']))
 						$_getvars['sellogin'] = $_postvars['sellogin'];
 					sm_use('admininterface');
@@ -347,6 +347,9 @@
 				{
 					sm_use('ui.interface');
 					sm_use('ui.form');
+					add_path_control();
+					add_path($lang['user_list'], 'index.php?m=account&d=usrlist');
+					add_path_current();
 					sm_title($lang['register']);
 					$ui=new TInterface();
 					if (!empty($error_message))
