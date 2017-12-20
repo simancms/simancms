@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-11-24
+	//#revision 2017-12-20
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -417,10 +417,20 @@
 
 					function SetValue($name, $value)
 						{
-							if (!is_array($value))
-								$this->form['data'][$name] = htmlescape($value);
+							if ($this->GetType($name)==TForm::FieldTypeTagLabel())
+								{
+									if (!is_array($value))
+										$this->form['fields'][$name]['labeltext']=htmlescape($value);
+									else
+										$this->form['fields'][$name]['labeltext']=$value;
+								}
 							else
-								$this->form['data'][$name] = $value;
+								{
+									if (!is_array($value))
+										$this->form['data'][$name]=htmlescape($value);
+									else
+										$this->form['data'][$name]=$value;
+								}
 							return $this;
 						}
 
