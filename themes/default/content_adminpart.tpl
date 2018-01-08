@@ -1,27 +1,3 @@
-{if $modules[$index].mode eq "list"}
-{include file="block_begin.tpl"}
-<div align="center"><form action="index.php">
-<input type="hidden" name="m" value="content">
-<input type="hidden" name="d" value="list">
-<select name="ctg" size="1">
-	<option value=""{if $modules[$index].ctg_id eq ""} SELECTED{/if}>{$lang.all_categories}</option>
-	{section name=i loop=$modules[$index].ctg}
-	<option value="{$modules[$index].ctg[i].id}"{if $modules[$index].ctg_id eq $modules[$index].ctg[i].id} SELECTED{/if}>{section name=j loop=$modules[$index].ctg[i].level start=1} - {/section}{$modules[$index].ctg[i].title}</option>
-	{/section}
-</select><input type="submit" value="{$lang.show}">
-</form></div>
-{include file="common_admintable.tpl" table=$modules[$index].table}
-{if $modules[$index].showall neq "1" and $modules[$index].pages.pages neq "0" and $modules[$index].pages.pages neq ""}
-<div align="right"><a href="index.php?m=content&d=list&ctg={$modules[$index].ctg_id}&showall=1">{$lang.common.show_all}</a></div>
-{include file="pagebar.tpl"}
-{/if}
-<br />
-<a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}">{$lang.common.add}</a>
-(<a href="index.php?m=content&d=add{if $modules[$index].ctg_id neq ""}&ctg={$modules[$index].ctg_id}{/if}&exteditor=off">{$lang.common.html}</a>)
-<p align="right"><a href="http://{$_settings.help_resource}/index.php?m=help&q=content_list_content&lang={$_settings.default_language}" target="_blank">[? {$lang.help}]</a></p>
-{include file="block_end.tpl"}
-{/if}
-
 {if $modules[$index].mode eq "addctg"}
 {include file="block_begin.tpl"}
 <form action="index.php?m=content&d=postaddctg" method="post" name="post">															
