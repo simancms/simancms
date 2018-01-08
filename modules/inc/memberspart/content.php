@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.15
-	//#revision 2016-11-21
+	//#revision 2018-01-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -255,7 +255,8 @@
 						}
 					$f->AddText('title_content', $lang['title'], true)
 						->SetFocus();
-					$f->AddSelectVL('id_category_c', $lang['common']['category'], $v, $l, true);
+					$f->AddSelectVL('id_category_c', $lang['common']['category'], $v, $l, true)
+						->WithValue(intval($_getvars['ctg']));
 					if (intval(sm_settings('content_use_image'))==1)
 						{
 							$f->AddFile('userfile', $lang['common']['image']);
@@ -455,5 +456,3 @@
 			if ($sm['u']['level'] > 2)
 				include('modules/inc/adminpart/content.php');
 		}
-
-?>

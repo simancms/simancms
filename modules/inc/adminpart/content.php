@@ -6,14 +6,14 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-07-14
+	//#ver 1.6.15
+	//#revision 2018-01-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
 		exit('Hacking attempt!');
 
-	if ($userinfo['level'] > 2)
+	if ($sm['u']['level'] > 2)
 		{
 			if (sm_action('admin'))
 				{
@@ -225,23 +225,45 @@
 			if (sm_action('list'))
 				{
 					sm_extcore();
-					if (intval($_getvars['showall']) == 1)
-						$showall = 1;
-					$m['showall'] = $showall;
-					$from_record = abs(intval($_getvars['from']));
-					$ctg_id = intval($_getvars['ctg']);
-					if ($showall != 1)
+					sm_use('ui.interface');
+					sm_use('ui.grid');
+					sm_use('ui.form');
+					sm_use('ui.buttons');
+					$ui=new TInterface();
+					$f=new TForm('index.php');
+					$f->SetMethodGet();
+					$f->AddHidden('m')->WithValue('content');
+					$f->AddHidden('d')->WithValue('list');
+					$f->AddHidden('search')->WithValue('yes');
+					$ctgs=siman_load_ctgs_content();
+					$v=Array();
+					$l=Array();
+					for ($i=0; $i<count($ctgs); $i++)
 						{
-							if (empty($from_record)) $from_record = 0;
-							$from_page = ceil(($from_record + 1) / $_settings['admin_items_by_page']);
-							$m['pages']['url'] = 'index.php?m=content&d=list&ctg='.$ctg_id;
-							$m['pages']['selected'] = $from_page;
-							$m['pages']['interval'] = intval($_settings['admin_items_by_page']);
+							$v[]=$ctgs[$i]['id'];
+							$l[]=($ctgs[$i]['level']>1?str_repeat('- ', $ctgs[$i]['level']-1):'').$ctgs[$i]['title'];
 						}
-					$m['ctg_id'] = $ctg_id;
-					$m['ctg'] = siman_load_ctgs_content();
-					$m['title'] = $lang['list_content'];
-					$m["module"] = 'content';
+					unset($ctgs);
+					$f->AddSelectVL('ctg', $lang['common']['category'], $v, $l);
+					$f->SelectAddBeginVL('ctg', '', $lang['all_categories']);
+					$f->AddSelectVL('showall', $lang['common']['show_all'], Array('', 'yes'), Array($lang['no'], $lang['yes']));
+					$f->LoadValuesArray($_getvars);
+					$f->SaveButton($lang['search']);
+					$f->SetDOMID('content-search-form');
+					if (empty($_getvars['ctg']) && empty($_getvars['showall']) && empty($_getvars['search']))
+						$f->SetStyleGlobal('display:none;');
+					$ui->Add($f);
+					$b=new TButtons();
+					$b->Button($lang['common']['add'], 'index.php?m=content&d=add&ctg='.intval($_getvars['ctg']));
+					$b->Button($lang['common']['add'].' ('.$lang['common']['html'].')', 'index.php?m=content&d=add&exteditor=off&ctg='.intval($_getvars['ctg']));
+					$b->AddToggle('searchswitch', $lang['search'], 'content-search-form');
+					if (!empty($_getvars['showall']))
+						{
+							$limit=abs(intval(sm_settings('admin_items_by_page')));
+							$offset=abs(intval($_getvars['from']));
+						}
+					$ctg_id = intval($_getvars['ctg']);
+					sm_title($lang['list_content']);
 					add_path_modules();
 					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
 					add_path($lang['list_content'], "index.php?m=content&d=list");
@@ -268,9 +290,8 @@
 						$sql .= " ORDER BY priority_content DESC";
 					else
 						$sql .= " ORDER BY title_content ASC";
-					if ($showall != 1)
-						$sql .= " LIMIT ".intval($_settings['admin_items_by_page'])." OFFSET ".intval($from_record);
-					sm_use('admintable');
+					if (!empty($_getvars['showall']))
+						$sql .= " LIMIT ".intval($limit)." OFFSET ".intval($offset);
 					$t=new TGrid('edit');
 					$t->AddCol('title', $lang['common']['title'], '100%');
 					$t->AddEdit();
@@ -304,15 +325,16 @@
 								}
 							$t->NewRow();
 						}
-					$m['table']=$t->Output();
-
-					if ($showall != 1)
+					$ui->Add($b);
+					$ui->Add($t);
+					$ui->Add($b);
+					if (!empty($_getvars['showall']))
 						{
 							$sql = "SELECT count(*) FROM ".$tableprefix."content";
 							if (!empty($ctg_id)) $sql .= " WHERE id_category_c = ".intval($ctg_id);
-							$m['pages']['records'] = intval(getsqlfield($sql));
-							$m['pages']['pages'] = ceil($m['pages']['records'] / $m['pages']['interval']);
+							$ui->AddPagebarParams(intval(getsqlfield($sql)), $limit, $offset);
 						}
+					$ui->Output(true);
 				}
 			if (sm_action('exchange'))
 				{
@@ -331,5 +353,3 @@
 						sm_redirect('index.php?m=content&d=list&ctg='.(intval($_getvars['ctg'])).'&showall='.(intval($_getvars['showall'])));
 				}
 		}
-
-?>

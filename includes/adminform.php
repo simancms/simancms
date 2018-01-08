@@ -1079,6 +1079,12 @@
 							return $this;
 						}
 
+					function SetStyleGlobal($style)
+						{
+							$this->SetFormAttribute('style', $style);
+							return $this;
+						}
+
 					function javascriptCode($jscode)
 						{
 							$this->form['html_end'].='<script type="text/javascript">'.$jscode.'</script>';
