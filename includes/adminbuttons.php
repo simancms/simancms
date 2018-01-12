@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-04-10
+	//#revision 2018-01-12
 	//==============================================================================
 
 	if (!defined("adminbuttons_DEFINED"))
@@ -117,6 +117,12 @@
 					function Separator($title = ' | ', $style = '')
 						{
 							$this->AddSeparator($title, $style);
+							return $this;
+						}
+
+					function Toggle($title, $toggle_id_focus, $style = '')
+						{
+							$this->AddToggle('', $title, $toggle_id_focus, $style);
 							return $this;
 						}
 
