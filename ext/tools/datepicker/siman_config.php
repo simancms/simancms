@@ -12,6 +12,6 @@
 			if (sm_current_language()=='ua' || sm_current_language()=='ukr')
 				sm_add_jsfile('ext/tools/datepicker/bootstrap-datepicker.uk.min.js', true, Array('charset'=>'UTF-8'));
 			elseif (file_exists('ext/tools/datepicker/bootstrap-datepicker.'.sm_current_language().'.min.js'))
-				sm_add_jsfile(file_exists('ext/tools/datepicker/bootstrap-datepicker.'.sm_current_language().'.min.js'), true, Array('charset'=>'UTF-8'));
+				sm_add_jsfile('ext/tools/datepicker/bootstrap-datepicker.'.sm_current_language().'.min.js', true, Array('charset'=>'UTF-8'));
 			define("DATEPICKER_FUNCTIONS_DEFINED", 1);
 		}
