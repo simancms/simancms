@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-01-12
+	//#revision 2018-01-22
 	//==============================================================================
 
 	if (!defined("adminbuttons_DEFINED"))
@@ -212,6 +212,48 @@
 								$buttonname = $this->currentbuttonname;
 							$this->bar['buttons'][$buttonname]['class'] .= (empty($this->bar['buttons'][$buttonname]['class']) ? '' : ' ').$classname;
 							return $this;
+						}
+
+					function HighlightSuccess($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-success', $buttonname);
+						}
+
+					function HighlightError($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-error', $buttonname);
+						}
+
+					function HighlightWarning($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-warning', $buttonname);
+						}
+
+					function HighlightPrimary($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-primary', $buttonname);
+						}
+
+					function HighlightInfo($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-info', $buttonname);
+						}
+
+					function HighlightAttention($buttonname = NULL)
+						{
+							if ($buttonname == NULL)
+								$buttonname = $this->currentbuttonname;
+							$this->AddClassname('ab-highlight-attention', $buttonname);
 						}
 
 					function SetAttr($attrname, $attrvalue, $buttonname = NULL)

@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.14
+	Version: 1.6.15
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -128,6 +128,22 @@
 					$b->DropDownOnClick('Dropdown OnClick', "alert('OnClick');");
 					$b->DropDownMessageBox('Dropdown Confirmation', 'http://simancms.org/');
 					$ui->Add($b);
+					unset($b);
+					$ui->AddBlock('Highlights');
+					$btnh=new TButtons();
+					$btnh->Button('Success', 'index.php?m=demo&d=buttons')
+						->HighlightSuccess();
+					$btnh->Button('Error', 'index.php?m=demo&d=buttons')
+						->HighlightError();
+					$btnh->Button('Warning', 'index.php?m=demo&d=buttons')
+						->HighlightWarning();
+					$btnh->Button('Primary', 'index.php?m=demo&d=buttons')
+						->HighlightPrimary();
+					$btnh->Button('Information', 'index.php?m=demo&d=buttons')
+						->HighlightInfo();
+					$btnh->Button('Attention', 'index.php?m=demo&d=buttons')
+						->HighlightAttention();
+					$ui->Add($btnh);
 					$ui->Output(true);
 				}
 			//end-buttons
