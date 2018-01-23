@@ -334,13 +334,11 @@
 	//Blocks
 	$lang['static_blocks']='Статичні блоки';
 	$lang['module_name']='Назва модуля';
-	$lang['center_panel']='Середня панель';
-	$lang['left_panel']='Ліва панель';
-	$lang['right_panel']='Права панель';
 	$lang['short_block_name']='Коротка назва блоку';
 	$lang['show_on']='Показувати на';
 	$lang['show_on_all_pages']='всіх сторінках';
 	$lang['show_on_category']='Категорія';
+	$lang['module_blocks']['main_panel']='Основна панель';
 	$lang['module_blocks']['show_on']='Показувати на';
 	$lang['module_blocks']['dont_show_on']='Не показувати на';
 	$lang['module_blocks']['no_borders']='Вимкнути обрамлення';

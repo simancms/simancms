@@ -205,7 +205,6 @@
 				}
 			if (sm_action('view'))
 				{
-					$m["module"] = 'blocks';
 					sm_use('smblock');
 					sm_use('admintable');
 					sm_use('admininterface');
@@ -219,7 +218,7 @@
 					$q->OrderBy('panel_block, position_block');
 					$q->Select();
 					$t=new TGrid('edit');
-					$t->AddCol('title', $lang['center_panel'], '95%');
+					$t->AddCol('title', $lang['module_blocks']['main_panel'], '95%');
 					$t->AddCol('open', $lang['common']['open'], '5%');
 					$t->AddCol('up', '', '16', $lang['up']);
 					$t->AddCol('down', '', '16', $lang['down']);
