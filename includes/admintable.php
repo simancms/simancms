@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-10-03
+	//#revision 2018-01-29
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -369,6 +369,17 @@
 							$this->rownumber=$index;
 							while(count($this->table['rows'])<$this->rownumber)
 								$this->table['rows'][]=Array();
+						}
+
+					function RemoveRow($row_index)
+						{
+							if ($row_index<=$this->RowCount())
+								{
+									array_splice($this->table['rows'], $row_index, 1);
+									//Todo: $this->table['rowparams']
+									if ($row_index+1<=$this->rownumber)
+										$this->rownumber--;
+								}
 						}
 
 					function NextRow()
