@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-01-22
+	//#revision 2018-02-07
 	//==============================================================================
 
 	if (!defined("adminbuttons_DEFINED"))
@@ -34,6 +34,11 @@
 								$this->SetBeginHTML($sm['adminbuttons']['htmlbegin']);
 							if (!empty($sm['adminbuttons']['htmlend']))
 								$this->SetEndHTML($sm['adminbuttons']['htmlend']);
+						}
+
+					function SetTitleForBar($buttonbar_title)
+						{
+							$this->bar['buttonbar_title'] = $buttonbar_title;
 						}
 
 					function SetBeginHTML($html)
