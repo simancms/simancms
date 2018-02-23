@@ -288,6 +288,15 @@
 							$this->html('<div id="'.$id.'" class="ui-ajax-loading">Loading...</div>');
 							$this->javascript('$(document).ready(function(){$("#'.$id.'").load( "'.$url.'");});');
 						}
+
+					function HasElements()
+						{
+							if ($this->currentblock>0 || intval($this->blocks[0]['itemscount'])>0)
+								return true;
+							else
+								return false;
+						}
+
 				}
 
 			class TInterface extends TGenericInterface
