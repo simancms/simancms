@@ -920,26 +920,28 @@
 						{
 							global $sm, $lang;
 							sm_use('datepicker');
-							if (empty($format))
-								{
-									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
-										$format = 'dd.mm.yyyy';
-									else
-										$format = 'mm/dd/yyyy';
-								}
-							if ($weekStart === NULL)
-								{
-									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
-										$weekStart = 1;
-									else
-										$weekStart = 0;
-								}
 							if ($language === NULL)
 								{
 									if (sm_current_language() == 'ukr' || sm_current_language() == 'ua')
 										$language = 'uk';
 									else
 										$language = 'en';
+								}
+							if ($language=='ukr' || $language=='ua')
+								$language = 'uk';
+							if (empty($format))
+								{
+									if ($language == 'uk')
+										$format = 'dd.mm.yyyy';
+									else
+										$format = 'mm/dd/yyyy';
+								}
+							if ($weekStart === NULL)
+								{
+									if ($language == 'uk')
+										$weekStart = 1;
+									else
+										$weekStart = 0;
 								}
 							if ($name === NULL)
 								$name = $this->currentname;
