@@ -21,7 +21,7 @@
 				{section name=i loop=$_settings.sidepanel_count+1 start=1}
 				<option value="{$smarty.section.i.index}"{if $smarty.section.i.index eq 1} SELECTED{/if}>{$lang.panel} {$smarty.section.i.index}</option>
 				{/section}
-				<option value="c">{$lang.center_panel}</option>
+				<option value="c">{$lang.module_blocks.main_panel}</option>
 			</select>
 		</td>
 	</tr>
@@ -119,7 +119,7 @@
 				{section name=i loop=$_settings.sidepanel_count+1 start=1}
 				<option value="{$smarty.section.i.index}"{if $smarty.section.i.index eq $modules[$index].panel_block} SELECTED{/if}>{$lang.panel} {$smarty.section.i.index}</option>
 				{/section}
-				<option value="c"{if $modules[$index].panel_block eq "c"} SELECTED{/if}>{$lang.center_panel}</option>
+				<option value="c"{if $modules[$index].panel_block eq "c"} SELECTED{/if}>{$lang.module_blocks.main_panel}</option>
 			</select>
 		</td>
 	</tr>

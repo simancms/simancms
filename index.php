@@ -87,8 +87,7 @@
 
 			$special['sql']['count'] = 0;
 
-			if (count($_getvars) == 0)
-				$special['is_index_page'] = 1;
+			sm_is_index_page();
 
 			if (empty($module) || strpos($module, ':') || strpos($module, '.') || strpos($module, '/') || strpos($module, '\\'))
 				{

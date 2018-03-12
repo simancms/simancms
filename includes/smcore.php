@@ -938,6 +938,19 @@
 	function sm_is_index_page()
 		{
 			global $sm;
+			if (!array_key_exists('is_index_page', $sm['s']))
+				{
+					$get=$sm['g'];
+					unset($get['utm_source']);
+					unset($get['utm_medium']);
+					unset($get['utm_campaign']);
+					unset($get['utm_term']);
+					unset($get['utm_content']);
+					if (count($get)==0)
+						$sm['s']['is_index_page']=1;
+					else
+						$sm['s']['is_index_page']=0;
+				}
 			return intval($sm['s']['is_index_page'])==1;
 		}
 	
