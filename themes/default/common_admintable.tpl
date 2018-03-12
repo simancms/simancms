@@ -134,26 +134,22 @@ function atdropdowncancelclosetime{$postfix}()
 					{/if}
 				{/if}
 			{/if}
-			{if $column.replace_image neq ""}
-				<img src="{$column.replace_image}" border="0">
-			{else}
-				{if $column.replace_text neq ""}
-					{$column.replace_text}			
-				{elseif $table.rows[table_row_index].$column_name.image neq ""}
-					<img src="{$table.rows[table_row_index].$column_name.image}" border="0">
-				{else}
-					{if $table.rows[table_row_index].$column_name.element eq "select"}
-						<select{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach}>
-							{section name=table_row_index_section loop=$table.rows[table_row_index].$column_name.values}
-								<option value="{$table.rows[table_row_index].$column_name.values[table_row_index_section]}"{if $table.rows[table_row_index].$column_name.values[table_row_index_section] eq $table.rows[table_row_index].$column_name.data} SELECTED{/if}>{$table.rows[table_row_index].$column_name.labels[table_row_index_section]}</option>
-							{/section}
-						</select>
-					{elseif $table.rows[table_row_index].$column_name.element neq ""}
-						<input{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach} />{if $table.rows[table_row_index].$column_name.element eq "storedlabel"} {$table.rows[table_row_index].$column_name.data}{/if}
-					{else}
-						{$table.rows[table_row_index].$column_name.data}
-					{/if}
-				{/if}
+			{if $table.rows[table_row_index].$column_name.image neq ""}
+				<img src="{$table.rows[table_row_index].$column_name.image}" border="0">
+			{elseif $table.rows[table_row_index].$column_name.element eq "select"}
+				<select{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach}>
+					{section name=table_row_index_section loop=$table.rows[table_row_index].$column_name.values}
+						<option value="{$table.rows[table_row_index].$column_name.values[table_row_index_section]}"{if $table.rows[table_row_index].$column_name.values[table_row_index_section] eq $table.rows[table_row_index].$column_name.data} SELECTED{/if}>{$table.rows[table_row_index].$column_name.labels[table_row_index_section]}</option>
+					{/section}
+				</select>
+			{elseif $table.rows[table_row_index].$column_name.element neq ""}
+				<input{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach} />{if $table.rows[table_row_index].$column_name.element eq "storedlabel"} {$table.rows[table_row_index].$column_name.data}{/if}
+			{elseif $table.rows[table_row_index].$column_name.data neq ""}
+				{$table.rows[table_row_index].$column_name.data}
+			{elseif $column.default_image neq ""}
+				<img src="{$column.default_image}" border="0">
+			{elseif $column.default_text neq ""}
+				{$column.default_text}
 			{/if}
 			{if $column.to_menu eq "1"}
 				</nobr></a>

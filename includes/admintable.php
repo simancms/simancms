@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-01-29
+	//#revision 2018-03-10
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -57,7 +57,7 @@
 							return $this;
 						}
 
-					function AddCol($name, $title, $width = '', $hint = '', $replace_text = '', $replace_image = '', $messagebox = 0, $messagebox_text = '')
+					function AddCol($name, $title, $width = '', $hint = '', $default_text = '', $default_image = '', $messagebox = 0, $messagebox_text = '')
 						{
 							global $sm;
 							$this->table['columns'][$name]['caption'] = $title;
@@ -65,10 +65,10 @@
 							if (empty($hint))
 								$hint=$title;
 							$this->table['columns'][$name]['hint'] = htmlescape(strip_tags($hint));
-							$this->table['columns'][$name]['replace_text'] = $replace_text;
+							$this->table['columns'][$name]['default_text'] = $default_text;
 							$this->table['columns'][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
-							if (!empty($replace_image) && strpos($replace_image, '/') === false)
-								$this->table['columns'][$name]['replace_image'] = TGrid::ImageURL($replace_image);
+							if (!empty($default_image) && strpos($default_image, '/') === false)
+								$this->table['columns'][$name]['default_image'] = TGrid::ImageURL($default_image);
 							$this->table['columns'][$name]['messagebox'] = $messagebox;
 							$this->table['columns'][$name]['messagebox_text'] = $messagebox_text;
 							return $this;
@@ -524,12 +524,13 @@
 							return $image_name;
 						}
 
-					function Image($name, $replace_image)
+					function Image($name, $image_url)
 						{
-							if (empty($replace_image))
-								return $this;
-							$this->table['rows'][$this->rownumber][$name]['imagepath'] = true;//DEPRECATED: Left for compatibility with 1.6.9 and less
-							$this->table['rows'][$this->rownumber][$name]['image'] = TGrid::ImageURL($replace_image);
+							if (!empty($image_url))
+								{
+									$this->table['rows'][$this->rownumber][$name]['imagepath']=true;//DEPRECATED: Left for compatibility with 1.6.9 and less
+									$this->table['rows'][$this->rownumber][$name]['image']=TGrid::ImageURL($image_url);
+								}
 							return $this;
 						}
 
