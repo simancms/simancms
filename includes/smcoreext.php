@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-05-08
+	//#ver 1.6.15
+	//#revision 2018-03-13
 	//==============================================================================
 
 	function sm_add_user($login, $password, $email, $question = '', $answer = '', $user_status = '1')
@@ -151,6 +151,17 @@
 			$q->Insert();
 		}
 
+	function sm_tempdata_updatetext($type, $identifier, $new_data_value, $timetolive = NULL)
+		{
+			$q=new TQuery(sm_table_prefix()."tempdata");
+			$q->Add('data_td_text', dbescape($new_data_value));
+			if ($timetolive!==NULL)
+				$q->Add('deleteafter_td', time()+intval($timetolive));
+			$q->AddWhere('type_td', dbescape($type));
+			$q->AddWhere('identifier_td', dbescape($identifier));
+			$q->Update();
+		}
+
 	function sm_tempdata_addint($type, $identifier, $data, $timetolive = 3600)
 		{
 			global $tableprefix;
@@ -160,6 +171,17 @@
 			$q->Add('data_td_int', intval($data));
 			$q->Add('deleteafter_td', time() + intval($timetolive));
 			$q->Insert();
+		}
+
+	function sm_tempdata_updateint($type, $identifier, $new_data_value, $timetolive = NULL)
+		{
+			$q=new TQuery(sm_table_prefix()."tempdata");
+			$q->Add('data_td_int', intval($new_data_value));
+			if ($timetolive!==NULL)
+				$q->Add('deleteafter_td', time()+intval($timetolive));
+			$q->AddWhere('type_td', dbescape($type));
+			$q->AddWhere('identifier_td', dbescape($identifier));
+			$q->Update();
 		}
 
 	function sm_tempdata_gettext($type, $identifier, $data = NULL)
