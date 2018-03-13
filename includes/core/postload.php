@@ -6,22 +6,22 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-04-17
+	//#ver 1.6.15
+	//#revision 2018-03-13
 	//==============================================================================
 
 	//System cleanup
-	if ($userinfo['level'] == 3 && $_settings['next_system_cleanup'] <= time())
+	if (intval(sm_settings('next_system_cleanup'))<=time())
 		{
 			sm_extcore();
-			sm_update_settings('next_system_cleanup', time() + (empty($_settings['next_system_cleanup_interval']) ? 86400 : intval($_settings['next_system_cleanup_interval'])));
+			sm_update_settings('next_system_cleanup', time()+(!sm_has_settings('next_system_cleanup_interval')?86400:intval(sm_settings('next_system_cleanup_interval'))));
 			sm_autobannedip_cleanup();
 			sm_event('systemcleanup', Array());
 		}
 
 	//Postload modules begin
 	sm_event('beforepostload', Array());
-	$postloadmodules = nllistToArray($_settings['postload_modules']);
+	$postloadmodules = nllistToArray(sm_settings('postload_modules'));
 	for ($postloadmodulesindex = 0; $postloadmodulesindex < count($postloadmodules); $postloadmodulesindex++)
 		{
 			if (strpos($postloadmodules[$postloadmodulesindex], ':')!==false || strpos($postloadmodules[$postloadmodulesindex], '.')!==false || strpos($postloadmodules[$postloadmodulesindex], '/')!==false || strpos($postloadmodules[$postloadmodulesindex], '\\')!==false || empty($postloadmodules[$postloadmodulesindex]))
@@ -105,7 +105,7 @@
 	unset($sm['cache']);
 
 	//System temp table cleaning
-	if (intval($_settings['next_clean_temptable']) <= time())
+	if (intval(sm_settings('next_clean_temptable')) <= time())
 		{
 			sm_extcore();
 			$clean_temptable_interval = sm_get_settings('clean_temptable_interval', 'general');
