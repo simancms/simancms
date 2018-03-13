@@ -107,6 +107,8 @@
 						{
 							if (strcmp($banip[$i], $_servervars['REMOTE_ADDR']) == 0)
 								{
+									@header('HTTP/1.0 403 Forbidden');
+									@header('Retry-After: 3600');
 									if (!$sm['s']['nosmarty'])
 										{
 											$smarty->assign('errorname', 'banerror');
@@ -128,6 +130,8 @@
 										{
 											if (!$sm['s']['nosmarty'])
 												{
+													@header('HTTP/1.0 403 Forbidden');
+													@header('Retry-After: 3600');
 													$smarty->assign('errorname', 'banerror');
 													$smarty->display('error.tpl');
 												}
