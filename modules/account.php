@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.15
-	//#revision 2017-11-30
+	//#revision 2018-03-19
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -97,13 +97,23 @@
 			$ui->Output(true);
 		}
 
-
 	if (intval(sm_settings('allow_forgot_password')) == 1)
 		{
 			if (sm_action('getpasswd'))
 				{
-					$m['module'] = 'account';
+					sm_use('ui.interface');
+					sm_use('ui.form');
 					sm_title($lang['get_password']);
+					$ui=new TInterface();
+					$f=new TForm('index.php');
+					$f->SetMethodGet();
+					$f->AddHidden('m', sm_current_module());
+					$f->AddHidden('d', 'getpasswd2');
+					$f->AddText('login', $lang['login_str'])
+						->SetFocus();
+					$f->SaveButton($lang['get_password']);
+					$ui->Add($f);
+					$ui->Output(true);
 				}
 			if (sm_action('getpasswd3'))
 				{
@@ -133,7 +143,7 @@
 					$m['module'] = 'account';
 					sm_title($lang["get_password"]);
 					$usr_name = $_getvars["login"];
-					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login='".dbescape($usr_name)."'";
+					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login='".dbescape(strtolower($usr_name))."'";
 					$result = execsql($sql);
 					while ($row = database_fetch_object($result))
 						{
