@@ -266,7 +266,7 @@
 					sm_title($lang['upload_image']);
 					add_path_control();
 					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
-					add_path($lang['upload_image'], 'index.php?m=admin&d=uplimg');
+					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					$ui = new TInterface();
@@ -615,6 +615,9 @@
 					sm_title($lang['common']['image']);
 					sm_use('ui.interface');
 					sm_use('ui.buttons');
+					add_path_control();
+					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
+					add_path_current();
 					$ui = new TInterface();
 					$ui->html('<div align="center">');
 					$ui->html('<img src="files/img/'.$_getvars['path'].'" width="400" />');
@@ -632,7 +635,7 @@
 					sm_use('ui.buttons');
 					sm_use('ui.form');
 					add_path_control();
-					add_path($lang['module_admin']['images_list'], 'index.php?m=admin&d=listimg');
+					add_path_current();
 					$ui=new TInterface();
 					$ui->div_open('searchimg', '', empty($_getvars['filter'])?'display:none;':'');
 					$f=new TForm('index.php');
