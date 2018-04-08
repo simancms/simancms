@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-07-14
+	//#ver 1.6.15
+	//#revision 2018-04-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -73,7 +73,7 @@
 							if (!empty($sm['p']['url']))
 								sm_fs_update($sm['p']['title_category'], 'index.php?m=news&d=listnews&ctg='.$ctgid, $sm['p']['url']);
 							if (sm_action('postadd'))
-								sm_notify($lang['add_content_category_successful']);
+								sm_notify($lang['operation_completed']);
 							if (!empty($_getvars['returnto']))
 								sm_redirect($_getvars['returnto']);
 							else
@@ -137,8 +137,8 @@
 						}
 					if (!empty($sm['p']))
 						$f->LoadAllValues($sm['p']);
-					$ui->Output(true);
 					$ui->Add($f);
+					$ui->Output(true);
 				}
 			if (sm_action('postdeletectg'))
 				{
@@ -160,7 +160,7 @@
 					$q=new TQuery($sm['t'].'news');
 					$q->Add('id_category_n', 1);
 					$q->Update('id_category_n', intval($id_ctg));
-					sm_notify($lang['delete_content_category_successful']);
+					sm_notify($lang['operation_completed']);
 					sm_redirect('index.php?m=news&d=listctg');
 					sm_event('postdeletectgnews', array($id_ctg));
 				}

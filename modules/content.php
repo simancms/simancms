@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
 	Version: 1.6.15
-	Revision: 2017-11-21
+	Revision: 2018-04-08
 	Author URI: http://simancms.org/
 	*/
 

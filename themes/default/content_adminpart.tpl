@@ -1,4 +1,4 @@
-{if $modules[$index].mode eq "addctg"}
+{if $modules[$index].mode eq "addctgold"}
 {include file="block_begin.tpl"}
 <form action="index.php?m=content&d=postaddctg" method="post" name="post">															
 {$lang.caption_category}: <input type="text" name="p_title_category" size="40" value=""><br />

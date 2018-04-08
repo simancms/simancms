@@ -280,15 +280,11 @@
 	$lang["type_content"]='Тип тексту';
 	$lang["type_content_HTML"]='HTML текст';
 	$lang["type_content_simple_text"]='Звичайний текст';
-	$lang["add_content_category_successful"]='Категорію текстів додано';
-	$lang["edit_content_category_successful"]='Категорію текстів відредаговано';
-	$lang["delete_content_category_successful"]='Категорію текстів видалено';
 	$lang['really_want_delete_category']='Ви дійсно хочете видалити цю категорію';
 	$lang['set_as_block_random_text']='Встановити статичним блоком випадковий текст';
 	$lang['module_content']['view_full']='Переглянути повністю';
 	$lang['module_content']['main_category']='Є підкатегорією для';
 	$lang['module_content']['root_category']='Головна категорія';
-	$lang['module_content']['preview_category']='Анонс категорії';
 	$lang['module_content']['really_want_delete_text']='Ви дійсно хочете видалити цей текст';
 	$lang['module_content']['dont_show_alike_content']='Не показувати схожі тексти';
 	$lang['module_content']['refuse_direct_show']='Не показувати при прямому виклику';

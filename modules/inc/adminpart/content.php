@@ -7,7 +7,7 @@
 
 	//==============================================================================
 	//#ver 1.6.15
-	//#revision 2018-01-08
+	//#revision 2018-04-08
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -34,129 +34,171 @@
 					$ui->Add($nav);
 					$ui->Output(true);
 				}
-			if (sm_action('editctg'))
+			if (sm_actionpost('postaddctg', 'posteditctg'))
 				{
-					$m['title'] = $lang['edit_category'];
-					$m["module"] = 'content';
-					add_path_modules();
-					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='".intval($_getvars['ctgid'])."'";
-					$result = execsql($sql);
-					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
+					sm_extcore();
+					if (empty($sm['p']['title_category']))
+						$error_message=$lang['messages']['fill_required_fields'];
+					elseif (sm_action('postadd') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']))
+						$error_message=$lang['messages']['seo_url_exists'];
+					elseif (sm_action('postedit') && !empty($sm['p']['url']) && sm_fs_exists($sm['p']['url']) && strcmp($sm['p']['url'], sm_fs_url('index.php?m=content&d=viewctg&ctgid='.intval($_getvars['id'])))!=0)
+						$error_message=$lang['messages']['seo_url_exists'];
+					if (empty($error_message))
 						{
-							$special['ext_editor_on'] = 1;
-						}
-					while ($row = database_fetch_object($result))
-						{
-							$m['id_ctg'] = $row->id_category;
-							$m['title_category'] = $row->title_category;
-							$m['category_can_view'] = $row->can_view;
-							$m['category_no_alike_content'] = $row->no_alike_content;
-							$m['main_ctg'] = $row->id_maincategory;
-							$m['view_groups_category'] = get_array_groups($row->groups_view);
-							$m['modify_groups_category'] = get_array_groups($row->groups_modify);
-							$m['sorting_category'] = $row->sorting_category;
-							$m['category_no_use_path'] = $row->no_use_path;
-							if ($special['ext_editor_on'] == 1)
-								$m['preview_ctg'] = siman_prepare_to_exteditor($row->preview_category);
-							else
-								$m['preview_ctg'] = $row->preview_category;
-							if (!empty($row->filename_category))
+							$groups=get_groups_list();
+							$groupsviewenabled=Array();
+							$groupsmodifyenabled=Array();
+							for ($i = 0; $i < count($groups); $i++)
 								{
-									$m['filesystem'] = get_filesystem($row->filename_category);
-									$m["filename_category"] = $m['filesystem']['filename'];
+									if (!empty($sm['p']['group_view_'.$groups[$i]['id']]))
+										$groupsviewenabled[]=$groups[$i]['id'];
+									if (!empty($sm['p']['group_modify_'.$groups[$i]['id']]))
+										$groupsmodifyenabled[]=$groups[$i]['id'];
 								}
-						}
-					$m['ctg'] = siman_load_ctgs_content();
-					$m['groups_list'] = get_groups_list();
-				}
-			if (sm_actionpost('postaddctg'))
-				{
-					$m['title'] = $lang['add_category'];
-					$m["module"] = 'content';
-					$title_category = dbescape($_postvars["p_title_category"]);
-					$can_view = $_postvars["p_can_view"];
-					$id_maincategory = $_postvars["p_mainctg"];
-					$id_maincategory = $_postvars["p_mainctg"];
-					$preview_category = dbescape($_postvars["p_preview_ctg"]);
-					$filename = dbescape($_postvars["p_filename"]);
-					$groups_view = create_groups_str($_postvars['p_groups_view']);
-					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
-					$no_alike_content = intval($_postvars['p_no_alike_content']);
-					$sorting_category = intval($_postvars['p_sorting_category']);
-					$no_use_path = intval($_postvars['p_no_use_path']);
-					$sql = "INSERT INTO ".$tableprefix."categories (title_category, id_maincategory, can_view, preview_category, groups_view, groups_modify, no_alike_content, sorting_category, no_use_path) VALUES ('$title_category', '$id_maincategory', $can_view, '$preview_category', '$groups_view', '$groups_modify', '$no_alike_content', '$sorting_category', '$no_use_path')";
-					$ctgid = insertsql($sql);
-					if (!empty($filename))
-						{
-							$urlid = register_filesystem('index.php?m=content&d=viewctg&ctgid='.$ctgid, $filename, $title_category);
-							$sql = "UPDATE ".$tableprefix."categories SET filename_category=".intval($urlid)." WHERE id_category=".intval($ctgid);
-							$result = execsql($sql);
-						}
-					sm_notify($lang['add_content_category_successful']);
-					if (!empty($_getvars['returnto']))
-						sm_redirect($_getvars['returnto']);
-					else
-						sm_redirect('index.php?m=content&d=listctg');
-					sm_event('postaddctgcontent', array($ctgid));
-				}
-			if (sm_action('addctg'))
-				{
-					$m['title'] = $lang['add_category'];
-					$m["module"] = 'content';
-					add_path_modules();
-					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
-					$m['ctg'] = siman_load_ctgs_content();
-					if (!empty($_settings['ext_editor']) && $_getvars['exteditor'] != 'off')
-						{
-							$special['ext_editor_on'] = 1;
-						}
-					$m['groups_list'] = get_groups_list();
-				}
-			if (sm_actionpost('posteditctg'))
-				{
-					$title_category = dbescape($_postvars["p_title_category"]);
-					$id_maincategory = $_postvars["p_mainctg"];
-					$can_view = $_postvars["p_can_view"];
-					$id_ctg = intval($_getvars['ctgid']);
-					$preview_category = dbescape($_postvars["p_preview_ctg"]);
-					$filename = dbescape($_postvars["p_filename"]);
-					$groups_view = create_groups_str($_postvars['p_groups_view']);
-					$groups_modify = create_groups_str($_postvars['p_groups_modify']);
-					$no_alike_content = intval($_postvars['p_no_alike_content']);
-					$sorting_category = intval($_postvars['p_sorting_category']);
-					$no_use_path = intval($_postvars['p_no_use_path']);
-					$sql = "UPDATE ".$tableprefix."categories SET title_category = '$title_category', can_view = $can_view, preview_category='$preview_category', id_maincategory='$id_maincategory', groups_view='$groups_view', groups_modify='$groups_modify', no_alike_content='$no_alike_content', sorting_category = '$sorting_category', no_use_path = '$no_use_path' WHERE id_category='$id_ctg'";
-					$result = execsql($sql);
-					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category='$id_ctg'";
-					$result = execsql($sql);
-					while ($row = database_fetch_object($result))
-						{
-							$fname = $row->filename_category;
-						}
-					if ($fname == 0 && !empty($filename))
-						{
-							$urlid = register_filesystem('index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
-							$sql = "UPDATE ".$tableprefix."categories SET filename_category='$urlid' WHERE id_category=".$id_ctg;
-							$result = execsql($sql);
-						}
-					else
-						{
-							if (empty($filename) && $fname != 0)
+							$q=new TQuery(sm_table_prefix().'categories');
+							$q->Add('id_maincategory', intval($_postvars['id_maincategory']));
+							$q->Add('title_category', dbescape($_postvars['title_category']));
+							$q->Add('can_view', intval($_postvars['can_view']));
+							$q->Add('preview_category', dbescape($_postvars['preview_category']));
+							$q->Add('sorting_category', intval($_postvars['sorting_category']));
+							$q->Add('groups_view', dbescape(create_groups_str($groupsviewenabled)));
+							$q->Add('groups_modify', dbescape(create_groups_str($groupsmodifyenabled)));
+							if (intval(sm_settings('allow_alike_content'))==1)
+								$q->Add('no_alike_content', intval($_postvars['no_alike_content']));
+							if (intval(sm_settings('content_use_path'))==1)
+								$q->Add('no_use_path', intval($_postvars['no_use_path']));
+							if (sm_action('postaddctg'))
 								{
-									$sql = "UPDATE ".$tableprefix."categories SET filename_category='0' WHERE id_category=".$_getvars["cid"];
-									$result = execsql($sql);
-									delete_filesystem($fname);
+									$ctgid=$q->Insert();
 								}
 							else
-								update_filesystem($fname, 'index.php?m=content&d=viewctg&ctgid='.$id_ctg, $filename, $title_category);
+								{
+									$ctgid=intval($_getvars['ctgid']);
+									$q->Update('id_category', $ctgid);
+								}
+							if (!empty($_getvars['returnto']))
+								sm_redirect($_getvars['returnto']);
+							else
+								sm_redirect('index.php?m=content&d=listctg');
+							if (!empty($sm['p']['url']))
+								sm_fs_update($sm['p']['title_category'], 'index.php?m=content&d=viewctg&ctgid='.$ctgid, $sm['p']['url']);
+							sm_notify($lang['operation_completed']);
+							if (sm_action('postadd'))
+								sm_event('postaddctgcontent', Array($ctgid));
+							else
+								sm_event('posteditctgcontent', Array($ctgid));
 						}
-					sm_notify($lang['edit_content_category_successful']);
-					if (!empty($_getvars['returnto']))
-						sm_redirect($_getvars['returnto']);
 					else
-						sm_redirect('index.php?m=content&d=listctg');
-					sm_event('posteditctgcontent', array($id_ctg));
+						sm_set_action(Array('postaddctg'=>'addctg', 'posteditctg'=>'editctg'));
+				}
+			if (sm_action('addctg', 'editctg'))
+				{
+					sm_use('ui.interface');
+					sm_use('ui.form');
+					sm_use('ui.buttons');
+					sm_use('ui.modal');
+					add_path_modules();
+					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
+					$use_ext_editor=strcmp($_getvars['exteditor'], 'off')!=0;
+					$b=new TButtons();
+					if ($use_ext_editor)
+						{
+							$b->AddMessageBox('exteditoroff', $lang['ext']['editors']['switch_to_standard_editor'], sm_this_url(Array('exteditor'=>'off')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+							$modal=new TModalHelper();
+							$modal->SetAJAXSource('index.php?m=media&d=editorinsert&theonepage=1');
+							$b->AddButton('insertimgmodal', $lang['add_image'])
+								->OnClick($modal->GetJSCode());
+						}
+					else
+						$b->AddMessageBox('exteditoron', $lang['ext']['editors']['switch_to_ext_editor'], sm_this_url(Array('exteditor'=>'')), $lang['common']['are_you_sure']."? ".$lang['messages']['changes_will_be_lost']);
+					$categories = siman_load_ctgs_content(-1);
+					$v=Array(0);
+					$l=Array($lang['common']['none']);
+					for ($i = 0; $i < count($categories); $i++)
+						{
+							$v[]=$categories[$i]['id'];
+							$l[]=$categories[$i]['title'];
+						}
+					$ui=new TInterface();
+					if (!empty($error_message))
+						$ui->NotificationError($error_message);
+					if (sm_action('addctg'))
+						{
+							sm_title($lang['add_category']);
+							$f=new TForm('index.php?m='.sm_current_module().'&d=postaddctg&returnto='.urlencode($_getvars['returnto']));
+						}
+					else
+						{
+							sm_title($lang['edit_category']);
+							$info=TQuery::ForTable(sm_table_prefix().'categories')
+								->AddWhere('id_category', intval($_getvars['ctgid']))
+								->Get();
+							$f=new TForm('index.php?m='.sm_current_module().'&d=posteditctg&ctgid='.intval($info['id_category']).'&returnto='.urlencode($_getvars['returnto']));
+						}
+					$f->Separator($lang['common']['general']);
+					$f->AddText('title_category', $lang['common']['title'], true)
+						->SetFocus();
+					$f->AddSelectVL('id_maincategory', $lang['module_content']['main_category'], $v, $l)
+						->WithValue(intval($_getvars['ctg']));
+					if (!empty($sm['contenteditor']['controlbuttonsclass']))
+						$b->ApplyClassnameForAll($sm['contenteditor']['controlbuttonsclass']);
+					$f->InsertButtons($b);
+					if ($use_ext_editor)
+						{
+							$f->AddEditor('preview_category', $lang['common']['preview'])
+							  ->MergeColumns();
+						}
+					else
+						{
+							$f->AddTextarea('preview_category', $lang['common']['preview'])
+							  ->MergeColumns();
+						}
+					$f->AddText('url', $lang['common']['url'])
+						->WithTooltip($lang['common']['leave_empty_for_default']);
+					$f->Separator($lang['common']['extended_parameters']);
+					$f->AddSelectVL('sorting_category', $lang['common']['sorting'],
+						Array(0, 1, 2, 3),
+						Array($lang['common']['title'].' / '.$lang['common']['sortingtypes']['asc'], $lang['common']['title'].' / '.$lang['common']['sortingtypes']['desc'], $lang['common']['priority'].' / '.$lang['common']['sortingtypes']['asc'], $lang['common']['priority'].' / '.$lang['common']['sortingtypes']['desc'])
+					);
+					if (intval(sm_settings('allow_alike_content'))==1)
+						$f->AddCheckbox('no_alike_content', $lang['module_content']['dont_show_alike_content']);
+					if (intval(sm_settings('content_use_path'))==1)
+						$f->AddCheckbox('no_use_path', $lang['module_content']['no_use_path']);
+					$f->AddSelectVL('can_view', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
+					$groups=get_groups_list();
+					if (count($groups)>0)
+						{
+							$f->Separator($lang['common']['groups_can_view']);
+							for ($i = 0; $i < count($groups); $i++)
+								{
+									$f->AddCheckbox('group_view_'.$groups[$i]['id'], $groups[$i]['title']);
+								}
+							$f->Separator($lang['common']['groups_can_modify']);
+							for ($i = 0; $i < count($groups); $i++)
+								{
+									$f->AddCheckbox('group_modify_'.$groups[$i]['id'], $groups[$i]['title']);
+								}
+						}
+					if (sm_action('editctg'))
+						{
+							$f->LoadValuesArray($info);
+							if ($url=sm_fs_url('index.php?m=content&d=viewctg&ctgid='.$info['id_category'], true))
+								$f->SetValue('url', $url);
+							$selected_groups=get_array_groups($info['groups_view']);
+							for ($i = 0; $i < count($selected_groups); $i++)
+								{
+									$f->SetValue('group_view_'.$selected_groups[$i], 1);
+								}
+							$selected_groups=get_array_groups($info['groups_modify']);
+							for ($i = 0; $i < count($selected_groups); $i++)
+								{
+									$f->SetValue('group_modify_'.$selected_groups[$i], 1);
+								}
+						}
+					if (!empty($sm['p']))
+					$f->LoadAllValues($sm['p']);
+					$ui->Add($f);
+					$ui->Output(true);
 				}
 			if (sm_action('postdeletectg') && intval($_getvars['ctgid'])!=1)
 				{
@@ -171,7 +213,7 @@
 							TQuery::ForTable($sm['t'].'content')
 								->Add('id_category_c', 1)
 								->Update('id_category_c', intval($id_ctg));
-							sm_notify($lang['delete_content_category_successful']);
+							sm_notify($lang['operation_completed']);
 							sm_redirect('index.php?m=content&d=listctg');
 							sm_event('postdeletectgcontent', array($id_ctg));
 						}
