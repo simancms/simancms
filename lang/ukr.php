@@ -170,6 +170,8 @@
 	$lang['common']['small']='Малий';
 	$lang['common']['medium']='Середній';
 	$lang['common']['big']='Великий';
+	$lang['common']['enable']='Ввімкнути';
+	$lang['common']['disable']='Вимкнути';
 	$lang['common']['enabled']='Ввімкнуто';
 	$lang['common']['disabled']='Вимкнуто';
 	$lang['common']['on']='Ввімкнуто';

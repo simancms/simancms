@@ -191,7 +191,7 @@
 					if (sm_action('add'))
 						{
 							sm_event('onaddcontent');
-							sm_title($lang['common']['add']);
+							sm_title($lang['common']['text'].' - '.$lang['common']['add']);
 						}
 					else
 						{
@@ -199,7 +199,7 @@
 								->AddWhere('id_content', intval($sm['g']['cid']))
 								->Get();
 							sm_event('oneditcontent', array($content['id_content']));
-							sm_title($lang['common']['edit']);
+							sm_title($lang['common']['text'].' - '.$lang['common']['edit']);
 						}
 					sm_add_cssfile('mediainsert.css');
 					sm_add_cssfile('contentaddedit.css');
