@@ -4,8 +4,8 @@
 	Module Name: Code Generator
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
-	Version: 1.6.12
-	Revision: 2016-08-06
+	Version: 1.6.15
+	Revision: 2018-04-09
 	Author URI: http://simancms.org/
 	*/
 
@@ -13,9 +13,8 @@
 
 	if (sm_is_installed(sm_current_module()))
 		{
-			function parse_mysql_create($modulename, $sql)
+			function parse_mysql_create($sql)
 				{
-					global $sm;
 					preg_match_all('/`(.+)` (\w+)\(? ?(\d*) ?\)?/', $sql, $fields, PREG_SET_ORDER);
 					$result['fields'] = $fields;
 					if (preg_match('/CREATE\s+(?:TEMPORARY\s+)?TABLE\s+(?:IF NOT EXISTS\s+)?([^\s]+)/i', $sql, $matches))
@@ -23,10 +22,10 @@
 							$tableName = $matches[1];
 						}
 					$result['table'] = str_replace('`', '', $tableName);
-					if (strcmp(substr($result['table'], 0, strlen($sm['t'])), $sm['t']) == 0)
+					if (strcmp(substr($result['table'], 0, strlen(sm_table_prefix())), sm_table_prefix()) == 0)
 						{
-							$result['tableprefix'] = '$sm[\'t\'].';
-							$result['table'] = substr($result['table'], strlen($sm['t']));
+							$result['tableprefix'] = 'sm_table_prefix().';
+							$result['table'] = substr($result['table'], strlen(sm_table_prefix()));
 						}
 					if (preg_match('#.*PRIMARY\s+KEY\s+\(`(.*?)`\).*#i', $sql, $matches))
 						{
@@ -35,9 +34,9 @@
 					return $result;
 				}
 
-			function get_postdelete_code($modulename, $sql, $moduletitle, $fields)
+			function get_postdelete_code($data)
 				{
-					$info = parse_mysql_create($modulename, $sql);
+					$info = parse_mysql_create($data['sql']);
 					$str = "
 			if (sm_action('postdelete'))
 				{
@@ -52,17 +51,17 @@
 					return $str;
 				}
 
-			function get_postadd_code($modulename, $sql, $moduletitle, $fields)
+			function get_postadd_code($data)
 				{
-					$info = parse_mysql_create($modulename, $sql);
+					$info = parse_mysql_create($data['sql']);
 					$req = '';
-					for ($i = 0; $i < count($fields); $i++)
+					for ($i = 0; $i < count($data['fields']); $i++)
 						{
-							if ($fields[$i]['required'])
+							if ($data['fields'][$i]['required'])
 								{
 									if (!empty($req))
 										$req .= ' || ';
-									$req .= "empty(\$_postvars['".$fields[$i]['name']."'])";
+									$req .= "empty(\$_postvars['".$data['fields'][$i]['name']."'])";
 								}
 						}
 					$str = "
@@ -75,18 +74,18 @@
 					$str .= "\t\t\t\t\tif (empty(\$error_message))
 						{
 							\$q=new TQuery(".$info['tableprefix']."'".$info['table']."');\n";
-					for ($i = 0; $i < count($fields); $i++)
+					for ($i = 0; $i < count($data['fields']); $i++)
 						{
-							if ($info['id'] == $fields[$i]['name'])
+							if ($info['id'] == $data['fields'][$i]['name'])
 								continue;
-							if ($fields[$i]['control'] == 'disabled')
+							if ($data['fields'][$i]['control'] == 'disabled')
 								continue;
-							if ($fields[$i]['datatype'] == 'tinyint' || $fields[$i]['datatype'] == 'int')
-								$str .= "\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', intval(\$_postvars['".$fields[$i]['name']."']));\n";
-							elseif ($fields[$i]['datatype'] == 'decimal')
-								$str .= "\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', floatval(\$_postvars['".$fields[$i]['name']."']));\n";
+							if ($data['fields'][$i]['datatype'] == 'tinyint' || $data['fields'][$i]['datatype'] == 'int')
+								$str .= "\t\t\t\t\t\t\t\$q->Add('".$data['fields'][$i]['name']."', intval(\$_postvars['".$data['fields'][$i]['name']."']));\n";
+							elseif ($data['fields'][$i]['datatype'] == 'decimal')
+								$str .= "\t\t\t\t\t\t\t\$q->Add('".$data['fields'][$i]['name']."', floatval(\$_postvars['".$data['fields'][$i]['name']."']));\n";
 							else
-								$str .= "\t\t\t\t\t\t\t\$q->Add('".$fields[$i]['name']."', dbescape(\$_postvars['".$fields[$i]['name']."']));\n";
+								$str .= "\t\t\t\t\t\t\t\$q->Add('".$data['fields'][$i]['name']."', dbescape(\$_postvars['".$data['fields'][$i]['name']."']));\n";
 						}
 					$str .= "\t\t\t\t\t\t\tif (sm_action('postadd'))
 								\$q->Insert();
@@ -101,15 +100,15 @@
 					return $str;
 				}
 
-			function get_add_code($modulename, $sql, $moduletitle, $fields)
+			function get_add_code($data)
 				{
-					$info = parse_mysql_create($modulename, $sql);
+					$info = parse_mysql_create($data['sql']);
 					$setfocus = '';
 					$str = "
 			if (sm_action('add', 'edit'))
 				{
-					add_path_modules();
-					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
+					".($data['breadcrumbs']=='control'?'add_path_modules()':'add_path_home()').";
+					add_path('".$data['moduletitle']."', 'index.php?m='.sm_current_module().'&d=list');
 					add_path_current();
 					sm_use('ui.interface');
 					sm_use('ui.form');
@@ -126,22 +125,22 @@
 							sm_title(\$lang['common']['add']);
 							\$f=new TForm('index.php?m='.sm_current_module().'&d=postadd&returnto='.urlencode(\$_getvars['returnto']));
 						}\n";
-					for ($i = 0; $i < count($fields); $i++)
+					for ($i = 0; $i < count($data['fields']); $i++)
 						{
-							if ($info['id'] == $fields[$i]['name'])
+							if ($info['id'] == $data['fields'][$i]['name'])
 								continue;
-							if ($fields[$i]['control'] == 'disabled')
+							if ($data['fields'][$i]['control'] == 'disabled')
 								continue;
 							if (empty($setfocus))
-								$setfocus = $fields[$i]['name'];
-							if ($fields[$i]['datatype'] == 'tinyint')
-								$str .= "\t\t\t\t\t\$f->AddCheckbox('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required'] ? ', true' : '').");\n";
-							elseif ($fields[$i]['datatype'] == 'text')
-								$str .= "\t\t\t\t\t\$f->AddTextarea('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required'] ? ', true' : '').");\n";
-							elseif ($fields[$i]['datatype'] == 'editor')
-								$str .= "\t\t\t\t\t\$f->AddEditor('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required'] ? ', true' : '').");\n";
+								$setfocus = $data['fields'][$i]['name'];
+							if ($data['fields'][$i]['datatype'] == 'tinyint')
+								$str .= "\t\t\t\t\t\$f->AddCheckbox('".$data['fields'][$i]['name']."', '".$data['fields'][$i]['caption']."'".($data['fields'][$i]['required'] ? ', true' : '').");\n";
+							elseif ($data['fields'][$i]['datatype'] == 'text')
+								$str .= "\t\t\t\t\t\$f->AddTextarea('".$data['fields'][$i]['name']."', '".$data['fields'][$i]['caption']."'".($data['fields'][$i]['required'] ? ', true' : '').");\n";
+							elseif ($data['fields'][$i]['datatype'] == 'editor')
+								$str .= "\t\t\t\t\t\$f->AddEditor('".$data['fields'][$i]['name']."', '".$data['fields'][$i]['caption']."'".($data['fields'][$i]['required'] ? ', true' : '').");\n";
 							else
-								$str .= "\t\t\t\t\t\$f->AddText('".$fields[$i]['name']."', '".$fields[$i]['caption']."'".($fields[$i]['required'] ? ', true' : '').");\n";
+								$str .= "\t\t\t\t\t\$f->AddText('".$data['fields'][$i]['name']."', '".$data['fields'][$i]['caption']."'".($data['fields'][$i]['required'] ? ', true' : '').");\n";
 						}
 					$str .= "\t\t\t\t\tif (sm_action('edit'))
 						{
@@ -151,7 +150,7 @@
 							unset(\$q);
 						}
 					\$f->LoadValuesArray(\$_postvars);
-					\$ui->AddForm(\$f);
+					\$ui->Add(\$f);
 					\$ui->Output(true);
 					sm_setfocus('".$setfocus."');
 				}
@@ -159,9 +158,9 @@
 					return $str;
 				}
 
-			function get_list_code($modulename, $sql, $moduletitle, $fields)
+			function get_list_code($data)
 				{
-					$info = parse_mysql_create($modulename, $sql);
+					$info = parse_mysql_create($data['sql']);
 					$str = "
 			if (sm_action('list'))
 				{
@@ -169,19 +168,19 @@
 					sm_use('ui.form');
 					sm_use('ui.grid');
 					sm_use('ui.buttons');
-					add_path_modules();
-					add_path('".$moduletitle."', 'index.php?m='.sm_current_module().'&d=list');
-					sm_title('".$moduletitle."');
+					".($data['breadcrumbs']=='control'?'add_path_modules()':'add_path_home()').";
+					add_path('".$data['moduletitle']."', 'index.php?m='.sm_current_module().'&d=list');
+					sm_title('".$data['moduletitle']."');
 					\$offset=abs(intval(\$_getvars['from']));
 					\$limit=30;
 					\$ui = new TInterface();
 					\$b=new TButtons();
 					\$b->AddButton('add', \$lang['common']['add'], 'index.php?m='.sm_current_module().'&d=add&returnto='.urlencode(sm_this_url()));
-					\$ui->AddButtons(\$b);
+					\$ui->Add(\$b);
 					\$t=new TGrid();\n";
-					for ($i = 0; $i < count($fields); $i++)
+					for ($i = 0; $i < count($data['fields']); $i++)
 						{
-							$str .= "\t\t\t\t\t\$t->AddCol('".$fields[$i]['name']."', '".$fields[$i]['caption']."');\n";
+							$str .= "\t\t\t\t\t\$t->AddCol('".$data['fields'][$i]['name']."', '".$data['fields'][$i]['caption']."');\n";
 						}
 					$str .= "\t\t\t\t\t\$t->AddEdit();
 					\$t->AddDelete();
@@ -191,9 +190,9 @@
 					\$q->Select();
 					for (\$i = 0; \$i<\$q->Count(); \$i++)
 						{\n";
-					for ($i = 0; $i < count($fields); $i++)
+					for ($i = 0; $i < count($data['fields']); $i++)
 						{
-							$str .= "\t\t\t\t\t\t\t\$t->Label('".$fields[$i]['name']."', \$q->items[\$i]['".$fields[$i]['name']."']);\n";
+							$str .= "\t\t\t\t\t\t\t\$t->Label('".$data['fields'][$i]['name']."', \$q->items[\$i]['".$data['fields'][$i]['name']."']);\n";
 						}
 					$str .= "\t\t\t\t\t\t\t\$t->URL('edit', 'index.php?m='.sm_current_module().'&d=edit&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
 							\$t->URL('delete', 'index.php?m='.sm_current_module().'&d=postdelete&id='.\$q->items[\$i]['".$info['id']."'].'&returnto='.urlencode(sm_this_url()));
@@ -201,25 +200,25 @@
 						}
 					if (\$t->RowCount()==0)
 						\$t->SingleLineLabel(\$lang['messages']['nothing_found']);
-					\$ui->AddGrid(\$t);
+					\$ui->Add(\$t);
 					\$ui->AddPagebarParams(\$q->TotalCount(), \$limit, \$offset);
-					\$ui->AddButtons(\$b);
+					\$ui->Add(\$b);
 					\$ui->Output(true);
 				}
 			";
 					return ($str);
 				}
 
-			function get_admin_code($modulename, $sql, $moduletitle, $fields)
+			function get_admin_code($data)
 				{
-					$info = parse_mysql_create($modulename, $sql);
+					$info = parse_mysql_create($data['sql']);
 					$str = "
 			if (\$userinfo['level']==3)
 				{
 					if (sm_action('admin'))
 						{
 							add_path_modules();
-							sm_title('".$moduletitle."');
+							sm_title('".$data['moduletitle']."');
 							sm_use('ui.interface');
 							\$ui = new TInterface();
 							\$ui->a('index.php?m='.sm_current_module().'&d=list', \$lang['common']['list']);
@@ -227,16 +226,16 @@
 						}
 					if (sm_action('install'))
 						{
-							sm_register_module('".$modulename."', '".$moduletitle."');
-							//sm_register_autoload('".$modulename."');
-							//sm_register_postload('".$modulename."');
+							sm_register_module('".$data['modulename']."', '".$data['moduletitle']."');
+							//sm_register_autoload('".$data['modulename']."');
+							//sm_register_postload('".$data['modulename']."');
 							sm_redirect('index.php?m=admin&d=modules');
 						}
 					if (sm_action('uninstall'))
 						{
-							sm_unregister_module('".$modulename."');
-							//sm_unregister_autoload('".$modulename."');
-							//sm_unregister_postload('".$modulename."');
+							sm_unregister_module('".$data['modulename']."');
+							//sm_unregister_autoload('".$data['modulename']."');
+							//sm_unregister_postload('".$data['modulename']."');
 							sm_redirect('index.php?m=admin&d=modules');
 						}
 				}
@@ -244,40 +243,42 @@
 					return $str;
 				}
 
-			//$info=parse_mysql_create($modulename, $sql);
 			if (sm_action('generate'))
 				{
-					$modulename = $_postvars['module'];
-					$moduletitle = $_postvars['title'];
-					$author_uri = $_postvars['author_uri'];
-					$module_uri = $_postvars['module_uri'];
-					$description = $_postvars['description'];
-					$sql = $_postvars['sql'];
-					$fields = Array();
-					$info = parse_mysql_create($modulename, $sql);
+					$data=Array(
+						'modulename'=>$_postvars['module'],
+						'moduletitle'=>$_postvars['title'],
+						'author_uri'=>$_postvars['author_uri'],
+						'module_uri'=>$_postvars['module_uri'],
+						'description'=>$_postvars['description'],
+						'sql'=>$_postvars['sql'],
+						'breadcrumbs'=>$_postvars['breadcrumbs'],
+						'fields'=>Array(),
+					);
+					$info = parse_mysql_create($data['sql']);
 					for ($i = 0; $i < count($info['fields']); $i++)
 						{
-							$fields[$i]['name'] = $info['fields'][$i][1];
-							$fields[$i]['datatype'] = $info['fields'][$i][2];
-							$fields[$i]['control'] = $_postvars['field_'.$i];
-							$fields[$i]['caption'] = $_postvars['fieldcap_'.$i];
-							$fields[$i]['required'] = intval($_postvars['required_'.$i]) == 1;
+							$data['fields'][$i]['name'] = $info['fields'][$i][1];
+							$data['fields'][$i]['datatype'] = $info['fields'][$i][2];
+							$data['fields'][$i]['control'] = $_postvars['field_'.$i];
+							$data['fields'][$i]['caption'] = $_postvars['fieldcap_'.$i];
+							$data['fields'][$i]['required'] = intval($_postvars['required_'.$i]) == 1;
 						}
 					$info = '<'.'?'."php\n\n";
 					$info .= "/*\n";
-					$info .= "Module Name: ".$moduletitle."\n";
-					$info .= "Module URI: ".$module_uri."\n";
-					$info .= "Description: ".$description."\n";
+					$info .= "Module Name: ".$data['moduletitle']."\n";
+					$info .= "Module URI: ".$data['module_uri']."\n";
+					$info .= "Description: ".$data['description']."\n";
 					$info .= "Version: 1.0\n";
 					$info .= "Revision: ".date('Y-m-d')."\n";
-					$info .= "Author URI: ".$author_uri."\n";
+					$info .= "Author URI: ".$data['author_uri']."\n";
 					$info .= "*/\n\n";
 					$info .= '	if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
-					$info .= get_postdelete_code($modulename, $sql, $moduletitle, $fields);
-					$info .= get_postadd_code($modulename, $sql, $moduletitle, $fields);
-					$info .= get_add_code($modulename, $sql, $moduletitle, $fields);
-					$info .= get_list_code($modulename, $sql, $moduletitle, $fields);
-					$info .= get_admin_code($modulename, $sql, $moduletitle, $fields);
+					$info .= get_postdelete_code($data);
+					$info .= get_postadd_code($data);
+					$info .= get_add_code($data);
+					$info .= get_list_code($data);
+					$info .= get_admin_code($data);
 					$info .= "\n\t\t}\n";
 					sm_title('Code Generator');
 					sm_use('ui.interface');
@@ -289,7 +290,7 @@
 					$f->SetFieldAttribute('php', 'wrap', 'off');
 					$f->MergeColumns('php');
 					$f->SetValue('php', $info);
-					$ui->AddForm($f);
+					$ui->Add($f);
 					$ui->style('#php{height:500px;}');
 					$ui->Output(true);
 				}
@@ -299,6 +300,8 @@
 					sm_title('Code Generator');
 					sm_use('ui.interface');
 					sm_use('ui.form');
+					if (empty($_postvars['sql']))
+						$_getvars['type']='';
 					$ui = new TInterface();
 					if ($_getvars['type'] == 'fields')
 						$f = new TForm('index.php?m=modulegenerator&d=generate');
@@ -307,12 +310,13 @@
 					$f->AddText('module', 'Module ID')->SetFocus();
 					$f->AddText('title', 'Module Title');
 					$f->AddText('description', 'Module Description');
+					$f->AddSelectVL('breadcrumbs', 'Breadcrumbs', Array('control', 'home'), Array('Control Panel', 'Home'));
 					$f->AddText('author_uri', 'Author URL')->WithValue(sm_homepage());
 					$f->AddText('module_uri', 'Module URL')->WithValue(sm_homepage());
 					$f->AddTextarea('sql', 'SQL Create Query');
 					if ($_getvars['type'] == 'fields')
 						{
-							$info = parse_mysql_create($_postvars['module'], $_postvars['sql']);
+							$info = parse_mysql_create($_postvars['sql']);
 							for ($i = 0; $i < count($info['fields']); $i++)
 								{
 									$f->Separator('Field: '.$info['fields'][$i][1]);
@@ -332,7 +336,7 @@
 						}
 					$f->LoadValuesArray($_postvars);
 					$f->SaveButton('Next');
-					$ui->AddForm($f);
+					$ui->Add($f);
 					$ui->Output(true);
 				}
 
@@ -357,5 +361,3 @@
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}
-
-?>
