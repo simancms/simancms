@@ -93,13 +93,24 @@
 				}
 			if (sm_action('addctg', 'editctg'))
 				{
+					$use_ext_editor=strcmp($_getvars['exteditor'], 'off')!=0;
+					if (sm_action('addctg'))
+						{
+							sm_event('onaddcontentcategory');
+						}
+					else
+						{
+							$info=TQuery::ForTable(sm_table_prefix().'categories')
+								->AddWhere('id_category', intval($_getvars['ctgid']))
+								->Get();
+							sm_event('oneditcontentcategory', Array($info['id_category']));
+						}
 					sm_use('ui.interface');
 					sm_use('ui.form');
 					sm_use('ui.buttons');
 					sm_use('ui.modal');
 					add_path_modules();
-					add_path($lang['module_content_name'], "index.php?m=content&d=admin");
-					$use_ext_editor=strcmp($_getvars['exteditor'], 'off')!=0;
+					add_path($lang['module_content_name'], 'index.php?m=content&d=admin');
 					$b=new TButtons();
 					if ($use_ext_editor)
 						{
@@ -124,16 +135,17 @@
 						$ui->NotificationError($error_message);
 					if (sm_action('addctg'))
 						{
+							sm_event('beforecontentcategoryaddform');
 							sm_title($lang['add_category']);
 							$f=new TForm('index.php?m='.sm_current_module().'&d=postaddctg&returnto='.urlencode($_getvars['returnto']));
+							sm_event('startcontentcategoryaddform');
 						}
 					else
 						{
+							sm_event('beforecontentcategoryeditform', Array($info['id_category']));
 							sm_title($lang['edit_category']);
-							$info=TQuery::ForTable(sm_table_prefix().'categories')
-								->AddWhere('id_category', intval($_getvars['ctgid']))
-								->Get();
 							$f=new TForm('index.php?m='.sm_current_module().'&d=posteditctg&ctgid='.intval($info['id_category']).'&returnto='.urlencode($_getvars['returnto']));
+							sm_event('startcontentcategoryeditform', Array($info['id_category']));
 						}
 					$f->Separator($lang['common']['general']);
 					$f->AddText('title_category', $lang['common']['title'], true)
@@ -179,6 +191,10 @@
 									$f->AddCheckbox('group_modify_'.$groups[$i]['id'], $groups[$i]['title']);
 								}
 						}
+					if (sm_action('addctg'))
+						sm_event('endcontentcategoryaddform');
+					else
+						sm_event('endcontentcategoryeditform', Array($info['id_category']));
 					if (sm_action('editctg'))
 						{
 							$f->LoadValuesArray($info);
@@ -196,8 +212,12 @@
 								}
 						}
 					if (!empty($sm['p']))
-					$f->LoadAllValues($sm['p']);
+						$f->LoadAllValues($sm['p']);
 					$ui->Add($f);
+					if (sm_action('addctg'))
+						sm_event('aftercontentcategoryaddform');
+					else
+						sm_event('aftercontentcategoryeditform', Array($info['id_category']));
 					$ui->Output(true);
 				}
 			if (sm_action('postdeletectg') && intval($_getvars['ctgid'])!=1)
