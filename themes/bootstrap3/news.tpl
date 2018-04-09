@@ -1,6 +1,6 @@
 {if $modules[$index].mode eq "view"}
 {include file="block_begin.tpl"}
-<div class="news_datetime label pull-right">{if $_settings.news_use_time eq "1"}{$modules[$index].news_time} {/if}{$modules[$index].news_date}</div>
+<div class="news_datetime label label-info pull-right">{if $_settings.news_use_time eq "1"}{$modules[$index].news_time} {/if}{$modules[$index].news_date}</div>
 {if $modules[$index].news_image neq ""}
 <div class="news_image thumbnail">
 <img src="{$modules[$index].news_image}" border="0" align="left" class="" />

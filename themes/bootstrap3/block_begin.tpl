@@ -3,10 +3,10 @@
   {* center panel *}
 		<div class="row" id="block{$index}body">
 			<div class="col-md-12">
-				<h2 id="block{$index}title">
+				<{if $index eq 0}h1{else}h2{/if} id="block{$index}title">
 					{if $modules[$index].block_image neq ""}<img src="{$modules[$index].block_image}"> {/if}
 					{if $modules[$index].rewrite_title_to neq ""}{$modules[$index].rewrite_title_to}{elseif $panel_title neq ""}{$panel_title}{else}{$modules[$index].title}{/if}
-				</h2>
+				</{if $index eq 0}h1{else}h2{/if}>
 
 {elseif $modules[$index].panel eq "1"}
 		<div class="row" id="block{$index}body">

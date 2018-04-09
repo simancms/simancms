@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="{$sm.s.home_url}">{$_settings.resource_title}</a>
+			<a class="navbar-brand" href="{$sm.s.home_url}" title="{$_settings.logo_text}">{$_settings.resource_title}</a>
 		</div>
 		<div class="navbar-collapse collapse">
 			{if $_settings.upper_menu_id neq ""}
@@ -31,12 +31,6 @@
 		<div class="col-md-9">
 
 		{include file="path.tpl"}
-
-		{if $special.is_index_page eq 1}
-			<div class="page-header">
-				<h1>{$_settings.logo_text}</h1>
-			</div>
-		{/if}
 
 		{$special.document.panel[0].beforepanel}
 		{assign var=loop_center_panel value=1}
