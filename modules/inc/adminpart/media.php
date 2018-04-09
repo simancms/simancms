@@ -227,7 +227,7 @@
 					if (is_array($error))
 						for ($i = 0; $i < count($error); $i++)
 							$ui->NotificationError($error[$i]);
-					sm_title($lang['common']['add']);
+					sm_title($lang['upload']);
 					$f = new TForm('index.php?m=media&d=postadd&ctg='.intval($ctg['id_ctg']).'&returnto='.urlencode($_getvars['returnto']));
 					for ($i = 0; $i < 10; $i++)
 						{

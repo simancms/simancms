@@ -9,8 +9,8 @@
 	Module Name: Media
 	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
-	Version: 1.6.13
-	Revision: 2017-01-22
+	Version: 1.6.15
+	Revision: 2018-04-09
 	Author URI: http://simancms.org/
 	*/
 
@@ -42,7 +42,7 @@
 			$m['module']='media';
 			$offset=abs(intval($_getvars['from']));
 			$limit=30;
-			$q=new TQuery($sm['t'].'categories_media');
+			$q=new TQuery(sm_table_prefix().'categories_media');
 			$q->Add('public', 1);
 			$q->OrderBy('lastupdate DESC');
 			$q->Limit($limit);
@@ -75,14 +75,18 @@
 	
 	if (sm_action('gallery') && sm_settings('gallery_default_view')=='all')
 		{
-			$ctg=TQuery::ForTable($sm['t'].'categories_media')->Add('id_ctg', intval($_getvars['ctg']))->Get();
+			$q=new TQuery(sm_table_prefix().'categories_media');
+			$q->Add('id_ctg', intval($_getvars['ctg']));
+			if ($userinfo['level']==0)
+				$q->Add('public', 1);
+			$ctg=$q->Get();
 			if (!empty($ctg['id_ctg']))
 				{
 					sm_title($ctg['title']);
 					sm_add_cssfile('media.css');
 					sm_use('admininterface');
 					$ui = new TInterface();
-					$q=new TQuery($sm['t'].'media');
+					$q=new TQuery(sm_table_prefix().'media');
 					$q->Add('id_ctg', intval($ctg['id_ctg']));
 					$q->OrderBy('id');
 					$q->Select();
