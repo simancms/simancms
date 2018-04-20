@@ -1136,6 +1136,14 @@
 						{
 							return 'select';
 						}
+
+					function FieldsCount()
+						{
+							if (is_array($this->form['fields']))
+								return count($this->form['fields']);
+							else
+								return 0;
+						}
 				}
 
 			define("adminform_DEFINED", 1);
