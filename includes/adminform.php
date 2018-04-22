@@ -563,6 +563,8 @@
 													}
 										}
 								}
+							if (!empty($this->form['class']))
+								$this->SetFormAttribute('class', $this->form['class']);
 							if (!empty($this->form['action']))
 								$this->SetFormAttribute('action', $this->form['action']);
 							if (!empty($this->form['method']))
