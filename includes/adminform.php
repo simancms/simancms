@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-12-20
+	//#revision 2018-04-23
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -287,7 +287,7 @@
 							$this->form['fields'][$name]['name'] = $name;
 							$this->form['fields'][$name]['caption'] = $title;
 							$this->form['fields'][$name]['required'] = $required;
-							$this->form['fields'][$name]['type'] = 'checkbox';
+							$this->form['fields'][$name]['type'] = TForm::FieldTypeTagCheckbox();
 							$this->form['fields'][$name]['checkedvalue'] = $checkedvalue;
 							$this->form['updates'] = addto_nllist($this->form['updates'], $name);
 							return $this;
@@ -423,6 +423,13 @@
 										$this->form['fields'][$name]['labeltext']=htmlescape($value);
 									else
 										$this->form['fields'][$name]['labeltext']=$value;
+								}
+							elseif ($this->GetType($name)==TForm::FieldTypeTagCheckbox() && is_bool($value))
+								{
+									if ($value)
+										$this->SetValue($name, $this->form['fields'][$name]['checkedvalue']);
+									else
+										$this->SetValue($name, '');
 								}
 							else
 								{
@@ -1137,6 +1144,11 @@
 					public static function FieldTypeTagSelect()
 						{
 							return 'select';
+						}
+
+					public static function FieldTypeTagCheckbox()
+						{
+							return 'checkbox';
 						}
 
 					function FieldsCount()
