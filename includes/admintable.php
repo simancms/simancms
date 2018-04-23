@@ -34,8 +34,10 @@
 								$this->table['postfix'] = TGrid::$grids_used;
 							else
 								$this->table['postfix'] = $postfix;
+							$this->AddClassnameGlobal('admintable');
 							if (!empty($sm['admintable']['globalclass']))
 								$this->AddClassnameGlobal($sm['admintable']['globalclass']);
+							$this->SetDOMID('admintable'.$this->table['postfix']);
 							TGrid::$grids_used++;
 						}
 
@@ -930,10 +932,58 @@
 						}
 
 					//====================================================
+					function SetGlobalAttribute($attribute, $value)
+						{
+							if ($value===NULL)
+								unset($this->table['attrs'][$attribute]);
+							else
+								$this->table['attrs'][$attribute] = $value;
+							return $this;
+						}
+
+					function HasGlobalAttribute($attribute)
+						{
+							return is_array($this->table['attrs']) && array_key_exists($attribute, $this->table['attrs']);
+						}
+
+					function GetGlobalAttribute($attribute)
+						{
+							return $this->table['attrs'][$attribute];
+						}
+
+					function AppendGlobalAttribute($attribute, $value, $delimiter=' ')
+						{
+							$attrval=$this->GetGlobalAttribute($attribute);
+							if (!empty($attrval))
+								$attrval.=$delimiter;
+							$attrval.=$value;
+							$this->SetGlobalAttribute($attribute, $attrval);
+							return $this;
+						}
+
+					function UnsetGlobalAttribute($attribute)
+						{
+							$this->SetGlobalAttribute($attribute, NULL);
+							return $this;
+						}
+
+					function SetDOMID($id)
+						{
+							$this->SetGlobalAttribute('id', $id);
+						}
+
+					function GetDOMID($id)
+						{
+							return $this->GetGlobalAttribute('id');
+						}
+
+					//====================================================
 					function Output()
 						{
 							$this->table['colcount'] = count($this->table['columns']);
 							$this->table['rowcount'] = count($this->table['rows']);
+							if (!empty($this->table['class']))
+								$this->SetGlobalAttribute('class', $this->table['class']);
 							for ($this->rownumber = 0; $this->rownumber<$this->RowCount(); $this->rownumber++)
 								{
 									$this->RowAddClass('at-row-'.$this->rownumber, $this->rownumber);
