@@ -1431,3 +1431,24 @@
 			return $sm['s']['cli']===true;
 		}
 
+	/**
+	 * Init for pagination. Require pagebar.tpl
+	 * @param $count - total items count
+	 * @param $limit - items per page
+	 * @param $offset - current offset (items)
+	 * @param null|string $url - url for pagination. Current URL will be used if NULL
+	 */
+	function sm_pagination_init($count, $limit, $offset, $url=NULL)
+		{
+			global $sm;
+			if ($url===NULL)
+				$url=sm_this_url();
+			if ($limit<=0)
+				$limit=1;
+			$sm['m']['pages']['url'] = sm_url($url, 'from', '');
+			$sm['m']['pages']['selected'] = ceil(($offset+1)/$limit);
+			$sm['m']['pages']['interval'] = $limit;
+			$sm['m']['pages']['records'] = $count;
+			$sm['m']['pages']['selected'] = ceil(($offset+1)/$sm['m']['pages']['interval']);
+			$sm['m']['pages']['pages'] = ceil(intval($sm['m']['pages']['records'])/$sm['m']['pages']['interval']);
+		}
