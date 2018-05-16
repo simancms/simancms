@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
 	Version: 1.6.15
-	Revision: 2018-04-09
+	Revision: 2018-05-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -65,12 +65,7 @@
 						if (($i+1) % intval(sm_settings('galleries_view_items_per_row'))==0)
 							$m['galleries'][$i]['newrow']=true;
 				}
-			$sm['m']['pages']['url'] = sm_this_url('from', '');
-			$sm['m']['pages']['selected'] = ceil(($offset+1)/$limit);
-			$sm['m']['pages']['interval'] = $limit;
-			$sm['m']['pages']['records'] = $q->TotalCount();
-			$sm['m']['pages']['selected'] = ceil(($offset+1)/$sm['m']['pages']['interval']);
-			$sm['m']['pages']['pages'] = ceil(intval($sm['m']['pages']['records'])/$sm['m']['pages']['interval']);
+			sm_pagination_init($q->TotalCount(), $limit, $offset);
 		}
 	
 	if (sm_action('gallery') && sm_settings('gallery_default_view')=='all')

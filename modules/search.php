@@ -10,7 +10,7 @@
 	Module URI: http://simancms.org/modules/search/
 	Description: Search module. Base CMS module
 	Version: 1.6.15
-	Revision: 2018-04-09
+	Revision: 2018-05-16
 	Author URI: http://simancms.org/
 	*/
 
@@ -49,9 +49,6 @@
 											if (empty($from_record))
 												$from_record=0;
 											$from_page=ceil(($from_record+1)/sm_settings('search_items_by_page'));
-											$m['pages']['url']='index.php?m=search&q='.urlencode($_getvars['q']);
-											$m['pages']['selected']=$from_page;
-											$m['pages']['interval']=sm_settings('search_items_by_page');
 											if (empty($row->search_doing))
 												continue;
 											$srch_table=sm_table_prefix().$row->search_table;
@@ -110,8 +107,7 @@
 													$i++;
 												}
 											$m['result_count']=$i;
-											$m['pages']['records']=$m['result_count'];
-											$m['pages']['pages']=ceil($m['pages']['records']/sm_settings('search_items_by_page'));
+											sm_pagination_init($m['result_count'], sm_settings('search_items_by_page'), $from_record, 'index.php?m=search&q='.urlencode($_getvars['q']));
 										}
 								}
 							sm_event('aftersearch', array($_getvars['q']));

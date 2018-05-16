@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-11-24
+	//#revision 2018-05-16
 	//==============================================================================
 
 	if (!defined("admininterface_DEFINED"))
@@ -131,12 +131,7 @@
 					function AddPagebarParams($count, $limit, $offset)
 						{
 							global $sm;
-							$sm['m']['pages']['url'] = sm_this_url('from', '');
-							$sm['m']['pages']['selected'] = ceil(($offset+1)/$limit);
-							$sm['m']['pages']['interval'] = $limit;
-							$sm['m']['pages']['records'] = $count;
-							$sm['m']['pages']['selected'] = ceil(($offset+1)/$sm['m']['pages']['interval']);
-							$sm['m']['pages']['pages'] = ceil(intval($sm['m']['pages']['records'])/$sm['m']['pages']['interval']);
+							sm_pagination_init($count, $limit, $offset);
 							$this->AddPagebar();
 						}
 
