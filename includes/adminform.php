@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-04-23
+	//#revision 2018-05-22
 	//==============================================================================
 
 	if (!defined("adminform_DEFINED"))
@@ -22,7 +22,7 @@
 
 					static $forms_used=0;
 
-					function __construct($action, $prefix = '', $method = 'POST')
+					function __construct($action='', $prefix = '', $method = 'POST')
 						{
 							global $sm;
 							$this->form['action'] = $action;
@@ -68,6 +68,12 @@
 					function SetMethodPost()
 						{
 							$this->form['method'] = 'POST';
+							return $this;
+						}
+
+					function SetAction($action)
+						{
+							$this->form['action'] = $action;
 							return $this;
 						}
 
