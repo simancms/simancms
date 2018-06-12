@@ -391,7 +391,13 @@
 
 					function Label($name, $value)
 						{
-							$this->table['rows'][$this->rownumber][$name]['data'] = $value;
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->Label($name[$i], $value);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['data'] = $value;
 							return $this;
 						}
 
@@ -463,7 +469,13 @@
 
 					function CellAddStyle($name, $style)
 						{
-							$this->table['rows'][$this->rownumber][$name]['style'] .= $style;
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->CellAddStyle($name[$i], $style);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['style'] .= $style;
 							return $this;
 						}
 
@@ -627,7 +639,13 @@
 				//--------------------------------------------------------------------------------------------------------
 					function OnClick($name, $code)
 						{
-							$this->table['rows'][$this->rownumber][$name]['onclick'] .= $code;
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->OnClick($name[$i], $code);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['onclick'] .= $code;
 							return $this;
 						}
 
