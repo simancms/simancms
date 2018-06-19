@@ -19,7 +19,7 @@
 
 	$_settings['show_script_info'] = 'off';
 	
-	$_settings['version'] = '1.6.14';
+	$_settings['version'] = '1.6.15';
 
 	if (empty($_settings['htmlescapecharset']))
 		{

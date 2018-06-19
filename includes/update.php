@@ -119,4 +119,8 @@
 			execsql("ALTER TABLE `".$sm['t']."news` ADD `disable_search` TINYINT(4)  NOT NULL  DEFAULT '0';");
 			sm_update_settings('database_date', '20170710');
 		}
+	if (intval(sm_settings('database_date'))<20180619)//1.6.15
+		{
+			sm_update_settings('database_date', '20180619');
+		}
 
