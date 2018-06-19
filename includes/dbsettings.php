@@ -6,8 +6,9 @@
 	//------------------------------------------------------------------------------
 
 	//Database server type:
-	// MySQL=0
+	// MySQL (discontinued mysql extension)=0
 	// SQLite=2
+	// MySQL (mysqli extension)=3
 	$serverDB = 3;
 
 	//Database server name (usually localhost)
