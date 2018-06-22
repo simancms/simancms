@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-03-10
+	//#revision 2018-06-22
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -410,28 +410,52 @@
 					//Data type should be used in export
 					function SetDataTypeInteger($name)
 						{
-							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'integer';
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->SetDataTypeInteger($name[$i]);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['datatype'] = 'integer';
 							return $this;
 						}
 
 					//Data type should be used in export
 					function SetDataTypeMoney($name)
 						{
-							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'money';
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->SetDataTypeMoney($name[$i]);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['datatype'] = 'money';
 							return $this;
 						}
 
 					//Data type should be used in export
 					function SetDataTypeFloat($name)
 						{
-							$this->table['rows'][$this->rownumber][$name]['datatype'] = 'float';
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->SetDataTypeFloat($name[$i]);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['datatype'] = 'float';
 							return $this;
 						}
 
 					//Data type should be used in export
 					function SetDataTypeText($name)
 						{
-							$this->table['rows'][$this->rownumber][$name]['datatype'] = '';
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->SetDataTypeText($name[$i]);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['datatype'] = '';
 							return $this;
 						}
 
@@ -481,7 +505,13 @@
 
 					function Hint($name, $value)
 						{
-							$this->table['rows'][$this->rownumber][$name]['hint'] = htmlescape(strip_tags($value));
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->Hint($name[$i], $value);
+								}
+							else
+								$this->table['rows'][$this->rownumber][$name]['hint'] = htmlescape(strip_tags($value));
 							return $this;
 						}
 
@@ -509,12 +539,12 @@
 							return $this;
 						}
 
-					function CellHeaderHTML($name, $value)
+					function CellHeaderHTML($name)
 						{
 							return $this->table['rows'][$this->rownumber][$name]['html_start'];
 						}
 
-					function CellFooterHTML($name, $value)
+					function CellFooterHTML($name)
 						{
 							return $this->table['rows'][$this->rownumber][$name]['html_end'];
 						}
