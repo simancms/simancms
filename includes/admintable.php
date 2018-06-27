@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-06-22
+	//#revision 2018-06-27
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -474,9 +474,17 @@
 
 					function CellAddClass($name, $classname, $rownumber=NULL)
 						{
-							if ($rownumber === NULL)
-								$rownumber = $this->rownumber;
-							$this->table['rows'][$rownumber][$name]['class'] .= ' '.$classname;
+							if (is_array($name))
+								{
+									for ($i = 0; $i<count($name); $i++)
+										$this->CellAddClass($name[$i], $classname, $rownumber);
+								}
+							else
+								{
+									if ($rownumber===NULL)
+										$rownumber=$this->rownumber;
+									$this->table['rows'][$rownumber][$name]['class'].=' '.$classname;
+								}
 							return $this;
 						}
 
