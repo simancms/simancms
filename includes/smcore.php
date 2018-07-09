@@ -7,8 +7,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2018-03-17
+	//#ver 1.6.16
+	//#revision 2018-07-07
 	//==============================================================================
 
 
@@ -470,7 +470,7 @@
 			else
 				$fs = $_uplfilevars[$upload_var]['tmp_name'][$secondary_index];
 			if (empty($upload_path))
-				$upload_path = 'files/temp/'.md5(microtime(true));
+				$upload_path = 'files/temp/'.md5(microtime(true).mt_rand());
 			if (!empty($fs))
 				{
 					$fd = $upload_path;
