@@ -8,7 +8,7 @@
 
 	//==============================================================================
 	//#ver 1.6.16
-	//#revision 2018-07-07
+	//#revision 2018-07-31
 	//==============================================================================
 
 
@@ -574,8 +574,8 @@
 			global $modules, $modules_index, $refresh_url, $lang, $sm;
 			if (empty($modules[$modules_index]['title']))
 				$modules[$modules_index]['title'] = $lang['common']['redirect'];
-			$modules[$modules_index]['module'] = 'refresh';
-			$modules[$modules_index]['mode'] = 'redirect-view-action';
+			sm_template('refresh');
+			sm_set_action('redirect-view-action');
 			if ($message === true)
 				{
 					$message = '';
@@ -1258,13 +1258,24 @@
 				$r.='?'.$parsed['query'];
 			return $r;
 		}
+
+	/**
+	 * Set template for current module+action
+	 *
+	 * @param string $tpl_name - the name of the template without .tpl extension
+	 */
+	function sm_template($tpl_name)
+		{
+			global $modules, $modules_index;
+			$modules[$modules_index]['module'] = $tpl_name;
+		}
 	
-	function sm_use_template($tpl_filename)
+	function sm_set_main_template($tpl_filename)
 		{
 			global $sm;
 			$sm['s']['main_tpl'] = $tpl_filename;
 		}
-	
+
 	function sm_get_taxonomy($object_name, $object_id, $use_object_id_as_rel_id=false)
 		{
 			global $sm;

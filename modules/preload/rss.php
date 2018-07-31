@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2016-06-16
+	//#revision 2018-07-31
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -14,9 +14,9 @@
 
 	function event_generaterss_rss($feed)
 		{
-			global $special, $singleWindow, $lang;
+			global $special, $singleWindow;
 			$special['ajax'] = 1;
-			$special['main_tpl'] = 'simpleout';
+			sm_set_main_template('simpleout');
 			$singleWindow = 1;
 			out('<?xml version="1.0" encoding="'.sm_encoding().'"?>');
 			out('<rss version="2.0"'.sm_settings('rss_channel_exra_params').'>');

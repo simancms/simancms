@@ -9,8 +9,8 @@
 	Module Name: Content
 	Module URI: http://simancms.org/modules/content/
 	Description: Pages management. Base CMS module
-	Version: 1.6.15
-	Revision: 2018-04-08
+	Version: 1.6.16
+	Revision: 2018-07-31
 	Author URI: http://simancms.org/
 	*/
 
@@ -131,7 +131,7 @@
 				}
 			else
 				{
-					$m["module"] = 'content';
+					sm_template('content');
 					sm_page_viewid('content-view-'.$content_id);
 					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category AND id_content=".intval($content_id);
 					if ($modules_index == 0)
@@ -145,7 +145,7 @@
 	if (sm_action('viewlast') || sm_action('viewfirst'))
 		{
 			sm_page_viewid('content-viewlast');
-			$m["module"] = 'content';
+			sm_template('content');
 			$tmp_ctg = intval($_getvars['ctg']);
 			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."categories.* FROM ".$tableprefix."content, ".$tableprefix."categories WHERE ".$tableprefix."content.id_category_c=".$tableprefix."categories.id_category";
 			if (!empty($tmp_ctg))
@@ -161,7 +161,7 @@
 
 	if (sm_action('multiview'))
 		{
-			$m["module"] = 'content';
+			sm_template('content');
 			if (!empty($m["bid"]))
 				$ctg_id = intval($m["bid"]);
 			else
@@ -216,7 +216,7 @@
 	if (sm_action('rndctgview'))
 		{
 			sm_page_viewid('content-rndctgview');
-			$m["module"] = 'content';
+			sm_template('content');
 			if (!empty($m["bid"]))
 				$ctg_id = intval($m["bid"]);
 			else
@@ -391,16 +391,16 @@
 							$m['content'][$i]['data']=$row;
 							$tmp=sm_load_metadata('content', $row['id_content']);
 							if (!empty($tmp['main_template']) && $modules_index==0)
-								sm_use_template($tmp['main_template']);
+								sm_set_main_template($tmp['main_template']);
 							if (!empty($tmp['content_template']) && $i==0)
-								$m['module']=$tmp['content_template'];
+								sm_template($tmp['content_template']);
 							if (!empty($tmp['seo_title']) && $modules_index==0)
 								sm_meta_title($tmp['seo_title']);
 							sm_event('oncontentprocessed', $i);
 							$i++;
 						}
 					if ($i == 0)
-						$m["module"] = '';
+						sm_template('');
 					elseif ($modules_index == 0)
 						sm_event('onviewcontent', array($m['content'][0]["cid"]));
 				}
@@ -408,7 +408,7 @@
 
 	if (sm_action('viewctg'))
 		{
-			$m["module"] = 'content';
+			sm_template('content');
 			if (empty($_getvars["ctgid"]) && !empty($_getvars["ctg"]))
 				$_getvars["ctgid"] = $_getvars["ctg"];
 			$ctg_id = intval($_getvars["ctgid"]);
@@ -505,10 +505,10 @@
 
 	if (sm_action('blockctgview'))
 		{
-			$m["module"] = 'content';
+			sm_template('content');
 			$ctg_id = intval($modules[0]['content'][0]["id_category"]);
 			if (empty($ctg_id) || $ctg_id == 1)
-				$m['mode'] = 'donotshow';
+				sm_set_action('donotshow');
 			else
 				{
 					$sql = "SELECT * FROM ".$tableprefix."categories WHERE id_category=".intval($ctg_id);
@@ -532,7 +532,7 @@
 									else
 										$m['category']['can_view'] = 0;
 									if ($m['category']['can_view'] == 0)
-										$m['mode'] = 'donotshow';
+										sm_set_action('donotshow');
 								}
 							sm_add_title_modifier($m['title']);
 						}
@@ -566,11 +566,11 @@
 						}
 					if ($i > 0)
 						{
-							$m["module"] = 'menu';
-							$m["mode"] = 'view';
+							sm_template('menu');
+							sm_set_action('view');
 						}
 					else
-						$m['mode'] = 'donotshow';
+						sm_set_action('donotshow');
 				}
 		}
 	

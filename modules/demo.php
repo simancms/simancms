@@ -9,7 +9,7 @@
 	Module Name: SiMan CMS Demo
 	Module URI: http://simancms.org/modules/demo/
 	Description: Examples of usage
-	Version: 1.6.15
+	Version: 1.6.16
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -365,11 +365,11 @@
 			//start-regular
 			if (sm_action('regular'))
 				{
-					sm_title('Smarty Template');
-					add_path_home();
-					add_path('Demos', 'index.php?m=demo');
-					add_path_current();
-					$m['module'] = 'demo';
+					add_path_home(); //Set breadcrumbs
+					add_path('Demos', 'index.php?m=demo'); //Set breadcrumbs
+					add_path_current(); //Set breadcrumbs
+					sm_title('Smarty Template'); //Set title (h1+html header title)
+					sm_template('demo'); //Use demo.tpl to display the results
 				}
 			//end-regular
 			//start-exchangesender

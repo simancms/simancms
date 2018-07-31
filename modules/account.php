@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2018-03-19
+	//#ver 1.6.16
+	//#revision 2018-07-31
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -23,7 +23,7 @@
 
 	if (sm_actionpost("postregister") && !sm_empty_settings('allow_register'))
 		{
-			$m['module'] = 'account';
+			sm_template('account');
 			sm_title($lang['register']);
 			sm_extcore();
 			$login = $_postvars["p_login"];
@@ -117,7 +117,7 @@
 				}
 			if (sm_action('getpasswd3'))
 				{
-					$m['module'] = 'account';
+					sm_template('account');
 					sm_title($lang['get_password']);
 					sm_extcore();
 					$usr_name = dbescape(strtolower($_getvars["login"]));
@@ -140,7 +140,7 @@
 				}
 			if (sm_action('getpasswd2'))
 				{
-					$m['module'] = 'account';
+					sm_template('account');
 					sm_title($lang["get_password"]);
 					$usr_name = $_getvars["login"];
 					$sql = "SELECT * FROM ".$tableusersprefix."users WHERE login='".dbescape(strtolower($usr_name))."'";
@@ -159,7 +159,7 @@
 		{
 			if (!sm_empty_settings('allow_register') || $userinfo['level']==3)
 				{
-					$m['module'] = 'account';
+					sm_template('account');
 					sm_title($lang['register']);
 					if (intval(sm_settings('use_protect_code')) == 1)
 						siman_generate_protect_code();
@@ -174,7 +174,7 @@
 		}
 	if (sm_action('login'))
 		{
-			$m['module'] = 'account';
+			sm_template('account');
 			sm_title($lang['login_caption']);
 			if (!empty($_postvars['login_d']))
 				{
@@ -243,7 +243,7 @@
 			else
 				{
 					sm_title($lang['login_caption']);
-					$m['module'] = 'account';
+					sm_template('account');
 					$m['goto_url'] = $_servervars['REQUEST_URI'];
 					if ($modules_index == 0)
 						sm_setfocus('login_d');
