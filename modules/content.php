@@ -450,7 +450,6 @@
 								sm_title($lang['access_denied']);
 						}
 					$m['subcategories'] = siman_load_ctgs_content($row['id_category']);
-					sm_add_title_modifier($m['title']);
 					sm_add_content_modifier($m['preview_category']);
 				}
 			$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c=".intval($ctg_id);
@@ -534,7 +533,6 @@
 									if ($m['category']['can_view'] == 0)
 										sm_set_action('donotshow');
 								}
-							sm_add_title_modifier($m['title']);
 						}
 					$sql = "SELECT ".$tableprefix."content.*, ".$tableprefix."filesystem.* FROM ".$tableprefix."content LEFT JOIN ".$tableprefix."filesystem ON ".$tableprefix."content.filename_content=".$tableprefix."filesystem.id_fs WHERE ".$tableprefix."content.id_category_c=".intval($ctg_id);
 					if ($m['sorting_category'] == 3)

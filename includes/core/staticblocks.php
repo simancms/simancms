@@ -124,7 +124,6 @@
 							sm_template('content');
 							$m['content'][0]['can_view'] = 1;
 							$m['content'][0]["text"] = $pnlrow->text_block;
-							sm_add_title_modifier($m['title']);
 							sm_add_content_modifier($m['content'][0]["text"]);
 						}
 					else

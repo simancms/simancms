@@ -25,7 +25,7 @@
 					sm_template('simpleshortcodes');
 					add_path_modules();
 					add_path($lang['module_simpleshortcodes']['module_simpleshortcodes'], 'index.php?m=simpleshortcodes&d=admin');
-					$m['title'] = $lang['settings'];
+					sm_title($lang['settings']);
 				}
 			if (sm_action('install'))
 				{

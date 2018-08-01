@@ -340,7 +340,7 @@
 										{
 											$sort = $m['ctg'][$i]['sorting_category'];
 											add_path($m['ctg'][$i]['title'], 'index.php?m=content&d=list&ctg='.$m['ctg'][$i]['id']);
-											$m['title'] .= ' - '.$m['ctg'][$i]['title'];
+											sm_title_append(' - '.$m['ctg'][$i]['title']);
 										}
 								}
 						}

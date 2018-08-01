@@ -9,8 +9,8 @@
 	Module Name: RSS-Feed
 	Module URI: http://simancms.org/modules/content/
 	Description: RSS-Export module
-	Version: 1.6.13
-	Revision: 2016-11-17
+	Version: 2018-08-01
+	Revision: 2018-08-01
 	Author URI: http://simancms.org/
 	*/
 

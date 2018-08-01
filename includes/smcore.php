@@ -881,6 +881,11 @@
 			return $sm['m']['title'];
 		}
 
+	function sm_is_empty_title()
+		{
+			return strlen(trim(sm_get_title()))==0;
+		}
+
 	function sm_title_append($title_append)
 		{
 			global $sm;

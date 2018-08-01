@@ -793,12 +793,12 @@
 				{
 					add_path_control();
 					add_path($lang['module_admin']['virtual_filesystem'], 'index.php?m=admin&d=filesystem');
-					$m["title"] = $lang['module_admin']['virtual_filesystem'];
+					sm_title($lang['module_admin']['virtual_filesystem']);
 					sm_use('ui.grid');
 					sm_use('ui.interface');
 					sm_use('ui.buttons');
 					$offset=abs(intval($_getvars['from']));
-					$limit=intval($_settings['admin_items_by_page']);
+					$limit=intval(sm_settings('admin_items_by_page'));
 					$ui = new TInterface();
 					$t=new TGrid();
 					$t->AddCol('ico', '', '16');
@@ -849,7 +849,7 @@
 				}
 			if (sm_action('postdeletefilesystem'))
 				{
-					$m['title'] = $lang['common']['delete'];
+					sm_title($lang['common']['delete']);
 					$sql = "DELETE FROM ".$tableprefix."filesystem WHERE id_fs=".intval($_getvars["id"]);
 					execsql($sql);
 					if (!empty($_getvars['returnto']))
@@ -907,89 +907,6 @@
 					$ui->Output(true);
 					sm_setfocus('filename_fs');
 				}
-			/*
-			if (sm_action('filesystemexp'))
-				{
-					$m["title"] = $lang['module_admin']['virtual_filesystem_regexp'];
-					sm_use('ui.grid');
-					$m['table']['columns']['regexp']['caption'] = $lang['module_admin']['regexp'];
-					$m['table']['columns']['regexp']['width'] = '50%';
-					$m['table']['columns']['replace']['caption'] = $lang['module_admin']['regexp_replace'];
-					$m['table']['columns']['replace']['width'] = '50%';
-					$m['table']['columns']['edit']['caption'] = '';
-					$m['table']['columns']['edit']['hint'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_text'] = $lang['common']['edit'];
-					$m['table']['columns']['edit']['replace_image'] = 'edit.gif';
-					$m['table']['columns']['edit']['width'] = '16';
-					$m['table']['columns']['delete']['caption'] = '';
-					$m['table']['columns']['delete']['hint'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_text'] = $lang['common']['delete'];
-					$m['table']['columns']['delete']['replace_image'] = 'delete.gif';
-					$m['table']['columns']['delete']['width'] = '16';
-					$m['table']['columns']['delete']['messagebox'] = 1;
-					$m['table']['columns']['delete']['messagebox_text'] = addslashes($lang['module_admin']['really_want_delete_filesystem_item']);
-					$m['table']['default_column'] = 'edit';
-					$sql = "SELECT * FROM ".$tableprefix."filesystem_regexp ORDER BY regexpr ASC";
-					$result = execsql($sql);
-					$i = 0;
-					while ($row = database_fetch_object($result))
-						{
-							$m['table']['rows'][$i]['regexp']['data'] = $row->regexpr;
-							$m['table']['rows'][$i]['replace']['data'] = $row->url;
-							$m['table']['rows'][$i]['edit']['url'] = 'index.php?m=admin&d=editfilesystemexp&id='.$row->id_fsr;
-							$m['table']['rows'][$i]['delete']['url'] = 'index.php?m=admin&d=postdeletefilesystemexp&id='.$row->id_fsr;
-							$i++;
-						}
-				}
-			if (sm_action('postdeletefilesystemexp'))
-				{
-					$m['title'] = $lang['common']['delete'];
-					$sql = "DELETE FROM ".$tableprefix."filesystem_regexp WHERE id_fsr='".intval($_getvars["id"])."'";
-					$result = execsql($sql);
-					sm_redirect('index.php?m=admin&d=filesystemexp');
-				}
-			if (sm_action('addfilesystemexp'))
-				{
-					$m['title'] = $lang['common']['add'];
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['module_admin']['virtual_filesystem_regexp'], "index.php?m=admin&d=filesystemexp");
-					sm_use('ui.form');
-					$f = new TForm('index.php?m=admin&d=postaddfilesystemexp');
-					$f->AddText('regexpr', $lang['module_admin']['regexp']);
-					$f->AddText('url', $lang['module_admin']['regexp_replace']);
-					$m['form'] = $f->Output();
-				}
-			if (sm_action('editfilesystemexp'))
-				{
-					$m['title'] = $lang['common']['edit'];
-					add_path($lang['control_panel'], "index.php?m=admin");
-					add_path($lang['module_admin']['virtual_filesystem_regexp'], "index.php?m=admin&d=filesystemexp");
-					sm_use('ui.form');
-					$f = new TForm('index.php?m=admin&d=posteditfilesystemexp&id='.$_getvars['id']);
-					$f->AddText('regexpr', $lang['module_admin']['regexp']);
-					$f->AddText('url', $lang['module_admin']['regexp_replace']);
-					$f->LoadValues("SELECT * FROM ".$tableprefix.'filesystem_regexp WHERE id_fsr='.intval($_getvars['id']));
-					$m['form'] = $f->Output();
-				}
-			if (sm_action('posteditfilesystemexp'))
-				{
-					$m['title'] = $lang['common']['edit'];
-					$q = new TQuery($tableprefix.'filesystem_regexp');
-					$q->AddPost('regexpr');
-					$q->AddPost('url');
-					$q->Update('id_fsr', intval($_getvars['id']));
-					sm_redirect('index.php?m=admin&d=filesystemexp');
-				}
-			if (sm_action('postaddfilesystemexp'))
-				{
-					$m['title'] = $lang['common']['add'];
-					$q = new TQuery($tableprefix.'filesystem_regexp');
-					$q->AddPost('regexpr');
-					$q->AddPost('url');
-					$q->Insert();
-					sm_redirect('index.php?m=admin&d=filesystemexp');
-				}
-			*/
 			if (sm_action('viewlog'))
 				{
 					add_path_control();

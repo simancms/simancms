@@ -80,7 +80,7 @@
 							$result = execsql($sql);
 							while ($row = database_fetch_assoc($result))
 								{
-									$m['title'] = $row['title_category'];
+									sm_title($row['title_category']);
 									if ($special['categories']['getctg'] == 1)
 										$special['categories']['id'] = $row['id_category'];
 								}
@@ -107,8 +107,8 @@
 						$m['pages']['url'] = 'index.php?m=news&d=listnews';
 					$m['pages']['selected'] = $from_page;
 					$m['pages']['interval'] = $_settings['news_by_page'];
-					if (empty($m['title']))
-						$m['title'] = $lang['news'];
+					if (sm_is_empty_title())
+						sm_title($lang['news']);
 					$sql2 = " WHERE date_news<=".time();
 					if (sm_action('listdate'))
 						{
@@ -251,7 +251,6 @@
 							$m['pages']['pages'] = 0;
 							$m['short_news'] = 1;
 						}
-					sm_add_title_modifier($m['title']);
 				}
 
 			if (sm_action('view'))
@@ -380,7 +379,6 @@
 								}
 							sm_add_content_modifier($m["text"]);
 						}
-					sm_add_title_modifier($m['title']);
 				}
 
 			if ($userinfo['level']>0)
