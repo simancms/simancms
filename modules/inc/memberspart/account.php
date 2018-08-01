@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -18,8 +18,8 @@
 	if (sm_action('postchange'))
 		{
 			sm_extcore();
-			$m["module"] = 'account';
-			$m["title"] = $lang['change'];
+			sm_template('account');
+			sm_title($lang['change']);
 			$old_password = dbescape($_postvars["p_old_password"]);
 			$password = dbescape($_postvars["p_password"]);
 			$password2 = dbescape($_postvars["p_password2"]);
@@ -110,8 +110,8 @@
 
 	if (sm_action('change'))
 		{
-			$m["module"] = 'account';
-			$m["title"] = $lang['change'];
+			sm_template('account');
+			sm_title($lang['change']);
 			$sql = "SELECT * FROM ".$tableusersprefix."users WHERE id_user = ".intval($userinfo['id']);
 			$result = execsql($sql);
 			$u = 0;
@@ -146,7 +146,7 @@
 		}
 	if (sm_action('cabinet') && !empty($userinfo['id']))
 		{
-			$m["module"] = 'account';
+			sm_template('account');
 			sm_title($lang["my_cabinet"]);
 			if (!empty($userinfo['id']))
 				{
@@ -180,12 +180,6 @@
 			sm_notify($lang['module_account']['message_notebook_text_saved']);
 			sm_redirect('index.php?m=account&d=cabinet');
 		}
-	if (sm_action('postlogin'))
-		{
-			$m["module"] = 'account';
-			sm_title($lang["login_caption"]);
-		}
 	if ($userinfo['level'] == 3)
 		include('modules/inc/adminpart/account.php');
-
-?>
+	

@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.9
-	//#revision 2015-05-06
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -53,19 +53,19 @@
 			if (sm_action('viewprivmsg'))
 				{
 					sm_page_viewid('account-viewprivmsg');
-					$m["module"] = 'account';
+					sm_template('account');
 					if (empty($_getvars['folder']))
 						$_getvars['folder'] = 'inbox';
 					$m["privmsg_folder"] = $_getvars['folder'];
 					$tmp_folder = $_getvars['folder'];
 					if (strcmp($tmp_folder, 'outbox') == 0)
 						{
-							$m["title"] = $lang['module_account']['outbox'];
+							sm_title($lang['module_account']['outbox']);
 							$tmp_filter = ' folder_privmsg=1 AND id_sender_privmsg='.intval($userinfo['id']);
 						}
 					if (empty($tmp_filter))
 						{
-							$m["title"] = $lang['module_account']['inbox'];
+							sm_title($lang['module_account']['inbox']);
 							$tmp_filter = ' folder_privmsg=0 AND id_recipient_privmsg='.intval($userinfo['id']);
 							$tmp_folder = 'inbox';
 						}
@@ -103,8 +103,8 @@
 				}
 			if (sm_action('postsendprivmsg'))
 				{
-					$m["module"] = 'account';
-					$m["title"] = $lang['module_account']['send_message'];
+					sm_template('account');
+					sm_title($lang['module_account']['send_message']);
 					$m['data']['recipient'] = htmlescape($_postvars['p_recipient']);
 					$m['data']['theme'] = htmlescape($_postvars['p_theme']);
 					$m['data']['text'] = htmlescape($_postvars['p_text']);
@@ -145,8 +145,8 @@
 			if (sm_action('sendprivmsg'))
 				{
 					sm_page_viewid('account-sendprivmsg');
-					$m["module"] = 'account';
-					$m["title"] = $lang['module_account']['send_message'];
+					sm_template('account');
+					sm_title($lang['module_account']['send_message']);
 					$m['data']['recipient'] = htmlescape($_postvars['p_recipient']);
 					$m['data']['theme'] = htmlescape($_postvars['p_theme']);
 					$m['data']['text'] = htmlescape($_postvars['p_body']);
@@ -154,8 +154,8 @@
 			if (sm_action('readprivmsg'))
 				{
 					sm_page_viewid('account-readprivmsg');
-					$m["module"] = 'account';
-					$m["title"] = $lang['module_account']['read_message'];
+					sm_template('account');
+					sm_title($lang['module_account']['read_message']);
 					if (empty($_getvars['folder']))
 						$_getvars['folder'] = 'inbox';
 					$tmp_folder = $_getvars['folder'];

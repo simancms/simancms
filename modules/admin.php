@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.14
-	//#revision 2017-04-17
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -452,7 +452,7 @@
 				}
 			if (sm_action('settings'))
 				{
-					$m["module"] = 'admin';
+					sm_template('admin');
 					sm_title($lang['settings']);
 					sm_add_cssfile('css/adminpart/admin-settings.css');
 					if (!empty($_getvars['viewmode']))

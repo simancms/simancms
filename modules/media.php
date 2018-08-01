@@ -9,8 +9,8 @@
 	Module Name: Media
 	Module URI: http://simancms.org/modules/media/
 	Description: Media files management. Base CMS module
-	Version: 1.6.15
-	Revision: 2018-05-16
+	Version: 1.6.16
+	Revision: 2018-08-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -39,7 +39,7 @@
 		{
 			sm_title($lang['module_galleies']['galleries']);
 			sm_add_cssfile('media.css');
-			$m['module']='media';
+			sm_template('media');
 			$offset=abs(intval($_getvars['from']));
 			$limit=30;
 			$q=new TQuery(sm_table_prefix().'categories_media');

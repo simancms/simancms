@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2017-11-21
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -52,8 +52,7 @@
 				}
 			if (sm_action('addouter'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
+					sm_title($lang['module_menu']['add_menu_line']);
 					sm_use('admininterface');
 					sm_use('adminform');
 					$ui = new TInterface();
@@ -210,8 +209,8 @@
 				}
 			if (sm_action('addline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
+					sm_template('menu');
+					sm_title($lang['module_menu']['add_menu_line']);
 					$menu_id = $_getvars["mid"];
 					$m['idmenu'] = $menu_id;
 					$m['menu'] = siman_load_menu($menu_id);
@@ -219,8 +218,8 @@
 				}
 			if (sm_action('prepareaddline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['module_menu']['add_menu_line'];
+					sm_template('menu');
+					sm_title($lang['module_menu']['add_menu_line']);
 					$m['menuline']['menu_id'] = substr($_postvars['p_mainmenu'], 0, strpos($_postvars['p_mainmenu'], '|'));
 					$m['menuline']['sub_id'] = substr($_postvars['p_mainmenu'], strpos($_postvars['p_mainmenu'], '|') + 1, strlen($_postvars['p_mainmenu']) - strpos($_postvars['p_mainmenu'], '|') - 1);
 					$m['menuline']['caption'] = $_postvars['p_caption'];
@@ -240,8 +239,8 @@
 				}
 			if (sm_action('editline'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang["menu"];
+					sm_template('menu');
+					sm_title($lang["menu"]);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
@@ -288,12 +287,11 @@
 				}
 			if (sm_action('listlines'))
 				{
-					$m["module"] = 'menu';
 					$menu_id = intval($_getvars["mid"]);
 					$q = new TQuery($sm['t'].'menus');
 					$q->Add('id_menu_m', $menu_id);
 					$menuinfo = $q->Get();
-					$m["title"] = $lang["menu"].': '.$menuinfo['caption_m'];
+					sm_title($lang["menu"].': '.$menuinfo['caption_m']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
@@ -344,8 +342,8 @@
 				}
 			if (sm_action('editmenu'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang["edit_menu"];
+					sm_template('menu');
+					sm_title($lang["edit_menu"]);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['modules_mamagement'], "index.php?m=admin&d=modules");
 					add_path($lang['module_menu']['module_menu_name'], "index.php?m=menu&d=admin");
@@ -360,8 +358,8 @@
 				}
 			if (sm_action('postedit'))
 				{
-					$m["module"] = 'menu';
-					$m["title"] = $lang['edit_menu'];
+					sm_template('menu');
+					sm_title($lang['edit_menu']);
 					$menu_id = $_getvars["mid"];
 					$mcaption = $_postvars["p_caption"];
 					$sql = "UPDATE ".$tableprefix."menus SET caption_m = '$mcaption' WHERE id_menu_m='$menu_id'";
@@ -374,7 +372,6 @@
 				}
 			if (sm_action('postdeletemenu'))
 				{
-					$m["module"] = 'menu';
 					$menu_id = intval($_getvars["mid"]);
 					execsql("DELETE FROM ".$tableprefix."menus WHERE id_menu_m=".$menu_id);
 					if ($_settings['menuitems_use_image'] == 1)

@@ -9,8 +9,8 @@
 	Module Name: News
 	Module URI: http://simancms.org/modules/news/
 	Description: News management. Base CMS module
-	Version: 1.6.15
-	Revision: 2017-11-21
+	Version: 1.6.16
+	Revision: 2018-08-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -71,7 +71,7 @@
 
 			if (sm_action('listnews') || sm_action('listdate'))
 				{
-					$m["module"] = 'news';
+					sm_template('news');
 					if (!empty($tmp_view_ctg))
 						{
 							$tmp_view_ctg_first = explode(',', $tmp_view_ctg);
@@ -244,7 +244,7 @@
 							$m['pages']['pages'] = ceil($m['pages']['records']/$_settings['news_by_page']);
 							$m['short_news'] = 0;
 							if ($i==0 && intval($_getvars['from'])>0)
-								$m['module']='404';
+								sm_template('404');
 						}
 					else
 						{
@@ -268,7 +268,7 @@
 							$result = execsql($sql);
 							while ($row = database_fetch_assoc($result))
 								{
-									$m["module"] = 'news';
+									sm_template('news');
 									sm_event('onbeforenewsprocessing', 0);
 									if ($modules_index==0 && $i==0)
 										sm_meta_canonical(sm_fs_url('index.php?m=news&d=view&nid='.$row['id_news'], false, sm_news_url($row['id_news'], $row['date_news'])));
@@ -279,7 +279,7 @@
 									if (!empty($tmp['seo_title']) && $modules_index==0)
 										sm_meta_title($tmp['seo_title']);
 									if (!empty($tmp['news_template']))
-										$m['module']=$tmp['news_template'];
+										sm_template($tmp['news_template']);
 									if (empty($row['title_news']))
 										{
 											if ($_settings['news_use_time'] == '1')

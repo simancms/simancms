@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2017-11-30
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -101,8 +101,7 @@
 				{
 					add_path_control();
 					add_path($lang['user_list'], 'index.php?m=account&d=usrlist');
-					$m["module"] = 'account';
-					$m["title"] = $lang['user_list'];
+					sm_title($lang['user_list']);
 					if (empty($_getvars['sellogin']))
 						$_getvars['sellogin'] = $_postvars['sellogin'];
 					sm_use('admininterface');
@@ -219,8 +218,7 @@
 				{
 					add_path_control();
 					add_path($lang['module_account']['groups'], 'index.php?m=account&d=listgroups');
-					$m['module'] = 'account';
-					$m['title'] = $lang['module_account']['groups'];
+					sm_title($lang['module_account']['groups']);
 					sm_use('admintable');
 					sm_use('admininterface');
 					sm_use('adminbuttons');
@@ -253,8 +251,6 @@
 				}
 			if (sm_actionpost('postaddgroup'))
 				{
-					$m['module'] = 'account';
-					$m['title'] = $lang['module_account']['add_group'];
 					$q = new TQuery($sm['t'].'groups');
 					$q->AddPost('title_group');
 					$q->AddPost('description_group');

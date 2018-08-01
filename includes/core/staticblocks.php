@@ -6,7 +6,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2015-09-14
+	//#revision 2018-08-01
 	//==============================================================================
 
 	for ($tmpdelayedactionindex = 0; $tmpdelayedactionindex<count($sm['delayed_actions']); $tmpdelayedactionindex++)
@@ -119,9 +119,9 @@
 					$sm['m'] =& $modules[$modules_index];
 					if (empty($pnlrow->name_block) && !empty($pnlrow->text_block))
 						{
-							$m['title'] = $pnlrow->rewrite_title;
-							$m['mode'] = 'view';
-							$m['module'] = 'content';
+							sm_title($pnlrow->rewrite_title);
+							sm_set_action('view');
+							sm_template('content');
 							$m['content'][0]['can_view'] = 1;
 							$m['content'][0]["text"] = $pnlrow->text_block;
 							sm_add_title_modifier($m['title']);
@@ -156,4 +156,3 @@
 				}
 		}
 
-?>

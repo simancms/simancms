@@ -9,8 +9,8 @@
 	Module Name: Navigation
 	Module URI: http://simancms.org/modules/menu/
 	Description: Navigation management module. Base CMS module
-	Version: 1.6.15
-	Revision: 2017-11-21
+	Version: 1.6.16
+	Revision: 2018-08-01
 	Author URI: http://simancms.org/
 	*/
 
@@ -28,7 +28,7 @@
 			$result = execsql("SELECT * FROM ".$tableprefix."menus WHERE id_menu_m=".intval($menu_id)." LIMIT 1");
 			while ($row = database_fetch_assoc($result))
 				{
-					$m["module"] = 'menu';
+					sm_template('menu');
 					sm_title($row['caption_m']);
 					$m['menu'] = siman_load_menu($menu_id);
 					siman_add_modifier_menu($m['menu']);

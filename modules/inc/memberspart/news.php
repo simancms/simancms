@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2017-11-21
+	//#ver 1.6.16
+	//#revision 2018-08-01
 	//==============================================================================
 
 	if (!defined("SIMAN_DEFINED"))
@@ -133,7 +133,7 @@
 					if ($candelete == 1)
 						{
 							sm_title($lang['delete_news']);
-							$m["module"] = 'news';
+							sm_template('news');
 							$id_news = intval($_getvars["nid"]);
 							$sql = "SELECT * FROM ".$tableprefix."news WHERE id_news=".intval($id_news);
 							$result = execsql($sql);

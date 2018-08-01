@@ -19,7 +19,7 @@
 
 			if (sm_action('add'))
 				{
-					$m["module"] = 'blocks';
+					sm_template('blocks');
 					sm_title($lang['static_blocks'].': '.$lang['common']['add']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['static_blocks'], "index.php?m=blocks");
@@ -53,7 +53,7 @@
 				}
 			if (sm_action('edit'))
 				{
-					$m["module"] = 'blocks';
+					sm_template('blocks');
 					sm_title($lang['static_blocks'].': '.$lang['common']['edit']);
 					add_path($lang['control_panel'], "index.php?m=admin");
 					add_path($lang['static_blocks'], "index.php?m=blocks");

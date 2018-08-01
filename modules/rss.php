@@ -23,7 +23,7 @@
 		{
 			if (sm_action('news'))
 				{
-					$m['module'] = 'system_empty_block';
+					sm_template('system_empty_block');
 					$rss['title'] = sm_website_title();
 					$rss['link'] = 'http://'.sm_settings('resource_url');
 					$rss['description'] = sm_settings('logo_text');

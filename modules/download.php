@@ -38,7 +38,7 @@
 	if (sm_action('view'))
 		{
 			sm_page_viewid('download-view');
-			$m["module"] = 'download';
+			sm_template('download');
 			sm_title($lang['module_download']['downloads']);
 			$i = 0;
 			$result = execsql("SELECT * FROM ".sm_table_prefix()."downloads WHERE attachment_from='-' AND userlevel_download <= ".intval($userinfo["level"]));

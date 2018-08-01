@@ -301,8 +301,8 @@
 							global $modules, $modules_index;
 							if ($replace_template)
 								{
-									$modules[$modules_index]['module'] = 'common_admininterface';
-									$modules[$modules_index]['mode'] = 'common_admininterface_launcher';
+									sm_template('common_admininterface');
+									sm_set_action('common_admininterface_launcher');
 									$modules[$modules_index]['common_admininterface_output'] = $this->blocks;
 									return $this->blocks;
 								}

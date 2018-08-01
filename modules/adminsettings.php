@@ -9,7 +9,7 @@
 	Module Name: Settings (Expert Mode)
 	Module URI: http://simancms.org/modules/adminsettings/
 	Description: Manage default settings in expert mode.
-	Version: 2016-02-06
+	Version: 2018-08-01
 	Author: SiMan CMS Team
 	Author URI: http://simancms.org/
 	*/
@@ -21,7 +21,6 @@
 		{
 			sm_default_action('admin');
 			sm_include_lang('adminsettings');
-			$m["module"] = 'adminsettings';
 			if (sm_action('addeditor', 'addhtml', 'edit', 'html'))
 				{
 					add_path_modules();
@@ -134,5 +133,3 @@
 					sm_redirect('index.php?m=admin&d=modules');
 				}
 		}
-
-?>
