@@ -41,14 +41,14 @@
 				{assign var=index value=0}
 				{assign var=mod_name value=$modules[0].module}
 				{$special.document.block[0].beforeblock}
-			{include file="$mod_name.tpl"}
+				{include file="$mod_name.tpl" m=$modules[0]}
 				{$special.document.block[0].afterblock}
 			{/if}
 			{if $modules[mod_index].panel eq "center"}
 				{assign var=index value=$smarty.section.mod_index.index}
 				{assign var=mod_name value=$modules[mod_index].module}
 				{$special.document.block[mod_index].beforeblock}
-			{include file="$mod_name.tpl"}
+				{include file="$mod_name.tpl" m=$modules[mod_index]}
 				{$special.document.block[mod_index].afterblock}
 				{assign var=loop_center_panel value=$loop_center_panel+1}
 			{/if}
@@ -58,37 +58,37 @@
 			{assign var=index value=0}
 			{assign var=mod_name value=$modules[0].module}
 			{$special.document.block[0].beforeblock}
-		{include file="$mod_name.tpl"}
+			{include file="$mod_name.tpl" m=$modules[0]}
 			{$special.document.block[0].afterblock}
 		{/if}
 		{$special.document.panel[0].afterpanel}
 
 		</div>
 		<div class="col-md-3">
-		{$special.document.panel[1].beforepanel}
+			{$special.document.panel[1].beforepanel}
 			{section name=mod_index loop=$modules step=1}
-			{if $modules[mod_index].panel eq "1"}
-				{assign var=index value=$smarty.section.mod_index.index}
-				{assign var=mod_name value=$modules[mod_index].module}
-				{$special.document.block[mod_index].beforeblock}
-			{include file="$mod_name.tpl"}
-				{$special.document.block[mod_index].afterblock}
-			{/if}
-		{/section}
+				{if $modules[mod_index].panel eq "1"}
+					{assign var=index value=$smarty.section.mod_index.index}
+					{assign var=mod_name value=$modules[mod_index].module}
+					{$special.document.block[mod_index].beforeblock}
+					{include file="$mod_name.tpl" m=$modules[mod_index]}
+					{$special.document.block[mod_index].afterblock}
+				{/if}
+			{/section}
 			{$special.document.panel[1].afterpanel}
 		</div>
 	</div>
 	<div class="row">
-	{$special.document.panel[2].beforepanel}
+		{$special.document.panel[2].beforepanel}
 		{section name=mod_index loop=$modules step=1}
-		{if $modules[mod_index].panel eq "2"}
-			{assign var=index value=$smarty.section.mod_index.index}
-			{assign var=mod_name value=$modules[mod_index].module}
-			{$special.document.block[mod_index].beforeblock}
-		{include file="$mod_name.tpl"}
-			{$special.document.block[mod_index].afterblock}
-		{/if}
-	{/section}
+			{if $modules[mod_index].panel eq "2"}
+				{assign var=index value=$smarty.section.mod_index.index}
+				{assign var=mod_name value=$modules[mod_index].module}
+				{$special.document.block[mod_index].beforeblock}
+				{include file="$mod_name.tpl" m=$modules[mod_index]}
+				{$special.document.block[mod_index].afterblock}
+			{/if}
+		{/section}
 		{$special.document.panel[2].afterpanel}
 	</div>
 

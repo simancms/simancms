@@ -29,71 +29,71 @@
 	</td>
 </tr>
 <tr>
-<td valign="top" width="20%">
+	<td valign="top" width="20%">
 
-{$special.document.panel[1].beforepanel}
-{section name=mod_index loop=$modules step=1}
-{if $modules[mod_index].panel eq "1"}
-{assign var=index value=$smarty.section.mod_index.index}
-{assign var=mod_name value=$modules[mod_index].module}
-{$special.document.block[mod_index].beforeblock}
-{include file="$mod_name.tpl"}
-{$special.document.block[mod_index].afterblock}
-{/if}
-{/section}
-{$special.document.panel[1].afterpanel}
+		{$special.document.panel[1].beforepanel}
+		{section name=mod_index loop=$modules step=1}
+			{if $modules[mod_index].panel eq "1"}
+				{assign var=index value=$smarty.section.mod_index.index}
+				{assign var=mod_name value=$modules[mod_index].module}
+				{$special.document.block[mod_index].beforeblock}
+				{include file="$mod_name.tpl" m=$modules[mod_index]}
+				{$special.document.block[mod_index].afterblock}
+			{/if}
+		{/section}
+		{$special.document.panel[1].afterpanel}
 
 	</td>
     <td valign="top" width="60%">
 
-{$special.document.panel[0].beforepanel}
-{include file="path.tpl"}
-{assign var=loop_center_panel value=1}
-{assign var=show_center_panel value=1}
-{section name=mod_index loop=$modules step=1 start=1}
-{if $_settings.main_block_position lt $loop_center_panel and $show_center_panel eq 1}
-{assign var=show_center_panel value=0}
-{assign var=index value=0}
-{assign var=mod_name value=$modules[0].module}
-{$special.document.block[0].beforeblock}
-{include file="$mod_name.tpl"}
-{$special.document.block[0].afterblock}
-{/if}
-{if $modules[mod_index].panel eq "center"}
-{assign var=index value=$smarty.section.mod_index.index}
-{assign var=mod_name value=$modules[mod_index].module}
-{$special.document.block[mod_index].beforeblock}
-{include file="$mod_name.tpl"}
-{$special.document.block[mod_index].afterblock}
-{assign var=loop_center_panel value=$loop_center_panel+1}
-{/if}
-{/section}
-{if $show_center_panel eq 1}
-{assign var=show_center_panel value=0}
-{assign var=index value=0}
-{assign var=mod_name value=$modules[0].module}
-{$special.document.block[0].beforeblock}
-{include file="$mod_name.tpl"}
-{$special.document.block[0].afterblock}
-{/if}
-{$special.document.panel[0].afterpanel}
+		{$special.document.panel[0].beforepanel}
+		{include file="path.tpl"}
+		{assign var=loop_center_panel value=1}
+		{assign var=show_center_panel value=1}
+		{section name=mod_index loop=$modules step=1 start=1}
+			{if $_settings.main_block_position lt $loop_center_panel and $show_center_panel eq 1}
+				{assign var=show_center_panel value=0}
+				{assign var=index value=0}
+				{assign var=mod_name value=$modules[0].module}
+				{$special.document.block[0].beforeblock}
+				{include file="$mod_name.tpl" m=$modules[0]}
+				{$special.document.block[0].afterblock}
+			{/if}
+			{if $modules[mod_index].panel eq "center"}
+				{assign var=index value=$smarty.section.mod_index.index}
+				{assign var=mod_name value=$modules[mod_index].module}
+				{$special.document.block[mod_index].beforeblock}
+				{include file="$mod_name.tpl" m=$modules[mod_index]}
+				{$special.document.block[mod_index].afterblock}
+				{assign var=loop_center_panel value=$loop_center_panel+1}
+			{/if}
+		{/section}
+		{if $show_center_panel eq 1}
+			{assign var=show_center_panel value=0}
+			{assign var=index value=0}
+			{assign var=mod_name value=$modules[0].module}
+			{$special.document.block[0].beforeblock}
+			{include file="$mod_name.tpl" m=$modules[0]}
+			{$special.document.block[0].afterblock}
+		{/if}
+		{$special.document.panel[0].afterpanel}
 	
 	</td>
     <td valign="top" width="20%">
 
-{$special.document.panel[2].beforepanel}
-{section name=mod_index loop=$modules step=1}
-{if $modules[mod_index].panel eq "2"}
-{assign var=index value=$smarty.section.mod_index.index}
-{assign var=mod_name value=$modules[mod_index].module}
-{$special.document.block[mod_index].beforeblock}
-{include file="$mod_name.tpl"}
-{$special.document.block[mod_index].afterblock}
-{/if}
-{/section}
-{$special.document.panel[2].afterpanel}
+		{$special.document.panel[2].beforepanel}
+		{section name=mod_index loop=$modules step=1}
+			{if $modules[mod_index].panel eq "2"}
+				{assign var=index value=$smarty.section.mod_index.index}
+				{assign var=mod_name value=$modules[mod_index].module}
+				{$special.document.block[mod_index].beforeblock}
+				{include file="$mod_name.tpl" m=$modules[mod_index]}
+				{$special.document.block[mod_index].afterblock}
+			{/if}
+		{/section}
+		{$special.document.panel[2].afterpanel}
 
-</td>
+	</td>
 </tr>
 <tr class="bottombar">
     <td class="copyrightbar">{$_settings.copyright_text}</td>
