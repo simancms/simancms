@@ -1063,6 +1063,7 @@
 					//====================================================
 					function Output()
 						{
+							global $sm;
 							$this->table['colcount'] = count($this->table['columns']);
 							$this->table['rowcount'] = count($this->table['rows']);
 							if (!empty($this->table['class']))
@@ -1079,6 +1080,10 @@
 										$this->SetColumnHeaderAttr($name, 'align', $columnval['align']);
 									if (!empty($columnval['headercolspan']))
 										$this->SetColumnHeaderAttr($name, 'colspan', $columnval['headercolspan']);
+									if (!empty($sm['admintable']['header_th_wrapper_begin']))
+										$this->table['columns'][$name]['th_html_start'] = $sm['admintable']['header_th_wrapper_begin'].$this->table['columns'][$name]['th_html_start'];
+									if (!empty($sm['admintable']['header_th_wrapper_end']))
+										$this->table['columns'][$name]['th_html_end'] = $this->table['columns'][$name]['th_html_end'].$sm['admintable']['header_th_wrapper_end'];
 								}
 							for ($this->rownumber = 0; $this->rownumber<$this->RowCount(); $this->rownumber++)
 								{

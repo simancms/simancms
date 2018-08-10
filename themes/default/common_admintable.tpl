@@ -95,7 +95,7 @@ function atdropdowncancelclosetime{$postfix}()
 	{if $table.hideheader neq 1}{$table.head_html_start}{strip}{if $table.display_thead}<thead>{/if}<tr{foreach name=table_header_attr_index from=$table.header_attrs item=attr key=attr_name} {$attr_name}="{$attr}"{/foreach}>
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $column.hideheader neq 1}
-		<{$table.header_tag}{foreach name=table_th_attr_index from=$column.header_attr key=table_th_attr_name item=table_th_attr_val} {$table_th_attr_name}="{$table_th_attr_val}"{/foreach}>
+		<{$table.header_tag}{foreach name=table_th_attr_index from=$column.header_attr key=table_th_attr_name item=table_th_attr_val} {$table_th_attr_name}="{$table_th_attr_val}"{/foreach}>{$column.th_html_start}
 			{if $column.headerurl neq "" or $column.onclick neq ""}<a{if $column.headerurl neq ""} href="{$column.headerurl}"{/if}{if $column.onclick neq ""} onclick="{$column.onclick}"{/if}>{/if}
 				{$column.caption}{$column.html}
 			{if $column.headerurl neq "" or $column.onclick neq ""}</a>{/if}
@@ -110,7 +110,7 @@ function atdropdowncancelclosetime{$postfix}()
 				{/section}
 				</div>
 			{/if}
-		</{$table.header_tag}>
+		{$column.th_html_end}</{$table.header_tag}>
 		{/if}
 		{/foreach}
 	</tr>{/strip}{$table.head_html_end}{/if}
