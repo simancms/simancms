@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-06-27
+	//#revision 2018-08-10
 	//==============================================================================
 
 	if (!defined("admintable_DEFINED"))
@@ -37,7 +37,17 @@
 							$this->AddClassnameGlobal('admintable');
 							if (!empty($sm['admintable']['globalclass']))
 								$this->AddClassnameGlobal($sm['admintable']['globalclass']);
+							if (!empty($sm['admintable']['header_tag']))
+								$this->table['header_tag']=$sm['admintable']['header_tag'];
+							else
+								$this->table['header_tag']='td';
 							$this->SetDOMID('admintable'.$this->table['postfix']);
+							$this->SetHeaderRowAttr('class', 'admintable_header');
+							$this->SetHeaderRowAttr('id', 'admintable_header'.$this->table['postfix']);
+							$this->table['head_html_start']='<thead>';
+							$this->table['head_html_end']='</thead>';
+							$this->table['body_html_start']='<tbody>';
+							$this->table['body_html_end']='</tbody>';
 							TGrid::$grids_used++;
 						}
 
@@ -119,7 +129,24 @@
 
 					function AppendCoumnHeaderAttr($colname, $attrname, $attrval, $append_prefix = ' ')
 						{
-							$this->table['columns'][$colname]['header_attr'][$attrname] .= (strlen($this->table['columns'][$colname]['attr'][$attrname])>0 ? $append_prefix : '').$attrval;
+							$this->table['columns'][$colname]['header_attr'][$attrname] .= (strlen($this->table['columns'][$colname]['header_attr'][$attrname])>0 ? $append_prefix : '').$attrval;
+							return $this;
+						}
+
+					function SetHeaderRowAttr($attrname, $attrval)
+						{
+							$this->table['header_attrs'][$attrname] = $attrval;
+							return $this;
+						}
+
+					function GetHeaderRowAttr($attrname)
+						{
+							return $this->table['header_attrs'][$attrname];
+						}
+
+					function AppendHeaderRowAttr($attrname, $attrval, $append_prefix = ' ')
+						{
+							$this->table['header_attrs'][$attrname] .= (strlen($this->table['header_attrs'][$attrname])>0 ? $append_prefix : '').$attrval;
 							return $this;
 						}
 
@@ -1040,6 +1067,19 @@
 							$this->table['rowcount'] = count($this->table['rows']);
 							if (!empty($this->table['class']))
 								$this->SetGlobalAttribute('class', $this->table['class']);
+							foreach ($this->table['columns'] as $name => $columnval)
+								{
+									if (!empty($columnval['hint']))
+										$this->SetColumnHeaderAttr($name, 'title', $columnval['hint']);
+									elseif (!empty($columnval['caption']))
+										$this->SetColumnHeaderAttr($name, 'title', $columnval['caption']);
+									if (!empty($columnval['width']))
+										$this->SetColumnHeaderAttr($name, 'width', $columnval['width']);
+									if (!empty($columnval['align']))
+										$this->SetColumnHeaderAttr($name, 'align', $columnval['align']);
+									if (!empty($columnval['headercolspan']))
+										$this->SetColumnHeaderAttr($name, 'colspan', $columnval['headercolspan']);
+								}
 							for ($this->rownumber = 0; $this->rownumber<$this->RowCount(); $this->rownumber++)
 								{
 									$this->RowAddClass('at-row-'.$this->rownumber, $this->rownumber);

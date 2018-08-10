@@ -92,10 +92,10 @@ function atdropdowncancelclosetime{$postfix}()
 </script>
 {assign var=default_column value=$table.default_column}
 <table{foreach name=table_attr_index from=$table.attrs item=attr key=attr_name} {$attr_name}="{$attr}"{/foreach}>
-	{if $table.hideheader neq 1}{strip}<tr class="admintable_header" id="admintable_header{$postfix}">
+	{if $table.hideheader neq 1}{$table.head_html_start}{strip}{if $table.display_thead}<thead>{/if}<tr{foreach name=table_header_attr_index from=$table.header_attrs item=attr key=attr_name} {$attr_name}="{$attr}"{/foreach}>
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $column.hideheader neq 1}
-		<td{if $column.hint neq ""} title="{$column.hint}"{elseif $column.caption neq ""} title="{$column.caption|strip_tags}"{/if}{if $column.width neq ""} width="{$column.width}"{/if}{if $column.align neq ""} align="{$column.align}"{/if}{if $column.headercolspan neq ""} colspan="{$column.headercolspan}"{/if}>
+		<{$table.header_tag}{foreach name=table_th_attr_index from=$column.header_attr key=table_th_attr_name item=table_th_attr_val} {$table_th_attr_name}="{$table_th_attr_val}"{/foreach}>
 			{if $column.headerurl neq "" or $column.onclick neq ""}<a{if $column.headerurl neq ""} href="{$column.headerurl}"{/if}{if $column.onclick neq ""} onclick="{$column.onclick}"{/if}>{/if}
 				{$column.caption}{$column.html}
 			{if $column.headerurl neq "" or $column.onclick neq ""}</a>{/if}
@@ -110,12 +110,12 @@ function atdropdowncancelclosetime{$postfix}()
 				{/section}
 				</div>
 			{/if}
-		</td>
+		</{$table.header_tag}>
 		{/if}
 		{/foreach}
-	</tr>{/strip}{/if}
-	{section name=table_row_index loop=$table.rows}
-	{strip}<tr class="admintable_row{$table.rowparams[table_row_index].class}"{if $table.rows[table_row_index].$default_column.url neq ""} onDblClick="admintable_goto{$postfix}('{$table.rows[table_row_index].$default_column.url}')"{/if}{if $table.rowparams[table_row_index].style neq ""} style="{$table.rowparams[table_row_index].style}"{/if}>
+	</tr>{/strip}{$table.head_html_end}{/if}
+	{$table.body_html_start}{section name=table_row_index loop=$table.rows}
+	{strip}{$table.rowparams[table_row_index].html_start}<tr class="admintable_row{$table.rowparams[table_row_index].class}"{if $table.rows[table_row_index].$default_column.url neq ""} onDblClick="admintable_goto{$postfix}('{$table.rows[table_row_index].$default_column.url}')"{/if}{if $table.rowparams[table_row_index].style neq ""} style="{$table.rowparams[table_row_index].style}"{/if}>
 		{foreach name=table_column_index from=$table.columns item=column key=column_name}
 		{if $column.hide neq 1 and $table.rows[table_row_index].$column_name.hide neq 1}
 		<td{foreach name=table_td_attr_index from=$table.rows[table_row_index].$column_name.attrs key=table_td_attr_name item=table_td_attr_val} {$table_td_attr_name}="{$table_td_attr_val}"{/foreach}>
@@ -177,7 +177,7 @@ function atdropdowncancelclosetime{$postfix}()
 		</td>
 		{/if}
 		{/foreach}
-	</tr>{/strip}
+	</tr>{$table.rowparams[table_row_index].html_end}{/strip}
 	{if $table.expanders[table_row_index].enabled}
 	<tr style="display:none;" id="admintable-expander-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expander">
 		<td colspan="{$table.colcount}" id="admintable-expanderarea-{$smarty.section.table_row_index.index}-{$postfix}" class="at-expanderarea">
@@ -185,6 +185,6 @@ function atdropdowncancelclosetime{$postfix}()
 		</td>
 	</tr>
 	{/if}
-	{/section}
+	{/section}{$table.body_html_end}
 </table>
 {/strip}
