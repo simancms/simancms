@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2017-11-24
+	//#revision 2018-08-14
 	//==============================================================================
 
 	if (!defined("simplyquery_DEFINED"))
@@ -15,8 +15,8 @@
 
 			class TQuery
 				{
-					var $fields;
-					var $values;
+					var $fields=Array();
+					var $values=Array();
 					var $tableprefix;
 					var $tablename;
 					var $noquote;
@@ -29,7 +29,7 @@
 					var $leftjoin;
 					var $sqlgenerationmode;
 					var $having;
-					public $items;
+					public $items=Array();
 					public $row;
 					public $sql;
 					private $result;
@@ -279,7 +279,7 @@
 						{
 							return $this->TotalCount($addsql);
 						}
-					
+
 					//Return matches count
 					function TotalCount($addsql = '')
 						{
