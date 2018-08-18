@@ -120,6 +120,16 @@
 					$this->current_item['html_attributes']=$value;
 				}
 
+			function SetHTMLBegin($value)
+				{
+					$this->current_item['html_begin']=$value;
+				}
+
+			function SetHTMLEnd($value)
+				{
+					$this->current_item['html_end']=$value;
+				}
+
 			function SetOpenInNewPage($value=true)
 				{
 					$this->current_item['newpage']=$value;
@@ -190,6 +200,8 @@
 							$this->menupointer[$index]['alt'] = $items[$i]['alt'];
 							$this->menupointer[$index]['attr'] = $items[$i]['html_attributes'];
 							$this->menupointer[$index]['newpage'] = $items[$i]['newpage'];
+							$this->menupointer[$index]['html_begin'] = $items[$i]['html_begin'];
+							$this->menupointer[$index]['html_end'] = $items[$i]['html_end'];
 							if (intval(sm_settings('menuitems_use_image')) == 1)
 								{
 									if (file_exists('./files/img/menuitem'.$this->menupointer[$index]['id'].'.jpg'))
