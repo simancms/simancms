@@ -45,6 +45,10 @@
 	$_cookievars = $_COOKIE;
 	$_servervars = $_SERVER;
 	$_uplfilevars = $_FILES;
+	if (array_key_exists('m', $_getvars))
+		$_getvars['m']=(string)$_getvars['m'];
+	if (array_key_exists('m', $_getvars))
+		$_getvars['d']=(string)$_getvars['d'];
 	if (!$sm['disable_session'])
 		{
 			if (is_array($_SESSION))
