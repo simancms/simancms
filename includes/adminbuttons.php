@@ -7,7 +7,7 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#revision 2018-05-18
+	//#revision 2018-09-28
 	//==============================================================================
 
 	if (!defined("adminbuttons_DEFINED"))
@@ -24,6 +24,7 @@
 						{
 							global $sm;
 							$this->bar['buttonbar_title'] = $buttonbar_title;
+							$this->bar['buttons']=Array();
 							$this->SetButtonsSeparatorHTML('');
 							$this->AddClassnameGlobal('adminbuttons');
 							if (!empty($sm['adminbuttons']['globalclass']))
@@ -34,6 +35,11 @@
 								$this->SetBeginHTML($sm['adminbuttons']['htmlbegin']);
 							if (!empty($sm['adminbuttons']['htmlend']))
 								$this->SetEndHTML($sm['adminbuttons']['htmlend']);
+						}
+
+					function GetButtonNames()
+						{
+							return array_keys($this->bar['buttons']);
 						}
 
 					function SetTitleForBar($buttonbar_title)
@@ -199,6 +205,16 @@
 							return $this;
 						}
 
+					function AppendStyle($button_name, $style)
+						{
+							if (substr($this->bar['buttons'][$button_name]['style'], -1)!=';')
+								$this->bar['buttons'][$button_name]['style'].=';';
+							if (substr($style, -1)!=';')
+								$style.=';';
+							$this->bar['buttons'][$button_name]['style'] .= $style;
+							return $this;
+						}
+
 					function AssignImage($name, $imagename)
 						{
 							$this->bar['buttons'][$name]['image'] = $imagename;
@@ -276,6 +292,18 @@
 									foreach ($this->bar['buttons'] as $buttonname => &$buttonparams)
 										{
 											$this->AddClassname($classname, $buttonname);
+										}
+								}
+							return $this;
+						}
+
+					function AppendStyleForAll($style)
+						{
+							if (is_array($this->bar['buttons']))
+								{
+									foreach ($this->bar['buttons'] as $buttonname => &$buttonparams)
+										{
+											$this->AppendStyle($buttonname, $style);
 										}
 								}
 							return $this;
