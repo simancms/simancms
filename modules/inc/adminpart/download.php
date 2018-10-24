@@ -231,14 +231,14 @@
 								$ui->NotificationError($error);
 							sm_title($lang['edit']);
 							$f=new TForm('index.php?m=download&d=postedit&id='.intval($_getvars['id']).'&returnto='.urlencode($_getvars['returnto']));
-							$f->AddTextarea('description_download', $lang['module_download']['short_description_download']);
+							$f->AddTextarea('description_download', $lang['module_download']['short_description_download'])
+								->SetFocus();
 							$f->AddSelectVL('userlevel_download', $lang['can_view'], Array(0, 1, 2, 3), Array($lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']));
 							$f->AddText('optional_name', $lang['optional_file_name']);
 							$f->LoadValuesArray($info);
 							$f->LoadValuesArray($_postvars);
 							$ui->AddForm($f);
 							$ui->Output(true);
-							sm_setfocus('description_download');
 						}
 				}
 			if (sm_action('add'))
@@ -264,7 +264,6 @@
 					$f->LoadValuesArray($_postvars);
 					$ui->AddForm($f);
 					$ui->Output(true);
-					sm_setfocus('userfile');
 				}
 			if (sm_action('list'))
 				{

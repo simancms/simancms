@@ -9,7 +9,7 @@
 	Module Name: Download
 	Module URI: http://simancms.org/modules/download/
 	Description: Downloads management module. Base CMS module
-	Version: 1.6.15
+	Version: 1.6.16
 	Revision: 2018-01-30
 	Author URI: http://simancms.org/
 	*/
