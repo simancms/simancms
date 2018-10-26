@@ -4,8 +4,8 @@
 	Module Name: Code Generator
 	Module URI: http://simancms.org/
 	Description: Code generator for UI
-	Version: 1.6.15
-	Revision: 2018-04-09
+	Version: 1.6.16
+	Revision: 2018-10-26
 	Author URI: http://simancms.org/
 	*/
 
@@ -251,6 +251,7 @@
 						'author_uri'=>$_postvars['author_uri'],
 						'module_uri'=>$_postvars['module_uri'],
 						'description'=>$_postvars['description'],
+						'access_level'=>intval($_postvars['level']),
 						'sql'=>$_postvars['sql'],
 						'breadcrumbs'=>$_postvars['breadcrumbs'],
 						'fields'=>Array(),
@@ -273,7 +274,7 @@
 					$info .= "Revision: ".date('Y-m-d')."\n";
 					$info .= "Author URI: ".$data['author_uri']."\n";
 					$info .= "*/\n\n";
-					$info .= '	if ($userinfo[\'level\']>0)'."\n\t\t{\n";;
+					$info .= '	if ($userinfo[\'level\']>='.$data['access_level'].')'."\n\t\t{\n";;
 					$info .= get_postdelete_code($data);
 					$info .= get_postadd_code($data);
 					$info .= get_add_code($data);
@@ -307,10 +308,11 @@
 						$f = new TForm('index.php?m=modulegenerator&d=generate');
 					else
 						$f = new TForm('index.php?m=modulegenerator&d=prepare&type=fields');
-					$f->AddText('module', 'Module ID')->SetFocus();
+					$f->AddText('module', 'Module ID (file name)')->SetFocus();
 					$f->AddText('title', 'Module Title');
 					$f->AddText('description', 'Module Description');
-					$f->AddSelectVL('breadcrumbs', 'Breadcrumbs', Array('control', 'home'), Array('Control Panel', 'Home'));
+					$f->AddSelectVL('level', 'Access Level', [0, 1, 2, 3], [$lang['all_users'], $lang['logged_users'], $lang['power_users'], $lang['administrators']])->WithValue(3);
+					$f->AddSelectVL('breadcrumbs', 'Breadcrumbs', ['control', 'home'], ['Control Panel', 'Home']);
 					$f->AddText('author_uri', 'Author URL')->WithValue(sm_homepage());
 					$f->AddText('module_uri', 'Module URL')->WithValue(sm_homepage());
 					$f->AddTextarea('sql', 'SQL Create Query');
