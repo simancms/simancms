@@ -6,8 +6,8 @@
 	//------------------------------------------------------------------------------
 
 	//==============================================================================
-	//#ver 1.6.15
-	//#revision 2017-11-21
+	//#ver 1.6.16
+	//#revision 2018-10-26
 	//==============================================================================
 
 	if (!in_array(php_sapi_name(), Array('cli', 'cgi-fcgi')) && @get_magic_quotes_gpc() == 1)
@@ -316,15 +316,20 @@
 					sm_event('aftertplgenerate');
 				}
 		}
-	elseif (!$sm['s']['nosmarty'])
+	else
 		{
 			@header('HTTP/1.0 503 Service Unavailable');
 			@header('Retry-After: 3600');
-			$smarty->template_dir = 'themes/default/';
-			$smarty->compile_dir = 'files/temp/';
-			$smarty->config_dir = 'themes/default/';
-			$smarty->cache_dir = 'files/temp/';
-			$smarty->template_dir_default = 'themes/default/';
-			$smarty->assign('errorname', 'dberror');
-			$smarty->display('error.tpl');
+			if ($sm['s']['nosmarty'])
+				exit('Service Unavailable');
+			else
+				{
+					$smarty->template_dir='themes/default/';
+					$smarty->compile_dir='files/temp/';
+					$smarty->config_dir='themes/default/';
+					$smarty->cache_dir='files/temp/';
+					$smarty->template_dir_default='themes/default/';
+					$smarty->assign('errorname', 'dberror');
+					$smarty->display('error.tpl');
+				}
 		}

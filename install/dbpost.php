@@ -156,7 +156,3 @@ $sql="
 INSERT INTO ".$tableprefix."filesystem (filename_fs, url_fs, comment_fs) VALUES ('news/', 'index.php?m=news', '".$lang['p_mlines']['news']."');
 ";
 $result=database_query($sql, $lnkDB);
-
-
-
-?>

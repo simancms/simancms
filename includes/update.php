@@ -123,4 +123,8 @@
 		{
 			sm_update_settings('database_date', '20180619');
 		}
+	if (intval(sm_settings('database_date'))<20181026)//1.6.16
+		{
+			sm_update_settings('database_date', '20181026');
+		}
 
