@@ -144,7 +144,7 @@ function atdropdowncancelclosetime{$postfix}()
 				</select>
 			{elseif $table.rows[table_row_index].$column_name.element neq ""}
 				<input{foreach name=table_ctrlattr_index from=$table.rows[table_row_index].$column_name.control_attr key=control_attr_name item=control_attrval} {$control_attr_name}="{$control_attrval}"{/foreach} />{if $table.rows[table_row_index].$column_name.element eq "storedlabel"} {$table.rows[table_row_index].$column_name.data}{/if}
-			{elseif $table.rows[table_row_index].$column_name.data neq ""}
+			{elseif $table.rows[table_row_index].$column_name.data|strlen > 0}
 				{$table.rows[table_row_index].$column_name.data}
 			{elseif $column.default_image neq ""}
 				<img src="{$column.default_image}" border="0">
